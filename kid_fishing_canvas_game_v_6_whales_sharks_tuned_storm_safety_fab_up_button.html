@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Kid Fishing — Canvas Game (v7: storm countdown + auto-retract)</title>
+  <style>
+    :root { --bg:#0f172a; --panel:#111827; --ink:#e5e7eb; --muted:#9ca3af; --accent:#22d3ee; --good:#22c55e; --warn:#f59e0b; --bad:#38bdf8; --red:#ef4444; --blue:#3b82f6; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .wrap{height:100%;display:grid;grid-template-rows:auto 1fr auto}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:linear-gradient(180deg,#0b1225,transparent);position:sticky;top:0;z-index:50}
+    .pill{border:1px solid rgba(255,255,255,.12);background:#0b1222;border-radius:999px;padding:6px 10px;font-weight:700;font-size:14px;color:var(--muted)}
+    .stat{display:flex;gap:8px;flex-wrap:wrap}
+    .stat b{color:var(--ink)}
+
+    #stage{position:relative}
+    canvas{display:block;width:100%;height:100%;touch-action:none;background:linear-gradient(#0b2b66,#053058 40%,#021e36)}
+
+    nav.mainbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px;background:linear-gradient(0deg,rgba(17,24,39,.95),rgba(17,24,39,.8));border-top:1px solid rgba(255,255,255,.08);position:sticky;bottom:0;z-index:60}
+    .btn{border:1px solid rgba(255,255,255,.1);background:#0b1222;color:var(--ink);border-radius:12px;padding:12px;font-weight:800;text-align:center}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{background:radial-gradient(110% 110% at 0% 0%,#11384c,#0b1222);border-color:rgba(34,211,238,.35)}
+    .btn.green{background:radial-gradient(110% 110% at 0% 0%,#134e2a,#0b1222);border-color:rgba(34,197,94,.35)}
+    .btn.red{background:radial-gradient(110% 110% at 0% 0%,#4e1313,#0b1222);border-color:rgba(239,68,68,.45);color:#fecaca}
+    .btn.blue{background:radial-gradient(120% 120% at 0% 0%,#153a78,#0b1222);border-color:rgba(59,130,246,.45);color:#bfdbfe}
+
+    /* Event Bars */
+    nav#stopBar, nav#whaleBar{display:none;grid-template-columns:1fr;gap:8px;padding:8px;background:linear-gradient(0deg,rgba(17,24,39,.98),rgba(17,24,39,.9));border-top:1px solid rgba(255,255,255,.1);position:sticky;bottom:0;z-index:65}
+    nav#whaleBar{border-top-color:rgba(59,130,246,.35)}
+
+    /* POPUP MODAL */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:9999}
+    .modal.open{display:flex}
+    .backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px)}
+    .dialog{position:relative;max-width:min(92vw,520px);width:92vw;max-height:70vh;overflow:auto;background:#0b1222;border:1px solid rgba(255,255,255,.18);border-radius:16px;box-shadow:0 20px 80px rgba(0,0,0,.6);padding:10px}
+    .dialogHeader{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 10px}
+    .dialogTitle{font-weight:800;color:var(--muted)}
+    .dialogBody{display:block}
+    .closeX{border:1px solid rgba(255,255,255,.18);background:#0f172a;color:var(--ink);border-radius:10px;padding:6px 10px;font-weight:800}
+
+    .item{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:#0f1a2e;margin:6px 0}
+    .item small{color:var(--muted)}
+    .price{font-weight:800;color:var(--accent)}
+
+    .storm{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;z-index:40}
+    .flash{position:absolute;inset:0;background:radial-gradient(circle at var(--x,50%) var(--y,30%), rgba(56,189,248,.9), transparent 40%);opacity:0;animation:flash .6s ease-out forwards}
+    @keyframes flash{0%{opacity:1}100%{opacity:0}}
+
+    /* Exposure countdown bar */
+    .exposureWrap{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:min(480px,80vw);height:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:999px;z-index:70;display:none}
+    .exposureFill{height:100%;width:0%;background:linear-gradient(90deg,#22d3ee,#ef4444);border-radius:999px}
+    .exposureLabel{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-weight:800;color:#bfdbfe;font-size:12px;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+
+    .toast{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:#0b1222;border:1px solid rgba(255,255,255,.15);padding:8px 12px;border-radius:12px;font-weight:800;z-index:120}
+    .ok{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+
+    .overlayHint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(17,24,39,.85);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px 14px;font-weight:800;z-index:45}
+
+    /* Floating circular UP button */
+    .fabUp{position:absolute;right:12px;bottom:88px;width:64px;height:64px;border-radius:999px;background:#0b1222;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;z-index:70;box-shadow:0 8px 26px rgba(0,0,0,.45)}
+    .fabUp:active{transform:translateY(1px)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="pill">Wallet: $<b id="money">0</b></div>
+      <div class="stat">
+        <div class="pill">Rod: <b id="rodName">None</b></div>
+        <div class="pill">Bait: <b id="baitName">None</b> × <b id="baitCount">0</b></div>
+        <div class="pill">Bucket: <b id="bucketCount">0</b></div>
+      </div>
+    </header>
+
+    <div id="stage">
+      <canvas id="canvas"></canvas>
+      <button class="fabUp" id="fabUp" aria-label="Pull line up">↑</button>
+      <div class="storm" id="storm"></div>
+      <div class="exposureWrap" id="exposureWrap">
+        <div class="exposureLabel">⚡ Lightning safety</div>
+        <div class="exposureFill" id="exposureFill"></div>
+      </div>
+      <div class="toast" id="toast" style="display:none"></div>
+      <div class="overlayHint" id="hint" style="display:none"></div>
+
+      <!-- Modal for Shop / Bucket -->
+      <div class="modal" id="modal" aria-modal="true" role="dialog">
+        <div class="backdrop" id="backdrop"></div>
+        <div class="dialog">
+          <div class="dialogHeader">
+            <div class="dialogTitle" id="dialogTitle">Shop</div>
+            <button class="closeX" id="closeX">Close</button>
+          </div>
+          <div class="dialogBody" id="dialogBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="mainbar">
+      <button class="btn" id="openShop">Shop</button>
+      <button class="btn" id="openBucket">Bucket</button>
+      <button class="btn" id="sellAll">Sell</button>
+      <button class="btn primary" id="downBtn">Line ↓ (Space/↓)</button>
+    </nav>
+
+    <nav id="stopBar"> 
+      <button class="btn red" id="stopBtn">⚡ STOP FISHING (storm)</button>
+    </nav>
+
+    <nav id="whaleBar">
+      <button class="btn blue" id="whaleBtn">BLUE BUTTON: IT'S A WHALE! Tap to land it!</button>
+    </nav>
+  </div>
+
+  <script>
+    // ===== Game State =====
+    const COLORS_SMALL = ['#ffb4b4','#ffd29e','#fff59e','#b5ffb5','#b5f3ff','#e0b5ff'];
+    const COLORS_BIG   = ['#ff9aa2','#ffb347','#ffee58','#80ffaa','#9be0ff','#c79bff'];
+
+    const state = {
+      money: 50,
+      rods: [
+        { id:'twig', name:'Twig Rod', price:10, strength:1, drop:80 },
+        { id:'bamboo', name:'Bamboo Rod', price:35, strength:2, drop:120 },
+        { id:'pro', name:'Pro Rod', price:80, strength:4, drop:180 },
+        { id:'mega', name:'Mega Rod', price:150, strength:7, drop:240 },
+      ],
+      baits: [
+        { id:'worm',   name:'Worm',     price:2,  quality:1 },
+        { id:'cricket',name:'Cricket',  price:4,  quality:1 },
+        { id:'shrimp', name:'Shrimp',   price:8,  quality:1 },
+        { id:'cray',   name:'Crayfish', price:12, quality:1 },
+      ],
+      inv: { rod:null, baits:{}, },
+      bucket: [],
+      fishing: { depth:20, cooldown:0 },
+      input: { down:false, up:false },
+      weather: { storm:false, timer:0, next: 40 + Math.random()*40, exposure:0 },
+      whaleEvent: { active:false, timer:0, fish:null },
+      control: { retractUntil: 0 },
+    };
+
+    const baitCount = id => state.inv.baits[id]||0;
+    const anyBait = () => Object.values(state.inv.baits).reduce((a,b)=>a+b,0);
+    const currentRod = () => state.inv.rod;
+
+    function showToast(text, cls=''){
+      const t = document.getElementById('toast');
+      t.className = 'toast '+cls; t.textContent = text; t.style.display = 'block';
+      clearTimeout(t._h); t._h = setTimeout(()=> t.style.display='none', 1600);
+    }
+
+    function showHint(msg){ const h=document.getElementById('hint'); h.textContent=msg; h.style.display='block'; clearTimeout(h._h); h._h=setTimeout(()=>h.style.display='none', 2200); }
+
+    // ===== Canvas Setup =====
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let DPR = Math.max(1, Math.min(2, window.devicePixelRatio||1));
+    function resize(){ const r = canvas.getBoundingClientRect(); canvas.width=Math.floor(r.width*DPR); canvas.height=Math.floor((r.height||window.innerHeight*0.7)*DPR); }
+    window.addEventListener('resize', ()=>{ DPR=Math.max(1, Math.min(2, window.devicePixelRatio||1)); resize(); });
+    requestAnimationFrame(resize);
+
+    // ===== Fish Field =====
+    const fishList = [];
+    function spawnFish(){
+      const W=canvas.width/DPR, H=canvas.height/DPR;
+      const roll = Math.random();
+      let type='small';
+      if(roll>0.94) type='whale';
+      else if(roll>0.86) type='shark';
+      else if(roll>0.5) type='big';
+      else type='small';
+
+      let weight, speed, value, y, color;
+      if(type==='whale'){
+        weight = 60 + Math.random()*90;
+        speed  = 26 + Math.random()*14;
+        value  = Math.round(weight * 2);
+        color  = '#93c5fd';
+      } else if(type==='shark'){
+        weight = 25 + Math.random()*25;
+        speed  = 85 + Math.random()*60;
+        value  = 0;
+        color  = '#9ca3af';
+      } else if(type==='big'){
+        weight = 8 + Math.random()*14;
+        speed  = 40 + Math.random()*35;
+        value  = Math.round(weight * 6);
+        color  = COLORS_BIG[(Math.random()*COLORS_BIG.length)|0];
+      } else {
+        weight = 2 + Math.random()*6;
+        speed  = 70 + Math.random()*55;
+        value  = Math.round(weight * 4);
+        color  = COLORS_SMALL[(Math.random()*COLORS_SMALL.length)|0];
+      }
+      y = 60 + Math.random()*(H-120);
+      const leftToRight = Math.random()<0.5;
+      const x = leftToRight? -120 : W+120;
+      fishList.push({x,y,vx:(leftToRight?1:-1)*speed, type, weight, value, color});
+    }
+    let fishSpawnTimer = 0;
+
+    // ===== Storms (less frequent + red stop button + 3s exposure to break) =====
+    const stormEl = document.getElementById('storm');
+    const stopBtn = document.getElementById('stopBtn');
+    const stopBar = document.getElementById('stopBar');
+    stopBar.style.display='none';
+    stopBtn.onclick = ()=>{
+      // pressing STOP now also auto-retracts line quickly
+      state.input.down=false; state.input.up=false;
+      state.control.retractUntil = performance.now() + 2000; // 2s fast retract window
+      showToast('Stopping & pulling the line up!','bad');
+    };
+
+    function breakRod(reason){
+      if(!state.inv.rod) return;
+      const name = state.inv.rod.name;
+      setTimeout(() => {
+        if(!state.inv.rod) return;
+        state.inv.rod = null;
+        document.getElementById('rodName').textContent = 'None';
+        showToast(`${reason} Your ${name} broke!`, 'bad');
+        // hide countdown bar as rod is gone
+        document.getElementById('exposureWrap').style.display='none';
+      }, 3000);
+    }
+
+    function stormTick(dt){
+      const expWrap = document.getElementById('exposureWrap');
+      const expFill = document.getElementById('exposureFill');
+      if(state.weather.storm){
+        state.weather.timer -= dt;
+        // exposure only counts if line is in water and rod exists
+        if(state.fishing.depth>26 && state.inv.rod){
+          state.weather.exposure += dt;
+          expWrap.style.display='block';
+          const pct = Math.max(0, Math.min(1, state.weather.exposure/3));
+          expFill.style.width = (pct*100).toFixed(0)+'%';
+          if(state.weather.exposure>=3){
+            breakRod('⚡ Lightning!');
+            state.weather.exposure=0; // reset counter after scheduling break
+            expFill.style.width='0%';
+          }
+        } else {
+          // not exposed: decay and hide bar
+          state.weather.exposure = Math.max(0, state.weather.exposure - dt*2);
+          if(state.weather.exposure<=0.01){ expWrap.style.display='none'; expFill.style.width='0%'; }
+          else { expWrap.style.display='block'; expFill.style.width=(state.weather.exposure/3*100).toFixed(0)+'%'; }
+        }
+        // visual flashes
+        if(Math.random()<0.08){ const f=document.createElement('div'); f.className='flash'; f.style.setProperty('--x',(10+Math.random()*80)+'%'); f.style.setProperty('--y',(10+Math.random()*60)+'%'); stormEl.appendChild(f); setTimeout(()=>f.remove(), 700); }
+        if(state.weather.timer<=0){ state.weather.storm=false; stopBar.style.display='none'; showToast('Storm passed. Safe to fish.','ok'); state.weather.next = 40 + Math.random()*40; state.weather.exposure=0; expWrap.style.display='none'; expFill.style.width='0%'; }
+      } else {
+        state.weather.next -= dt;
+        if(state.weather.next<=0){ state.weather.storm=true; state.weather.timer=3+Math.random()*4; stopBar.style.display='grid'; showToast('⚡ Lightning storm! Press STOP!','bad'); state.weather.exposure=0; document.getElementById('exposureFill').style.width='0%'; }
+      }
+    }
+
+    // ===== POPUP (Shop / Bucket) =====
+    const modal = document.getElementById('modal');
+    const backdrop = document.getElementById('backdrop');
+    const dialogTitle = document.getElementById('dialogTitle');
+    const dialogBody = document.getElementById('dialogBody');
+    const closeX = document.getElementById('closeX');
+
+    function openPopup(title, html){ dialogTitle.textContent = title; dialogBody.innerHTML = html; modal.classList.add('open'); }
+    function closePopup(){ modal.classList.remove('open'); }
+    backdrop.onclick = closePopup; closeX.onclick = closePopup;
+
+    function renderShop(){
+      let html = '<div class="dialogTitle" style="margin:4px 0 6px">Rods</div>';
+      for(const r of state.rods){
+        const owned = state.inv.rod && state.inv.rod.id===r.id;
+        html += `<div class="item"><div><b>${r.name}</b><br><small>Strength ${r.strength} · Drop ${r.drop}</small></div><div class="price">$${r.price}</div><button class="btn" data-buyrod="${r.id}">${owned?'Equipped':'Buy'}</button></div>`;
+      }
+      html += '<div class="dialogTitle" style="margin:10px 0 6px">Baits (all quality 1)</div>';
+      for(const b of state.baits){ html += `<div class="item"><div><b>${b.name}</b><br><small>Quality ${b.quality}</small></div><div class="price">$${b.price}</div><button class="btn" data-buybait="${b.id}">Buy</button></div>`; }
+
+      openPopup('Shop', html);
+      setTimeout(()=>{
+        dialogBody.querySelectorAll('[data-buyrod]').forEach(btn=>btn.onclick=()=>buyRod(btn.getAttribute('data-buyrod')));
+        dialogBody.querySelectorAll('[data-buybait]').forEach(btn=>btn.onclick=()=>buyBait(btn.getAttribute('data-buybait')));
+      },0);
+    }
+
+    function renderBucket(){
+      if(state.bucket.length===0){ openPopup('Bucket','<div class="item"><div>No fish yet. Go fishing! 🎣</div></div>'); return; }
+      let total=0; let html='';
+      for(const f of state.bucket){ total += f.value; const label = f.type==='whale'?'Whale':(f.type==='shark'?'Shark (escaped)':(f.type==='big'?'Big fish':'Small fish')); html += `<div class="item"><div><b>${label}</b><br><small>${f.weight.toFixed(1)} kg</small></div><div class="price">$${f.value}</div><div></div></div>`; }
+      html += `<div class="item"><div><b>Total</b></div><div class="price">$${total}</div><div></div></div>`;
+      openPopup('Bucket',html);
+    }
+
+    document.getElementById('openShop').onclick = ()=> renderShop();
+    document.getElementById('openBucket').onclick = ()=> renderBucket();
+
+    document.getElementById('sellAll').onclick = ()=>{
+      if(state.bucket.length===0){ showToast('Nothing to sell!', 'warn'); return; }
+      const gain = state.bucket.reduce((s,f)=>s+f.value,0);
+      state.money += gain; state.bucket.length=0; updateHUD(); showToast(`Sold for $${gain}!`,'ok');
+    };
+
+    function buyRod(id){
+      const r = state.rods.find(x=>x.id===id); if(!r) return;
+      if(state.money < r.price){ showToast('Not enough money','warn'); return; }
+      state.money -= r.price; state.inv.rod = r; showToast('Rod equipped!','ok'); updateHUD(); renderShop();
+    }
+    function buyBait(id){
+      const b = state.baits.find(x=>x.id===id); if(!b) return;
+      if(state.money < b.price){ showToast('Not enough money','warn'); return; }
+      state.money -= b.price; state.inv.baits[id] = (state.inv.baits[id]||0)+1; showToast('Bait +1','ok'); updateHUD(); renderShop();
+    }
+
+    function updateHUD(){
+      document.getElementById('money').textContent = state.money;
+      document.getElementById('rodName').textContent = state.inv.rod? state.inv.rod.name : 'None';
+      const curBaitName = (()=>{ for(const b of state.baits){ if(baitCount(b.id)>0) return b.name; } return 'None'; })();
+      document.getElementById('baitName').textContent = curBaitName;
+      document.getElementById('baitCount').textContent = anyBait();
+      document.getElementById('bucketCount').textContent = state.bucket.length;
+    }
+
+    // ===== Input =====
+    const downBtn = document.getElementById('downBtn');
+    const fabUp = document.getElementById('fabUp');
+    downBtn.onpointerdown = ()=> state.input.down = true;
+    downBtn.onpointerup = ()=> state.input.down = false;
+    fabUp.onpointerdown = ()=> state.input.up = true;
+    fabUp.onpointerup = ()=> state.input.up = false;
+    downBtn.ontouchstart = ()=> state.input.down = true;
+    downBtn.ontouchend = ()=> state.input.down = false;
+    fabUp.ontouchstart = ()=> state.input.up = true;
+    fabUp.ontouchend = ()=> state.input.up = false;
+
+    window.addEventListener('keydown', (e)=>{
+      if(e.code==='ArrowDown' || e.code==='Space') state.input.down = true;
+      if(e.code==='ArrowUp') state.input.up = true;
+      if(e.code==='KeyB' && state.whaleEvent.active) landWhale();
+    });
+    window.addEventListener('keyup', (e)=>{
+      if(e.code==='ArrowDown' || e.code==='Space') state.input.down = false;
+      if(e.code==='ArrowUp') state.input.up = false;
+    });
+
+    // ===== Whale Button =====
+    const whaleBar = document.getElementById('whaleBar');
+    const whaleBtn = document.getElementById('whaleBtn');
+    whaleBtn.onclick = ()=>{ if(state.whaleEvent.active) landWhale(); };
+
+    function triggerWhaleEvent(fish){
+      state.whaleEvent.active = true;
+      state.whaleEvent.timer = 2.0;
+      state.whaleEvent.fish = fish;
+      whaleBar.style.display = 'grid';
+      showToast('A WHALE! Press the BLUE button!','ok');
+    }
+    function landWhale(){
+      const f = state.whaleEvent.fish; if(!f) return;
+      const rod = currentRod();
+      const base = 0.05;
+      const bonus = (rod ? rod.strength : 0) * 0.04;
+      const weightPenalty = Math.min(0.3, (f.weight-60) * 0.002);
+      const chance = Math.max(0.04, Math.min(0.45, base + bonus - weightPenalty));
+      if(Math.random() < chance){
+        state.bucket.push(f);
+        const idx = fishList.indexOf(f); if(idx>=0) fishList.splice(idx,1);
+        state.fishing.cooldown = 0.6;
+        showToast(`WOW! You landed a whale! +$${f.value}`,'ok');
+      } else {
+        showToast('The whale slipped away!','warn');
+      }
+      state.whaleEvent.active=false; state.whaleEvent.fish=null; whaleBar.style.display='none'; updateHUD();
+    }
+
+    // ===== Fishing Logic =====
+    function useOneBait(){ for(const b of state.baits){ const id=b.id; if(baitCount(id)>0){ state.inv.baits[id]--; return b; } } return null; }
+
+    function fishingUpdate(dt){
+      const rod = currentRod();
+      if(state.fishing.cooldown>0) state.fishing.cooldown-=dt;
+      if(!rod || anyBait()<=0){ if(!rod) showHint('Buy a rod in the Shop'); else showHint('Buy bait in the Shop'); return; }
+
+      // auto-retract window after STOP: pull line up fast
+      const now = performance.now();
+      const retractFast = now < state.control.retractUntil;
+
+      if(state.weather.storm){ state.input.down=false; /* we allow up */ }
+
+      const W=canvas.width/DPR, H=canvas.height/DPR;
+      const boatX = W*0.5;
+      const minDepth = 26;
+
+      if(state.input.down) state.fishing.depth = Math.min(H-20, state.fishing.depth + rod.drop*dt);
+      const upSpeed = retractFast ? rod.drop*2.2 : rod.drop*0.85;
+      if(state.input.up || retractFast) state.fishing.depth = Math.max(minDepth, state.fishing.depth - upSpeed*dt);
+
+      // Whale prompt countdown
+      if(state.whaleEvent.active){ state.whaleEvent.timer -= dt; if(state.whaleEvent.timer<=0){ showToast('The whale swam away!','warn'); state.whaleEvent.active=false; whaleBar.style.display='none'; } }
+
+      // line + hook
+      ctx.save(); ctx.scale(DPR,DPR);
+      ctx.strokeStyle = 'rgba(229,231,235,.9)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(boatX,18); ctx.lineTo(boatX,state.fishing.depth); ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(boatX, state.fishing.depth, 5, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+
+      // catch check with head-to-middle rule
+      for(let i=0;i<fishList.length;i++){
+        const f = fishList[i];
+        const dir = Math.sign(f.vx)||1;
+        const bodyLen = (f.type==='whale'? 120 : f.type==='shark'? 60 : f.type==='big'? 42 : 26);
+        const headX = f.x + dir*(bodyLen*0.25);
+        const midX  = f.x;
+        const xMin = Math.min(headX, midX), xMax = Math.max(headX, midX);
+        const yTol = (f.type==='whale'? 18 : f.type==='shark'? 12 : f.type==='big'? 12 : 10);
+        const nearY = Math.abs(f.y - state.fishing.depth) <= yTol;
+        const nearX = (boatX >= xMin-10 && boatX <= xMax+10);
+
+        if(nearX && nearY){
+          if(state.fishing.cooldown<=0){
+            if(f.type==='whale'){
+              const bait = useOneBait(); if(!bait){ showToast('Out of bait!','warn'); return; }
+              triggerWhaleEvent(f);
+              state.fishing.cooldown=0.6; updateHUD();
+            } else if(f.type==='shark'){
+              breakRod('🦈 A shark pulled hard.'); fishList.splice(i,1); i--; state.fishing.cooldown=0.8; updateHUD();
+            } else {
+              const bait = useOneBait(); if(!bait){ showToast('Out of bait!','warn'); return; }
+              const power = rod.strength*1.2 + 1*0.9;
+              const difficulty = Math.max(1, f.weight*0.9);
+              let chance = 0.2 + 0.12*(power/difficulty);
+              chance = Math.max(0.15, Math.min(0.9, chance));
+              if(Math.random()<chance){ state.bucket.push(f); fishList.splice(i,1); i--; state.fishing.cooldown=0.6; showToast(`Caught a ${f.type==='big'?'big':'small'} fish! +$${f.value}`,'ok'); }
+              else { showToast('It escaped!','warn'); state.fishing.cooldown=0.6; }
+              updateHUD();
+            }
+          }
+        }
+      }
+    }
+
+    // ===== Loop & Drawing =====
+    function drawBoat(ctx, x){ ctx.save(); ctx.translate(x, 18); ctx.fillStyle = '#f1c27d'; ctx.beginPath(); ctx.moveTo(-30,8); ctx.lineTo(30,8); ctx.lineTo(20,16); ctx.lineTo(-20,16); ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#d1d5db'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,8); ctx.lineTo(0,-10); ctx.stroke(); ctx.fillStyle = '#e5e7eb'; ctx.beginPath(); ctx.moveTo(0,-10); ctx.lineTo(16,0); ctx.lineTo(0,0); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+    let last = performance.now();
+    function loop(now){
+      const dt = Math.min(0.033, (now-last)/1000); last = now;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      const W=canvas.width/DPR, H=canvas.height/DPR;
+      // water
+      ctx.save(); ctx.scale(DPR,DPR);
+      for(let i=0;i<7;i++){ ctx.fillStyle = `rgba(34,211,238,${0.06 + i*0.02})`; ctx.beginPath(); ctx.ellipse(W*(i/6), 20+ (now/900 + i*20)%40, W*0.3, 16, 0, 0, Math.PI*2); ctx.fill(); }
+      // boat
+      drawBoat(ctx, W*0.5);
+      ctx.restore();
+
+      // fish spawn & move
+      fishSpawnTimer -= dt; if(fishSpawnTimer<=0){ fishSpawnTimer = 1 + Math.random()*1.4; spawnFish(); }
+      for(const f of fishList){ f.x += f.vx*dt; }
+      for(let i=fishList.length-1;i>=0;i--){ const f=fishList[i]; if(f.x < -180 || f.x > W+180){ if(state.whaleEvent.active && state.whaleEvent.fish===f){ state.whaleEvent.active=false; whaleBar.style.display='none'; } fishList.splice(i,1); } }
+
+      // draw fish
+      ctx.save(); ctx.scale(DPR,DPR);
+      for(const f of fishList){
+        ctx.save(); ctx.translate(f.x, f.y);
+        const goingLeft = f.vx<0; if(goingLeft) ctx.scale(-1,1);
+        if(f.type==='whale'){
+          const L=120, Ht=42; ctx.fillStyle=f.color; ctx.beginPath(); ctx.ellipse(0,0,L*0.5,Ht*0.5,0,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle='#60a5fa'; ctx.beginPath(); ctx.moveTo(-L*0.5,0); ctx.lineTo(-L*0.5-24,12); ctx.lineTo(-L*0.5-24,-12); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#0b1222'; ctx.beginPath(); ctx.arc(L*0.2,-3,3,0,Math.PI*2); ctx.fill();
+        } else if(f.type==='shark'){
+          const L=60, Ht=20; ctx.fillStyle='#9ca3af'; ctx.beginPath(); ctx.ellipse(0,0,L*0.5,Ht*0.5,0,0,Math.PI*2); ctx.fill();
+          ctx.fillStyle='#cbd5e1'; ctx.beginPath(); ctx.moveTo(-5,-Ht*0.5); ctx.lineTo(10,-Ht*0.5-14); ctx.lineTo(12,-Ht*0.5); ctx.closePath(); ctx.fill();
+          ctx.fillStyle='#9ca3af'; ctx.beginPath(); ctx.moveTo(-L*0.5,0); ctx.lineTo(-L*0.5-14,8); ctx.lineTo(-L*0.5-14,-8); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#0b1222'; ctx.beginPath(); ctx.arc(L*0.2,-2,2,0,Math.PI*2); ctx.fill();
+        } else {
+          const bodyLen = f.type==='big'? 42:26; const bodyHt = f.type==='big'? 18:12; ctx.fillStyle = f.color;
+          ctx.beginPath(); ctx.ellipse(0,0, bodyLen*0.5, bodyHt*0.5, 0, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(-bodyLen*0.5,0); ctx.lineTo(-bodyLen*0.5-10,6); ctx.lineTo(-bodyLen*0.5-10,-6); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#0b1222'; ctx.beginPath(); ctx.arc(bodyLen*0.2,-2,2,0,Math.PI*2); ctx.fill();
+        }
+        ctx.restore();
+      }
+      ctx.restore();
+
+      // storms
+      stormTick(dt);
+
+      // fishing mechanics draw + logic
+      fishingUpdate(dt);
+
+      requestAnimationFrame(loop);
+    }
+
+    // Start
+    updateHUD();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
