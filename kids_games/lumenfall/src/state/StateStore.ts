@@ -8,8 +8,10 @@ export interface DraftTx {
   touchRuntime(): void;
   touchRuntimePlayer(): void;
   touchRuntimeMap(): void;
+  touchRuntimeMapTriggerFlags(): void;
   touchRuntimeUi(): void;
   touchRuntimeTime(): void;
+  touchRuntimeCheckpoint(): void;
   touchGlobal(): void;
   touchGlobalPlayer(): void;
   touchInventoryGlobal(): void;
@@ -69,8 +71,21 @@ export class StateStore {
       touchRuntimeMap: () => {
         touchRuntime();
         if (!touched.has('runtime.map')) {
-          draftState.runtime.map = { ...draftState.runtime.map };
+          draftState.runtime.map = {
+            ...draftState.runtime.map,
+            mapsVisited: { ...draftState.runtime.map.mapsVisited },
+            transition: draftState.runtime.map.transition ? { ...draftState.runtime.map.transition } : undefined,
+          };
           touched.add('runtime.map');
+        }
+      },
+      touchRuntimeMapTriggerFlags: () => {
+        touchRuntime();
+        if (!touched.has('runtime.mapTriggerFlags')) {
+          draftState.runtime.mapTriggerFlags = Object.fromEntries(
+            Object.entries(draftState.runtime.mapTriggerFlags).map(([mapId, flags]) => [mapId, { ...flags }]),
+          );
+          touched.add('runtime.mapTriggerFlags');
         }
       },
       touchRuntimeUi: () => {
@@ -85,6 +100,13 @@ export class StateStore {
         if (!touched.has('runtime.time')) {
           draftState.runtime.time = { ...draftState.runtime.time };
           touched.add('runtime.time');
+        }
+      },
+      touchRuntimeCheckpoint: () => {
+        touchRuntime();
+        if (!touched.has('runtime.checkpoint')) {
+          draftState.runtime.checkpoint = { ...draftState.runtime.checkpoint };
+          touched.add('runtime.checkpoint');
         }
       },
       touchGlobal,

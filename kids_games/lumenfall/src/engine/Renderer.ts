@@ -1,6 +1,7 @@
 import { TILE_SIZE } from '../app/Config';
 import { Camera } from './Camera';
 import type { GameState } from '../state/StateTypes';
+import { MapSystem, getTransitionOverlayAlpha } from '../systems/MapSystem';
 
 export class Renderer {
   private readonly ctx: CanvasRenderingContext2D;
@@ -12,6 +13,7 @@ export class Renderer {
   constructor(
     private readonly canvas: HTMLCanvasElement,
     private readonly camera: Camera,
+    private readonly mapSystem: MapSystem,
   ) {
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -39,24 +41,80 @@ export class Renderer {
     this.ctx.fillStyle = '#0b1020';
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
 
+    this.camera.follow(state.runtime.player.px, state.runtime.player.py, this.cssWidth, this.cssHeight);
+
+    this.drawMap(state, 'ground');
+    this.drawMap(state, 'decor');
+
+    const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
+    this.ctx.fillStyle = '#7ad7ff';
+    this.ctx.fillRect(playerScreen.x, playerScreen.y, TILE_SIZE, TILE_SIZE);
+
+    this.drawMap(state, 'overlay');
+
     if (this.showGrid) {
       this.drawGrid();
     }
 
-    this.camera.follow(state.runtime.player.px, state.runtime.player.py, this.cssWidth, this.cssHeight);
-    const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
-
-    this.ctx.fillStyle = '#7ad7ff';
-    this.ctx.fillRect(playerScreen.x, playerScreen.y, TILE_SIZE, TILE_SIZE);
-
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.font = '14px monospace';
-    this.ctx.fillText(`Mode: ${state.runtime.mode}`, 16, 22);
-    this.ctx.fillText(`FPS: ${fps.toFixed(1)} DPR: ${this.dpr.toFixed(2)}`, 16, 40);
+    this.drawHud(state, fps);
+    this.drawTransition(state);
+    this.drawInteractButton();
   }
 
   getViewportSize(): { width: number; height: number } {
     return { width: this.cssWidth, height: this.cssHeight };
+  }
+
+  private drawMap(state: Readonly<GameState>, layer: 'ground' | 'decor' | 'overlay'): void {
+    const map = this.mapSystem.getCurrentMap(state);
+    const topLeft = this.camera.screenToWorld(0, 0);
+    const bottomRight = this.camera.screenToWorld(this.cssWidth, this.cssHeight);
+
+    const minX = Math.max(0, Math.floor(topLeft.x / TILE_SIZE) - 1);
+    const minY = Math.max(0, Math.floor(topLeft.y / TILE_SIZE) - 1);
+    const maxX = Math.min(map.width - 1, Math.ceil(bottomRight.x / TILE_SIZE) + 1);
+    const maxY = Math.min(map.height - 1, Math.ceil(bottomRight.y / TILE_SIZE) + 1);
+
+    for (let y = minY; y <= maxY; y += 1) {
+      for (let x = minX; x <= maxX; x += 1) {
+        const tileId = this.mapSystem.getTileId(map.id, layer, x, y);
+        if (layer !== 'ground' && tileId === 0) continue;
+        const def = map.tilePalette[String(tileId)] ?? map.tilePalette['0'];
+        const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
+        this.ctx.fillStyle = def.color;
+        this.ctx.fillRect(screen.x, screen.y, TILE_SIZE, TILE_SIZE);
+      }
+    }
+  }
+
+  private drawHud(state: Readonly<GameState>, fps: number): void {
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '14px monospace';
+    this.ctx.fillText(`Mode: ${state.runtime.mode}`, 16, 22);
+    this.ctx.fillText(`Map: ${state.runtime.map.currentMapId}`, 16, 40);
+    this.ctx.fillText(`Tile: (${state.runtime.player.x}, ${state.runtime.player.y})`, 16, 58);
+    this.ctx.fillText(`FPS: ${fps.toFixed(1)} DPR: ${this.dpr.toFixed(2)}`, 16, 76);
+  }
+
+  private drawTransition(state: Readonly<GameState>): void {
+    const alpha = getTransitionOverlayAlpha(state.runtime.map.transition);
+    if (alpha <= 0) return;
+    this.ctx.fillStyle = `rgba(0,0,0,${alpha.toFixed(3)})`;
+    this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
+  }
+
+  private drawInteractButton(): void {
+    const size = 64;
+    const margin = 16;
+    const x = this.cssWidth - margin - size;
+    const y = this.cssHeight - margin - size;
+    this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    this.ctx.fillRect(x, y, size, size);
+    this.ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+    this.ctx.strokeRect(x, y, size, size);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = '12px sans-serif';
+    this.ctx.fillText('ACT', x + 18, y + 36);
   }
 
   private drawGrid(): void {

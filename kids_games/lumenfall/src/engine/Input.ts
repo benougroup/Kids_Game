@@ -6,12 +6,14 @@ import { Camera } from './Camera';
 interface InputFrame {
   moveDx: number;
   moveDy: number;
+  interactPressed: boolean;
   commands: Command[];
 }
 
 export class Input {
   private moveDx = 0;
   private moveDy = 0;
+  private interactPressed = false;
   private readonly commands: Command[] = [];
   private touchTarget: { x: number; y: number } | null = null;
 
@@ -27,7 +29,8 @@ export class Input {
       this.moveDx = 0;
       this.moveDy = 0;
       this.touchTarget = null;
-      return { moveDx: 0, moveDy: 0, commands: frameCommands };
+      this.interactPressed = false;
+      return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
     }
 
     if (this.touchTarget) {
@@ -45,9 +48,15 @@ export class Input {
       }
     }
 
-    const frame: InputFrame = { moveDx: this.moveDx, moveDy: this.moveDy, commands: frameCommands };
+    const frame: InputFrame = {
+      moveDx: this.moveDx,
+      moveDy: this.moveDy,
+      interactPressed: this.interactPressed,
+      commands: frameCommands,
+    };
     this.moveDx = 0;
     this.moveDy = 0;
+    this.interactPressed = false;
     return frame;
   }
 
@@ -61,6 +70,11 @@ export class Input {
 
     if (key === 'm') {
       this.commands.push({ kind: 'RequestMode', nextMode: 'EXPLORE' });
+      return;
+    }
+
+    if (key === ' ' || key === 'enter') {
+      this.interactPressed = true;
       return;
     }
 
@@ -79,11 +93,24 @@ export class Input {
     const rect = this.canvas.getBoundingClientRect();
     const screenX = event.clientX - rect.left;
     const screenY = event.clientY - rect.top;
-    const world = this.camera.screenToWorld(screenX, screenY);
 
+    if (this.isInsideInteractButton(screenX, screenY, rect.width, rect.height)) {
+      this.interactPressed = true;
+      return;
+    }
+
+    const world = this.camera.screenToWorld(screenX, screenY);
     this.touchTarget = {
       x: Math.floor(world.x / TILE_SIZE),
       y: Math.floor(world.y / TILE_SIZE),
     };
   };
+
+  private isInsideInteractButton(x: number, y: number, width: number, height: number): boolean {
+    const size = 64;
+    const margin = 16;
+    const left = width - margin - size;
+    const top = height - margin - size;
+    return x >= left && x <= left + size && y >= top && y <= top + size;
+  }
 }
