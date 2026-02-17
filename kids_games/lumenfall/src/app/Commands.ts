@@ -11,17 +11,27 @@ export type RequestMapTransitionCommand = {
 };
 export type DebugSkipTimeCommand = { kind: 'DebugSkipTime'; seconds: number };
 export type DebugToggleLightOverlayCommand = { kind: 'DebugToggleLightOverlay' };
+export type DebugDamageCommand = { kind: 'DebugDamage'; amount: number; source: string };
+export type DebugCheckpointCommand = { kind: 'DebugCheckpoint' };
+export type TriggerFaintCommand = { kind: 'TriggerFaint' };
 
 export type Command =
   | RequestModeCommand
   | UiMessageCommand
   | RequestMapTransitionCommand
   | DebugSkipTimeCommand
-  | DebugToggleLightOverlayCommand;
+  | DebugToggleLightOverlayCommand
+  | DebugDamageCommand
+  | DebugCheckpointCommand
+  | TriggerFaintCommand;
 
 type CommandPriority = 1 | 2 | 3 | 4;
 
 const commandPriority = (command: Command): CommandPriority => {
+  if (command.kind === 'TriggerFaint') {
+    return 1;
+  }
+
   if (command.kind === 'RequestMode') {
     if (command.nextMode === 'FAINTING') {
       return 1;

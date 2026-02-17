@@ -22,6 +22,40 @@ interface MapTransition {
   t: number;
 }
 
+export type InventoryState = Record<string, number>;
+
+export type SnapshotFacing = 'N' | 'S' | 'E' | 'W';
+
+export interface CheckpointSnapshot {
+  checkpointId: string;
+  mapId: string;
+  player: {
+    x: number;
+    y: number;
+    facing: SnapshotFacing;
+    hp: number;
+    sp: number;
+  };
+  story: {
+    activeStoryId: string;
+    flags: Record<string, boolean>;
+    stage: Record<string, string>;
+    npc: {
+      townFear: number;
+      trust: Record<string, number>;
+      npcFlags: Record<string, unknown>;
+    };
+    storyInventory: InventoryState;
+    storyShadowById: Record<string, unknown>;
+  };
+  time: {
+    phase: string;
+    secondsIntoCycle: number;
+    dayCount: number;
+  };
+  createdAtMs: number;
+}
+
 export interface GameState {
   saveVersion: number;
   global: {
@@ -41,7 +75,7 @@ export interface GameState {
       townFear: number;
       trust: Record<string, number>;
     };
-    storyInventory: Record<string, number>;
+    storyInventory: InventoryState;
     storyShadow: {
       byId: Record<string, unknown>;
     };
@@ -80,13 +114,28 @@ export interface GameState {
     ui: {
       messages: string[];
     };
+    dialogue: {
+      active: boolean;
+      nodeId: string | null;
+    };
+    crafting: {
+      active: boolean;
+      recipeId: string | null;
+    };
     checkpoint: {
       lastCheckpointId: string | null;
-      snapshot: unknown;
+      snapshot: CheckpointSnapshot | null;
       dirty: boolean;
+    };
+    fainting?: {
+      active: boolean;
+      phase: 'fadeOut' | 'restore' | 'fadeIn';
+      t: number;
+      restoreDone?: boolean;
     };
     save: {
       dirty: boolean;
+      blockedByFaint: boolean;
     };
   };
 }
@@ -150,6 +199,14 @@ export const createInitialState = (): GameState => ({
     ui: {
       messages: [],
     },
+    dialogue: {
+      active: false,
+      nodeId: null,
+    },
+    crafting: {
+      active: false,
+      recipeId: null,
+    },
     checkpoint: {
       lastCheckpointId: null,
       snapshot: null,
@@ -157,6 +214,7 @@ export const createInitialState = (): GameState => ({
     },
     save: {
       dirty: false,
+      blockedByFaint: false,
     },
   },
 });

@@ -84,6 +84,16 @@ export class Input {
       return;
     }
 
+    if (key === 'k' && this.isDevMode) {
+      this.commands.push({ kind: 'DebugDamage', amount: 2, source: 'debug_key_k' });
+      return;
+    }
+
+    if (key === 'p' && this.isDevMode) {
+      this.commands.push({ kind: 'DebugCheckpoint' });
+      return;
+    }
+
     if (key === ' ' || key === 'enter') {
       this.interactPressed = true;
       return;

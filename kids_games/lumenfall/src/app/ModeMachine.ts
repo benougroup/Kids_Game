@@ -43,6 +43,11 @@ export class ModeMachine {
     return currentMode;
   }
 
+
+  forceMode(nextMode: Mode): Mode {
+    return nextMode;
+  }
+
   timePausedInMode(mode: Mode): boolean {
     return pausedModes.has(mode);
   }
