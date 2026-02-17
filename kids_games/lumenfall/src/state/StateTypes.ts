@@ -59,6 +59,16 @@ export interface CheckpointSnapshot {
   createdAtMs: number;
 }
 
+export type DialogueRuntimeState = {
+  active: boolean;
+  storyId: string;
+  sceneId: string;
+  returnMode: 'EXPLORE';
+  visitCount: number;
+  visited: Record<string, number>;
+  lastError?: string;
+};
+
 export interface GameState {
   saveVersion: number;
   global: {
@@ -117,10 +127,7 @@ export interface GameState {
     ui: {
       messages: string[];
     };
-    dialogue: {
-      active: boolean;
-      nodeId: string | null;
-    };
+    dialogue: DialogueRuntimeState;
     inventoryUI: {
       open: boolean;
       category: 'all' | 'potions' | 'ingredients' | 'tools' | 'storyKeys';
@@ -214,7 +221,11 @@ export const createInitialState = (): GameState => ({
     },
     dialogue: {
       active: false,
-      nodeId: null,
+      storyId: '',
+      sceneId: '',
+      returnMode: 'EXPLORE',
+      visitCount: 0,
+      visited: {},
     },
     inventoryUI: {
       open: false,

@@ -6,12 +6,14 @@ import type { GameState, LightSourceRuntime } from '../state/StateTypes';
 export type LayerName = 'ground' | 'decor' | 'collision' | 'overlay';
 
 export interface MapTriggerAction {
-  type: 'ui.message' | 'checkpoint.set' | 'checkpoint.snapshot' | 'map.transition';
+  type: 'ui.message' | 'checkpoint.set' | 'checkpoint.snapshot' | 'map.transition' | 'startScene';
   text?: string;
   checkpointId?: string;
   toMapId?: string;
   toX?: number;
   toY?: number;
+  storyId?: string;
+  sceneId?: string;
 }
 
 export interface MapTrigger {

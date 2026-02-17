@@ -19,6 +19,7 @@ import { inventorySystem } from '../systems/InventorySystem';
 import { itemDatabase } from '../systems/ItemDatabase';
 import { EffectInterpreter } from '../systems/EffectInterpreter';
 import { CraftingSystem } from '../systems/CraftingSystem';
+import { DialogueSystem } from '../systems/DialogueSystem';
 
 const WORLD_TILE_WIDTH = 100;
 const WORLD_TILE_HEIGHT = 100;
@@ -34,7 +35,13 @@ export class GameApp {
   private readonly checkpointSystem = new CheckpointSystem(this.bus);
   private readonly playerSystem = new PlayerSystem(this.mapSystem);
   private readonly triggerSystem = new TriggerSystem(this.mapSystem, this.checkpointSystem);
-  private readonly effectInterpreter = new EffectInterpreter(this.bus);
+  private readonly effectInterpreter = new EffectInterpreter(this.bus, this.commandQueue, this.checkpointSystem);
+  private readonly dialogueSystem = new DialogueSystem({
+    commandQueue: this.commandQueue,
+    modeMachine: this.modeMachine,
+    checkpointSystem: this.checkpointSystem,
+    bus: this.bus,
+  });
   private readonly craftingSystem = new CraftingSystem(this.checkpointSystem);
   private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
   private readonly lightSystem = new LightSystem({ mapSystem: this.mapSystem, bus: this.bus });
@@ -189,6 +196,25 @@ export class GameApp {
         continue;
       }
 
+
+
+      if (command.kind === 'StartScene') {
+        this.dialogueSystem.startScene(tx, command.storyId, command.sceneId);
+        mode = tx.draftState.runtime.mode;
+        continue;
+      }
+
+      if (command.kind === 'DialogueChoose') {
+        this.dialogueSystem.choose(tx, command.choiceIndex);
+        mode = tx.draftState.runtime.mode;
+        continue;
+      }
+
+      if (command.kind === 'StartEncounter') {
+        tx.touchRuntimeUi();
+        tx.draftState.runtime.ui.messages.push(`Encounter queued: ${command.templateId}`);
+        continue;
+      }
 
       if (command.kind === 'ToggleInventory') {
         tx.touchRuntime();
