@@ -11,6 +11,7 @@ import { StateStore } from '../state/StateStore';
 import { MapSystem, advanceMapTransition, applyTransitionSwap } from '../systems/MapSystem';
 import { PlayerSystem } from '../systems/PlayerSystem';
 import { TriggerSystem } from '../systems/TriggerSystem';
+import { TimeSystem } from '../systems/TimeSystem';
 
 const WORLD_TILE_WIDTH = 100;
 const WORLD_TILE_HEIGHT = 100;
@@ -24,6 +25,7 @@ export class GameApp {
   private readonly mapSystem = new MapSystem();
   private readonly playerSystem = new PlayerSystem(this.mapSystem);
   private readonly triggerSystem = new TriggerSystem(this.mapSystem);
+  private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
   private readonly renderer: Renderer;
   private readonly input: Input;
@@ -60,11 +62,13 @@ export class GameApp {
       tx.touchRuntimePlayer();
       tx.touchRuntimeCheckpoint();
       tx.touchRuntimeMapTriggerFlags();
+      tx.touchRuntimeTime();
 
       if (draft.runtime.mode === 'MAP_TRANSITION') {
         this.stepMapTransition(dtMs, tx);
       } else {
         this.applyCommands(this.commandQueue.drain(), draft.runtime.mode, tx);
+        this.timeSystem.update(dtMs, tx);
         const moveResult = this.playerSystem.applyMovementIntent(draft, polled.moveDx, polled.moveDy);
         this.triggerSystem.evaluate(draft, this.commandQueue, {
           movedTile: moveResult.movedTile,
@@ -131,6 +135,10 @@ export class GameApp {
         tx.touchRuntimeUi();
         tx.draftState.runtime.ui.messages.push(command.text);
         this.bus.emit({ type: 'UI_MESSAGE', text: command.text });
+      }
+
+      if (command.kind === 'DebugSkipTime') {
+        this.timeSystem.debugSkipSeconds(command.seconds, tx);
       }
     }
   }

@@ -16,6 +16,7 @@ export class Input {
   private interactPressed = false;
   private readonly commands: Command[] = [];
   private touchTarget: { x: number; y: number } | null = null;
+  private readonly isDevMode = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
   constructor(private readonly canvas: HTMLCanvasElement, private readonly camera: Camera) {
     window.addEventListener('keydown', this.onKeyDown);
@@ -73,6 +74,11 @@ export class Input {
       return;
     }
 
+    if (key === 't' && this.isDevMode) {
+      this.commands.push({ kind: 'DebugSkipTime', seconds: 30 });
+      return;
+    }
+
     if (key === ' ' || key === 'enter') {
       this.interactPressed = true;
       return;
@@ -94,6 +100,11 @@ export class Input {
     const screenX = event.clientX - rect.left;
     const screenY = event.clientY - rect.top;
 
+    if (this.isDevMode && this.isInsideSkipTimeButton(screenX, screenY, rect.width)) {
+      this.commands.push({ kind: 'DebugSkipTime', seconds: 30 });
+      return;
+    }
+
     if (this.isInsideInteractButton(screenX, screenY, rect.width, rect.height)) {
       this.interactPressed = true;
       return;
@@ -112,5 +123,14 @@ export class Input {
     const left = width - margin - size;
     const top = height - margin - size;
     return x >= left && x <= left + size && y >= top && y <= top + size;
+  }
+
+  private isInsideSkipTimeButton(x: number, y: number, width: number): boolean {
+    const buttonWidth = 88;
+    const buttonHeight = 30;
+    const margin = 16;
+    const left = width - margin - buttonWidth;
+    const top = margin;
+    return x >= left && x <= left + buttonWidth && y >= top && y <= top + buttonHeight;
   }
 }

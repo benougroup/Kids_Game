@@ -59,6 +59,9 @@ export class Renderer {
     this.drawHud(state, fps);
     this.drawTransition(state);
     this.drawInteractButton();
+    if (this.showGrid) {
+      this.drawSkipTimeButton();
+    }
   }
 
   getViewportSize(): { width: number; height: number } {
@@ -91,9 +94,11 @@ export class Renderer {
     this.ctx.fillStyle = '#ffffff';
     this.ctx.font = '14px monospace';
     this.ctx.fillText(`Mode: ${state.runtime.mode}`, 16, 22);
-    this.ctx.fillText(`Map: ${state.runtime.map.currentMapId}`, 16, 40);
-    this.ctx.fillText(`Tile: (${state.runtime.player.x}, ${state.runtime.player.y})`, 16, 58);
-    this.ctx.fillText(`FPS: ${fps.toFixed(1)} DPR: ${this.dpr.toFixed(2)}`, 16, 76);
+    this.ctx.fillText(`Time: ${state.runtime.time.phase} @ ${Math.round(state.runtime.time.secondsIntoCycle)}s`, 16, 40);
+    this.ctx.fillText(`Day: ${state.runtime.time.dayCount} Paused: ${state.runtime.time.paused ? 'yes' : 'no'}`, 16, 58);
+    this.ctx.fillText(`Map: ${state.runtime.map.currentMapId}`, 16, 76);
+    this.ctx.fillText(`Tile: (${state.runtime.player.x}, ${state.runtime.player.y})`, 16, 94);
+    this.ctx.fillText(`FPS: ${fps.toFixed(1)} DPR: ${this.dpr.toFixed(2)}`, 16, 112);
   }
 
   private drawTransition(state: Readonly<GameState>): void {
@@ -115,6 +120,21 @@ export class Renderer {
     this.ctx.fillStyle = 'white';
     this.ctx.font = '12px sans-serif';
     this.ctx.fillText('ACT', x + 18, y + 36);
+  }
+
+  private drawSkipTimeButton(): void {
+    const buttonWidth = 88;
+    const buttonHeight = 30;
+    const margin = 16;
+    const x = this.cssWidth - margin - buttonWidth;
+    const y = margin;
+    this.ctx.fillStyle = 'rgba(82, 194, 255, 0.2)';
+    this.ctx.fillRect(x, y, buttonWidth, buttonHeight);
+    this.ctx.strokeStyle = 'rgba(82, 194, 255, 0.85)';
+    this.ctx.strokeRect(x, y, buttonWidth, buttonHeight);
+    this.ctx.fillStyle = '#d3f2ff';
+    this.ctx.font = '11px sans-serif';
+    this.ctx.fillText('Skip Time', x + 16, y + 19);
   }
 
   private drawGrid(): void {
