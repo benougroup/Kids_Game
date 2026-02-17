@@ -419,24 +419,59 @@ export class Renderer {
   private drawModals(state: Readonly<GameState>): void {
     if (state.runtime.mode === 'DIALOGUE') return this.drawDialogueModal(state);
     if (state.runtime.mode !== 'INVENTORY' && state.runtime.mode !== 'CRAFTING') return;
-    this.ctx.fillStyle = 'rgba(5,10,18,0.8)';
-    this.ctx.fillRect(80, 80, this.cssWidth - 160, this.cssHeight - 160);
-    this.ctx.strokeStyle = '#cbe8ff';
-    this.ctx.strokeRect(80, 80, this.cssWidth - 160, this.cssHeight - 160);
+    
+    // Full-screen semi-transparent overlay
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
+    
+    // Centered modal box
+    const modalWidth = Math.min(600, this.cssWidth - 100);
+    const modalHeight = Math.min(500, this.cssHeight - 100);
+    const modalX = (this.cssWidth - modalWidth) / 2;
+    const modalY = (this.cssHeight - modalHeight) / 2;
+    
+    // Modal background
+    this.ctx.fillStyle = 'rgba(20, 30, 40, 0.95)';
+    this.ctx.fillRect(modalX, modalY, modalWidth, modalHeight);
+    this.ctx.strokeStyle = '#52c2ff';
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeRect(modalX, modalY, modalWidth, modalHeight);
+    
+    // Title
     this.ctx.fillStyle = '#ffffff';
-    this.ctx.font = '24px sans-serif';
-    this.ctx.fillText(state.runtime.mode === 'INVENTORY' ? 'Inventory' : 'Mixing Table', 110, 120);
+    this.ctx.font = 'bold 28px sans-serif';
+    const title = state.runtime.mode === 'INVENTORY' ? 'Inventory' : 'Mixing Table';
+    this.ctx.fillText(title, modalX + 30, modalY + 50);
+    
+    // Items list
     const items = Object.entries(state.global.inventory.items).filter(([, v]) => v.qty > 0);
-    this.ctx.font = '18px sans-serif';
-    items.slice(0, 7).forEach(([id, stack], idx) => {
-      const y = 160 + idx * 42;
-      const selected = state.runtime.inventoryUI.selectedItemId === id || state.runtime.crafting.slotA === id || state.runtime.crafting.slotB === id;
-      this.ctx.fillStyle = selected ? '#52c2ff' : '#ffffff';
-      this.ctx.fillText(`${id.replace(/_/g, ' ')} x${stack.qty}`, 120, y);
-    });
-    const bx = this.cssWidth / 2 - 170;
-    this.drawBigButton(bx, this.cssHeight - 180, 340, 60, state.runtime.mode === 'INVENTORY' ? 'Use selected' : 'Mix');
-    this.drawBigButton(bx, this.cssHeight - 110, 340, 60, 'Close');
+    this.ctx.font = '20px sans-serif';
+    
+    if (items.length === 0) {
+      this.ctx.fillStyle = '#999';
+      this.ctx.fillText('No items', modalX + 30, modalY + 120);
+    } else {
+      items.slice(0, 8).forEach(([id, stack], idx) => {
+        const y = modalY + 100 + idx * 40;
+        const selected = state.runtime.inventoryUI.selectedItemId === id || state.runtime.crafting.slotA === id || state.runtime.crafting.slotB === id;
+        
+        // Selection highlight
+        if (selected) {
+          this.ctx.fillStyle = 'rgba(82, 194, 255, 0.3)';
+          this.ctx.fillRect(modalX + 20, y - 25, modalWidth - 40, 35);
+        }
+        
+        // Item name
+        this.ctx.fillStyle = selected ? '#52c2ff' : '#ffffff';
+        const itemName = id.replace(/ingredient_|potion_/g, '').replace(/_/g, ' ');
+        this.ctx.fillText(`${itemName} x${stack.qty}`, modalX + 30, y);
+      });
+    }
+    
+    // Buttons at bottom
+    const buttonY = modalY + modalHeight - 140;
+    this.drawBigButton(modalX + 30, buttonY, modalWidth - 60, 50, state.runtime.mode === 'INVENTORY' ? 'Use selected' : 'Mix');
+    this.drawBigButton(modalX + 30, buttonY + 70, modalWidth - 60, 50, 'Close');
   }
 
   private drawDialogueModal(state: Readonly<GameState>): void {

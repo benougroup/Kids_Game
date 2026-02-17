@@ -240,19 +240,20 @@ export class Input {
   };
 
   private isInsideInteractButton(x: number, y: number, width: number, height: number): boolean {
-    const size = 78;
-    const margin = 18;
+    const size = 80; // Match button size in Renderer
+    const margin = 16; // Match button position (cssWidth - 96 means 16px margin)
     const left = width - margin - size;
     const top = height - margin - size;
     return x >= left && x <= left + size && y >= top && y <= top + size;
   }
 
   private isInsideInventoryButton(x: number, y: number, width: number, height: number): boolean {
-    const w = 110;
-    const h = 56;
-    const left = width - 230;
-    const top = height - 82;
-    return x >= left && x <= left + w && y >= top && y <= top + h;
+    const size = 80; // Match button size in Renderer
+    const margin = 16;
+    // Renderer: cssWidth - 200 for x, cssHeight - 96 for y
+    const left = width - 200;
+    const top = height - margin - size;
+    return x >= left && x <= left + size && y >= top && y <= top + size;
   }
 
   private isInsideSkipTimeButton(x: number, y: number, width: number): boolean {
