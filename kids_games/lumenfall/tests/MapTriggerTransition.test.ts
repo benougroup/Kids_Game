@@ -4,6 +4,8 @@ import { MapSystem, advanceMapTransition, applyTransitionSwap } from '../src/sys
 import { TriggerSystem } from '../src/systems/TriggerSystem';
 import { EventBus } from '../src/app/EventBus';
 import { CommandQueue } from '../src/app/Commands';
+import { CheckpointSystem } from '../src/systems/CheckpointSystem';
+import { StateStore } from '../src/state/StateStore';
 
 describe('MapSystem collisions', () => {
   it('isBlocked returns collision state', () => {
@@ -16,15 +18,18 @@ describe('MapSystem collisions', () => {
 
 describe('TriggerSystem behavior', () => {
   it('once triggers fire only once', () => {
-    const state = createInitialState();
+    const store = new StateStore(createInitialState());
     const mapSystem = new MapSystem();
-    const triggerSystem = new TriggerSystem(mapSystem);
+    const checkpointSystem = new CheckpointSystem(new EventBus());
+    const triggerSystem = new TriggerSystem(mapSystem, checkpointSystem);
     const queue = new CommandQueue(new EventBus());
 
-    state.runtime.player.x = 14;
-    state.runtime.player.y = 8;
+    const tx = store.beginTx('trigger_once');
+    tx.touchRuntimePlayer();
+    tx.draftState.runtime.player.x = 14;
+    tx.draftState.runtime.player.y = 8;
 
-    triggerSystem.evaluate(state, queue, {
+    triggerSystem.evaluate(tx, queue, {
       movedTile: true,
       fromX: 12,
       fromY: 8,
@@ -33,7 +38,7 @@ describe('TriggerSystem behavior', () => {
     });
     const first = queue.drain();
 
-    triggerSystem.evaluate(state, queue, {
+    triggerSystem.evaluate(tx, queue, {
       movedTile: true,
       fromX: 12,
       fromY: 8,
@@ -47,15 +52,18 @@ describe('TriggerSystem behavior', () => {
   });
 
   it('onEnterArea only fires on boundary crossing', () => {
-    const state = createInitialState();
+    const store = new StateStore(createInitialState());
     const mapSystem = new MapSystem();
-    const triggerSystem = new TriggerSystem(mapSystem);
+    const checkpointSystem = new CheckpointSystem(new EventBus());
+    const triggerSystem = new TriggerSystem(mapSystem, checkpointSystem);
     const queue = new CommandQueue(new EventBus());
 
-    state.runtime.player.x = 14;
-    state.runtime.player.y = 9;
+    const tx = store.beginTx('trigger_enter');
+    tx.touchRuntimePlayer();
+    tx.draftState.runtime.player.x = 14;
+    tx.draftState.runtime.player.y = 9;
 
-    triggerSystem.evaluate(state, queue, {
+    triggerSystem.evaluate(tx, queue, {
       movedTile: true,
       fromX: 14,
       fromY: 8,
@@ -65,7 +73,7 @@ describe('TriggerSystem behavior', () => {
 
     const first = queue.drain();
 
-    triggerSystem.evaluate(state, queue, {
+    triggerSystem.evaluate(tx, queue, {
       movedTile: true,
       fromX: 12,
       fromY: 9,

@@ -65,6 +65,7 @@ export class Renderer {
 
     this.drawHud(state, fps);
     this.drawTransition(state);
+    this.drawFaintOverlay(state);
     this.drawInteractButton();
     if (this.showGrid) {
       this.drawSkipTimeButton();
@@ -140,6 +141,22 @@ export class Renderer {
     const alpha = getTransitionOverlayAlpha(state.runtime.map.transition);
     if (alpha <= 0) return;
     this.ctx.fillStyle = `rgba(0,0,0,${alpha.toFixed(3)})`;
+    this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
+  }
+
+
+  private drawFaintOverlay(state: Readonly<GameState>): void {
+    const faint = state.runtime.fainting;
+    if (!faint?.active) {
+      return;
+    }
+
+    const alpha = faint.phase === 'fadeIn' ? 1 - faint.t : faint.t;
+    if (alpha <= 0) {
+      return;
+    }
+
+    this.ctx.fillStyle = `rgba(0,0,0,${Math.max(0, Math.min(1, alpha)).toFixed(3)})`;
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
   }
 

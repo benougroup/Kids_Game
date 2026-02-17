@@ -1,5 +1,6 @@
 import type { CommandQueue } from '../app/Commands';
-import type { GameState } from '../state/StateTypes';
+import type { DraftTx } from '../state/StateStore';
+import { CheckpointSystem } from './CheckpointSystem';
 import { MapSystem, type MapTrigger, type MapTriggerAction } from './MapSystem';
 
 export interface TriggerEvalContext {
@@ -16,9 +17,13 @@ const insideArea = (x: number, y: number, area: { x: number; y: number; w: numbe
 export class TriggerSystem {
   private readonly cooldownRegistry: Record<string, number> = {};
 
-  constructor(private readonly mapSystem: MapSystem) {}
+  constructor(
+    private readonly mapSystem: MapSystem,
+    private readonly checkpointSystem: CheckpointSystem,
+  ) {}
 
-  evaluate(state: GameState, commandQueue: CommandQueue, context: TriggerEvalContext): void {
+  evaluate(tx: DraftTx, commandQueue: CommandQueue, context: TriggerEvalContext): void {
+    const state = tx.draftState;
     const mapId = state.runtime.map.currentMapId;
     const playerX = state.runtime.player.x;
     const playerY = state.runtime.player.y;
@@ -29,7 +34,7 @@ export class TriggerSystem {
         continue;
       }
 
-      this.fireTrigger(state, commandQueue, mapId, trigger);
+      this.fireTrigger(tx, commandQueue, mapId, trigger);
       this.cooldownRegistry[`${mapId}:${trigger.id}`] = context.nowMs;
     }
 
@@ -47,7 +52,7 @@ export class TriggerSystem {
   }
 
   private shouldFire(
-    state: Readonly<GameState>,
+    state: Readonly<DraftTx['draftState']>,
     trigger: MapTrigger,
     context: TriggerEvalContext,
     playerX: number,
@@ -97,35 +102,29 @@ export class TriggerSystem {
     return true;
   }
 
-  private fireTrigger(state: GameState, commandQueue: CommandQueue, mapId: string, trigger: MapTrigger): void {
+  private fireTrigger(tx: DraftTx, commandQueue: CommandQueue, mapId: string, trigger: MapTrigger): void {
     for (const action of trigger.actions) {
-      this.applyAction(state, commandQueue, action);
+      this.applyAction(tx, commandQueue, action);
     }
 
     if (trigger.once) {
-      this.mapSystem.markTriggerFired(state, mapId, trigger.id);
+      this.mapSystem.markTriggerFired(tx.draftState, mapId, trigger.id);
     }
   }
 
-  private applyAction(state: GameState, commandQueue: CommandQueue, action: MapTriggerAction): void {
+  private applyAction(tx: DraftTx, commandQueue: CommandQueue, action: MapTriggerAction): void {
     if (action.type === 'ui.message' && action.text) {
       commandQueue.enqueue({ kind: 'UiMessage', text: action.text });
       return;
     }
 
     if (action.type === 'checkpoint.set') {
-      state.runtime.checkpoint.lastCheckpointId = action.checkpointId ?? 'checkpoint_unknown';
+      this.checkpointSystem.setCheckpoint(tx, action.checkpointId ?? 'checkpoint_unknown');
       return;
     }
 
     if (action.type === 'checkpoint.snapshot') {
-      state.runtime.checkpoint.snapshot = {
-        mapId: state.runtime.map.currentMapId,
-        x: state.runtime.player.x,
-        y: state.runtime.player.y,
-        hp: state.runtime.player.hp,
-        sp: state.runtime.player.sp,
-      };
+      this.checkpointSystem.snapshot(tx);
       return;
     }
 

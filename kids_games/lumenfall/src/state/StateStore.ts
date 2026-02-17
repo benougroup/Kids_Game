@@ -10,9 +10,13 @@ export interface DraftTx {
   touchRuntimeMap(): void;
   touchRuntimeMapTriggerFlags(): void;
   touchRuntimeUi(): void;
+  touchRuntimeDialogue(): void;
+  touchRuntimeCrafting(): void;
   touchRuntimeTime(): void;
   touchRuntimeLight(): void;
   touchRuntimeCheckpoint(): void;
+  touchRuntimeSave(): void;
+  touchRuntimeFainting(): void;
   touchGlobal(): void;
   touchGlobalPlayer(): void;
   touchInventoryGlobal(): void;
@@ -96,6 +100,20 @@ export class StateStore {
           touched.add('runtime.ui');
         }
       },
+      touchRuntimeDialogue: () => {
+        touchRuntime();
+        if (!touched.has('runtime.dialogue')) {
+          draftState.runtime.dialogue = { ...draftState.runtime.dialogue };
+          touched.add('runtime.dialogue');
+        }
+      },
+      touchRuntimeCrafting: () => {
+        touchRuntime();
+        if (!touched.has('runtime.crafting')) {
+          draftState.runtime.crafting = { ...draftState.runtime.crafting };
+          touched.add('runtime.crafting');
+        }
+      },
       touchRuntimeTime: () => {
         touchRuntime();
         if (!touched.has('runtime.time')) {
@@ -108,6 +126,20 @@ export class StateStore {
         if (!touched.has('runtime.checkpoint')) {
           draftState.runtime.checkpoint = { ...draftState.runtime.checkpoint };
           touched.add('runtime.checkpoint');
+        }
+      },
+      touchRuntimeSave: () => {
+        touchRuntime();
+        if (!touched.has('runtime.save')) {
+          draftState.runtime.save = { ...draftState.runtime.save };
+          touched.add('runtime.save');
+        }
+      },
+      touchRuntimeFainting: () => {
+        touchRuntime();
+        if (!touched.has('runtime.fainting')) {
+          draftState.runtime.fainting = draftState.runtime.fainting ? { ...draftState.runtime.fainting } : undefined;
+          touched.add('runtime.fainting');
         }
       },
       touchRuntimeLight: () => {
