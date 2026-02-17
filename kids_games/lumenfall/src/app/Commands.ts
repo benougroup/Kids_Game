@@ -3,8 +3,14 @@ import type { Mode } from './ModeMachine';
 
 export type RequestModeCommand = { kind: 'RequestMode'; nextMode: Mode };
 export type UiMessageCommand = { kind: 'UiMessage'; text: string };
+export type RequestMapTransitionCommand = {
+  kind: 'RequestMapTransition';
+  toMapId: string;
+  toX: number;
+  toY: number;
+};
 
-export type Command = RequestModeCommand | UiMessageCommand;
+export type Command = RequestModeCommand | UiMessageCommand | RequestMapTransitionCommand;
 
 type CommandPriority = 1 | 2 | 3 | 4;
 
@@ -23,6 +29,10 @@ const commandPriority = (command: Command): CommandPriority => {
     }
 
     return 4;
+  }
+
+  if (command.kind === 'RequestMapTransition') {
+    return 2;
   }
 
   return 3;

@@ -1,5 +1,13 @@
 import type { Mode } from '../app/ModeMachine';
 
+interface MapTransition {
+  toMapId: string;
+  toX: number;
+  toY: number;
+  phase: 'fadeOut' | 'swap' | 'fadeIn';
+  t: number;
+}
+
 export interface GameState {
   saveVersion: number;
   global: {
@@ -34,7 +42,10 @@ export interface GameState {
     };
     map: {
       currentMapId: string;
+      transition?: MapTransition;
+      mapsVisited: Record<string, { lastX: number; lastY: number }>;
     };
+    mapTriggerFlags: Record<string, Record<string, boolean>>;
     player: {
       x: number;
       y: number;
@@ -92,13 +103,17 @@ export const createInitialState = (): GameState => ({
       paused: false,
     },
     map: {
-      currentMapId: 'map01',
+      currentMapId: 'bright_hollow',
+      mapsVisited: {
+        bright_hollow: { lastX: 14, lastY: 10 },
+      },
     },
+    mapTriggerFlags: {},
     player: {
-      x: 5,
-      y: 5,
-      px: 5 * 32,
-      py: 5 * 32,
+      x: 14,
+      y: 10,
+      px: 14 * 32,
+      py: 10 * 32,
       facing: 'down',
       hp: 6,
       sp: 4,
