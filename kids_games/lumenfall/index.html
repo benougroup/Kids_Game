@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Lumenfall</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <title>Lumenfall - A Light in the Darkness</title>
     <style>
       :root,
       html,
@@ -11,15 +11,17 @@
         width: 100%;
         height: 100%;
         margin: 0;
+        padding: 0;
       }
 
       body {
         overflow: hidden;
-        background: #050914;
+        background: #1a1a2e;
         touch-action: none;
+        font-family: Arial, sans-serif;
       }
 
-      #app {
+      #game-container {
         width: 100vw;
         height: 100vh;
         touch-action: none;
@@ -28,16 +30,12 @@
 
       canvas {
         display: block;
-        width: 100%;
-        height: 100%;
         touch-action: none;
       }
     </style>
   </head>
   <body>
-    <div id="app">
-      <canvas id="game-canvas" aria-label="Lumenfall game canvas"></canvas>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="game-container"></div>
+    <script type="module" src="/src/phaser-main.ts"></script>
   </body>
 </html>
