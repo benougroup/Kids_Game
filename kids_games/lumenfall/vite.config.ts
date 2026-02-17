@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: process.env.BASE_PATH ?? '/lumenfall/',
+  base: process.env.BASE_PATH ?? '/Kids_Game/',
 });
