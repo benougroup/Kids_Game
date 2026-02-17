@@ -12,7 +12,11 @@ export type AppEvent =
   | { type: 'TIME_TICK'; atSeconds: number }
   | { type: 'LIGHT_AMBIENT_CHANGED'; phase: TimePhase; ambientShift: number }
   | { type: 'LIGHT_SOURCES_CHANGED' }
+  | { type: 'CHECKPOINT_CREATED'; checkpointId: string }
+  | { type: 'CHECKPOINT_SNAPSHOT'; checkpointId: string }
   | { type: 'CHECKPOINT_RESTORED'; checkpointId: string; mapId: string }
+  | { type: 'CRAFT_SUCCESS'; recipeOutputItemId: string }
+  | { type: 'STORY_FLAGS_CHANGED'; keys: string[] }
   | { type: 'AREA_EFFECT'; kind: 'cleanseShadows'; radius: number; filter: string };
 
 type HandlerMap = {
@@ -30,7 +34,11 @@ export class EventBus {
     TIME_TICK: [],
     LIGHT_AMBIENT_CHANGED: [],
     LIGHT_SOURCES_CHANGED: [],
+    CHECKPOINT_CREATED: [],
+    CHECKPOINT_SNAPSHOT: [],
     CHECKPOINT_RESTORED: [],
+    CRAFT_SUCCESS: [],
+    STORY_FLAGS_CHANGED: [],
     AREA_EFFECT: [],
   };
 

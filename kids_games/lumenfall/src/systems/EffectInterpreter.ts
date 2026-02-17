@@ -131,6 +131,7 @@ export class EffectInterpreter {
     tx.draftState.runtime.player.sp = Math.max(0, Math.min(tx.draftState.global.player.maxSP, tx.draftState.runtime.player.sp + plan.spDelta));
 
     if (plan.flags.length > 0) {
+      const changedStoryKeys: string[] = [];
       for (const flag of plan.flags) {
         if (flag.key.startsWith('runtime.')) {
           tx.touchRuntimeFlags();
@@ -146,7 +147,11 @@ export class EffectInterpreter {
         } else {
           tx.touchStoryFlags();
           tx.draftState.story.flags[flag.key] = Boolean(flag.value);
+          changedStoryKeys.push(flag.key);
         }
+      }
+      if (changedStoryKeys.length > 0) {
+        this.bus.emit({ type: 'STORY_FLAGS_CHANGED', keys: changedStoryKeys });
       }
     }
 

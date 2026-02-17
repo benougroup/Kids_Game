@@ -23,6 +23,10 @@ export type CraftingCloseCommand = { kind: 'CraftingClose' };
 export type StartSceneCommand = { kind: 'StartScene'; storyId: string; sceneId?: string };
 export type DialogueChooseCommand = { kind: 'DialogueChoose'; choiceIndex: number };
 export type StartEncounterCommand = { kind: 'StartEncounter'; templateId: string };
+export type SaveNowCommand = { kind: 'SaveNow' };
+export type LoadNowCommand = { kind: 'LoadNow' };
+export type NewGameCommand = { kind: 'NewGame' };
+export type NewStoryCommand = { kind: 'NewStory'; storyId: string };
 
 export type Command =
   | RequestModeCommand
@@ -41,7 +45,11 @@ export type Command =
   | CraftingCloseCommand
   | StartSceneCommand
   | DialogueChooseCommand
-  | StartEncounterCommand;
+  | StartEncounterCommand
+  | SaveNowCommand
+  | LoadNowCommand
+  | NewGameCommand
+  | NewStoryCommand;
 
 type CommandPriority = 1 | 2 | 3 | 4;
 
