@@ -24,11 +24,11 @@ export class Renderer {
   private dpr = 1;
   private readonly showGrid = typeof window !== 'undefined' && window.location.hostname === 'localhost';
   private showLightOverlay = false;
-  private showPerfHud = true;
+  // private showPerfHud = true; // Unused - removed debug HUD
   private frameDtMs = 0;
   private frameAvgMs = 0;
   private lastRenderAt = performance.now();
-  private visibleTiles = 0;
+  // private visibleTiles = 0; // Unused - removed debug HUD
   private readonly viewportRange = { minX: 0, minY: 0, maxX: 0, maxY: 0 };
   private assetManager: AssetManager | null = null;
   private readonly playerAnimation = new AnimationPlayer(RENDER_CLIPS, 'player_idle');
@@ -103,7 +103,7 @@ export class Renderer {
   }
 
   setLightOverlayVisible(visible: boolean): void { this.showLightOverlay = visible; }
-  setPerfHudVisible(visible: boolean): void { this.showPerfHud = visible; }
+  setPerfHudVisible(_visible: boolean): void { /* this.showPerfHud = visible; */ }
 
   private computeViewportRange(mapId: string): void {
     const map = this.mapSystem.getMap(mapId);
@@ -113,7 +113,7 @@ export class Renderer {
     this.viewportRange.minY = Math.max(0, Math.floor(topLeft.y / TILE_SIZE) - 1);
     this.viewportRange.maxX = Math.min(map.width - 1, Math.ceil(bottomRight.x / TILE_SIZE) + 1);
     this.viewportRange.maxY = Math.min(map.height - 1, Math.ceil(bottomRight.y / TILE_SIZE) + 1);
-    this.visibleTiles = (this.viewportRange.maxX - this.viewportRange.minX + 1) * (this.viewportRange.maxY - this.viewportRange.minY + 1);
+    // this.visibleTiles = (this.viewportRange.maxX - this.viewportRange.minX + 1) * (this.viewportRange.maxY - this.viewportRange.minY + 1);
   }
 
   private drawMap(state: Readonly<GameState>, layer: 'ground' | 'decor' | 'overlay'): void {
@@ -167,9 +167,11 @@ export class Renderer {
 
   private drawNpcs(state: Readonly<GameState>): void {
     const map = this.mapSystem.getCurrentMap(state);
+    const zoom = this.camera.getZoom();
     const charWidth = TILE_SIZE;
     const charHeight = TILE_SIZE * 1.5;
-    const offsetY = -(charHeight - TILE_SIZE);
+    // Offset needs to account for zoom since screen coords are already zoomed
+    const offsetY = -(charHeight - TILE_SIZE) * zoom;
     for (const npc of map.npcs ?? []) {
       const screen = this.camera.worldToScreen(npc.x * TILE_SIZE, npc.y * TILE_SIZE);
       this.drawSprite(npc.spriteId, Math.round(screen.x), Math.round(screen.y + offsetY), charWidth, charHeight);
@@ -181,9 +183,11 @@ export class Renderer {
     this.playerAnimation.update(this.frameDtMs);
     const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
     // Character sprites are 1.5x taller than tiles (48 pixels tall vs 32 wide)
+    const zoom = this.camera.getZoom();
     const charWidth = TILE_SIZE;
     const charHeight = TILE_SIZE * 1.5;
-    const offsetY = -(charHeight - TILE_SIZE); // Align bottom of sprite with tile
+    // Offset needs to account for zoom since screen coords are already zoomed
+    const offsetY = -(charHeight - TILE_SIZE) * zoom;
     if (!this.drawSprite(this.playerAnimation.currentFrameSpriteId(), Math.round(playerScreen.x), Math.round(playerScreen.y + offsetY), charWidth, charHeight)) {
       this.ctx.fillStyle = '#7ad7ff';
       this.ctx.fillRect(Math.round(playerScreen.x), Math.round(playerScreen.y), TILE_SIZE, TILE_SIZE);
@@ -243,18 +247,80 @@ export class Renderer {
     }
   }
 
-  private drawHud(state: Readonly<GameState>, fps: number): void {
+  private drawHud(state: Readonly<GameState>, _fps: number): void {
+    // Draw black background bar at top
+    const hudHeight = 60;
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    this.ctx.fillRect(0, 0, this.cssWidth, hudHeight);
+    
+    const padding = 16;
+    const barWidth = 150;
+    const barHeight = 16;
+    let yPos = 12;
+    
+    // HP Bar
+    const currentHP = state.runtime.player.hp;
+    const maxHP = state.global.player.maxHP;
+    const hpPercent = currentHP / maxHP;
+    
     this.ctx.fillStyle = '#ffffff';
-    this.ctx.font = '14px monospace';
-    this.ctx.fillText(`Mode: ${state.runtime.mode}`, 16, 22);
-    this.ctx.fillText(`Time: ${state.runtime.time.phase} @ ${Math.round(state.runtime.time.secondsIntoCycle)}s`, 16, 40);
-    this.ctx.fillText(`Day: ${state.runtime.time.dayCount} Paused: ${state.runtime.time.paused ? 'yes' : 'no'}`, 16, 58);
-    this.ctx.fillText(`Map: ${state.runtime.map.currentMapId}`, 16, 76);
-    this.ctx.fillText(`Tile: (${state.runtime.player.x}, ${state.runtime.player.y})`, 16, 94);
-    if (!this.showPerfHud) return;
-    const perf = this.lightSystem.getPerfCounters();
-    this.ctx.fillText(`FPS: ${fps.toFixed(1)} dt: ${this.frameDtMs.toFixed(2)}ms avg: ${this.frameAvgMs.toFixed(2)}ms`, 16, 112);
-    this.ctx.fillText(`Visible tiles: ${this.visibleTiles} lightChunkHit: ${(perf.hitRate * 100).toFixed(1)}%`, 16, 130);
+    this.ctx.font = 'bold 14px sans-serif';
+    this.ctx.fillText('HP', padding, yPos + 12);
+    
+    // HP bar background
+    this.ctx.fillStyle = '#333333';
+    this.ctx.fillRect(padding + 35, yPos, barWidth, barHeight);
+    
+    // HP bar fill
+    this.ctx.fillStyle = hpPercent > 0.5 ? '#4CAF50' : hpPercent > 0.25 ? '#FFC107' : '#F44336';
+    this.ctx.fillRect(padding + 35, yPos, barWidth * hpPercent, barHeight);
+    
+    // HP text
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '12px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText(`${currentHP}/${maxHP}`, padding + 35 + barWidth / 2, yPos + 12);
+    this.ctx.textAlign = 'left';
+    
+    yPos += 24;
+    
+    // SP Bar
+    const currentSP = state.runtime.player.sp;
+    const maxSP = state.global.player.maxSP;
+    const spPercent = currentSP / maxSP;
+    
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = 'bold 14px sans-serif';
+    this.ctx.fillText('SP', padding, yPos + 12);
+    
+    // SP bar background
+    this.ctx.fillStyle = '#333333';
+    this.ctx.fillRect(padding + 35, yPos, barWidth, barHeight);
+    
+    // SP bar fill
+    this.ctx.fillStyle = '#2196F3';
+    this.ctx.fillRect(padding + 35, yPos, barWidth * spPercent, barHeight);
+    
+    // SP text
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '12px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText(`${currentSP}/${maxSP}`, padding + 35 + barWidth / 2, yPos + 12);
+    this.ctx.textAlign = 'left';
+    
+    // Time/Phase display (right side of HUD)
+    const phaseText = state.runtime.time.phase;
+    const phaseColor = phaseText === 'DAY' ? '#FFD700' : phaseText === 'NIGHT' ? '#4A4A8C' : '#FF8C00';
+    
+    this.ctx.fillStyle = phaseColor;
+    this.ctx.font = 'bold 18px sans-serif';
+    this.ctx.textAlign = 'right';
+    this.ctx.fillText(phaseText, this.cssWidth - padding - 160, 28);
+    
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '14px sans-serif';
+    this.ctx.fillText(`Day ${state.runtime.time.dayCount}`, this.cssWidth - padding - 160, 48);
+    this.ctx.textAlign = 'left';
     
     // Draw minimap
     this.drawMinimap(state);
@@ -340,8 +406,15 @@ export class Renderer {
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
   }
 
-  private drawInteractButton(): void { this.drawBigButton(this.cssWidth - 96, this.cssHeight - 96, 78, 78, 'ACT'); }
-  private drawInventoryButton(): void { this.drawBigButton(this.cssWidth - 230, this.cssHeight - 82, 110, 56, 'BAG'); }
+  private drawInteractButton(): void { 
+    // Make buttons consistent size: 80x80
+    this.drawBigButton(this.cssWidth - 96, this.cssHeight - 96, 80, 80, 'ACT'); 
+  }
+  
+  private drawInventoryButton(): void { 
+    // Make buttons consistent size: 80x80
+    this.drawBigButton(this.cssWidth - 200, this.cssHeight - 96, 80, 80, 'BAG'); 
+  }
 
   private drawModals(state: Readonly<GameState>): void {
     if (state.runtime.mode === 'DIALOGUE') return this.drawDialogueModal(state);
