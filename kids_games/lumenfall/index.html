@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Lumenfall</title>
+    <style>
+      :root,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+        background: #050914;
+      }
+
+      #app {
+        width: 100vw;
+        height: 100vh;
+        touch-action: none;
+        overscroll-behavior: none;
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game-canvas" aria-label="Lumenfall game canvas"></canvas>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
