@@ -6,6 +6,7 @@ import { LightSystem } from '../systems/LightSystem';
 import { storyDatabase } from '../systems/StoryDatabase';
 import { type SpriteRect, AssetManager } from './AssetManager';
 import { AnimationPlayer, type Clip } from './Animation';
+import { ModernRenderer } from './ModernRenderer';
 
 const RENDER_CLIPS: Record<string, Clip> = {
   player_idle: {
@@ -32,6 +33,7 @@ export class Renderer {
   private readonly viewportRange = { minX: 0, minY: 0, maxX: 0, maxY: 0 };
   private assetManager: AssetManager | null = null;
   private readonly playerAnimation = new AnimationPlayer(RENDER_CLIPS, 'player_idle');
+  private readonly modernRenderer: ModernRenderer;
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
@@ -42,6 +44,7 @@ export class Renderer {
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Could not create canvas2D context.');
     this.ctx = ctx;
+    this.modernRenderer = new ModernRenderer(ctx);
     this.resize();
     window.addEventListener('resize', this.resize);
   }
@@ -129,8 +132,22 @@ export class Renderer {
         const py = Math.round(screen.y);
         const tileSpriteId = resolveTileSpriteId(def);
         if (!this.drawSprite(tileSpriteId, px, py)) {
-          this.ctx.fillStyle = def.color;
-          this.ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+          // Use modern rendering instead of simple colored rectangle
+          const zoom = this.camera.getZoom();
+          const tileSize = TILE_SIZE * zoom;
+          if (tileSpriteId?.includes('grass')) {
+            this.modernRenderer.drawGrassTile(px, py, tileSize);
+          } else if (tileSpriteId?.includes('dirt')) {
+            this.modernRenderer.drawDirtTile(px, py, tileSize);
+          } else if (tileSpriteId?.includes('stone')) {
+            this.modernRenderer.drawStoneTile(px, py, tileSize);
+          } else if (tileSpriteId?.includes('water')) {
+            this.modernRenderer.drawWaterTile(px, py, tileSize);
+          } else {
+            // Generic fallback
+            this.ctx.fillStyle = def.color || '#404040';
+            this.ctx.fillRect(px, py, tileSize, tileSize);
+          }
         }
       }
     }
@@ -144,23 +161,15 @@ export class Renderer {
     for (const pickup of pickups) {
       const screen = this.camera.worldToScreen(pickup.x * TILE_SIZE, pickup.y * TILE_SIZE);
       
-      // Draw sparkle sprite if available, otherwise draw a glowing circle
+      // Draw sparkle sprite if available, otherwise use modern glowing item
       if (!this.drawSprite('sparkle', Math.round(screen.x), Math.round(screen.y))) {
-        // Fallback: draw glowing circle
-        this.ctx.save();
-        this.ctx.fillStyle = '#ffff88';
-        this.ctx.shadowColor = '#ffff00';
-        this.ctx.shadowBlur = 10;
-        this.ctx.beginPath();
-        this.ctx.arc(
+        // Use modern renderer for glowing collectible
+        this.modernRenderer.drawGlowingItem(
           Math.round(screen.x) + tileSize / 2,
           Math.round(screen.y) + tileSize / 2,
-          tileSize * 0.3,
-          0,
-          Math.PI * 2
+          tileSize * 0.15,
+          '#ffd700'
         );
-        this.ctx.fill();
-        this.ctx.restore();
       }
     }
   }
@@ -174,7 +183,25 @@ export class Renderer {
     const offsetY = -(charHeight - TILE_SIZE) * zoom;
     for (const npc of map.npcs ?? []) {
       const screen = this.camera.worldToScreen(npc.x * TILE_SIZE, npc.y * TILE_SIZE);
-      this.drawSprite(npc.spriteId, Math.round(screen.x), Math.round(screen.y + offsetY), charWidth, charHeight);
+      if (!this.drawSprite(npc.spriteId, Math.round(screen.x), Math.round(screen.y + offsetY), charWidth, charHeight)) {
+        // Use modern renderer with character type detection
+        const centerX = Math.round(screen.x) + (TILE_SIZE * zoom) / 2;
+        const centerY = Math.round(screen.y + offsetY) + (charHeight * zoom) / 2;
+        const size = TILE_SIZE * zoom;
+        
+        // Determine character type from sprite ID or NPC ID
+        const isGuard = npc.spriteId?.includes('guard') || npc.id?.toLowerCase().includes('guard');
+        const isApprentice = npc.spriteId?.includes('apprentice') || npc.id?.toLowerCase().includes('apprentice');
+        const isElder = npc.spriteId?.includes('elder') || npc.id?.toLowerCase().includes('elder');
+        
+        this.modernRenderer.drawCharacter(centerX, centerY, size, {
+          skinColor: '#ffdbac',
+          clothingColor: isGuard ? '#8b0000' : isApprentice ? '#4b0082' : '#4a90e2',
+          hairColor: isElder ? '#d3d3d3' : '#8b4513',
+          hasHelmet: isGuard,
+          hasHat: isApprentice,
+        });
+      }
     }
   }
 
@@ -189,8 +216,18 @@ export class Renderer {
     // Offset needs to account for zoom since screen coords are already zoomed
     const offsetY = -(charHeight - TILE_SIZE) * zoom;
     if (!this.drawSprite(this.playerAnimation.currentFrameSpriteId(), Math.round(playerScreen.x), Math.round(playerScreen.y + offsetY), charWidth, charHeight)) {
-      this.ctx.fillStyle = '#7ad7ff';
-      this.ctx.fillRect(Math.round(playerScreen.x), Math.round(playerScreen.y), TILE_SIZE, TILE_SIZE);
+      // Use modern renderer for player character
+      const centerX = Math.round(playerScreen.x) + (TILE_SIZE * zoom) / 2;
+      const centerY = Math.round(playerScreen.y + offsetY) + (charHeight * zoom) / 2;
+      const size = TILE_SIZE * zoom;
+      
+      this.modernRenderer.drawCharacter(centerX, centerY, size, {
+        skinColor: '#ffdbac',
+        clothingColor: '#4a90e2', // Blue tunic
+        hairColor: '#8b4513', // Brown hair
+        hasHelmet: false,
+        hasHat: false,
+      });
     }
   }
 
@@ -204,10 +241,16 @@ export class Renderer {
     const px = Math.round(screen.x);
     const py = Math.round(screen.y);
     if (this.drawSprite('shadow_0', px, py)) return;
-    this.ctx.fillStyle = category === 'story' ? 'rgba(20,20,30,0.65)' : 'rgba(5,5,12,0.55)';
-    this.ctx.beginPath();
-    this.ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, TILE_SIZE * 0.35, 0, Math.PI * 2);
-    this.ctx.fill();
+    // Use modern renderer for shadows
+    const zoom = this.camera.getZoom();
+    const tileSize = TILE_SIZE * zoom;
+    const isStory = category === 'story';
+    this.modernRenderer.drawShadow(
+      px + tileSize / 2,
+      py + tileSize / 2,
+      tileSize * 0.4,
+      isStory
+    );
     if (this.showGrid) {
       this.ctx.fillStyle = '#d0d0d0';
       this.ctx.font = '10px monospace';
