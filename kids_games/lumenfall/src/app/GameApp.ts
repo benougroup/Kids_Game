@@ -168,7 +168,8 @@ export class GameApp {
     tx.draftState.runtime.time.paused = true;
     this.store.commitTx(tx);
 
-    this.assetManager.loadAtlas('/assets/atlas.png', '/assets/atlas.json').then(() => {
+    const baseUrl = document.querySelector('base')?.getAttribute('href') || window.location.pathname.replace(/\/[^/]*$/, '/') || '/';
+    this.assetManager.loadAtlas(`${baseUrl}assets/atlas.png`, `${baseUrl}assets/atlas.json`).then(() => {
       this.renderer.setAssetManager(this.assetManager);
       const readyTx = this.store.beginTx('asset_loading_done');
       readyTx.touchRuntime();
