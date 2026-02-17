@@ -122,7 +122,23 @@ export class Input {
       this.commands.push({ kind: 'DebugSkipTime', seconds: 30 });
       return;
     }
-    if (key === 'l' && this.isDevMode) {
+    if (key === 'o') {
+      this.commands.push({ kind: 'SaveNow' });
+      return;
+    }
+    if (key === 'l') {
+      this.commands.push({ kind: 'LoadNow' });
+      return;
+    }
+    if (key === 'n') {
+      this.commands.push({ kind: 'NewGame' });
+      return;
+    }
+    if (key === 'r') {
+      this.commands.push({ kind: 'NewStory', storyId: 'demo' });
+      return;
+    }
+    if (key === ';' && this.isDevMode) {
       this.commands.push({ kind: 'DebugToggleLightOverlay' });
       return;
     }

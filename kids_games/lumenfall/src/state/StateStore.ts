@@ -242,4 +242,10 @@ export class StateStore {
   rollbackTx(tx: DraftTx): void {
     tx.touchedSlices.clear();
   }
+  replaceState(nextState: GameState): void {
+    validateInvariants(nextState);
+    this.state = nextState;
+  }
+
 }
+

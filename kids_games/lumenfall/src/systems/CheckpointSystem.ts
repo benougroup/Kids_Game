@@ -1,7 +1,7 @@
 import type { EventBus } from '../app/EventBus';
 import { tileToPixel } from './MapSystem';
 import type { DraftTx } from '../state/StateStore';
-import type { CheckpointSnapshot, GameState, SnapshotFacing } from '../state/StateTypes';
+import type { CheckpointSnapshot, GameState, SnapshotFacing, StoryShadowPersist } from '../state/StateTypes';
 
 const RESTORE_HP_MODE = 'FULL' as const;
 const RESTORE_SP_MODE = 'ZERO' as const;
@@ -27,6 +27,7 @@ export class CheckpointSystem {
     tx.touchRuntimeCheckpoint();
     tx.draftState.runtime.checkpoint.lastCheckpointId = checkpointId;
     tx.draftState.runtime.checkpoint.dirty = true;
+    this.bus.emit({ type: 'CHECKPOINT_CREATED', checkpointId });
   }
 
   snapshot(tx: DraftTx): CheckpointSnapshot {
@@ -69,6 +70,7 @@ export class CheckpointSystem {
 
     draft.runtime.checkpoint.snapshot = snapshot;
     draft.runtime.checkpoint.dirty = false;
+    this.bus.emit({ type: 'CHECKPOINT_SNAPSHOT', checkpointId: snapshot.checkpointId });
     return snapshot;
   }
 
@@ -130,7 +132,7 @@ export class CheckpointSystem {
         nonStack: { ...snapshot.story.storyInventory.nonStack },
       },
       storyShadow: {
-        byId: { ...snapshot.story.storyShadowById },
+        byId: { ...(snapshot.story.storyShadowById as Record<string, StoryShadowPersist>) },
       },
     };
 

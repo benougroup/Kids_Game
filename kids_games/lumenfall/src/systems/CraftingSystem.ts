@@ -1,11 +1,12 @@
 import { CheckpointSystem } from './CheckpointSystem';
+import type { EventBus } from '../app/EventBus';
 import { inventorySystem } from './InventorySystem';
 import { itemDatabase } from './ItemDatabase';
 import { recipeDatabase } from './RecipeDatabase';
 import type { DraftTx } from '../state/StateStore';
 
 export class CraftingSystem {
-  constructor(private readonly checkpointSystem: CheckpointSystem) {}
+  constructor(private readonly checkpointSystem: CheckpointSystem, private readonly bus?: EventBus) {}
 
   open(tx: DraftTx, mixingTableId: string): void {
     tx.touchRuntime();
@@ -62,5 +63,6 @@ export class CraftingSystem {
     tx.draftState.runtime.ui.messages.push(text);
     this.checkpointSystem.setCheckpoint(tx, `mix_${tx.draftState.runtime.map.currentMapId}_${tx.draftState.runtime.player.x}_${tx.draftState.runtime.player.y}`);
     this.checkpointSystem.snapshot(tx);
+    this.bus?.emit({ type: 'CRAFT_SUCCESS', recipeOutputItemId: recipe.outputItemId });
   }
 }

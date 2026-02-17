@@ -21,6 +21,7 @@ import { EffectInterpreter } from '../systems/EffectInterpreter';
 import { CraftingSystem } from '../systems/CraftingSystem';
 import { DialogueSystem } from '../systems/DialogueSystem';
 import { ShadowSystem } from '../systems/ShadowSystem';
+import { SaveSystem } from '../systems/SaveSystem';
 import { encounterDatabase } from '../systems/EncounterDatabase';
 
 const WORLD_TILE_WIDTH = 100;
@@ -44,15 +45,17 @@ export class GameApp {
     checkpointSystem: this.checkpointSystem,
     bus: this.bus,
   });
-  private readonly craftingSystem = new CraftingSystem(this.checkpointSystem);
+  private readonly craftingSystem = new CraftingSystem(this.checkpointSystem, this.bus);
   private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
   private readonly lightSystem = new LightSystem({ mapSystem: this.mapSystem, bus: this.bus });
   private readonly shadowSystem = new ShadowSystem({ mapSystem: this.mapSystem, lightSystem: this.lightSystem, commandQueue: this.commandQueue });
+  private readonly saveSystem = new SaveSystem({ store: this.store, bus: this.bus, modeMachine: this.modeMachine });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
   private readonly renderer: Renderer;
   private readonly input: Input;
   private readonly loop: GameLoop;
   private showLightOverlay = false;
+  private pendingSaveControl: null | { kind: 'load' } | { kind: 'new_game' } | { kind: 'new_story'; storyId: string } = null;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new Renderer(canvas, this.camera, this.mapSystem, this.lightSystem);
@@ -92,6 +95,7 @@ export class GameApp {
     inventorySystem.addItem(tx, 'ingredient_glow_moth_dust', 3, 'global');
     inventorySystem.addItem(tx, 'ingredient_crystal_water', 3, 'global');
     this.store.commitTx(tx);
+    this.saveSystem.loadNow();
   }
 
   start(): void {
@@ -152,6 +156,7 @@ export class GameApp {
       this.lightSystem.update(tx);
       this.playerSystem.smoothPixels(draft, dtMs);
       this.store.commitTx(tx);
+      this.processPendingSaveControl();
     } catch (error) {
       this.store.rollbackTx(tx);
       this.logger.error('Transaction failed', error);
@@ -278,6 +283,28 @@ export class GameApp {
         this.craftingSystem.close(tx);
         continue;
       }
+
+      if (command.kind === 'SaveNow') {
+        const result = this.saveSystem.saveNow('force:manual');
+        tx.touchRuntimeUi();
+        tx.draftState.runtime.ui.messages.push(result.ok ? 'Saved.' : `Save failed: ${result.error ?? 'unknown'}`);
+        continue;
+      }
+
+      if (command.kind === 'LoadNow') {
+        this.pendingSaveControl = { kind: 'load' };
+        continue;
+      }
+
+      if (command.kind === 'NewGame') {
+        this.pendingSaveControl = { kind: 'new_game' };
+        continue;
+      }
+
+      if (command.kind === 'NewStory') {
+        this.pendingSaveControl = { kind: 'new_story', storyId: command.storyId };
+        continue;
+      }
       if (command.kind === 'RequestMode') {
         const requestedMode = command.nextMode === 'MENU' && mode === 'MENU' ? 'EXPLORE' : command.nextMode;
         const nextMode = this.modeMachine.requestMode(mode, requestedMode);
@@ -387,6 +414,37 @@ export class GameApp {
       tx.draftState.runtime.mode = nextMode;
       tx.draftState.runtime.time.paused = false;
     }
+  }
+
+
+  private processPendingSaveControl(): void {
+    if (!this.pendingSaveControl) return;
+    const action = this.pendingSaveControl;
+    this.pendingSaveControl = null;
+
+    if (action.kind === 'load') {
+      const result = this.saveSystem.loadNow();
+      const tx = this.store.beginTx('load_message');
+      tx.touchRuntimeUi();
+      tx.draftState.runtime.ui.messages.push(result.ok ? 'Loaded.' : `Load failed: ${result.error ?? 'unknown'}`);
+      this.store.commitTx(tx);
+      return;
+    }
+
+    if (action.kind === 'new_game') {
+      this.saveSystem.newGame();
+      const tx = this.store.beginTx('new_game_message');
+      tx.touchRuntimeUi();
+      tx.draftState.runtime.ui.messages.push('New game started.');
+      this.store.commitTx(tx);
+      return;
+    }
+
+    this.saveSystem.newStory(action.storyId);
+    const tx = this.store.beginTx('new_story_message');
+    tx.touchRuntimeUi();
+    tx.draftState.runtime.ui.messages.push(`New story started: ${action.storyId}.`);
+    this.store.commitTx(tx);
   }
 
   private ensureFallbackCheckpoint(tx: ReturnType<StateStore['beginTx']>): void {
