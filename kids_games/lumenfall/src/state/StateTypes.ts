@@ -90,7 +90,7 @@ export interface GameState {
     };
     storyInventory: InventoryState;
     storyShadow: {
-      byId: Record<string, unknown>;
+      byId: Record<string, StoryShadowPersist>;
     };
   };
   runtime: {
@@ -128,6 +128,18 @@ export interface GameState {
       messages: string[];
     };
     dialogue: DialogueRuntimeState;
+    encounterContext?: {
+      shadowId: string;
+      category: ShadowCategory;
+      tileLight: Extract<LightLevel, 'DIM' | 'DARK'>;
+      mapId: string;
+    };
+    runtimeFlags: Record<string, unknown>;
+    shadows: {
+      env: ShadowEntity[];
+      story: ShadowEntity[];
+      lastEncounterAtMs: number;
+    };
     inventoryUI: {
       open: boolean;
       category: 'all' | 'potions' | 'ingredients' | 'tools' | 'storyKeys';
@@ -158,6 +170,32 @@ export interface GameState {
   };
 }
 
+export type ShadowCategory = 'environmental' | 'story';
+export type ShadowState = 'calm' | 'observing' | 'disturbed' | 'dissolving';
+
+export interface StoryShadowPersist {
+  id: string;
+  x: number;
+  y: number;
+  active: boolean;
+  resolved?: boolean;
+  state?: ShadowState;
+  requiredFlags?: Record<string, boolean>;
+  requiredStage?: { key: string; value: string };
+  anchor?: { x: number; y: number; radius: number };
+}
+
+export type ShadowEntity = {
+  id: string;
+  category: ShadowCategory;
+  x: number;
+  y: number;
+  state: ShadowState;
+  anchor?: { x: number; y: number; radius: number };
+  cooldownUntilMs: number;
+  driftDir?: { dx: number; dy: number };
+};
+
 export const createEmptyInventory = (): InventoryState => ({ items: {}, nonStack: {} });
 
 export const createInitialState = (): GameState => ({
@@ -172,7 +210,7 @@ export const createInitialState = (): GameState => ({
     inventory: createEmptyInventory(),
   },
   story: {
-    activeStoryId: 'story01',
+    activeStoryId: 'demo',
     stage: {},
     flags: {},
     npc: {
@@ -226,6 +264,12 @@ export const createInitialState = (): GameState => ({
       returnMode: 'EXPLORE',
       visitCount: 0,
       visited: {},
+    },
+    runtimeFlags: {},
+    shadows: {
+      env: [],
+      story: [],
+      lastEncounterAtMs: 0,
     },
     inventoryUI: {
       open: false,

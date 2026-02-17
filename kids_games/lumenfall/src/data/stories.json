@@ -4,6 +4,11 @@
       "id": "demo",
       "startSceneId": "demo_start",
       "scenesFile": "scenes/demo.scenes.json"
+    },
+    {
+      "id": "encounter",
+      "startSceneId": "enc_env_dim",
+      "scenesFile": "encounters.json"
     }
   ]
 }

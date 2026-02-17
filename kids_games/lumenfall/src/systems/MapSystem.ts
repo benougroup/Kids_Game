@@ -37,6 +37,22 @@ export interface Interactable {
   toY?: number;
 }
 
+export interface ShadowSpawnZoneRect {
+  id: string;
+  shape: 'rect';
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface ShadowSpawnConfig {
+  zones: ShadowSpawnZoneRect[];
+  clusterSizeMin: number;
+  clusterSizeMax: number;
+  maxActive: number;
+}
+
 export interface TileMap {
   id: string;
   name: string;
@@ -48,6 +64,7 @@ export interface TileMap {
   tileDefs?: Record<string, { baseLight?: 'BRIGHT' | 'DIM' | 'DARK' }>;
   safeZones?: Array<{ id: string; x: number; y: number; radius: number }>;
   embeddedLightSources?: Array<Omit<LightSourceRuntime, 'falloff'> & { falloff?: 'hard' | 'gradient' }>;
+  shadowSpawn?: ShadowSpawnConfig;
   interactables: Interactable[];
   triggers: MapTrigger[];
 }
@@ -110,6 +127,10 @@ export class MapSystem {
 
   getSafeZones(mapId: string): Array<{ id: string; x: number; y: number; radius: number }> {
     return this.getMap(mapId).safeZones ?? [];
+  }
+
+  getShadowSpawnConfig(mapId: string): ShadowSpawnConfig | undefined {
+    return this.getMap(mapId).shadowSpawn;
   }
 
   getEmbeddedLightSources(mapId: string): LightSourceRuntime[] {

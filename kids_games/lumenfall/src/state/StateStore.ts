@@ -11,6 +11,8 @@ export interface DraftTx {
   touchRuntimeMapTriggerFlags(): void;
   touchRuntimeUi(): void;
   touchRuntimeDialogue(): void;
+  touchRuntimeShadows(): void;
+  touchRuntimeFlags(): void;
   touchRuntimeInventoryUi(): void;
   touchRuntimeCrafting(): void;
   touchRuntimeTime(): void;
@@ -24,6 +26,7 @@ export interface DraftTx {
   touchStory(): void;
   touchStoryFlags(): void;
   touchStoryInventory(): void;
+  touchStoryShadows(): void;
 }
 
 export class StateStore {
@@ -106,6 +109,24 @@ export class StateStore {
         if (!touched.has('runtime.dialogue')) {
           draftState.runtime.dialogue = { ...draftState.runtime.dialogue };
           touched.add('runtime.dialogue');
+        }
+      },
+      touchRuntimeShadows: () => {
+        touchRuntime();
+        if (!touched.has('runtime.shadows')) {
+          draftState.runtime.shadows = {
+            ...draftState.runtime.shadows,
+            env: [...draftState.runtime.shadows.env],
+            story: [...draftState.runtime.shadows.story],
+          };
+          touched.add('runtime.shadows');
+        }
+      },
+      touchRuntimeFlags: () => {
+        touchRuntime();
+        if (!touched.has('runtime.runtimeFlags')) {
+          draftState.runtime.runtimeFlags = { ...draftState.runtime.runtimeFlags };
+          touched.add('runtime.runtimeFlags');
         }
       },
       touchRuntimeInventoryUi: () => {
@@ -198,6 +219,16 @@ export class StateStore {
             nonStack: { ...draftState.story.storyInventory.nonStack },
           };
           touched.add('story.storyInventory');
+        }
+      },
+      touchStoryShadows: () => {
+        touchStory();
+        if (!touched.has('story.storyShadow')) {
+          draftState.story.storyShadow = {
+            ...draftState.story.storyShadow,
+            byId: { ...draftState.story.storyShadow.byId },
+          };
+          touched.add('story.storyShadow');
         }
       },
     };

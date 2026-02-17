@@ -98,6 +98,9 @@ export class CheckpointSystem {
     draft.runtime.crafting.slotB = undefined;
     draft.runtime.ui.messages = ['Your lantern dims...'];
     draft.runtime.map.transition = undefined;
+    draft.runtime.runtimeFlags = {};
+    draft.runtime.encounterContext = undefined;
+    draft.runtime.shadows = { env: [], story: [], lastEncounterAtMs: 0 };
 
     draft.runtime.map.currentMapId = snapshot.mapId;
     draft.runtime.player.x = snapshot.player.x;
