@@ -67,6 +67,8 @@ export class Renderer {
     this.drawTransition(state);
     this.drawFaintOverlay(state);
     this.drawInteractButton();
+    this.drawInventoryButton();
+    this.drawModals(state);
     if (this.showGrid) {
       this.drawSkipTimeButton();
     }
@@ -172,6 +174,55 @@ export class Renderer {
     this.ctx.fillStyle = 'white';
     this.ctx.font = '12px sans-serif';
     this.ctx.fillText('ACT', x + 18, y + 36);
+  }
+
+
+  private drawInventoryButton(): void {
+    const w = 88;
+    const h = 44;
+    const x = this.cssWidth - 184;
+    const y = this.cssHeight - 68;
+    this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    this.ctx.fillRect(x, y, w, h);
+    this.ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+    this.ctx.strokeRect(x, y, w, h);
+    this.ctx.fillStyle = 'white';
+    this.ctx.font = '14px sans-serif';
+    this.ctx.fillText('BAG', x + 24, y + 27);
+  }
+
+  private drawModals(state: Readonly<GameState>): void {
+    if (state.runtime.mode !== 'INVENTORY' && state.runtime.mode !== 'CRAFTING') return;
+    this.ctx.fillStyle = 'rgba(5,10,18,0.8)';
+    this.ctx.fillRect(80, 80, this.cssWidth - 160, this.cssHeight - 160);
+    this.ctx.strokeStyle = '#cbe8ff';
+    this.ctx.strokeRect(80, 80, this.cssWidth - 160, this.cssHeight - 160);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '24px sans-serif';
+    this.ctx.fillText(state.runtime.mode === 'INVENTORY' ? 'Inventory' : 'Mixing Table', 110, 120);
+
+    const items = Object.entries(state.global.inventory.items).filter(([, v]) => v.qty > 0);
+    this.ctx.font = '18px sans-serif';
+    items.slice(0, 7).forEach(([id, stack], idx) => {
+      const y = 160 + idx * 42;
+      const selected = state.runtime.inventoryUI.selectedItemId === id || state.runtime.crafting.slotA === id || state.runtime.crafting.slotB === id;
+      this.ctx.fillStyle = selected ? '#52c2ff' : '#ffffff';
+      this.ctx.fillText(`${id.replace(/_/g, ' ')} x${stack.qty}`, 120, y);
+    });
+
+    const bx = this.cssWidth / 2 - 150;
+    this.drawBigButton(bx, this.cssHeight - 170, 300, 50, state.runtime.mode === 'INVENTORY' ? 'Use selected' : 'Mix');
+    this.drawBigButton(bx, this.cssHeight - 105, 300, 50, 'Close');
+  }
+
+  private drawBigButton(x: number, y: number, w: number, h: number, text: string): void {
+    this.ctx.fillStyle = 'rgba(82,194,255,0.25)';
+    this.ctx.fillRect(x, y, w, h);
+    this.ctx.strokeStyle = '#8fdcff';
+    this.ctx.strokeRect(x, y, w, h);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '20px sans-serif';
+    this.ctx.fillText(text, x + 20, y + 32);
   }
 
   private drawSkipTimeButton(): void {

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "items": [
+    {"id": "ingredient_sunleaf", "name": "Sunleaf", "category": "ingredients", "stackable": true, "maxStack": 20},
+    {"id": "ingredient_glow_moth_dust", "name": "Glow Moth Dust", "category": "ingredients", "stackable": true, "maxStack": 20},
+    {"id": "ingredient_crystal_water", "name": "Crystal Water", "category": "ingredients", "stackable": true, "maxStack": 20},
+    {"id": "potion_small_cocoa", "name": "Small Cocoa", "category": "potions", "stackable": true, "maxStack": 10,
+      "effects": [{"op": "hp.delta", "value": 2}, {"op": "ui.message", "text": "Warm cocoa hugs your heart."}]},
+    {"id": "potion_glow_sip", "name": "Glow Sip", "category": "potions", "stackable": true, "maxStack": 10,
+      "effects": [{"op": "sp.delta", "value": 2}, {"op": "ui.message", "text": "Your spark feels brighter!"}]},
+    {"id": "potion_lantern_oil", "name": "Lantern Oil", "category": "tools", "stackable": true, "maxStack": 10,
+      "effects": [{"op": "status.add", "statusId": "lantern_oil", "durationSeconds": 60}, {"op": "ui.message", "text": "Lantern oil active for 60 seconds!"}]},
+    {"id": "potion_glowbomb", "name": "Glowbomb", "category": "tools", "stackable": true, "maxStack": 5,
+      "effects": [{"op": "areaEffect.cleanseShadows", "radius": 2, "filter": "environmental"}, {"op": "ui.message", "text": "Glowbomb bursts with friendly light!"}]}
+  ]
+}

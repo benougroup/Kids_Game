@@ -102,8 +102,9 @@ export class LightSystem {
     const mapId = state.runtime.map.currentMapId;
     const base = this.getBaseLightNumeric(mapId, x, y);
     let numeric = clampLight(base + state.runtime.light.ambient);
-    numeric = Math.max(numeric, this.getStaticSourceContribution(mapId, x, y));
-    numeric = Math.max(numeric, this.getDynamicContribution(state, x, y));
+    numeric = clampLight(Math.max(numeric, this.getStaticSourceContribution(mapId, x, y)));
+    numeric = clampLight(Math.max(numeric, this.getDynamicContribution(state, x, y)));
+
     return clampLight(numeric);
   }
 
@@ -253,7 +254,7 @@ export class LightSystem {
           const dx = x - source.x;
           const dy = y - source.y;
           if (dx * dx + dy * dy > source.radius * source.radius) continue;
-          best = Math.max(best, LIGHT_NUMERIC[source.intensity]);
+          best = clampLight(Math.max(best, LIGHT_NUMERIC[source.intensity]));
         }
         values[ly * this.chunkSize + lx] = best;
       }
@@ -265,10 +266,10 @@ export class LightSystem {
   private getDynamicContribution(state: Readonly<GameState>, x: number, y: number): 0 | 1 | 2 {
     let best: 0 | 1 | 2 = 0;
     const lantern = this.buildPlayerLanternSource(state);
-    best = Math.max(best, this.getSourceContributionAt(lantern, x, y));
+    best = clampLight(Math.max(best, this.getSourceContributionAt(lantern, x, y)));
 
     for (const source of Object.values(this.tempSources)) {
-      best = Math.max(best, this.getSourceContributionAt(source, x, y));
+      best = clampLight(Math.max(best, this.getSourceContributionAt(source, x, y)));
     }
 
     return best;

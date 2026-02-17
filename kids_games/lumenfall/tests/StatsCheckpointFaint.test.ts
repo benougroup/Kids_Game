@@ -59,7 +59,7 @@ describe('CheckpointSystem restore', () => {
     tx.touchRuntimeMap();
     tx.touchRuntimeUi();
     tx.draftState.runtime.dialogue = { active: true, nodeId: 'abc' };
-    tx.draftState.runtime.crafting = { active: true, recipeId: 'r1' };
+    tx.draftState.runtime.crafting = { open: true, mixingTableId: 'r1' };
     tx.draftState.runtime.map.transition = { toMapId: 'light_hall', toX: 1, toY: 1, phase: 'fadeOut', t: 0.5 };
     tx.draftState.runtime.ui.messages = ['old'];
 
@@ -68,7 +68,7 @@ describe('CheckpointSystem restore', () => {
 
     const state = store.get();
     expect(state.runtime.dialogue.active).toBe(false);
-    expect(state.runtime.crafting.active).toBe(false);
+    expect(state.runtime.crafting.open).toBe(false);
     expect(state.runtime.map.transition).toBeUndefined();
     expect(state.runtime.ui.messages).toEqual(['Your lantern dims...']);
   });
@@ -79,7 +79,7 @@ describe('CheckpointSystem restore', () => {
     tx.touchStory();
     tx.draftState.story.flags['met_npc'] = true;
     tx.draftState.story.stage['story01'] = 's2';
-    tx.draftState.story.storyInventory['lantern_oil'] = 3;
+    tx.draftState.story.storyInventory.items['lantern_oil'] = { qty: 3 };
     tx.draftState.story.storyShadow.byId['x'] = { note: 'shadow' };
 
     checkpointSystem.setCheckpoint(tx, 'cp_story');
@@ -87,7 +87,7 @@ describe('CheckpointSystem restore', () => {
 
     tx.draftState.story.flags['met_npc'] = false;
     tx.draftState.story.stage['story01'] = 'other';
-    tx.draftState.story.storyInventory['lantern_oil'] = 0;
+    tx.draftState.story.storyInventory.items['lantern_oil'] = { qty: 0 };
 
     checkpointSystem.restoreFromSnapshot(tx, snapshot);
     store.commitTx(tx);
@@ -95,7 +95,7 @@ describe('CheckpointSystem restore', () => {
     const story = store.get().story;
     expect(story.flags['met_npc']).toBe(true);
     expect(story.stage['story01']).toBe('s2');
-    expect(story.storyInventory['lantern_oil']).toBe(3);
+    expect(story.storyInventory.items['lantern_oil'].qty).toBe(3);
     expect(story.storyShadow.byId['x']).toEqual({ note: 'shadow' });
   });
 });

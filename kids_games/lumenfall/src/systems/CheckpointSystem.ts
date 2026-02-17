@@ -53,7 +53,10 @@ export class CheckpointSystem {
           trust: { ...draft.story.npc.trust },
           npcFlags: {},
         },
-        storyInventory: { ...draft.story.storyInventory },
+        storyInventory: {
+          items: Object.fromEntries(Object.entries(draft.story.storyInventory.items).map(([id, stack]) => [id, { ...stack }])),
+          nonStack: { ...draft.story.storyInventory.nonStack },
+        },
         storyShadowById: { ...draft.story.storyShadow.byId },
       },
       time: {
@@ -75,14 +78,18 @@ export class CheckpointSystem {
     tx.touchRuntimePlayer();
     tx.touchRuntimeUi();
     tx.touchRuntimeDialogue();
+    tx.touchRuntimeInventoryUi();
     tx.touchRuntimeCrafting();
 
     const draft = tx.draftState;
 
     draft.runtime.dialogue.active = false;
     draft.runtime.dialogue.nodeId = null;
-    draft.runtime.crafting.active = false;
-    draft.runtime.crafting.recipeId = null;
+    draft.runtime.inventoryUI.open = false;
+    draft.runtime.inventoryUI.selectedItemId = undefined;
+    draft.runtime.crafting.open = false;
+    draft.runtime.crafting.slotA = undefined;
+    draft.runtime.crafting.slotB = undefined;
     draft.runtime.ui.messages = ['Your lantern dims...'];
     draft.runtime.map.transition = undefined;
 
@@ -109,7 +116,10 @@ export class CheckpointSystem {
         townFear: snapshot.story.npc.townFear,
         trust: { ...snapshot.story.npc.trust },
       },
-      storyInventory: { ...snapshot.story.storyInventory },
+      storyInventory: {
+        items: Object.fromEntries(Object.entries(snapshot.story.storyInventory.items).map(([id, stack]) => [id, { ...stack }])),
+        nonStack: { ...snapshot.story.storyInventory.nonStack },
+      },
       storyShadow: {
         byId: { ...snapshot.story.storyShadowById },
       },

@@ -22,7 +22,10 @@ interface MapTransition {
   t: number;
 }
 
-export type InventoryState = Record<string, number>;
+export interface InventoryState {
+  items: Record<string, { qty: number }>;
+  nonStack: Record<string, boolean>;
+}
 
 export type SnapshotFacing = 'N' | 'S' | 'E' | 'W';
 
@@ -65,7 +68,7 @@ export interface GameState {
       permanentTools: Record<string, boolean>;
       upgrades: Record<string, number>;
     };
-    inventory: Record<string, number>;
+    inventory: InventoryState;
   };
   story: {
     activeStoryId: string;
@@ -109,7 +112,7 @@ export interface GameState {
       facing: 'up' | 'down' | 'left' | 'right';
       hp: number;
       sp: number;
-      status: Record<string, boolean>;
+      status: Record<string, number | boolean>;
     };
     ui: {
       messages: string[];
@@ -118,9 +121,17 @@ export interface GameState {
       active: boolean;
       nodeId: string | null;
     };
+    inventoryUI: {
+      open: boolean;
+      category: 'all' | 'potions' | 'ingredients' | 'tools' | 'storyKeys';
+      selectedItemId?: string;
+    };
     crafting: {
-      active: boolean;
-      recipeId: string | null;
+      open: boolean;
+      mixingTableId?: string;
+      slotA?: string;
+      slotB?: string;
+      lastResult?: { ok: boolean; text: string };
     };
     checkpoint: {
       lastCheckpointId: string | null;
@@ -140,6 +151,8 @@ export interface GameState {
   };
 }
 
+export const createEmptyInventory = (): InventoryState => ({ items: {}, nonStack: {} });
+
 export const createInitialState = (): GameState => ({
   saveVersion: 1,
   global: {
@@ -149,7 +162,7 @@ export const createInitialState = (): GameState => ({
       permanentTools: {},
       upgrades: {},
     },
-    inventory: {},
+    inventory: createEmptyInventory(),
   },
   story: {
     activeStoryId: 'story01',
@@ -159,7 +172,7 @@ export const createInitialState = (): GameState => ({
       townFear: 0,
       trust: {},
     },
-    storyInventory: {},
+    storyInventory: createEmptyInventory(),
     storyShadow: {
       byId: {},
     },
@@ -203,9 +216,12 @@ export const createInitialState = (): GameState => ({
       active: false,
       nodeId: null,
     },
+    inventoryUI: {
+      open: false,
+      category: 'all',
+    },
     crafting: {
-      active: false,
-      recipeId: null,
+      open: false,
     },
     checkpoint: {
       lastCheckpointId: null,
