@@ -27,12 +27,12 @@ export interface MapTrigger {
 
 export interface Interactable {
   id: string;
-  type: 'door';
+  type: 'door' | 'mixingTable';
   x: number;
   y: number;
-  toMapId: string;
-  toX: number;
-  toY: number;
+  toMapId?: string;
+  toX?: number;
+  toY?: number;
 }
 
 export interface TileMap {

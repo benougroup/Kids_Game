@@ -1,9 +1,18 @@
 import { GAME_MODES } from '../app/ModeMachine';
-import type { GameState } from './StateTypes';
+import type { GameState, InventoryState } from './StateTypes';
 
 const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
 const clamp = (value: number, min: number, max: number): number => Math.max(min, Math.min(max, value));
+
+const normalizeInventory = (inv: InventoryState, scope: string, issues: string[]): void => {
+  for (const [itemId, stack] of Object.entries(inv.items)) {
+    if (stack.qty < 0) {
+      issues.push(`${scope} ${itemId} is negative (${stack.qty})`);
+      inv.items[itemId] = { qty: 0 };
+    }
+  }
+};
 
 export const validateInvariants = (state: GameState): void => {
   const issues: string[] = [];
@@ -23,19 +32,8 @@ export const validateInvariants = (state: GameState): void => {
     state.runtime.player.sp = nextSP;
   }
 
-  for (const [itemId, qty] of Object.entries(state.global.inventory)) {
-    if (qty < 0) {
-      issues.push(`global.inventory ${itemId} is negative (${qty})`);
-      state.global.inventory[itemId] = 0;
-    }
-  }
-
-  for (const [itemId, qty] of Object.entries(state.story.storyInventory)) {
-    if (qty < 0) {
-      issues.push(`story.storyInventory ${itemId} is negative (${qty})`);
-      state.story.storyInventory[itemId] = 0;
-    }
-  }
+  normalizeInventory(state.global.inventory, 'global.inventory', issues);
+  normalizeInventory(state.story.storyInventory, 'story.storyInventory', issues);
 
   if (!(GAME_MODES as readonly string[]).includes(state.runtime.mode)) {
     issues.push(`runtime.mode invalid (${state.runtime.mode as string})`);

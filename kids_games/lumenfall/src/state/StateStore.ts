@@ -11,6 +11,7 @@ export interface DraftTx {
   touchRuntimeMapTriggerFlags(): void;
   touchRuntimeUi(): void;
   touchRuntimeDialogue(): void;
+  touchRuntimeInventoryUi(): void;
   touchRuntimeCrafting(): void;
   touchRuntimeTime(): void;
   touchRuntimeLight(): void;
@@ -107,6 +108,13 @@ export class StateStore {
           touched.add('runtime.dialogue');
         }
       },
+      touchRuntimeInventoryUi: () => {
+        touchRuntime();
+        if (!touched.has('runtime.inventoryUI')) {
+          draftState.runtime.inventoryUI = { ...draftState.runtime.inventoryUI };
+          touched.add('runtime.inventoryUI');
+        }
+      },
       touchRuntimeCrafting: () => {
         touchRuntime();
         if (!touched.has('runtime.crafting')) {
@@ -167,7 +175,10 @@ export class StateStore {
       touchInventoryGlobal: () => {
         touchGlobal();
         if (!touched.has('global.inventory')) {
-          draftState.global.inventory = { ...draftState.global.inventory };
+          draftState.global.inventory = {
+            items: Object.fromEntries(Object.entries(draftState.global.inventory.items).map(([id, stack]) => [id, { ...stack }])),
+            nonStack: { ...draftState.global.inventory.nonStack },
+          };
           touched.add('global.inventory');
         }
       },
@@ -182,7 +193,10 @@ export class StateStore {
       touchStoryInventory: () => {
         touchStory();
         if (!touched.has('story.storyInventory')) {
-          draftState.story.storyInventory = { ...draftState.story.storyInventory };
+          draftState.story.storyInventory = {
+            items: Object.fromEntries(Object.entries(draftState.story.storyInventory.items).map(([id, stack]) => [id, { ...stack }])),
+            nonStack: { ...draftState.story.storyInventory.nonStack },
+          };
           touched.add('story.storyInventory');
         }
       },

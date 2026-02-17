@@ -15,6 +15,10 @@ import { TimeSystem } from '../systems/TimeSystem';
 import { LightSystem } from '../systems/LightSystem';
 import { CheckpointSystem } from '../systems/CheckpointSystem';
 import { damage } from '../systems/StatsSystem';
+import { inventorySystem } from '../systems/InventorySystem';
+import { itemDatabase } from '../systems/ItemDatabase';
+import { EffectInterpreter } from '../systems/EffectInterpreter';
+import { CraftingSystem } from '../systems/CraftingSystem';
 
 const WORLD_TILE_WIDTH = 100;
 const WORLD_TILE_HEIGHT = 100;
@@ -30,6 +34,8 @@ export class GameApp {
   private readonly checkpointSystem = new CheckpointSystem(this.bus);
   private readonly playerSystem = new PlayerSystem(this.mapSystem);
   private readonly triggerSystem = new TriggerSystem(this.mapSystem, this.checkpointSystem);
+  private readonly effectInterpreter = new EffectInterpreter(this.bus);
+  private readonly craftingSystem = new CraftingSystem(this.checkpointSystem);
   private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
   private readonly lightSystem = new LightSystem({ mapSystem: this.mapSystem, bus: this.bus });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
@@ -61,6 +67,9 @@ export class GameApp {
     const tx = this.store.beginTx('light_init');
     this.lightSystem.initialize(this.store.get(), tx);
     this.ensureFallbackCheckpoint(tx);
+    inventorySystem.addItem(tx, 'ingredient_sunleaf', 3, 'global');
+    inventorySystem.addItem(tx, 'ingredient_glow_moth_dust', 3, 'global');
+    inventorySystem.addItem(tx, 'ingredient_crystal_water', 3, 'global');
     this.store.commitTx(tx);
   }
 
@@ -70,7 +79,7 @@ export class GameApp {
 
   private readonly update = (dtMs: number): void => {
     const state = this.store.get();
-    const polled = this.input.poll(state.runtime.mode, state.runtime.player.x, state.runtime.player.y);
+    const polled = this.input.poll(state.runtime.mode, state.runtime.player.x, state.runtime.player.y, state);
 
     for (const command of polled.commands) {
       this.commandQueue.enqueue(command);
@@ -87,6 +96,7 @@ export class GameApp {
       tx.touchRuntimeMapTriggerFlags();
       tx.touchRuntimeTime();
       tx.touchRuntimeSave();
+      tx.touchRuntimeInventoryUi();
 
       if (draft.runtime.mode === 'FAINTING') {
         this.stepFainting(dtMs, tx);
@@ -106,6 +116,12 @@ export class GameApp {
             interactPressed: polled.interactPressed,
             nowMs: performance.now(),
           });
+          if (polled.interactPressed) {
+            const i = this.mapSystem.findInteractableAt(tx.draftState.runtime.map.currentMapId, tx.draftState.runtime.player.x, tx.draftState.runtime.player.y);
+            if (i?.type === 'mixingTable') {
+              this.craftingSystem.open(tx, i.id);
+            }
+          }
           this.applyCommands(this.commandQueue.drain(), tx.draftState.runtime.mode, tx);
         }
       }
@@ -173,6 +189,49 @@ export class GameApp {
         continue;
       }
 
+
+      if (command.kind === 'ToggleInventory') {
+        tx.touchRuntime();
+        tx.touchRuntimeTime();
+        tx.touchRuntimeInventoryUi();
+        const opening = !tx.draftState.runtime.inventoryUI.open;
+        tx.draftState.runtime.inventoryUI.open = opening;
+        tx.draftState.runtime.mode = opening ? 'INVENTORY' : 'EXPLORE';
+        tx.draftState.runtime.time.paused = opening;
+        continue;
+      }
+
+      if (command.kind === 'InventorySelectItem') {
+        tx.touchRuntimeInventoryUi();
+        tx.draftState.runtime.inventoryUI.selectedItemId = command.itemId;
+        continue;
+      }
+
+      if (command.kind === 'InventoryUseSelected') {
+        const selected = tx.draftState.runtime.inventoryUI.selectedItemId;
+        if (!selected) continue;
+        const item = itemDatabase.getItem(selected);
+        if (!item?.effects || inventorySystem.getQty(tx.draftState, selected, 'global') <= 0) continue;
+        if (inventorySystem.removeItem(tx, selected, 1, 'global')) {
+          this.effectInterpreter.applyEffects(tx, item.effects, { scope: 'global' });
+        }
+        continue;
+      }
+
+      if (command.kind === 'CraftingSetSlot') {
+        this.craftingSystem.setSlot(tx, command.slot, command.itemId);
+        continue;
+      }
+
+      if (command.kind === 'CraftingMix') {
+        this.craftingSystem.mix(tx);
+        continue;
+      }
+
+      if (command.kind === 'CraftingClose') {
+        this.craftingSystem.close(tx);
+        continue;
+      }
       if (command.kind === 'RequestMode') {
         const requestedMode = command.nextMode === 'MENU' && mode === 'MENU' ? 'EXPLORE' : command.nextMode;
         const nextMode = this.modeMachine.requestMode(mode, requestedMode);
