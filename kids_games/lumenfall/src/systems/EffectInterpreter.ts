@@ -13,7 +13,7 @@ interface MutationPlan {
   inventoryAdds: Array<{ itemId: string; qty: number; scope: InventoryScope }>;
   hpDelta: number;
   spDelta: number;
-  flags: Array<{ key: string; value: boolean }>;
+  flags: Array<{ key: string; value: unknown }>;
   checkpointSet?: string;
   checkpointSnapshot: boolean;
   mapTeleport?: { x: number; y: number };
@@ -131,9 +131,22 @@ export class EffectInterpreter {
     tx.draftState.runtime.player.sp = Math.max(0, Math.min(tx.draftState.global.player.maxSP, tx.draftState.runtime.player.sp + plan.spDelta));
 
     if (plan.flags.length > 0) {
-      tx.touchStoryFlags();
       for (const flag of plan.flags) {
-        tx.draftState.story.flags[flag.key] = flag.value;
+        if (flag.key.startsWith('runtime.')) {
+          tx.touchRuntimeFlags();
+          const value =
+            flag.key === 'runtime.shadowAction' && typeof flag.value === 'object' && flag.value
+              ? {
+                  ...(flag.value as Record<string, unknown>),
+                  shadowId:
+                    (flag.value as Record<string, unknown>).shadowId ?? tx.draftState.runtime.encounterContext?.shadowId,
+                }
+              : flag.value;
+          tx.draftState.runtime.runtimeFlags[flag.key] = value;
+        } else {
+          tx.touchStoryFlags();
+          tx.draftState.story.flags[flag.key] = Boolean(flag.value);
+        }
       }
     }
 

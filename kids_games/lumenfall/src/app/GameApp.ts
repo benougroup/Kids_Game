@@ -20,6 +20,8 @@ import { itemDatabase } from '../systems/ItemDatabase';
 import { EffectInterpreter } from '../systems/EffectInterpreter';
 import { CraftingSystem } from '../systems/CraftingSystem';
 import { DialogueSystem } from '../systems/DialogueSystem';
+import { ShadowSystem } from '../systems/ShadowSystem';
+import { encounterDatabase } from '../systems/EncounterDatabase';
 
 const WORLD_TILE_WIDTH = 100;
 const WORLD_TILE_HEIGHT = 100;
@@ -45,6 +47,7 @@ export class GameApp {
   private readonly craftingSystem = new CraftingSystem(this.checkpointSystem);
   private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
   private readonly lightSystem = new LightSystem({ mapSystem: this.mapSystem, bus: this.bus });
+  private readonly shadowSystem = new ShadowSystem({ mapSystem: this.mapSystem, lightSystem: this.lightSystem, commandQueue: this.commandQueue });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
   private readonly renderer: Renderer;
   private readonly input: Input;
@@ -58,6 +61,17 @@ export class GameApp {
 
     this.bus.on('MODE_CHANGED', (event) => {
       this.logger.info(`Mode changed: ${event.from} -> ${event.to}`);
+    });
+
+    this.bus.on('TIME_PHASE_START', (event) => {
+      const tx = this.store.beginTx('shadow_phase_sync');
+      try {
+        this.shadowSystem.handlePhaseStart(event.phase, tx);
+        this.store.commitTx(tx);
+      } catch (error) {
+        this.store.rollbackTx(tx);
+        this.logger.error('Shadow phase sync failed', error);
+      }
     });
 
     this.bus.on('TIME_PHASE_CHANGED', (event) => {
@@ -130,6 +144,7 @@ export class GameApp {
             }
           }
           this.applyCommands(this.commandQueue.drain(), tx.draftState.runtime.mode, tx);
+          this.shadowSystem.update(tx, performance.now(), dtMs);
         }
       }
 
@@ -211,8 +226,13 @@ export class GameApp {
       }
 
       if (command.kind === 'StartEncounter') {
-        tx.touchRuntimeUi();
-        tx.draftState.runtime.ui.messages.push(`Encounter queued: ${command.templateId}`);
+        if (encounterDatabase.hasTemplate(command.templateId)) {
+          this.dialogueSystem.startScene(tx, 'encounter', command.templateId);
+          mode = tx.draftState.runtime.mode;
+        } else {
+          tx.touchRuntimeUi();
+          tx.draftState.runtime.ui.messages.push(`Encounter missing: ${command.templateId}`);
+        }
         continue;
       }
 

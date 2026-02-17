@@ -49,6 +49,7 @@ export class Renderer {
 
     this.drawMap(state, 'ground');
     this.drawMap(state, 'decor');
+    this.drawShadows(state);
 
     const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
     this.ctx.fillStyle = '#7ad7ff';
@@ -106,6 +107,23 @@ export class Renderer {
     }
   }
 
+
+
+  private drawShadows(state: Readonly<GameState>): void {
+    const all = [...state.runtime.shadows.env, ...state.runtime.shadows.story];
+    for (const shadow of all) {
+      const screen = this.camera.worldToScreen(shadow.x * TILE_SIZE, shadow.y * TILE_SIZE);
+      this.ctx.fillStyle = shadow.category === 'story' ? 'rgba(20,20,30,0.65)' : 'rgba(5,5,12,0.55)';
+      this.ctx.beginPath();
+      this.ctx.arc(screen.x + TILE_SIZE / 2, screen.y + TILE_SIZE / 2, TILE_SIZE * 0.35, 0, Math.PI * 2);
+      this.ctx.fill();
+      if (this.showGrid) {
+        this.ctx.fillStyle = '#d0d0d0';
+        this.ctx.font = '10px monospace';
+        this.ctx.fillText(shadow.state[0].toUpperCase(), screen.x + 10, screen.y + 19);
+      }
+    }
+  }
 
   private drawLightOverlay(state: Readonly<GameState>): void {
     const map = this.mapSystem.getCurrentMap(state);

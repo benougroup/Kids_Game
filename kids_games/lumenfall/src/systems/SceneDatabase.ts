@@ -1,4 +1,5 @@
 import demoScenesJson from '../data/scenes/demo.scenes.json';
+import encountersJson from '../data/encounters.json';
 
 export type SceneText = string | string[];
 
@@ -16,7 +17,7 @@ export type SceneEffectOp =
   | { op: 'hp.delta'; value: number }
   | { op: 'sp.delta'; value: number }
   | { op: 'inventory.add' | 'inventory.remove'; itemId: string; qty: number; scope?: 'global' | 'story' }
-  | { op: 'flag.set'; key: string; value: boolean }
+  | { op: 'flag.set'; key: string; value: unknown }
   | { op: 'checkpoint.set'; checkpointId: string }
   | { op: 'checkpoint.snapshot' }
   | { op: 'crafting.open' }
@@ -51,6 +52,7 @@ interface SceneFileShape {
 
 const sceneFileRegistry: Record<string, SceneFileShape> = {
   'scenes/demo.scenes.json': demoScenesJson as SceneFileShape,
+  'encounters.json': encountersJson as SceneFileShape,
 };
 
 const makeErrorNode = (message: string): SceneNode => ({
