@@ -137,9 +137,12 @@ export class Renderer {
 
   private drawNpcs(state: Readonly<GameState>): void {
     const map = this.mapSystem.getCurrentMap(state);
+    const charWidth = TILE_SIZE;
+    const charHeight = TILE_SIZE * 1.5;
+    const offsetY = -(charHeight - TILE_SIZE);
     for (const npc of map.npcs ?? []) {
       const screen = this.camera.worldToScreen(npc.x * TILE_SIZE, npc.y * TILE_SIZE);
-      this.drawSprite(npc.spriteId, Math.round(screen.x), Math.round(screen.y));
+      this.drawSprite(npc.spriteId, Math.round(screen.x), Math.round(screen.y + offsetY), charWidth, charHeight);
     }
   }
 
@@ -147,7 +150,11 @@ export class Renderer {
     this.playerAnimation.setClip('player_idle');
     this.playerAnimation.update(this.frameDtMs);
     const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
-    if (!this.drawSprite(this.playerAnimation.currentFrameSpriteId(), Math.round(playerScreen.x), Math.round(playerScreen.y))) {
+    // Character sprites are 1.5x taller than tiles (48 pixels tall vs 32 wide)
+    const charWidth = TILE_SIZE;
+    const charHeight = TILE_SIZE * 1.5;
+    const offsetY = -(charHeight - TILE_SIZE); // Align bottom of sprite with tile
+    if (!this.drawSprite(this.playerAnimation.currentFrameSpriteId(), Math.round(playerScreen.x), Math.round(playerScreen.y + offsetY), charWidth, charHeight)) {
       this.ctx.fillStyle = '#7ad7ff';
       this.ctx.fillRect(Math.round(playerScreen.x), Math.round(playerScreen.y), TILE_SIZE, TILE_SIZE);
     }
@@ -174,21 +181,26 @@ export class Renderer {
     }
   }
 
-  private drawSprite(spriteId: string | null, screenX: number, screenY: number): boolean {
+  private drawSprite(spriteId: string | null, screenX: number, screenY: number, width?: number, height?: number): boolean {
     if (!spriteId || !this.assetManager) return false;
     const image = this.assetManager.getImage();
     const rect = this.assetManager.getSpriteRect(spriteId);
     if (!image || !rect) return false;
-    this.drawSpriteRect(image, rect, screenX, screenY);
+    this.drawSpriteRect(image, rect, screenX, screenY, width, height);
     return true;
   }
 
-  private drawSpriteRect(image: HTMLImageElement, rect: SpriteRect, x: number, y: number): void {
-    this.ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h, x, y, TILE_SIZE, TILE_SIZE);
+  private drawSpriteRect(image: HTMLImageElement, rect: SpriteRect, x: number, y: number, width?: number, height?: number): void {
+    const zoom = this.camera.getZoom();
+    const w = (width ?? TILE_SIZE) * zoom;
+    const h = (height ?? TILE_SIZE) * zoom;
+    this.ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h, x, y, w, h);
   }
 
   private drawLightOverlay(state: Readonly<GameState>): void {
     const r = this.viewportRange;
+    const zoom = this.camera.getZoom();
+    const tileSize = TILE_SIZE * zoom;
     for (let y = r.minY; y <= r.maxY; y += 1) {
       for (let x = r.minX; x <= r.maxX; x += 1) {
         const level = this.lightSystem.getTileLightLevel(state, x, y);
@@ -196,7 +208,7 @@ export class Renderer {
         if (alpha <= 0) continue;
         const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
         this.ctx.fillStyle = alpha === 0.35 ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.15)';
-        this.ctx.fillRect(Math.round(screen.x), Math.round(screen.y), TILE_SIZE, TILE_SIZE);
+        this.ctx.fillRect(Math.round(screen.x), Math.round(screen.y), tileSize, tileSize);
       }
     }
   }
@@ -213,6 +225,73 @@ export class Renderer {
     const perf = this.lightSystem.getPerfCounters();
     this.ctx.fillText(`FPS: ${fps.toFixed(1)} dt: ${this.frameDtMs.toFixed(2)}ms avg: ${this.frameAvgMs.toFixed(2)}ms`, 16, 112);
     this.ctx.fillText(`Visible tiles: ${this.visibleTiles} lightChunkHit: ${(perf.hitRate * 100).toFixed(1)}%`, 16, 130);
+    
+    // Draw minimap
+    this.drawMinimap(state);
+  }
+
+  private drawMinimap(state: Readonly<GameState>): void {
+    const minimapSize = 150;
+    const minimapX = this.cssWidth - minimapSize - 16;
+    const minimapY = 16;
+    const map = this.mapSystem.getCurrentMap(state);
+    const mapWidth = map.width;
+    const mapHeight = map.height;
+    const scale = Math.min(minimapSize / mapWidth, minimapSize / mapHeight);
+    
+    // Background
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+    this.ctx.fillRect(minimapX - 4, minimapY - 4, minimapSize + 8, minimapSize + 8);
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(minimapX - 4, minimapY - 4, minimapSize + 8, minimapSize + 8);
+    
+    // Draw simplified map tiles
+    for (let y = 0; y < mapHeight; y++) {
+      for (let x = 0; x < mapWidth; x++) {
+        const groundLayer = map.layers?.ground;
+        if (!groundLayer || !Array.isArray(groundLayer)) continue;
+        const row = groundLayer[y];
+        if (!row || !Array.isArray(row)) continue;
+        const tile = row[x];
+        if (!tile) continue;
+        const spriteId = resolveTileSpriteId(tile);
+        let color = '#404040';
+        if (spriteId?.includes('grass')) color = '#3a8f3a';
+        else if (spriteId?.includes('dirt')) color = '#8b5a2b';
+        else if (spriteId?.includes('stone')) color = '#808080';
+        else if (spriteId?.includes('water')) color = '#4a90e2';
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(
+          minimapX + x * scale,
+          minimapY + y * scale,
+          Math.ceil(scale),
+          Math.ceil(scale)
+        );
+      }
+    }
+    
+    // Draw player position
+    const playerMinimapX = minimapX + state.runtime.player.x * scale;
+    const playerMinimapY = minimapY + state.runtime.player.y * scale;
+    this.ctx.fillStyle = '#ffff00';
+    this.ctx.beginPath();
+    this.ctx.arc(playerMinimapX + scale / 2, playerMinimapY + scale / 2, 3, 0, Math.PI * 2);
+    this.ctx.fill();
+    
+    // Draw NPCs
+    this.ctx.fillStyle = '#ff6600';
+    for (const npc of map.npcs ?? []) {
+      this.ctx.beginPath();
+      this.ctx.arc(
+        minimapX + npc.x * scale + scale / 2,
+        minimapY + npc.y * scale + scale / 2,
+        2,
+        0,
+        Math.PI * 2
+      );
+      this.ctx.fill();
+    }
   }
 
   private drawTransition(state: Readonly<GameState>): void {
@@ -293,8 +372,10 @@ export class Renderer {
     this.ctx.save();
     this.ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     this.ctx.lineWidth = 1;
-    for (let x = 0; x < this.cssWidth; x += TILE_SIZE) { this.ctx.beginPath(); this.ctx.moveTo(x + 0.5, 0); this.ctx.lineTo(x + 0.5, this.cssHeight); this.ctx.stroke(); }
-    for (let y = 0; y < this.cssHeight; y += TILE_SIZE) { this.ctx.beginPath(); this.ctx.moveTo(0, y + 0.5); this.ctx.lineTo(this.cssWidth, y + 0.5); this.ctx.stroke(); }
+    const zoom = this.camera.getZoom();
+    const tileSize = TILE_SIZE * zoom;
+    for (let x = 0; x < this.cssWidth; x += tileSize) { this.ctx.beginPath(); this.ctx.moveTo(x + 0.5, 0); this.ctx.lineTo(x + 0.5, this.cssHeight); this.ctx.stroke(); }
+    for (let y = 0; y < this.cssHeight; y += tileSize) { this.ctx.beginPath(); this.ctx.moveTo(0, y + 0.5); this.ctx.lineTo(this.cssWidth, y + 0.5); this.ctx.stroke(); }
     this.ctx.restore();
   }
 }
