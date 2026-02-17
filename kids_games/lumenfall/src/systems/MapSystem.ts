@@ -60,11 +60,12 @@ export interface TileMap {
   width: number;
   height: number;
   layers: Record<LayerName, number[]>;
-  tilePalette: Record<string, { name: string; color: string }>;
+  tilePalette: Record<string, { name: string; color: string; spriteId?: string }>;
   tileDefs?: Record<string, { baseLight?: 'BRIGHT' | 'DIM' | 'DARK' }>;
   safeZones?: Array<{ id: string; x: number; y: number; radius: number }>;
   embeddedLightSources?: Array<Omit<LightSourceRuntime, 'falloff'> & { falloff?: 'hard' | 'gradient' }>;
   shadowSpawn?: ShadowSpawnConfig;
+  npcs?: Array<{ id: string; x: number; y: number; spriteId: string }>;
   interactables: Interactable[];
   triggers: MapTrigger[];
 }

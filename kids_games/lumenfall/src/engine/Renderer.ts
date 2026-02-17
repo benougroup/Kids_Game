@@ -4,6 +4,18 @@ import type { GameState } from '../state/StateTypes';
 import { MapSystem, getTransitionOverlayAlpha } from '../systems/MapSystem';
 import { LightSystem } from '../systems/LightSystem';
 import { storyDatabase } from '../systems/StoryDatabase';
+import { type SpriteRect, AssetManager } from './AssetManager';
+import { AnimationPlayer, type Clip } from './Animation';
+
+const RENDER_CLIPS: Record<string, Clip> = {
+  player_idle: {
+    frames: ['player_idle_0', 'player_idle_1'],
+    frameDurationMs: 240,
+    loop: true,
+  },
+};
+
+export const resolveTileSpriteId = (def: { spriteId?: string }): string | null => def.spriteId ?? null;
 
 export class Renderer {
   private readonly ctx: CanvasRenderingContext2D;
@@ -18,6 +30,8 @@ export class Renderer {
   private lastRenderAt = performance.now();
   private visibleTiles = 0;
   private readonly viewportRange = { minX: 0, minY: 0, maxX: 0, maxY: 0 };
+  private assetManager: AssetManager | null = null;
+  private readonly playerAnimation = new AnimationPlayer(RENDER_CLIPS, 'player_idle');
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
@@ -32,6 +46,10 @@ export class Renderer {
     window.addEventListener('resize', this.resize);
   }
 
+  setAssetManager(assetManager: AssetManager): void {
+    this.assetManager = assetManager;
+  }
+
   readonly resize = (): void => {
     this.dpr = window.devicePixelRatio || 1;
     this.cssWidth = window.innerWidth;
@@ -41,6 +59,7 @@ export class Renderer {
     this.canvas.style.width = `${this.cssWidth}px`;
     this.canvas.style.height = `${this.cssHeight}px`;
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    this.ctx.imageSmoothingEnabled = false;
   };
 
   render(state: Readonly<GameState>, fps: number): void {
@@ -50,22 +69,27 @@ export class Renderer {
     this.frameAvgMs = this.frameAvgMs <= 0 ? this.frameDtMs : this.frameAvgMs * 0.9 + this.frameDtMs * 0.1;
 
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    this.ctx.imageSmoothingEnabled = false;
     this.ctx.fillStyle = '#0b1020';
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
+
+    if (state.runtime.mode === 'LOADING') {
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.font = '24px monospace';
+      this.ctx.fillText('Loading...', 24, 42);
+      return;
+    }
 
     this.camera.follow(state.runtime.player.px, state.runtime.player.py, this.cssWidth, this.cssHeight);
     this.computeViewportRange(state.runtime.map.currentMapId);
 
     this.drawMap(state, 'ground');
     this.drawMap(state, 'decor');
-    this.drawShadows(state);
-
-    const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
-    this.ctx.fillStyle = '#7ad7ff';
-    this.ctx.fillRect(playerScreen.x, playerScreen.y, TILE_SIZE, TILE_SIZE);
-
     this.drawMap(state, 'overlay');
     if (this.showLightOverlay) this.drawLightOverlay(state);
+    this.drawShadows(state);
+    this.drawNpcs(state);
+    this.drawPlayer(state);
     if (this.showGrid) this.drawGrid();
 
     this.drawHud(state, fps);
@@ -100,9 +124,32 @@ export class Renderer {
         if (layer !== 'ground' && tileId === 0) continue;
         const def = map.tilePalette[String(tileId)] ?? map.tilePalette['0'];
         const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
-        this.ctx.fillStyle = def.color;
-        this.ctx.fillRect(screen.x, screen.y, TILE_SIZE, TILE_SIZE);
+        const px = Math.round(screen.x);
+        const py = Math.round(screen.y);
+        const tileSpriteId = resolveTileSpriteId(def);
+        if (!this.drawSprite(tileSpriteId, px, py)) {
+          this.ctx.fillStyle = def.color;
+          this.ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+        }
       }
+    }
+  }
+
+  private drawNpcs(state: Readonly<GameState>): void {
+    const map = this.mapSystem.getCurrentMap(state);
+    for (const npc of map.npcs ?? []) {
+      const screen = this.camera.worldToScreen(npc.x * TILE_SIZE, npc.y * TILE_SIZE);
+      this.drawSprite(npc.spriteId, Math.round(screen.x), Math.round(screen.y));
+    }
+  }
+
+  private drawPlayer(state: Readonly<GameState>): void {
+    this.playerAnimation.setClip('player_idle');
+    this.playerAnimation.update(this.frameDtMs);
+    const playerScreen = this.camera.worldToScreen(state.runtime.player.px, state.runtime.player.py);
+    if (!this.drawSprite(this.playerAnimation.currentFrameSpriteId(), Math.round(playerScreen.x), Math.round(playerScreen.y))) {
+      this.ctx.fillStyle = '#7ad7ff';
+      this.ctx.fillRect(Math.round(playerScreen.x), Math.round(playerScreen.y), TILE_SIZE, TILE_SIZE);
     }
   }
 
@@ -113,15 +160,31 @@ export class Renderer {
 
   private drawShadow(category: 'environmental' | 'story', label: string, x: number, y: number): void {
     const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
+    const px = Math.round(screen.x);
+    const py = Math.round(screen.y);
+    if (this.drawSprite('shadow_0', px, py)) return;
     this.ctx.fillStyle = category === 'story' ? 'rgba(20,20,30,0.65)' : 'rgba(5,5,12,0.55)';
     this.ctx.beginPath();
-    this.ctx.arc(screen.x + TILE_SIZE / 2, screen.y + TILE_SIZE / 2, TILE_SIZE * 0.35, 0, Math.PI * 2);
+    this.ctx.arc(px + TILE_SIZE / 2, py + TILE_SIZE / 2, TILE_SIZE * 0.35, 0, Math.PI * 2);
     this.ctx.fill();
     if (this.showGrid) {
       this.ctx.fillStyle = '#d0d0d0';
       this.ctx.font = '10px monospace';
-      this.ctx.fillText(label[0].toUpperCase(), screen.x + 10, screen.y + 19);
+      this.ctx.fillText(label[0].toUpperCase(), px + 10, py + 19);
     }
+  }
+
+  private drawSprite(spriteId: string | null, screenX: number, screenY: number): boolean {
+    if (!spriteId || !this.assetManager) return false;
+    const image = this.assetManager.getImage();
+    const rect = this.assetManager.getSpriteRect(spriteId);
+    if (!image || !rect) return false;
+    this.drawSpriteRect(image, rect, screenX, screenY);
+    return true;
+  }
+
+  private drawSpriteRect(image: HTMLImageElement, rect: SpriteRect, x: number, y: number): void {
+    this.ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h, x, y, TILE_SIZE, TILE_SIZE);
   }
 
   private drawLightOverlay(state: Readonly<GameState>): void {
@@ -133,7 +196,7 @@ export class Renderer {
         if (alpha <= 0) continue;
         const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
         this.ctx.fillStyle = alpha === 0.35 ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.15)';
-        this.ctx.fillRect(screen.x, screen.y, TILE_SIZE, TILE_SIZE);
+        this.ctx.fillRect(Math.round(screen.x), Math.round(screen.y), TILE_SIZE, TILE_SIZE);
       }
     }
   }

@@ -23,6 +23,7 @@ import { CraftingSystem } from '../systems/CraftingSystem';
 import { DialogueSystem } from '../systems/DialogueSystem';
 import { ShadowSystem } from '../systems/ShadowSystem';
 import { SaveSystem } from '../systems/SaveSystem';
+import { AssetManager } from '../engine/AssetManager';
 import { encounterDatabase } from '../systems/EncounterDatabase';
 
 const WORLD_TILE_WIDTH = 100;
@@ -53,6 +54,7 @@ export class GameApp {
   private readonly saveSystem = new SaveSystem({ store: this.store, bus: this.bus, modeMachine: this.modeMachine });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
   private readonly renderer: Renderer;
+  private readonly assetManager = new AssetManager();
   private readonly input: Input;
   private readonly loop: GameLoop;
   private showLightOverlay = false;
@@ -75,11 +77,13 @@ export class GameApp {
   }
 
   start(): void {
+    this.beginLoadingAssets();
     this.loop.start();
   }
 
   private readonly update = (dtMs: number): void => {
     const state = this.store.get();
+    if (state.runtime.mode === 'LOADING') return;
     const intent = this.input.poll(state.runtime.mode, state.runtime.player.x, state.runtime.player.y, state);
     for (const command of intent.commands) {
       this.commandQueue.enqueue(command);
@@ -155,6 +159,34 @@ export class GameApp {
     this.renderer.setPerfHudVisible(this.showPerfHud);
     this.renderer.render(this.store.get(), this.loop.getFps());
   };
+
+  private beginLoadingAssets(): void {
+    const tx = this.store.beginTx('asset_loading_start');
+    tx.touchRuntime();
+    tx.touchRuntimeTime();
+    tx.draftState.runtime.mode = 'LOADING';
+    tx.draftState.runtime.time.paused = true;
+    this.store.commitTx(tx);
+
+    this.assetManager.loadAtlas('/assets/atlas.png', '/assets/atlas.json').then(() => {
+      this.renderer.setAssetManager(this.assetManager);
+      const readyTx = this.store.beginTx('asset_loading_done');
+      readyTx.touchRuntime();
+      readyTx.touchRuntimeTime();
+      readyTx.draftState.runtime.mode = 'EXPLORE';
+      readyTx.draftState.runtime.time.paused = false;
+      this.store.commitTx(readyTx);
+    }).catch(() => {
+      const fallbackTx = this.store.beginTx('asset_loading_fallback');
+      fallbackTx.touchRuntime();
+      fallbackTx.touchRuntimeTime();
+      fallbackTx.touchRuntimeUi();
+      fallbackTx.draftState.runtime.mode = 'EXPLORE';
+      fallbackTx.draftState.runtime.time.paused = false;
+      fallbackTx.draftState.runtime.ui.messages.push('Atlas missing, using debug art.');
+      this.store.commitTx(fallbackTx);
+    });
+  }
 
   private tryPreemptFaint(tx: ReturnType<StateStore['beginTx']>): boolean {
     if (tx.draftState.runtime.player.hp <= 0) {
