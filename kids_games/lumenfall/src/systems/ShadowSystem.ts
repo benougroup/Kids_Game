@@ -1,4 +1,5 @@
 import type { CommandQueue } from '../app/Commands';
+import { isStableForNewMode } from '../app/Stability';
 import { hashStringToSeed, RNG } from '../app/RNG';
 import type { DraftTx } from '../state/StateStore';
 import type { GameState, LightLevel, ShadowEntity, StoryShadowPersist } from '../state/StateTypes';
@@ -6,6 +7,14 @@ import type { LightSystem } from './LightSystem';
 import type { MapSystem, ShadowSpawnZoneRect } from './MapSystem';
 
 const DRIFT_MS = 500;
+const GLOBAL_ENCOUNTER_THROTTLE_MS = 320;
+const DRIFT_DIRS = [
+  { dx: 0, dy: 0 },
+  { dx: 1, dy: 0 },
+  { dx: -1, dy: 0 },
+  { dx: 0, dy: 1 },
+  { dx: 0, dy: -1 },
+] as const;
 
 export class ShadowSystem {
   private driftElapsedMs = 0;
@@ -128,13 +137,7 @@ export class ShadowSystem {
   }
 
   private pickDriftTarget(state: Readonly<GameState>, shadow: ShadowEntity, nowMs: number): { x: number; y: number } {
-    const dirs = [
-      { dx: 0, dy: 0 },
-      { dx: 1, dy: 0 },
-      { dx: -1, dy: 0 },
-      { dx: 0, dy: 1 },
-      { dx: 0, dy: -1 },
-    ];
+    const dirs = DRIFT_DIRS;
     let best = -9999;
     let bestPos = { x: shadow.x, y: shadow.y };
     for (const dir of dirs) {
@@ -178,7 +181,8 @@ export class ShadowSystem {
   private tryTriggerEncounter(tx: DraftTx, nowMs: number): void {
     const state = tx.draftState;
     if (state.runtime.mode !== 'EXPLORE' || state.runtime.map.transition) return;
-    if (nowMs <= state.runtime.shadows.lastEncounterAtMs + 300) return;
+    if (!isStableForNewMode(state) || state.runtime.dialogue.active || state.runtime.inventoryUI.open || state.runtime.crafting.open) return;
+    if (nowMs <= state.runtime.shadows.lastEncounterAtMs + GLOBAL_ENCOUNTER_THROTTLE_MS) return;
 
     const all = [...state.runtime.shadows.env, ...state.runtime.shadows.story];
     const shadow = all.find((candidate) => {
@@ -196,6 +200,8 @@ export class ShadowSystem {
     tx.touchRuntime();
     state.runtime.encounterContext = { shadowId: shadow.id, category: shadow.category, tileLight: light, mapId: state.runtime.map.currentMapId };
     this.deps.commandQueue.enqueue({ kind: 'StartEncounter', templateId });
+    tx.touchRuntimeFlags();
+    tx.draftState.runtime.runtimeFlags['runtime.clearMoveIntent'] = true;
   }
 
   private getTemplateId(category: ShadowEntity['category'], light: Exclude<LightLevel, 'BRIGHT'>): string {

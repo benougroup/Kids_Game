@@ -27,6 +27,7 @@ export type SaveNowCommand = { kind: 'SaveNow' };
 export type LoadNowCommand = { kind: 'LoadNow' };
 export type NewGameCommand = { kind: 'NewGame' };
 export type NewStoryCommand = { kind: 'NewStory'; storyId: string };
+export type TogglePerfHudCommand = { kind: 'TogglePerfHud' };
 
 export type Command =
   | RequestModeCommand
@@ -49,20 +50,27 @@ export type Command =
   | SaveNowCommand
   | LoadNowCommand
   | NewGameCommand
-  | NewStoryCommand;
+  | NewStoryCommand
+  | TogglePerfHudCommand;
 
-type CommandPriority = 1 | 2 | 3 | 4;
+type CommandPriority = 1 | 2 | 3 | 4 | 5 | 6;
 
 const commandPriority = (command: Command): CommandPriority => {
   if (command.kind === 'TriggerFaint') return 1;
+  if (command.kind === 'DebugDamage') return 1;
   if (command.kind === 'RequestMode') {
     if (command.nextMode === 'FAINTING') return 1;
     if (command.nextMode === 'MAP_TRANSITION') return 2;
-    if (command.nextMode === 'DIALOGUE' || command.nextMode === 'CRAFTING' || command.nextMode === 'INVENTORY') return 3;
-    return 4;
+    if (command.nextMode === 'DIALOGUE') return 3;
+    if (command.nextMode === 'CRAFTING' || command.nextMode === 'INVENTORY') return 4;
+    if (command.nextMode === 'MENU') return 5;
+    return 6;
   }
   if (command.kind === 'RequestMapTransition') return 2;
-  return 3;
+  if (command.kind === 'StartScene' || command.kind === 'StartEncounter' || command.kind === 'DialogueChoose') return 3;
+  if (command.kind === 'ToggleInventory' || command.kind === 'InventorySelectItem' || command.kind === 'InventoryUseSelected' || command.kind === 'CraftingSetSlot' || command.kind === 'CraftingMix' || command.kind === 'CraftingClose') return 4;
+  if (command.kind === 'UiMessage' || command.kind === 'TogglePerfHud') return 6;
+  return 5;
 };
 
 export class CommandQueue {

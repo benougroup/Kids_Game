@@ -47,6 +47,7 @@ describe('Dialogue + effects', () => {
     const dialogue = new DialogueSystem({ commandQueue: queue, modeMachine, checkpointSystem, bus });
     const tx = store.beginTx('missing_node');
     dialogue.startScene(tx, 'demo', 'missing_node_id');
+    dialogue.update(tx);
     expect(tx.draftState.runtime.dialogue.sceneId).toBe('__error__');
   });
 
@@ -56,6 +57,7 @@ describe('Dialogue + effects', () => {
     const dialogue = new DialogueSystem({ commandQueue: queue, modeMachine, checkpointSystem, bus });
     const tx = store.beginTx('loop_guard');
     dialogue.startScene(tx, 'demo', 'demo_fail');
+    dialogue.update(tx);
     tx.touchRuntimePlayer();
     tx.draftState.runtime.player.sp = 0;
 
@@ -63,6 +65,7 @@ describe('Dialogue + effects', () => {
       if (tx.draftState.runtime.dialogue.sceneId === '__error__') break;
       const idx = tx.draftState.runtime.dialogue.sceneId === 'demo_fail' ? 0 : 1;
       dialogue.choose(tx, idx);
+      dialogue.update(tx);
     }
 
     expect(tx.draftState.runtime.dialogue.sceneId).toBe('__error__');
@@ -92,10 +95,12 @@ describe('Dialogue + effects', () => {
     const dialogue = new DialogueSystem({ commandQueue: queue, modeMachine, checkpointSystem, bus });
     const tx = store.beginTx('choose_advances');
     dialogue.startScene(tx, 'demo', 'demo_start');
+    dialogue.update(tx);
     tx.touchRuntimePlayer();
     tx.draftState.runtime.player.sp = 2;
     const beforeSp = tx.draftState.runtime.player.sp;
     dialogue.choose(tx, 0);
+    dialogue.update(tx);
 
     expect(tx.draftState.runtime.dialogue.sceneId).toBe('demo_spend');
     expect(tx.draftState.runtime.player.sp).toBe(beforeSp + 1);

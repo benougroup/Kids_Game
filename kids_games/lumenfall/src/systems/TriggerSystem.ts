@@ -1,14 +1,15 @@
 import type { CommandQueue } from '../app/Commands';
+import { shouldProcessTriggers } from '../app/Stability';
 import type { DraftTx } from '../state/StateStore';
 import { CheckpointSystem } from './CheckpointSystem';
 import { MapSystem, type MapTrigger, type MapTriggerAction } from './MapSystem';
 
 export interface TriggerEvalContext {
   movedTile: boolean;
-  fromX: number;
-  fromY: number;
   interactPressed: boolean;
   nowMs: number;
+  fromX?: number;
+  fromY?: number;
 }
 
 const insideArea = (x: number, y: number, area: { x: number; y: number; w: number; h: number }): boolean =>
@@ -16,6 +17,8 @@ const insideArea = (x: number, y: number, area: { x: number; y: number; w: numbe
 
 export class TriggerSystem {
   private readonly cooldownRegistry: Record<string, number> = {};
+  private lastPlayerTile: { mapId: string; x: number; y: number } | null = null;
+  private readonly lastInsideAreas: Record<string, Record<string, boolean>> = {};
 
   constructor(
     private readonly mapSystem: MapSystem,
@@ -24,13 +27,21 @@ export class TriggerSystem {
 
   evaluate(tx: DraftTx, commandQueue: CommandQueue, context: TriggerEvalContext): void {
     const state = tx.draftState;
+    if (!shouldProcessTriggers(state)) {
+      this.syncRuntimeState(state.runtime.map.currentMapId, state.runtime.player.x, state.runtime.player.y);
+      return;
+    }
+
     const mapId = state.runtime.map.currentMapId;
     const playerX = state.runtime.player.x;
     const playerY = state.runtime.player.y;
+    const movedTile = context.movedTile || this.didMoveTile(mapId, playerX, playerY);
+    this.syncRuntimeState(mapId, playerX, playerY);
+
     const triggers = this.mapSystem.getTriggers(mapId);
 
     for (const trigger of triggers) {
-      if (!this.shouldFire(state, trigger, context, playerX, playerY)) {
+      if (!this.shouldFire(state, trigger, context, movedTile, playerX, playerY)) {
         continue;
       }
 
@@ -55,6 +66,7 @@ export class TriggerSystem {
     state: Readonly<DraftTx['draftState']>,
     trigger: MapTrigger,
     context: TriggerEvalContext,
+    movedTile: boolean,
     playerX: number,
     playerY: number,
   ): boolean {
@@ -74,7 +86,7 @@ export class TriggerSystem {
     }
 
     if (trigger.type === 'onStep') {
-      if (!context.movedTile) return false;
+      if (!movedTile) return false;
       if (typeof trigger.x === 'number' && typeof trigger.y === 'number') {
         return playerX === trigger.x && playerY === trigger.y;
       }
@@ -85,10 +97,14 @@ export class TriggerSystem {
     }
 
     if (trigger.type === 'onEnterArea') {
-      if (!trigger.area || !context.movedTile) return false;
-      const wasInside = insideArea(context.fromX, context.fromY, trigger.area);
+      if (!trigger.area || !movedTile) return false;
+      const priorInside = typeof context.fromX === 'number' && typeof context.fromY === 'number'
+        ? insideArea(context.fromX, context.fromY, trigger.area)
+        : (this.lastInsideAreas[mapId]?.[trigger.id] ?? false);
       const nowInside = insideArea(playerX, playerY, trigger.area);
-      return !wasInside && nowInside;
+      this.lastInsideAreas[mapId] ??= {};
+      this.lastInsideAreas[mapId][trigger.id] = nowInside;
+      return !priorInside && nowInside;
     }
 
     if (!context.interactPressed) return false;
@@ -100,6 +116,17 @@ export class TriggerSystem {
     }
 
     return true;
+  }
+
+  private didMoveTile(mapId: string, x: number, y: number): boolean {
+    if (!this.lastPlayerTile || this.lastPlayerTile.mapId !== mapId) {
+      return true;
+    }
+    return this.lastPlayerTile.x !== x || this.lastPlayerTile.y !== y;
+  }
+
+  private syncRuntimeState(mapId: string, x: number, y: number): void {
+    this.lastPlayerTile = { mapId, x, y };
   }
 
   private fireTrigger(tx: DraftTx, commandQueue: CommandQueue, mapId: string, trigger: MapTrigger): void {

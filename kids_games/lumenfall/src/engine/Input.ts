@@ -12,44 +12,33 @@ interface InputFrame {
 }
 
 export class Input {
-  private moveDx = 0;
-  private moveDy = 0;
-  private interactPressed = false;
+  private readonly state = {
+    moveDx: 0,
+    moveDy: 0,
+    interactPressed: false,
+  };
   private readonly commands: Command[] = [];
   private touchTarget: { x: number; y: number } | null = null;
   private readonly isDevMode = typeof window !== 'undefined' && window.location.hostname === 'localhost';
   private latestState: Readonly<GameState> | null = null;
+  private lastTouchStartMs = 0;
 
   constructor(private readonly canvas: HTMLCanvasElement, private readonly camera: Camera) {
     window.addEventListener('keydown', this.onKeyDown);
-    canvas.addEventListener('pointerdown', this.onPointerDown);
+    canvas.addEventListener('pointerdown', this.onPointerDown, { passive: false });
+    canvas.addEventListener('touchstart', this.onTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', this.onTouchMove, { passive: false });
   }
 
   poll(mode: Mode, playerTileX: number, playerTileY: number, state: Readonly<GameState>): InputFrame {
     this.latestState = state;
     const frameCommands = this.commands.splice(0, this.commands.length);
 
-    if (mode === 'INVENTORY' || mode === 'CRAFTING') {
-      this.moveDx = 0;
-      this.moveDy = 0;
-      this.touchTarget = null;
-      this.interactPressed = false;
-      return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
-    }
-
-    if (mode === 'DIALOGUE') {
-      this.moveDx = 0;
-      this.moveDy = 0;
-      this.touchTarget = null;
-      this.interactPressed = false;
-      return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
-    }
-
     if (mode !== 'EXPLORE') {
-      this.moveDx = 0;
-      this.moveDy = 0;
+      this.state.moveDx = 0;
+      this.state.moveDy = 0;
       this.touchTarget = null;
-      this.interactPressed = false;
+      this.state.interactPressed = false;
       return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
     }
 
@@ -58,18 +47,23 @@ export class Input {
       const dy = this.touchTarget.y - playerTileY;
       if (dx === 0 && dy === 0) this.touchTarget = null;
       else if (Math.abs(dx) > Math.abs(dy)) {
-        this.moveDx = Math.sign(dx);
-        this.moveDy = 0;
+        this.state.moveDx = Math.sign(dx);
+        this.state.moveDy = 0;
       } else {
-        this.moveDx = 0;
-        this.moveDy = Math.sign(dy);
+        this.state.moveDx = 0;
+        this.state.moveDy = Math.sign(dy);
       }
     }
 
-    const frame: InputFrame = { moveDx: this.moveDx, moveDy: this.moveDy, interactPressed: this.interactPressed, commands: frameCommands };
-    this.moveDx = 0;
-    this.moveDy = 0;
-    this.interactPressed = false;
+    const frame: InputFrame = {
+      moveDx: this.state.moveDx,
+      moveDy: this.state.moveDy,
+      interactPressed: this.state.interactPressed,
+      commands: frameCommands,
+    };
+    this.state.moveDx = 0;
+    this.state.moveDy = 0;
+    this.state.interactPressed = false;
     return frame;
   }
 
@@ -88,7 +82,6 @@ export class Input {
       this.commands.push({ kind: 'CraftingMix' });
       return;
     }
-
 
     if (key === '1') {
       this.commands.push({ kind: 'DialogueChoose', choiceIndex: 0 });
@@ -112,6 +105,10 @@ export class Input {
     }
     if (key === 'm') {
       this.commands.push({ kind: 'RequestMode', nextMode: 'EXPLORE' });
+      return;
+    }
+    if (key === 'h') {
+      this.commands.push({ kind: 'TogglePerfHud' });
       return;
     }
     if (key === 't' && this.isDevMode) {
@@ -151,17 +148,18 @@ export class Input {
       return;
     }
     if (key === ' ' || key === 'enter') {
-      this.interactPressed = true;
+      this.state.interactPressed = true;
       return;
     }
 
-    if (key === 'arrowup' || key === 'w') this.moveDy = -1;
-    else if (key === 'arrowdown' || key === 's') this.moveDy = 1;
-    else if (key === 'arrowleft' || key === 'a') this.moveDx = -1;
-    else if (key === 'arrowright' || key === 'd') this.moveDx = 1;
+    if (key === 'arrowup' || key === 'w') this.state.moveDy = -1;
+    else if (key === 'arrowdown' || key === 's') this.state.moveDy = 1;
+    else if (key === 'arrowleft' || key === 'a') this.state.moveDx = -1;
+    else if (key === 'arrowright' || key === 'd') this.state.moveDx = 1;
   };
 
   private readonly onPointerDown = (event: PointerEvent): void => {
+    event.preventDefault();
     const rect = this.canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
@@ -172,12 +170,11 @@ export class Input {
       return;
     }
 
-
     if (mode === 'DIALOGUE') {
-      const boxLeft = 90;
-      const boxRight = rect.width - 90;
-      const baseY = rect.height - 230;
-      const buttonHeight = 42;
+      const boxLeft = 70;
+      const boxRight = rect.width - 70;
+      const baseY = rect.height - 250;
+      const buttonHeight = 52;
       for (let i = 0; i < 4; i += 1) {
         const top = baseY + 82 + i * (buttonHeight + 10);
         if (x > boxLeft + 20 && x < boxRight - 20 && y > top && y < top + buttonHeight) {
@@ -189,21 +186,21 @@ export class Input {
     }
 
     if (mode === 'INVENTORY') {
-      if (x > 120 && x < rect.width - 120 && y > 140 && y < 460) {
+      if (x > 100 && x < rect.width - 100 && y > 130 && y < 500) {
         const idx = Math.floor((y - 150) / 44);
         const items = this.latestState ? Object.entries(this.latestState.global.inventory.items).filter(([, v]) => v.qty > 0) : [];
         const picked = items[idx]?.[0];
         if (picked) this.commands.push({ kind: 'InventorySelectItem', itemId: picked });
-      } else if (x > rect.width / 2 - 150 && x < rect.width / 2 + 150 && y > rect.height - 170 && y < rect.height - 120) {
+      } else if (x > rect.width / 2 - 170 && x < rect.width / 2 + 170 && y > rect.height - 180 && y < rect.height - 120) {
         this.commands.push({ kind: 'InventoryUseSelected' });
-      } else if (x > rect.width / 2 - 150 && x < rect.width / 2 + 150 && y > rect.height - 105 && y < rect.height - 55) {
+      } else if (x > rect.width / 2 - 170 && x < rect.width / 2 + 170 && y > rect.height - 110 && y < rect.height - 50) {
         this.commands.push({ kind: 'ToggleInventory' });
       }
       return;
     }
 
     if (mode === 'CRAFTING') {
-      if (x > 130 && x < rect.width - 130 && y > 150 && y < 390) {
+      if (x > 120 && x < rect.width - 120 && y > 150 && y < 410) {
         const idx = Math.floor((y - 160) / 42);
         const items = this.latestState ? Object.entries(this.latestState.global.inventory.items).filter(([, v]) => v.qty > 0).map(([id]) => id) : [];
         const picked = items[idx];
@@ -212,8 +209,8 @@ export class Input {
           this.commands.push({ kind: 'CraftingSetSlot', slot: 'B', itemId: picked });
         }
       }
-      if (x > rect.width / 2 - 150 && x < rect.width / 2 + 150 && y > rect.height - 170 && y < rect.height - 120) this.commands.push({ kind: 'CraftingMix' });
-      if (x > rect.width / 2 - 150 && x < rect.width / 2 + 150 && y > rect.height - 105 && y < rect.height - 55) this.commands.push({ kind: 'CraftingClose' });
+      if (x > rect.width / 2 - 170 && x < rect.width / 2 + 170 && y > rect.height - 180 && y < rect.height - 120) this.commands.push({ kind: 'CraftingMix' });
+      if (x > rect.width / 2 - 170 && x < rect.width / 2 + 170 && y > rect.height - 110 && y < rect.height - 50) this.commands.push({ kind: 'CraftingClose' });
       return;
     }
 
@@ -222,7 +219,7 @@ export class Input {
       return;
     }
     if (this.isInsideInteractButton(x, y, rect.width, rect.height)) {
-      this.interactPressed = true;
+      this.state.interactPressed = true;
       return;
     }
 
@@ -230,19 +227,31 @@ export class Input {
     this.touchTarget = { x: Math.floor(world.x / TILE_SIZE), y: Math.floor(world.y / TILE_SIZE) };
   };
 
+  private readonly onTouchStart = (event: TouchEvent): void => {
+    const now = performance.now();
+    if (now - this.lastTouchStartMs < 350) {
+      event.preventDefault();
+    }
+    this.lastTouchStartMs = now;
+  };
+
+  private readonly onTouchMove = (event: TouchEvent): void => {
+    event.preventDefault();
+  };
+
   private isInsideInteractButton(x: number, y: number, width: number, height: number): boolean {
-    const size = 64;
-    const margin = 16;
+    const size = 78;
+    const margin = 18;
     const left = width - margin - size;
     const top = height - margin - size;
     return x >= left && x <= left + size && y >= top && y <= top + size;
   }
 
   private isInsideInventoryButton(x: number, y: number, width: number, height: number): boolean {
-    const w = 88;
-    const h = 44;
-    const left = width - 184;
-    const top = height - 68;
+    const w = 110;
+    const h = 56;
+    const left = width - 230;
+    const top = height - 82;
     return x >= left && x <= left + w && y >= top && y <= top + h;
   }
 
