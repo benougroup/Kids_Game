@@ -35,9 +35,10 @@ export interface GameState {
   runtime: {
     mode: Mode;
     time: {
-      phase: string;
+      phase: 'DAY' | 'DUSK' | 'NIGHT' | 'DAWN';
       secondsIntoCycle: number;
       dayCount: number;
+      lastTickAtSeconds: number;
       paused: boolean;
     };
     map: {
@@ -97,9 +98,10 @@ export const createInitialState = (): GameState => ({
   runtime: {
     mode: 'EXPLORE',
     time: {
-      phase: 'day',
+      phase: 'DAY',
       secondsIntoCycle: 0,
       dayCount: 1,
+      lastTickAtSeconds: 0,
       paused: false,
     },
     map: {

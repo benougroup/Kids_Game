@@ -1,3 +1,5 @@
+import timeConfig from '../data/timeConfig.json';
+
 export const GAME_MODES = [
   'LOADING',
   'EXPLORE',
@@ -22,6 +24,8 @@ const transitions: Readonly<Record<Mode, readonly Mode[]>> = {
   MENU: ['EXPLORE'],
 };
 
+const pausedModes = new Set<Mode>(timeConfig.pauseTimeInModes as Mode[]);
+
 export class ModeMachine {
   isValidMode(mode: string): mode is Mode {
     return (GAME_MODES as readonly string[]).includes(mode);
@@ -40,6 +44,6 @@ export class ModeMachine {
   }
 
   timePausedInMode(mode: Mode): boolean {
-    return mode !== 'EXPLORE';
+    return pausedModes.has(mode);
   }
 }

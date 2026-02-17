@@ -1,0 +1,5 @@
+{
+  "cycle": { "daySeconds": 300, "duskSeconds": 15, "nightSeconds": 300, "dawnSeconds": 15 },
+  "tickSeconds": 1,
+  "pauseTimeInModes": ["DIALOGUE", "INVENTORY", "CRAFTING", "MAP_TRANSITION", "FAINTING", "LOADING", "MENU"]
+}

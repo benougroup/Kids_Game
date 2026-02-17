@@ -9,8 +9,9 @@ export type RequestMapTransitionCommand = {
   toX: number;
   toY: number;
 };
+export type DebugSkipTimeCommand = { kind: 'DebugSkipTime'; seconds: number };
 
-export type Command = RequestModeCommand | UiMessageCommand | RequestMapTransitionCommand;
+export type Command = RequestModeCommand | UiMessageCommand | RequestMapTransitionCommand | DebugSkipTimeCommand;
 
 type CommandPriority = 1 | 2 | 3 | 4;
 
