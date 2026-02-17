@@ -1,0 +1,221 @@
+{
+  "nodes": [
+    {
+      "id": "guard_day_first",
+      "type": "scene",
+      "text": [
+        "Welcome to Bright Hollow!",
+        "When night comes, stay in the light.",
+        "The dark feels bigger lately..."
+      ],
+      "choices": [
+        {
+          "label": "Why?",
+          "next": "guard_explain",
+          "effects": []
+        },
+        {
+          "label": "I'm not scared.",
+          "next": "guard_brave",
+          "effects": []
+        },
+        {
+          "label": "Okay!",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "guard_explain",
+      "type": "scene",
+      "text": "Some say a shadow is growing near the old shrine.",
+      "choices": [
+        {
+          "label": "I'll be careful.",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "guard_brave",
+      "type": "scene",
+      "text": "That's the spirit! But still, be safe out there.",
+      "choices": [
+        {
+          "label": "I will!",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_day_first",
+      "type": "scene",
+      "text": [
+        "I study the light.",
+        "It flickered last night.",
+        "Something is pulling it."
+      ],
+      "choices": [
+        {
+          "label": "Can I help?",
+          "next": "apprentice_quest",
+          "effects": []
+        },
+        {
+          "label": "What pulls it?",
+          "next": "apprentice_mystery",
+          "effects": []
+        },
+        {
+          "label": "That sounds scary.",
+          "next": "apprentice_reassure",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_quest",
+      "type": "scene",
+      "text": "If you bring me two glowing things from the dark, I can make lantern oil.",
+      "onEnterEffects": [
+        { "op": "flag.set", "key": "quest_flickering_light_active", "value": true }
+      ],
+      "choices": [
+        {
+          "label": "I'll find them!",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_mystery",
+      "type": "scene",
+      "text": "I don't know yet. But I think... something forgotten.",
+      "choices": [
+        {
+          "label": "I see.",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_reassure",
+      "type": "scene",
+      "text": "It is. But we have light. And that's stronger than you think.",
+      "choices": [
+        {
+          "label": "Okay.",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_quest_progress",
+      "type": "scene",
+      "text": "Have you found two glowing ingredients yet?",
+      "choices": [
+        {
+          "label": "Not yet.",
+          "next": "returnToMap",
+          "effects": [],
+          "conditions": {}
+        },
+        {
+          "label": "Yes! Here they are.",
+          "next": "apprentice_craft_oil",
+          "effects": [
+            { "op": "inventory.remove", "scope": "global", "itemId": "ingredient_sunleaf", "qty": 1 },
+            { "op": "inventory.remove", "scope": "global", "itemId": "ingredient_glow_moth_dust", "qty": 1 }
+          ],
+          "conditions": {
+            "minItemQty": [
+              { "scope": "global", "itemId": "ingredient_sunleaf", "qty": 1 },
+              { "scope": "global", "itemId": "ingredient_glow_moth_dust", "qty": 1 }
+            ]
+          },
+          "failNext": "apprentice_not_enough"
+        }
+      ]
+    },
+    {
+      "id": "apprentice_not_enough",
+      "type": "scene",
+      "text": "You don't have enough ingredients yet. Come back when you find them!",
+      "choices": [
+        {
+          "label": "Okay.",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_craft_oil",
+      "type": "scene",
+      "text": [
+        "You brought them!",
+        "Let's make something warm and bright."
+      ],
+      "onEnterEffects": [
+        { "op": "inventory.add", "scope": "global", "itemId": "potion_lantern_oil", "qty": 1 },
+        { "op": "flag.set", "key": "quest_flickering_light_oil_crafted", "value": true },
+        { "op": "checkpoint.set", "checkpointId": "town_center" }
+      ],
+      "choices": [
+        {
+          "label": "Thank you!",
+          "next": "apprentice_after_craft",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_after_craft",
+      "type": "scene",
+      "text": "The shrine to the south... I think that's where the shadow comes from.",
+      "choices": [
+        {
+          "label": "I'll check it out.",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "guard_after_win",
+      "type": "scene",
+      "text": [
+        "You did it!",
+        "The night feels smaller now."
+      ],
+      "choices": [
+        {
+          "label": "We're safe!",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "id": "apprentice_after_win",
+      "type": "scene",
+      "text": [
+        "Light grows when someone cares.",
+        "I think the forest will be safer now."
+      ],
+      "choices": [
+        {
+          "label": "I'm glad!",
+          "next": "returnToMap",
+          "effects": []
+        }
+      ]
+    }
+  ]
+}

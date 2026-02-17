@@ -23,6 +23,7 @@ import { CraftingSystem } from '../systems/CraftingSystem';
 import { DialogueSystem } from '../systems/DialogueSystem';
 import { ShadowSystem } from '../systems/ShadowSystem';
 import { SaveSystem } from '../systems/SaveSystem';
+import { IngredientSystem } from '../systems/IngredientSystem';
 import { AssetManager } from '../engine/AssetManager';
 import { encounterDatabase } from '../systems/EncounterDatabase';
 
@@ -51,6 +52,7 @@ export class GameApp {
   private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
   private readonly lightSystem = new LightSystem({ mapSystem: this.mapSystem, bus: this.bus });
   private readonly shadowSystem = new ShadowSystem({ mapSystem: this.mapSystem, lightSystem: this.lightSystem, commandQueue: this.commandQueue });
+  private readonly ingredientSystem = new IngredientSystem(this.bus, this.mapSystem, this.lightSystem);
   private readonly saveSystem = new SaveSystem({ store: this.store, bus: this.bus, modeMachine: this.modeMachine });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
   private readonly renderer: Renderer;
@@ -74,6 +76,31 @@ export class GameApp {
     inventorySystem.addItem(tx, 'ingredient_crystal_water', 3, 'global');
     this.store.commitTx(tx);
     this.saveSystem.loadNow();
+    
+    // Listen for dawn to restore SP and clear ingredients
+    this.bus.on('TIME_PHASE_START', (event) => {
+      if (event.phase === 'DAWN') {
+        const dawnTx = this.store.beginTx('dawn_recovery');
+        dawnTx.touchRuntimePlayer();
+        // Restore +2 SP at dawn
+        const currentSP = dawnTx.draftState.runtime.player.sp;
+        const maxSP = dawnTx.draftState.global.player.maxSP;
+        dawnTx.draftState.runtime.player.sp = Math.min(maxSP, currentSP + 2);
+        // Clear ingredient pickups
+        this.ingredientSystem.onDawn(dawnTx);
+        this.store.commitTx(dawnTx);
+        this.bus.emit({ type: 'UI_MESSAGE', text: 'Dawn breaks. You feel refreshed. (+2 SP)' });
+      }
+    });
+    
+    // Listen for ingredient collection
+    this.bus.on('INGREDIENT_COLLECTED', (event) => {
+      const itemName = itemDatabase.getItem(event.itemId)?.name || event.itemId;
+      const msgTx = this.store.beginTx('ingredient_message');
+      msgTx.touchRuntimeUi();
+      msgTx.draftState.runtime.ui.messages.push(`You found ${itemName}!`);
+      this.store.commitTx(msgTx);
+    });
   }
 
   start(): void {
@@ -119,12 +146,17 @@ export class GameApp {
         }
         if (tx.draftState.runtime.mode === 'EXPLORE') {
           this.shadowSystem.update(tx, performance.now(), dtMs);
+          this.ingredientSystem.update(tx, performance.now());
           const clearMoveIntent = Boolean(tx.draftState.runtime.runtimeFlags['runtime.clearMoveIntent']);
           if (clearMoveIntent) {
             tx.touchRuntimeFlags();
             delete tx.draftState.runtime.runtimeFlags['runtime.clearMoveIntent'];
           }
           const moveResult = this.playerSystem.applyMovementIntent(tx.draftState, clearMoveIntent ? 0 : intent.moveDx, clearMoveIntent ? 0 : intent.moveDy);
+          // Check for ingredient pickup after movement
+          if (moveResult.movedTile) {
+            this.ingredientSystem.checkPickup(tx, tx.draftState.runtime.player.x, tx.draftState.runtime.player.y);
+          }
           if (shouldProcessTriggers(tx.draftState)) {
             this.triggerSystem.evaluate(tx, this.commandQueue, {
               movedTile: moveResult.movedTile,

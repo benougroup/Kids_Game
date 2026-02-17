@@ -17,6 +17,7 @@ export type AppEvent =
   | { type: 'CHECKPOINT_RESTORED'; checkpointId: string; mapId: string }
   | { type: 'CRAFT_SUCCESS'; recipeOutputItemId: string }
   | { type: 'STORY_FLAGS_CHANGED'; keys: string[] }
+  | { type: 'INGREDIENT_COLLECTED'; itemId: string; x: number; y: number }
   | { type: 'AREA_EFFECT'; kind: 'cleanseShadows'; radius: number; filter: string };
 
 type HandlerMap = {
@@ -39,6 +40,7 @@ export class EventBus {
     CHECKPOINT_RESTORED: [],
     CRAFT_SUCCESS: [],
     STORY_FLAGS_CHANGED: [],
+    INGREDIENT_COLLECTED: [],
     AREA_EFFECT: [],
   };
 

@@ -20,6 +20,7 @@ export interface DraftTx {
   touchRuntimeCheckpoint(): void;
   touchRuntimeSave(): void;
   touchRuntimeFainting(): void;
+  touchRuntimeIngredientPickups(): void;
   touchGlobal(): void;
   touchGlobalPlayer(): void;
   touchInventoryGlobal(): void;
@@ -169,6 +170,13 @@ export class StateStore {
         if (!touched.has('runtime.fainting')) {
           draftState.runtime.fainting = draftState.runtime.fainting ? { ...draftState.runtime.fainting } : undefined;
           touched.add('runtime.fainting');
+        }
+      },
+      touchRuntimeIngredientPickups: () => {
+        touchRuntime();
+        if (!touched.has('runtime.ingredientPickups')) {
+          draftState.runtime.ingredientPickups = draftState.runtime.ingredientPickups ? [...draftState.runtime.ingredientPickups] : [];
+          touched.add('runtime.ingredientPickups');
         }
       },
       touchRuntimeLight: () => {

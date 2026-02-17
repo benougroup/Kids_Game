@@ -87,6 +87,7 @@ export class Renderer {
     this.drawMap(state, 'decor');
     this.drawMap(state, 'overlay');
     if (this.showLightOverlay) this.drawLightOverlay(state);
+    this.drawIngredients(state);
     this.drawShadows(state);
     this.drawNpcs(state);
     this.drawPlayer(state);
@@ -131,6 +132,35 @@ export class Renderer {
           this.ctx.fillStyle = def.color;
           this.ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
         }
+      }
+    }
+  }
+
+  private drawIngredients(state: Readonly<GameState>): void {
+    const pickups = state.runtime.ingredientPickups || [];
+    const zoom = this.camera.getZoom();
+    const tileSize = TILE_SIZE * zoom;
+    
+    for (const pickup of pickups) {
+      const screen = this.camera.worldToScreen(pickup.x * TILE_SIZE, pickup.y * TILE_SIZE);
+      
+      // Draw sparkle sprite if available, otherwise draw a glowing circle
+      if (!this.drawSprite('sparkle', Math.round(screen.x), Math.round(screen.y))) {
+        // Fallback: draw glowing circle
+        this.ctx.save();
+        this.ctx.fillStyle = '#ffff88';
+        this.ctx.shadowColor = '#ffff00';
+        this.ctx.shadowBlur = 10;
+        this.ctx.beginPath();
+        this.ctx.arc(
+          Math.round(screen.x) + tileSize / 2,
+          Math.round(screen.y) + tileSize / 2,
+          tileSize * 0.3,
+          0,
+          Math.PI * 2
+        );
+        this.ctx.fill();
+        this.ctx.restore();
       }
     }
   }

@@ -167,6 +167,13 @@ export interface GameState {
       dirty: boolean;
       blockedByFaint: boolean;
     };
+    ingredientPickups?: Array<{
+      id: string;
+      itemId: string;
+      x: number;
+      y: number;
+      spawnedAt: number;
+    }>;
   };
 }
 
