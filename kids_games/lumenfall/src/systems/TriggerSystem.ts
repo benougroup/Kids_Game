@@ -135,6 +135,11 @@ export class TriggerSystem {
         toX: action.toX,
         toY: action.toY,
       });
+      return;
+    }
+
+    if (action.type === 'startScene' && action.storyId) {
+      commandQueue.enqueue({ kind: 'StartScene', storyId: action.storyId, sceneId: action.sceneId });
     }
   }
 }

@@ -37,6 +37,14 @@ export class Input {
       return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
     }
 
+    if (mode === 'DIALOGUE') {
+      this.moveDx = 0;
+      this.moveDy = 0;
+      this.touchTarget = null;
+      this.interactPressed = false;
+      return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
+    }
+
     if (mode !== 'EXPLORE') {
       this.moveDx = 0;
       this.moveDy = 0;
@@ -81,6 +89,23 @@ export class Input {
       return;
     }
 
+
+    if (key === '1') {
+      this.commands.push({ kind: 'DialogueChoose', choiceIndex: 0 });
+      return;
+    }
+    if (key === '2') {
+      this.commands.push({ kind: 'DialogueChoose', choiceIndex: 1 });
+      return;
+    }
+    if (key === '3') {
+      this.commands.push({ kind: 'DialogueChoose', choiceIndex: 2 });
+      return;
+    }
+    if (key === '4') {
+      this.commands.push({ kind: 'DialogueChoose', choiceIndex: 3 });
+      return;
+    }
     if (key === 'escape') {
       this.commands.push({ kind: 'RequestMode', nextMode: 'MENU' });
       return;
@@ -90,6 +115,10 @@ export class Input {
       return;
     }
     if (key === 't' && this.isDevMode) {
+      this.commands.push({ kind: 'StartScene', storyId: 'demo', sceneId: 'demo_start' });
+      return;
+    }
+    if (key === 'j' && this.isDevMode) {
       this.commands.push({ kind: 'DebugSkipTime', seconds: 30 });
       return;
     }
@@ -124,6 +153,22 @@ export class Input {
 
     if (this.isInsideInventoryButton(x, y, rect.width, rect.height)) {
       this.commands.push({ kind: 'ToggleInventory' });
+      return;
+    }
+
+
+    if (mode === 'DIALOGUE') {
+      const boxLeft = 90;
+      const boxRight = rect.width - 90;
+      const baseY = rect.height - 230;
+      const buttonHeight = 42;
+      for (let i = 0; i < 4; i += 1) {
+        const top = baseY + 82 + i * (buttonHeight + 10);
+        if (x > boxLeft + 20 && x < boxRight - 20 && y > top && y < top + buttonHeight) {
+          this.commands.push({ kind: 'DialogueChoose', choiceIndex: i });
+          return;
+        }
+      }
       return;
     }
 

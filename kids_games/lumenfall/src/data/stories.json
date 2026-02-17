@@ -1,0 +1,9 @@
+{
+  "stories": [
+    {
+      "id": "demo",
+      "startSceneId": "demo_start",
+      "scenesFile": "scenes/demo.scenes.json"
+    }
+  ]
+}

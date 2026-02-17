@@ -20,6 +20,9 @@ export type InventorySelectItemCommand = { kind: 'InventorySelectItem'; itemId: 
 export type CraftingSetSlotCommand = { kind: 'CraftingSetSlot'; slot: 'A' | 'B'; itemId: string };
 export type CraftingMixCommand = { kind: 'CraftingMix' };
 export type CraftingCloseCommand = { kind: 'CraftingClose' };
+export type StartSceneCommand = { kind: 'StartScene'; storyId: string; sceneId?: string };
+export type DialogueChooseCommand = { kind: 'DialogueChoose'; choiceIndex: number };
+export type StartEncounterCommand = { kind: 'StartEncounter'; templateId: string };
 
 export type Command =
   | RequestModeCommand
@@ -35,7 +38,10 @@ export type Command =
   | InventorySelectItemCommand
   | CraftingSetSlotCommand
   | CraftingMixCommand
-  | CraftingCloseCommand;
+  | CraftingCloseCommand
+  | StartSceneCommand
+  | DialogueChooseCommand
+  | StartEncounterCommand;
 
 type CommandPriority = 1 | 2 | 3 | 4;
 

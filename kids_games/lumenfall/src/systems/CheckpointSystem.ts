@@ -83,8 +83,14 @@ export class CheckpointSystem {
 
     const draft = tx.draftState;
 
-    draft.runtime.dialogue.active = false;
-    draft.runtime.dialogue.nodeId = null;
+    draft.runtime.dialogue = {
+      active: false,
+      storyId: '',
+      sceneId: '',
+      returnMode: 'EXPLORE',
+      visitCount: 0,
+      visited: {},
+    };
     draft.runtime.inventoryUI.open = false;
     draft.runtime.inventoryUI.selectedItemId = undefined;
     draft.runtime.crafting.open = false;

@@ -3,6 +3,7 @@ import { Camera } from './Camera';
 import type { GameState } from '../state/StateTypes';
 import { MapSystem, getTransitionOverlayAlpha } from '../systems/MapSystem';
 import { LightSystem } from '../systems/LightSystem';
+import { storyDatabase } from '../systems/StoryDatabase';
 
 export class Renderer {
   private readonly ctx: CanvasRenderingContext2D;
@@ -192,6 +193,11 @@ export class Renderer {
   }
 
   private drawModals(state: Readonly<GameState>): void {
+    if (state.runtime.mode === 'DIALOGUE') {
+      this.drawDialogueModal(state);
+      return;
+    }
+
     if (state.runtime.mode !== 'INVENTORY' && state.runtime.mode !== 'CRAFTING') return;
     this.ctx.fillStyle = 'rgba(5,10,18,0.8)';
     this.ctx.fillRect(80, 80, this.cssWidth - 160, this.cssHeight - 160);
@@ -213,6 +219,28 @@ export class Renderer {
     const bx = this.cssWidth / 2 - 150;
     this.drawBigButton(bx, this.cssHeight - 170, 300, 50, state.runtime.mode === 'INVENTORY' ? 'Use selected' : 'Mix');
     this.drawBigButton(bx, this.cssHeight - 105, 300, 50, 'Close');
+  }
+
+
+  private drawDialogueModal(state: Readonly<GameState>): void {
+    const runtime = state.runtime.dialogue;
+    const sceneDb = storyDatabase.getSceneDatabase(runtime.storyId);
+    const node = sceneDb?.getNode(runtime.sceneId);
+
+    this.ctx.fillStyle = 'rgba(5,10,18,0.86)';
+    this.ctx.fillRect(80, this.cssHeight - 320, this.cssWidth - 160, 280);
+    this.ctx.strokeStyle = '#cbe8ff';
+    this.ctx.strokeRect(80, this.cssHeight - 320, this.cssWidth - 160, 280);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '20px sans-serif';
+
+    const lines = !node ? ['Dialogue unavailable.'] : (Array.isArray(node.text) ? node.text : [node.text]);
+    lines.slice(0, 2).forEach((line, idx) => this.ctx.fillText(line, 110, this.cssHeight - 280 + idx * 26));
+
+    const choices = node?.choices ?? [{ label: 'Return', next: 'returnToMap' }];
+    choices.slice(0, 4).forEach((choice, idx) => {
+      this.drawBigButton(110, this.cssHeight - 210 + idx * 52, this.cssWidth - 220, 42, choice.label);
+    });
   }
 
   private drawBigButton(x: number, y: number, w: number, h: number, text: string): void {
