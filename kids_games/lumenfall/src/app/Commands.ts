@@ -10,8 +10,14 @@ export type RequestMapTransitionCommand = {
   toY: number;
 };
 export type DebugSkipTimeCommand = { kind: 'DebugSkipTime'; seconds: number };
+export type DebugToggleLightOverlayCommand = { kind: 'DebugToggleLightOverlay' };
 
-export type Command = RequestModeCommand | UiMessageCommand | RequestMapTransitionCommand | DebugSkipTimeCommand;
+export type Command =
+  | RequestModeCommand
+  | UiMessageCommand
+  | RequestMapTransitionCommand
+  | DebugSkipTimeCommand
+  | DebugToggleLightOverlayCommand;
 
 type CommandPriority = 1 | 2 | 3 | 4;
 

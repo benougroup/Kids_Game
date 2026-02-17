@@ -11,6 +11,7 @@ export interface DraftTx {
   touchRuntimeMapTriggerFlags(): void;
   touchRuntimeUi(): void;
   touchRuntimeTime(): void;
+  touchRuntimeLight(): void;
   touchRuntimeCheckpoint(): void;
   touchGlobal(): void;
   touchGlobalPlayer(): void;
@@ -107,6 +108,16 @@ export class StateStore {
         if (!touched.has('runtime.checkpoint')) {
           draftState.runtime.checkpoint = { ...draftState.runtime.checkpoint };
           touched.add('runtime.checkpoint');
+        }
+      },
+      touchRuntimeLight: () => {
+        touchRuntime();
+        if (!touched.has('runtime.light')) {
+          draftState.runtime.light = {
+            ...draftState.runtime.light,
+            sources: { ...draftState.runtime.light.sources },
+          };
+          touched.add('runtime.light');
         }
       },
       touchGlobal,

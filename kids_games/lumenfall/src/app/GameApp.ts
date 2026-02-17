@@ -12,6 +12,7 @@ import { MapSystem, advanceMapTransition, applyTransitionSwap } from '../systems
 import { PlayerSystem } from '../systems/PlayerSystem';
 import { TriggerSystem } from '../systems/TriggerSystem';
 import { TimeSystem } from '../systems/TimeSystem';
+import { LightSystem } from '../systems/LightSystem';
 
 const WORLD_TILE_WIDTH = 100;
 const WORLD_TILE_HEIGHT = 100;
@@ -26,19 +27,36 @@ export class GameApp {
   private readonly playerSystem = new PlayerSystem(this.mapSystem);
   private readonly triggerSystem = new TriggerSystem(this.mapSystem);
   private readonly timeSystem = new TimeSystem({ bus: this.bus, modeMachine: this.modeMachine });
+  private readonly lightSystem = new LightSystem({ mapSystem: this.mapSystem, bus: this.bus });
   private readonly camera = new Camera(WORLD_TILE_WIDTH * TILE_SIZE, WORLD_TILE_HEIGHT * TILE_SIZE);
   private readonly renderer: Renderer;
   private readonly input: Input;
   private readonly loop: GameLoop;
+  private showLightOverlay = false;
 
   constructor(canvas: HTMLCanvasElement) {
-    this.renderer = new Renderer(canvas, this.camera, this.mapSystem);
+    this.renderer = new Renderer(canvas, this.camera, this.mapSystem, this.lightSystem);
     this.input = new Input(canvas, this.camera);
     this.loop = new GameLoop(this.update, this.render);
 
     this.bus.on('MODE_CHANGED', (event) => {
       this.logger.info(`Mode changed: ${event.from} -> ${event.to}`);
     });
+
+    this.bus.on('TIME_PHASE_CHANGED', (event) => {
+      const tx = this.store.beginTx('light_phase_sync');
+      try {
+        this.lightSystem.onTimePhaseChanged(event.to, tx);
+        this.store.commitTx(tx);
+      } catch (error) {
+        this.store.rollbackTx(tx);
+        this.logger.error('Light phase sync failed', error);
+      }
+    });
+
+    const tx = this.store.beginTx('light_init');
+    this.lightSystem.initialize(this.store.get(), tx);
+    this.store.commitTx(tx);
   }
 
   start(): void {
@@ -80,6 +98,7 @@ export class GameApp {
         this.applyCommands(this.commandQueue.drain(), draft.runtime.mode, tx);
       }
 
+      this.lightSystem.update(tx);
       this.playerSystem.smoothPixels(draft, dtMs);
       this.store.commitTx(tx);
     } catch (error) {
@@ -89,6 +108,7 @@ export class GameApp {
   };
 
   private readonly render = (): void => {
+    this.renderer.setLightOverlayVisible(this.showLightOverlay);
     this.renderer.render(this.store.get(), this.loop.getFps());
   };
 
@@ -139,6 +159,10 @@ export class GameApp {
 
       if (command.kind === 'DebugSkipTime') {
         this.timeSystem.debugSkipSeconds(command.seconds, tx);
+      }
+
+      if (command.kind === 'DebugToggleLightOverlay') {
+        this.showLightOverlay = !this.showLightOverlay;
       }
     }
   }

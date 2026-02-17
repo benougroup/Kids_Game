@@ -1,5 +1,19 @@
 import type { Mode } from '../app/ModeMachine';
 
+export type LightLevel = 'BRIGHT' | 'DIM' | 'DARK';
+
+export interface LightSourceRuntime {
+  id: string;
+  type: 'post' | 'lighthouse' | 'shrine' | 'player' | 'temp';
+  x: number;
+  y: number;
+  radius: number;
+  intensity: Extract<LightLevel, 'BRIGHT' | 'DIM'>;
+  active: boolean;
+  falloff: 'hard' | 'gradient';
+  expiresAtSeconds?: number;
+}
+
 interface MapTransition {
   toMapId: string;
   toX: number;
@@ -40,6 +54,12 @@ export interface GameState {
       dayCount: number;
       lastTickAtSeconds: number;
       paused: boolean;
+    };
+    light: {
+      ambient: number;
+      sources: Record<string, LightSourceRuntime>;
+      dirty: boolean;
+      chunkSize: number;
     };
     map: {
       currentMapId: string;
@@ -103,6 +123,12 @@ export const createInitialState = (): GameState => ({
       dayCount: 1,
       lastTickAtSeconds: 0,
       paused: false,
+    },
+    light: {
+      ambient: 1,
+      sources: {},
+      dirty: true,
+      chunkSize: 16,
     },
     map: {
       currentMapId: 'bright_hollow',
