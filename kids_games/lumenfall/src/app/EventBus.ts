@@ -9,7 +9,9 @@ export type AppEvent =
   | { type: 'DAY_START'; dayCount: number }
   | { type: 'TIME_PHASE_CHANGED'; from: TimePhase; to: TimePhase }
   | { type: 'TIME_PHASE_START'; phase: TimePhase }
-  | { type: 'TIME_TICK'; atSeconds: number };
+  | { type: 'TIME_TICK'; atSeconds: number }
+  | { type: 'LIGHT_AMBIENT_CHANGED'; phase: TimePhase; ambientShift: number }
+  | { type: 'LIGHT_SOURCES_CHANGED' };
 
 type HandlerMap = {
   [K in AppEvent['type']]: Array<(event: Extract<AppEvent, { type: K }>) => void>;
@@ -24,6 +26,8 @@ export class EventBus {
     TIME_PHASE_CHANGED: [],
     TIME_PHASE_START: [],
     TIME_TICK: [],
+    LIGHT_AMBIENT_CHANGED: [],
+    LIGHT_SOURCES_CHANGED: [],
   };
 
   on<K extends AppEvent['type']>(

@@ -1,7 +1,7 @@
 import brightHollowMap from '../data/maps/bright_hollow.json';
 import lightHallMap from '../data/maps/light_hall.json';
 import { TILE_SIZE } from '../app/Config';
-import type { GameState } from '../state/StateTypes';
+import type { GameState, LightSourceRuntime } from '../state/StateTypes';
 
 export type LayerName = 'ground' | 'decor' | 'collision' | 'overlay';
 
@@ -43,6 +43,9 @@ export interface TileMap {
   height: number;
   layers: Record<LayerName, number[]>;
   tilePalette: Record<string, { name: string; color: string }>;
+  tileDefs?: Record<string, { baseLight?: 'BRIGHT' | 'DIM' | 'DARK' }>;
+  safeZones?: Array<{ id: string; x: number; y: number; radius: number }>;
+  embeddedLightSources?: Array<Omit<LightSourceRuntime, 'falloff'> & { falloff?: 'hard' | 'gradient' }>;
   interactables: Interactable[];
   triggers: MapTrigger[];
 }
@@ -101,6 +104,17 @@ export class MapSystem {
 
   getTriggers(mapId: string): MapTrigger[] {
     return this.getMap(mapId).triggers;
+  }
+
+  getSafeZones(mapId: string): Array<{ id: string; x: number; y: number; radius: number }> {
+    return this.getMap(mapId).safeZones ?? [];
+  }
+
+  getEmbeddedLightSources(mapId: string): LightSourceRuntime[] {
+    return (this.getMap(mapId).embeddedLightSources ?? []).map((source) => ({
+      ...source,
+      falloff: source.falloff ?? 'hard',
+    }));
   }
 
   hasTriggerFired(state: Readonly<GameState>, mapId: string, triggerId: string): boolean {

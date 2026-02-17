@@ -79,6 +79,11 @@ export class Input {
       return;
     }
 
+    if (key === 'l' && this.isDevMode) {
+      this.commands.push({ kind: 'DebugToggleLightOverlay' });
+      return;
+    }
+
     if (key === ' ' || key === 'enter') {
       this.interactPressed = true;
       return;

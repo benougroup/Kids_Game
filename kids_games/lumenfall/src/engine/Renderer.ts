@@ -2,6 +2,7 @@ import { TILE_SIZE } from '../app/Config';
 import { Camera } from './Camera';
 import type { GameState } from '../state/StateTypes';
 import { MapSystem, getTransitionOverlayAlpha } from '../systems/MapSystem';
+import { LightSystem } from '../systems/LightSystem';
 
 export class Renderer {
   private readonly ctx: CanvasRenderingContext2D;
@@ -9,11 +10,13 @@ export class Renderer {
   private cssHeight = 0;
   private dpr = 1;
   private readonly showGrid = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+  private showLightOverlay = false;
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
     private readonly camera: Camera,
     private readonly mapSystem: MapSystem,
+    private readonly lightSystem: LightSystem,
   ) {
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -52,6 +55,10 @@ export class Renderer {
 
     this.drawMap(state, 'overlay');
 
+    if (this.showLightOverlay) {
+      this.drawLightOverlay(state);
+    }
+
     if (this.showGrid) {
       this.drawGrid();
     }
@@ -62,6 +69,11 @@ export class Renderer {
     if (this.showGrid) {
       this.drawSkipTimeButton();
     }
+  }
+
+
+  setLightOverlayVisible(visible: boolean): void {
+    this.showLightOverlay = visible;
   }
 
   getViewportSize(): { width: number; height: number } {
@@ -85,6 +97,29 @@ export class Renderer {
         const def = map.tilePalette[String(tileId)] ?? map.tilePalette['0'];
         const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
         this.ctx.fillStyle = def.color;
+        this.ctx.fillRect(screen.x, screen.y, TILE_SIZE, TILE_SIZE);
+      }
+    }
+  }
+
+
+  private drawLightOverlay(state: Readonly<GameState>): void {
+    const map = this.mapSystem.getCurrentMap(state);
+    const topLeft = this.camera.screenToWorld(0, 0);
+    const bottomRight = this.camera.screenToWorld(this.cssWidth, this.cssHeight);
+
+    const minX = Math.max(0, Math.floor(topLeft.x / TILE_SIZE) - 1);
+    const minY = Math.max(0, Math.floor(topLeft.y / TILE_SIZE) - 1);
+    const maxX = Math.min(map.width - 1, Math.ceil(bottomRight.x / TILE_SIZE) + 1);
+    const maxY = Math.min(map.height - 1, Math.ceil(bottomRight.y / TILE_SIZE) + 1);
+
+    for (let y = minY; y <= maxY; y += 1) {
+      for (let x = minX; x <= maxX; x += 1) {
+        const level = this.lightSystem.getTileLightLevel(state, x, y);
+        const alpha = level === 'DARK' ? 0.35 : level === 'DIM' ? 0.15 : 0;
+        if (alpha <= 0) continue;
+        const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
+        this.ctx.fillStyle = `rgba(0,0,0,${alpha.toFixed(3)})`;
         this.ctx.fillRect(screen.x, screen.y, TILE_SIZE, TILE_SIZE);
       }
     }
