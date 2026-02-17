@@ -6,6 +6,7 @@ import type { CheckpointSystem } from './CheckpointSystem';
 import { EffectInterpreter } from './EffectInterpreter';
 import { evaluateSceneConditions } from './DialogueSystemConditions';
 import { storyDatabase, type StoryDatabase } from './StoryDatabase';
+import { isStableForNewMode } from '../app/Stability';
 
 const MAX_VISITS = 40;
 
@@ -25,6 +26,9 @@ export class DialogueSystem {
   }
 
   startScene(tx: DraftTx, storyId: string, sceneId?: string): void {
+    if (!isStableForNewMode(tx.draftState)) {
+      return;
+    }
     const story = (this.deps.storyDb ?? storyDatabase).getStory(storyId);
     if (!story) {
       this.routeToError(tx, storyId, `Unknown story '${storyId}'`);
@@ -45,8 +49,7 @@ export class DialogueSystem {
       visitCount: 0,
       visited: {},
     };
-
-    this.enterCurrentNode(tx);
+    this.markPendingEnter(tx);
   }
 
   choose(tx: DraftTx, choiceIndex: number): void {
@@ -87,6 +90,16 @@ export class DialogueSystem {
     this.moveToNode(tx, choice.next);
   }
 
+  update(tx: DraftTx): void {
+    const runtimeFlags = tx.draftState.runtime.runtimeFlags as Record<string, unknown>;
+    if (!runtimeFlags['dialogue.pendingEnter']) {
+      return;
+    }
+    tx.touchRuntimeFlags();
+    delete tx.draftState.runtime.runtimeFlags['dialogue.pendingEnter'];
+    this.enterCurrentNode(tx);
+  }
+
   end(tx: DraftTx): void {
     tx.touchRuntime();
     tx.touchRuntimeDialogue();
@@ -106,7 +119,12 @@ export class DialogueSystem {
   private moveToNode(tx: DraftTx, nodeId: string): void {
     tx.touchRuntimeDialogue();
     tx.draftState.runtime.dialogue.sceneId = nodeId;
-    this.enterCurrentNode(tx);
+    this.markPendingEnter(tx);
+  }
+
+  private markPendingEnter(tx: DraftTx): void {
+    tx.touchRuntimeFlags();
+    tx.draftState.runtime.runtimeFlags['dialogue.pendingEnter'] = true;
   }
 
   private enterCurrentNode(tx: DraftTx): void {

@@ -1,5 +1,6 @@
 import type { EventBus } from '../app/EventBus';
 import type { ModeMachine } from '../app/ModeMachine';
+import { isStableForSave } from '../app/Stability';
 import { migrateSaveFile } from '../state/Migrations';
 import { StateStore } from '../state/StateStore';
 import { createEmptyInventory, createInitialState, type GameState } from '../state/StateTypes';
@@ -28,7 +29,6 @@ interface SaveSystemDeps {
 
 const AUTOSAVE_DEBOUNCE_MS = 500;
 const BACKUP_ROTATION_INTERVAL = 5;
-const DISALLOWED_SAVE_MODES = new Set<GameState['runtime']['mode']>(['MAP_TRANSITION', 'FAINTING', 'LOADING']);
 
 export class SaveSystem {
   private readonly store: StateStore;
@@ -40,6 +40,7 @@ export class SaveSystem {
   private isRestoring = false;
   private debounceHandle: ReturnType<typeof setTimeout> | null = null;
   private totalSaves = 0;
+  private scheduledFlush = false;
 
   constructor({ store, bus, modeMachine: _modeMachine, storage, nowMs }: SaveSystemDeps) {
     this.store = store;
@@ -56,44 +57,41 @@ export class SaveSystem {
     });
     bus.on('CRAFT_SUCCESS', () => this.requestAutosave('craft'));
     bus.on('STORY_FLAGS_CHANGED', () => this.requestAutosave('flags'));
-    bus.on('MODE_CHANGED', () => {
-      if (this.pendingAutosave && this.canSaveNow()) {
-        this.requestAutosave('mode_unblocked');
-      }
-    });
+    bus.on('MODE_CHANGED', () => this.scheduleFlushIfReady());
   }
 
   markDirty(_reason: string): void {
     this.dirty = true;
-    const tx = this.store.beginTx('save_dirty');
-    tx.touchRuntimeSave();
-    tx.draftState.runtime.save.dirty = true;
-    this.store.commitTx(tx);
+    this.pendingAutosave = true;
   }
 
   requestAutosave(reason: string): void {
     this.markDirty(reason);
-    this.pendingAutosave = true;
     if (this.debounceHandle) {
       clearTimeout(this.debounceHandle);
     }
     this.debounceHandle = setTimeout(() => {
-      if (!this.canSaveNow()) {
-        this.pendingAutosave = true;
-        return;
+      const state = this.store.get();
+      if (this.canSaveNow(state)) {
+        this.saveNow(`autosave:${reason}`);
       }
-      this.saveNow(`autosave:${reason}`);
-      this.pendingAutosave = false;
     }, AUTOSAVE_DEBOUNCE_MS);
+  }
+
+  onPostCommit(state: Readonly<GameState>): void {
+    if (!state.runtime.save.dirty && this.dirty) {
+      this.dirty = false;
+    }
+    this.scheduleFlushIfReady();
   }
 
   saveNow(reason: string): { ok: boolean; error?: string } {
     if (!this.dirty && !reason.startsWith('force')) {
       return { ok: true };
     }
-    if (!this.canSaveNow()) {
+    if (!this.canSaveNow(this.store.get())) {
       this.pendingAutosave = true;
-      return { ok: false, error: 'Save blocked by current mode/restore state.' };
+      return { ok: false, error: 'Save blocked by unstable state.' };
     }
 
     try {
@@ -112,13 +110,8 @@ export class SaveSystem {
         this.storage.setItem(LUMENFALL_SAVE_BACKUP, json);
       }
 
-      const tx = this.store.beginTx('save_clear_dirty');
-      tx.touchRuntimeSave();
-      tx.touchRuntimeCheckpoint();
-      tx.draftState.runtime.save.dirty = false;
-      tx.draftState.runtime.checkpoint.dirty = false;
-      this.store.commitTx(tx);
       this.dirty = false;
+      this.pendingAutosave = false;
       return { ok: true };
     } catch (error) {
       return { ok: false, error: error instanceof Error ? error.message : 'Save failed' };
@@ -186,38 +179,27 @@ export class SaveSystem {
     next.runtime.map.mapsVisited = { bright_hollow: { lastX: 14, lastY: 10 } };
 
     this.store.replaceState(next);
-    const tx = this.store.beginTx('new_story_checkpoint');
-    tx.touchRuntimeCheckpoint();
-    tx.draftState.runtime.checkpoint.lastCheckpointId = `story_start_${newStoryId}`;
-    tx.draftState.runtime.checkpoint.snapshot = {
-      checkpointId: `story_start_${newStoryId}`,
-      mapId: 'bright_hollow',
-      player: { x: 14, y: 10, facing: 'S', hp: next.runtime.player.hp, sp: next.runtime.player.sp },
-      story: {
-        activeStoryId: newStoryId,
-        flags: {},
-        stage: {},
-        npc: { townFear: 0, trust: {}, npcFlags: {} },
-        storyInventory: createEmptyInventory(),
-        storyShadowById: {},
-      },
-      time: {
-        phase: next.runtime.time.phase,
-        secondsIntoCycle: next.runtime.time.secondsIntoCycle,
-        dayCount: next.runtime.time.dayCount,
-      },
-      createdAtMs: this.nowMs(),
-    };
-    this.store.commitTx(tx);
     this.markDirty('new_story');
     this.saveNow('force:new_story');
   }
 
-  private canSaveNow(): boolean {
+  private scheduleFlushIfReady(): void {
+    if (this.scheduledFlush) {
+      return;
+    }
     const state = this.store.get();
-    const modeBlocked = DISALLOWED_SAVE_MODES.has(state.runtime.mode);
-    const restoreBlocked = Boolean(state.runtime.fainting?.active && state.runtime.fainting.phase === 'restore');
-    return !modeBlocked && !restoreBlocked && !this.isRestoring;
+    if (!this.pendingAutosave || !this.canSaveNow(state)) {
+      return;
+    }
+    this.scheduledFlush = true;
+    setTimeout(() => {
+      this.scheduledFlush = false;
+      this.saveNow('autosave:stable');
+    }, 0);
+  }
+
+  private canSaveNow(state: Readonly<GameState>): boolean {
+    return isStableForSave(state) && !this.isRestoring;
   }
 
   private buildSaveFile(state: Readonly<GameState>): SaveFile {

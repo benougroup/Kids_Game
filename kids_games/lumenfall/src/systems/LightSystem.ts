@@ -45,6 +45,8 @@ export class LightSystem {
   private mapChunkSourceIds = new Map<string, string[]>();
   private currentMapId = '';
   private recomputeCount = 0;
+  private chunkHits = 0;
+  private chunkMisses = 0;
   private readonly totalCycleSeconds =
     timeConfig.cycle.daySeconds + timeConfig.cycle.duskSeconds + timeConfig.cycle.nightSeconds + timeConfig.cycle.dawnSeconds;
 
@@ -163,6 +165,11 @@ export class LightSystem {
     return this.recomputeCount;
   }
 
+  getPerfCounters(): { hitRate: number; hits: number; misses: number } {
+    const total = this.chunkHits + this.chunkMisses;
+    return { hitRate: total > 0 ? this.chunkHits / total : 1, hits: this.chunkHits, misses: this.chunkMisses };
+  }
+
   private syncAmbient(phase: TimePhase, tx: DraftTx): void {
     const ambientShift = PHASE_SHIFT[phase];
     tx.touchRuntimeLight();
@@ -223,8 +230,11 @@ export class LightSystem {
     const cacheKey = `${mapId}:${cx}:${cy}:${this.ambientVersion}:${this.sourcesVersion}`;
     let entry = this.chunkCache.get(cacheKey);
     if (!entry) {
+      this.chunkMisses += 1;
       entry = this.recomputeChunk(mapId, cx, cy);
       this.chunkCache.set(cacheKey, entry);
+    } else {
+      this.chunkHits += 1;
     }
 
     const localX = x - cx * this.chunkSize;

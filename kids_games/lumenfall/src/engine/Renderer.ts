@@ -12,6 +12,12 @@ export class Renderer {
   private dpr = 1;
   private readonly showGrid = typeof window !== 'undefined' && window.location.hostname === 'localhost';
   private showLightOverlay = false;
+  private showPerfHud = true;
+  private frameDtMs = 0;
+  private frameAvgMs = 0;
+  private lastRenderAt = performance.now();
+  private visibleTiles = 0;
+  private readonly viewportRange = { minX: 0, minY: 0, maxX: 0, maxY: 0 };
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
@@ -20,9 +26,7 @@ export class Renderer {
     private readonly lightSystem: LightSystem,
   ) {
     const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('Could not create canvas2D context.');
-    }
+    if (!ctx) throw new Error('Could not create canvas2D context.');
     this.ctx = ctx;
     this.resize();
     window.addEventListener('resize', this.resize);
@@ -32,20 +36,25 @@ export class Renderer {
     this.dpr = window.devicePixelRatio || 1;
     this.cssWidth = window.innerWidth;
     this.cssHeight = window.innerHeight;
-
     this.canvas.width = Math.floor(this.cssWidth * this.dpr);
     this.canvas.height = Math.floor(this.cssHeight * this.dpr);
     this.canvas.style.width = `${this.cssWidth}px`;
     this.canvas.style.height = `${this.cssHeight}px`;
-
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
   };
 
   render(state: Readonly<GameState>, fps: number): void {
+    const now = performance.now();
+    this.frameDtMs = now - this.lastRenderAt;
+    this.lastRenderAt = now;
+    this.frameAvgMs = this.frameAvgMs <= 0 ? this.frameDtMs : this.frameAvgMs * 0.9 + this.frameDtMs * 0.1;
+
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     this.ctx.fillStyle = '#0b1020';
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
 
     this.camera.follow(state.runtime.player.px, state.runtime.player.py, this.cssWidth, this.cssHeight);
+    this.computeViewportRange(state.runtime.map.currentMapId);
 
     this.drawMap(state, 'ground');
     this.drawMap(state, 'decor');
@@ -56,14 +65,8 @@ export class Renderer {
     this.ctx.fillRect(playerScreen.x, playerScreen.y, TILE_SIZE, TILE_SIZE);
 
     this.drawMap(state, 'overlay');
-
-    if (this.showLightOverlay) {
-      this.drawLightOverlay(state);
-    }
-
-    if (this.showGrid) {
-      this.drawGrid();
-    }
+    if (this.showLightOverlay) this.drawLightOverlay(state);
+    if (this.showGrid) this.drawGrid();
 
     this.drawHud(state, fps);
     this.drawTransition(state);
@@ -71,32 +74,28 @@ export class Renderer {
     this.drawInteractButton();
     this.drawInventoryButton();
     this.drawModals(state);
-    if (this.showGrid) {
-      this.drawSkipTimeButton();
-    }
+    if (this.showGrid) this.drawSkipTimeButton();
   }
 
+  setLightOverlayVisible(visible: boolean): void { this.showLightOverlay = visible; }
+  setPerfHudVisible(visible: boolean): void { this.showPerfHud = visible; }
 
-  setLightOverlayVisible(visible: boolean): void {
-    this.showLightOverlay = visible;
-  }
-
-  getViewportSize(): { width: number; height: number } {
-    return { width: this.cssWidth, height: this.cssHeight };
+  private computeViewportRange(mapId: string): void {
+    const map = this.mapSystem.getMap(mapId);
+    const topLeft = this.camera.screenToWorld(0, 0);
+    const bottomRight = this.camera.screenToWorld(this.cssWidth, this.cssHeight);
+    this.viewportRange.minX = Math.max(0, Math.floor(topLeft.x / TILE_SIZE) - 1);
+    this.viewportRange.minY = Math.max(0, Math.floor(topLeft.y / TILE_SIZE) - 1);
+    this.viewportRange.maxX = Math.min(map.width - 1, Math.ceil(bottomRight.x / TILE_SIZE) + 1);
+    this.viewportRange.maxY = Math.min(map.height - 1, Math.ceil(bottomRight.y / TILE_SIZE) + 1);
+    this.visibleTiles = (this.viewportRange.maxX - this.viewportRange.minX + 1) * (this.viewportRange.maxY - this.viewportRange.minY + 1);
   }
 
   private drawMap(state: Readonly<GameState>, layer: 'ground' | 'decor' | 'overlay'): void {
     const map = this.mapSystem.getCurrentMap(state);
-    const topLeft = this.camera.screenToWorld(0, 0);
-    const bottomRight = this.camera.screenToWorld(this.cssWidth, this.cssHeight);
-
-    const minX = Math.max(0, Math.floor(topLeft.x / TILE_SIZE) - 1);
-    const minY = Math.max(0, Math.floor(topLeft.y / TILE_SIZE) - 1);
-    const maxX = Math.min(map.width - 1, Math.ceil(bottomRight.x / TILE_SIZE) + 1);
-    const maxY = Math.min(map.height - 1, Math.ceil(bottomRight.y / TILE_SIZE) + 1);
-
-    for (let y = minY; y <= maxY; y += 1) {
-      for (let x = minX; x <= maxX; x += 1) {
+    const r = this.viewportRange;
+    for (let y = r.minY; y <= r.maxY; y += 1) {
+      for (let x = r.minX; x <= r.maxX; x += 1) {
         const tileId = this.mapSystem.getTileId(map.id, layer, x, y);
         if (layer !== 'ground' && tileId === 0) continue;
         const def = map.tilePalette[String(tileId)] ?? map.tilePalette['0'];
@@ -107,41 +106,33 @@ export class Renderer {
     }
   }
 
-
-
   private drawShadows(state: Readonly<GameState>): void {
-    const all = [...state.runtime.shadows.env, ...state.runtime.shadows.story];
-    for (const shadow of all) {
-      const screen = this.camera.worldToScreen(shadow.x * TILE_SIZE, shadow.y * TILE_SIZE);
-      this.ctx.fillStyle = shadow.category === 'story' ? 'rgba(20,20,30,0.65)' : 'rgba(5,5,12,0.55)';
-      this.ctx.beginPath();
-      this.ctx.arc(screen.x + TILE_SIZE / 2, screen.y + TILE_SIZE / 2, TILE_SIZE * 0.35, 0, Math.PI * 2);
-      this.ctx.fill();
-      if (this.showGrid) {
-        this.ctx.fillStyle = '#d0d0d0';
-        this.ctx.font = '10px monospace';
-        this.ctx.fillText(shadow.state[0].toUpperCase(), screen.x + 10, screen.y + 19);
-      }
+    for (const shadow of state.runtime.shadows.env) this.drawShadow(shadow.category, shadow.state, shadow.x, shadow.y);
+    for (const shadow of state.runtime.shadows.story) this.drawShadow(shadow.category, shadow.state, shadow.x, shadow.y);
+  }
+
+  private drawShadow(category: 'environmental' | 'story', label: string, x: number, y: number): void {
+    const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
+    this.ctx.fillStyle = category === 'story' ? 'rgba(20,20,30,0.65)' : 'rgba(5,5,12,0.55)';
+    this.ctx.beginPath();
+    this.ctx.arc(screen.x + TILE_SIZE / 2, screen.y + TILE_SIZE / 2, TILE_SIZE * 0.35, 0, Math.PI * 2);
+    this.ctx.fill();
+    if (this.showGrid) {
+      this.ctx.fillStyle = '#d0d0d0';
+      this.ctx.font = '10px monospace';
+      this.ctx.fillText(label[0].toUpperCase(), screen.x + 10, screen.y + 19);
     }
   }
 
   private drawLightOverlay(state: Readonly<GameState>): void {
-    const map = this.mapSystem.getCurrentMap(state);
-    const topLeft = this.camera.screenToWorld(0, 0);
-    const bottomRight = this.camera.screenToWorld(this.cssWidth, this.cssHeight);
-
-    const minX = Math.max(0, Math.floor(topLeft.x / TILE_SIZE) - 1);
-    const minY = Math.max(0, Math.floor(topLeft.y / TILE_SIZE) - 1);
-    const maxX = Math.min(map.width - 1, Math.ceil(bottomRight.x / TILE_SIZE) + 1);
-    const maxY = Math.min(map.height - 1, Math.ceil(bottomRight.y / TILE_SIZE) + 1);
-
-    for (let y = minY; y <= maxY; y += 1) {
-      for (let x = minX; x <= maxX; x += 1) {
+    const r = this.viewportRange;
+    for (let y = r.minY; y <= r.maxY; y += 1) {
+      for (let x = r.minX; x <= r.maxX; x += 1) {
         const level = this.lightSystem.getTileLightLevel(state, x, y);
         const alpha = level === 'DARK' ? 0.35 : level === 'DIM' ? 0.15 : 0;
         if (alpha <= 0) continue;
         const screen = this.camera.worldToScreen(x * TILE_SIZE, y * TILE_SIZE);
-        this.ctx.fillStyle = `rgba(0,0,0,${alpha.toFixed(3)})`;
+        this.ctx.fillStyle = alpha === 0.35 ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0.15)';
         this.ctx.fillRect(screen.x, screen.y, TILE_SIZE, TILE_SIZE);
       }
     }
@@ -155,7 +146,10 @@ export class Renderer {
     this.ctx.fillText(`Day: ${state.runtime.time.dayCount} Paused: ${state.runtime.time.paused ? 'yes' : 'no'}`, 16, 58);
     this.ctx.fillText(`Map: ${state.runtime.map.currentMapId}`, 16, 76);
     this.ctx.fillText(`Tile: (${state.runtime.player.x}, ${state.runtime.player.y})`, 16, 94);
-    this.ctx.fillText(`FPS: ${fps.toFixed(1)} DPR: ${this.dpr.toFixed(2)}`, 16, 112);
+    if (!this.showPerfHud) return;
+    const perf = this.lightSystem.getPerfCounters();
+    this.ctx.fillText(`FPS: ${fps.toFixed(1)} dt: ${this.frameDtMs.toFixed(2)}ms avg: ${this.frameAvgMs.toFixed(2)}ms`, 16, 112);
+    this.ctx.fillText(`Visible tiles: ${this.visibleTiles} lightChunkHit: ${(perf.hitRate * 100).toFixed(1)}%`, 16, 130);
   }
 
   private drawTransition(state: Readonly<GameState>): void {
@@ -165,57 +159,20 @@ export class Renderer {
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
   }
 
-
   private drawFaintOverlay(state: Readonly<GameState>): void {
     const faint = state.runtime.fainting;
-    if (!faint?.active) {
-      return;
-    }
-
+    if (!faint?.active) return;
     const alpha = faint.phase === 'fadeIn' ? 1 - faint.t : faint.t;
-    if (alpha <= 0) {
-      return;
-    }
-
+    if (alpha <= 0) return;
     this.ctx.fillStyle = `rgba(0,0,0,${Math.max(0, Math.min(1, alpha)).toFixed(3)})`;
     this.ctx.fillRect(0, 0, this.cssWidth, this.cssHeight);
   }
 
-  private drawInteractButton(): void {
-    const size = 64;
-    const margin = 16;
-    const x = this.cssWidth - margin - size;
-    const y = this.cssHeight - margin - size;
-    this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
-    this.ctx.fillRect(x, y, size, size);
-    this.ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-    this.ctx.strokeRect(x, y, size, size);
-    this.ctx.fillStyle = 'white';
-    this.ctx.font = '12px sans-serif';
-    this.ctx.fillText('ACT', x + 18, y + 36);
-  }
-
-
-  private drawInventoryButton(): void {
-    const w = 88;
-    const h = 44;
-    const x = this.cssWidth - 184;
-    const y = this.cssHeight - 68;
-    this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
-    this.ctx.fillRect(x, y, w, h);
-    this.ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-    this.ctx.strokeRect(x, y, w, h);
-    this.ctx.fillStyle = 'white';
-    this.ctx.font = '14px sans-serif';
-    this.ctx.fillText('BAG', x + 24, y + 27);
-  }
+  private drawInteractButton(): void { this.drawBigButton(this.cssWidth - 96, this.cssHeight - 96, 78, 78, 'ACT'); }
+  private drawInventoryButton(): void { this.drawBigButton(this.cssWidth - 230, this.cssHeight - 82, 110, 56, 'BAG'); }
 
   private drawModals(state: Readonly<GameState>): void {
-    if (state.runtime.mode === 'DIALOGUE') {
-      this.drawDialogueModal(state);
-      return;
-    }
-
+    if (state.runtime.mode === 'DIALOGUE') return this.drawDialogueModal(state);
     if (state.runtime.mode !== 'INVENTORY' && state.runtime.mode !== 'CRAFTING') return;
     this.ctx.fillStyle = 'rgba(5,10,18,0.8)';
     this.ctx.fillRect(80, 80, this.cssWidth - 160, this.cssHeight - 160);
@@ -224,7 +181,6 @@ export class Renderer {
     this.ctx.fillStyle = '#ffffff';
     this.ctx.font = '24px sans-serif';
     this.ctx.fillText(state.runtime.mode === 'INVENTORY' ? 'Inventory' : 'Mixing Table', 110, 120);
-
     const items = Object.entries(state.global.inventory.items).filter(([, v]) => v.qty > 0);
     this.ctx.font = '18px sans-serif';
     items.slice(0, 7).forEach(([id, stack], idx) => {
@@ -233,32 +189,25 @@ export class Renderer {
       this.ctx.fillStyle = selected ? '#52c2ff' : '#ffffff';
       this.ctx.fillText(`${id.replace(/_/g, ' ')} x${stack.qty}`, 120, y);
     });
-
-    const bx = this.cssWidth / 2 - 150;
-    this.drawBigButton(bx, this.cssHeight - 170, 300, 50, state.runtime.mode === 'INVENTORY' ? 'Use selected' : 'Mix');
-    this.drawBigButton(bx, this.cssHeight - 105, 300, 50, 'Close');
+    const bx = this.cssWidth / 2 - 170;
+    this.drawBigButton(bx, this.cssHeight - 180, 340, 60, state.runtime.mode === 'INVENTORY' ? 'Use selected' : 'Mix');
+    this.drawBigButton(bx, this.cssHeight - 110, 340, 60, 'Close');
   }
-
 
   private drawDialogueModal(state: Readonly<GameState>): void {
     const runtime = state.runtime.dialogue;
     const sceneDb = storyDatabase.getSceneDatabase(runtime.storyId);
     const node = sceneDb?.getNode(runtime.sceneId);
-
     this.ctx.fillStyle = 'rgba(5,10,18,0.86)';
-    this.ctx.fillRect(80, this.cssHeight - 320, this.cssWidth - 160, 280);
+    this.ctx.fillRect(70, this.cssHeight - 340, this.cssWidth - 140, 300);
     this.ctx.strokeStyle = '#cbe8ff';
-    this.ctx.strokeRect(80, this.cssHeight - 320, this.cssWidth - 160, 280);
+    this.ctx.strokeRect(70, this.cssHeight - 340, this.cssWidth - 140, 300);
     this.ctx.fillStyle = '#ffffff';
     this.ctx.font = '20px sans-serif';
-
     const lines = !node ? ['Dialogue unavailable.'] : (Array.isArray(node.text) ? node.text : [node.text]);
-    lines.slice(0, 2).forEach((line, idx) => this.ctx.fillText(line, 110, this.cssHeight - 280 + idx * 26));
-
+    lines.slice(0, 2).forEach((line, idx) => this.ctx.fillText(line, 100, this.cssHeight - 300 + idx * 26));
     const choices = node?.choices ?? [{ label: 'Return', next: 'returnToMap' }];
-    choices.slice(0, 4).forEach((choice, idx) => {
-      this.drawBigButton(110, this.cssHeight - 210 + idx * 52, this.cssWidth - 220, 42, choice.label);
-    });
+    choices.slice(0, 4).forEach((choice, idx) => this.drawBigButton(100, this.cssHeight - 220 + idx * 62, this.cssWidth - 200, 52, choice.label));
   }
 
   private drawBigButton(x: number, y: number, w: number, h: number, text: string): void {
@@ -268,41 +217,21 @@ export class Renderer {
     this.ctx.strokeRect(x, y, w, h);
     this.ctx.fillStyle = '#ffffff';
     this.ctx.font = '20px sans-serif';
-    this.ctx.fillText(text, x + 20, y + 32);
+    this.ctx.fillText(text, x + 20, y + h / 2 + 7);
   }
 
   private drawSkipTimeButton(): void {
-    const buttonWidth = 88;
-    const buttonHeight = 30;
-    const margin = 16;
-    const x = this.cssWidth - margin - buttonWidth;
-    const y = margin;
-    this.ctx.fillStyle = 'rgba(82, 194, 255, 0.2)';
-    this.ctx.fillRect(x, y, buttonWidth, buttonHeight);
-    this.ctx.strokeStyle = 'rgba(82, 194, 255, 0.85)';
-    this.ctx.strokeRect(x, y, buttonWidth, buttonHeight);
-    this.ctx.fillStyle = '#d3f2ff';
-    this.ctx.font = '11px sans-serif';
-    this.ctx.fillText('Skip Time', x + 16, y + 19);
+    const x = this.cssWidth - 104;
+    const y = 16;
+    this.drawBigButton(x, y, 88, 30, 'Skip');
   }
 
   private drawGrid(): void {
     this.ctx.save();
     this.ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     this.ctx.lineWidth = 1;
-    for (let x = 0; x < this.cssWidth; x += TILE_SIZE) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(x + 0.5, 0);
-      this.ctx.lineTo(x + 0.5, this.cssHeight);
-      this.ctx.stroke();
-    }
-
-    for (let y = 0; y < this.cssHeight; y += TILE_SIZE) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(0, y + 0.5);
-      this.ctx.lineTo(this.cssWidth, y + 0.5);
-      this.ctx.stroke();
-    }
+    for (let x = 0; x < this.cssWidth; x += TILE_SIZE) { this.ctx.beginPath(); this.ctx.moveTo(x + 0.5, 0); this.ctx.lineTo(x + 0.5, this.cssHeight); this.ctx.stroke(); }
+    for (let y = 0; y < this.cssHeight; y += TILE_SIZE) { this.ctx.beginPath(); this.ctx.moveTo(0, y + 0.5); this.ctx.lineTo(this.cssWidth, y + 0.5); this.ctx.stroke(); }
     this.ctx.restore();
   }
 }

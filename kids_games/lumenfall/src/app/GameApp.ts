@@ -3,6 +3,7 @@ import { EventBus } from './EventBus';
 import { Logger } from './Logger';
 import { ModeMachine, type Mode } from './ModeMachine';
 import { TILE_SIZE } from './Config';
+import { isStableForNewMode, shouldAdvanceTime, shouldProcessTriggers } from './Stability';
 import { GameLoop } from '../engine/GameLoop';
 import { Renderer } from '../engine/Renderer';
 import { Camera } from '../engine/Camera';
@@ -55,38 +56,13 @@ export class GameApp {
   private readonly input: Input;
   private readonly loop: GameLoop;
   private showLightOverlay = false;
-  private pendingSaveControl: null | { kind: 'load' } | { kind: 'new_game' } | { kind: 'new_story'; storyId: string } = null;
+  private showPerfHud = true;
+  private pendingSaveControl: null | { kind: 'load' } | { kind: 'new_game' } | { kind: 'new_story'; storyId: string } | { kind: 'manual_save' } = null;
 
   constructor(canvas: HTMLCanvasElement) {
     this.renderer = new Renderer(canvas, this.camera, this.mapSystem, this.lightSystem);
     this.input = new Input(canvas, this.camera);
     this.loop = new GameLoop(this.update, this.render);
-
-    this.bus.on('MODE_CHANGED', (event) => {
-      this.logger.info(`Mode changed: ${event.from} -> ${event.to}`);
-    });
-
-    this.bus.on('TIME_PHASE_START', (event) => {
-      const tx = this.store.beginTx('shadow_phase_sync');
-      try {
-        this.shadowSystem.handlePhaseStart(event.phase, tx);
-        this.store.commitTx(tx);
-      } catch (error) {
-        this.store.rollbackTx(tx);
-        this.logger.error('Shadow phase sync failed', error);
-      }
-    });
-
-    this.bus.on('TIME_PHASE_CHANGED', (event) => {
-      const tx = this.store.beginTx('light_phase_sync');
-      try {
-        this.lightSystem.onTimePhaseChanged(event.to, tx);
-        this.store.commitTx(tx);
-      } catch (error) {
-        this.store.rollbackTx(tx);
-        this.logger.error('Light phase sync failed', error);
-      }
-    });
 
     const tx = this.store.beginTx('light_init');
     this.lightSystem.initialize(this.store.get(), tx);
@@ -104,17 +80,13 @@ export class GameApp {
 
   private readonly update = (dtMs: number): void => {
     const state = this.store.get();
-    const polled = this.input.poll(state.runtime.mode, state.runtime.player.x, state.runtime.player.y, state);
-
-    for (const command of polled.commands) {
+    const intent = this.input.poll(state.runtime.mode, state.runtime.player.x, state.runtime.player.y, state);
+    for (const command of intent.commands) {
       this.commandQueue.enqueue(command);
     }
 
     const tx = this.store.beginTx('frame_update');
-
     try {
-      const draft = tx.draftState;
-
       tx.touchRuntimeMap();
       tx.touchRuntimePlayer();
       tx.touchRuntimeCheckpoint();
@@ -123,39 +95,54 @@ export class GameApp {
       tx.touchRuntimeSave();
       tx.touchRuntimeInventoryUi();
 
-      if (draft.runtime.mode === 'FAINTING') {
+      if (this.tryPreemptFaint(tx)) {
+        this.store.commitTx(tx);
+        this.saveSystem.onPostCommit(this.store.get());
+        this.processPendingSaveControl();
+        return;
+      }
+
+      this.applyCommands(this.commandQueue.drain(), tx.draftState.runtime.mode, tx);
+
+      if (tx.draftState.runtime.mode === 'FAINTING') {
         this.stepFainting(dtMs, tx);
-      } else if (draft.runtime.mode === 'MAP_TRANSITION') {
+      } else if (tx.draftState.runtime.mode === 'MAP_TRANSITION') {
         this.stepMapTransition(dtMs, tx);
       } else {
-        this.applyCommands(this.commandQueue.drain(), draft.runtime.mode, tx);
-        if (tx.draftState.runtime.mode === 'FAINTING') {
-          this.stepFainting(dtMs, tx);
-        } else {
+        this.dialogueSystem.update(tx);
+        if (shouldAdvanceTime(tx.draftState)) {
           this.timeSystem.update(dtMs, tx);
-          const moveResult = this.playerSystem.applyMovementIntent(draft, polled.moveDx, polled.moveDy);
-          this.triggerSystem.evaluate(tx, this.commandQueue, {
-            movedTile: moveResult.movedTile,
-            fromX: moveResult.fromX,
-            fromY: moveResult.fromY,
-            interactPressed: polled.interactPressed,
-            nowMs: performance.now(),
-          });
-          if (polled.interactPressed) {
+        }
+        if (tx.draftState.runtime.mode === 'EXPLORE') {
+          this.shadowSystem.update(tx, performance.now(), dtMs);
+          const clearMoveIntent = Boolean(tx.draftState.runtime.runtimeFlags['runtime.clearMoveIntent']);
+          if (clearMoveIntent) {
+            tx.touchRuntimeFlags();
+            delete tx.draftState.runtime.runtimeFlags['runtime.clearMoveIntent'];
+          }
+          const moveResult = this.playerSystem.applyMovementIntent(tx.draftState, clearMoveIntent ? 0 : intent.moveDx, clearMoveIntent ? 0 : intent.moveDy);
+          if (shouldProcessTriggers(tx.draftState)) {
+            this.triggerSystem.evaluate(tx, this.commandQueue, {
+              movedTile: moveResult.movedTile,
+              interactPressed: intent.interactPressed,
+              nowMs: performance.now(),
+            });
+          }
+          if (intent.interactPressed) {
             const i = this.mapSystem.findInteractableAt(tx.draftState.runtime.map.currentMapId, tx.draftState.runtime.player.x, tx.draftState.runtime.player.y);
             if (i?.type === 'mixingTable') {
               this.craftingSystem.open(tx, i.id);
             }
           }
           this.applyCommands(this.commandQueue.drain(), tx.draftState.runtime.mode, tx);
-          this.shadowSystem.update(tx, performance.now(), dtMs);
         }
       }
 
       tx.draftState.runtime.save.blockedByFaint = tx.draftState.runtime.mode === 'FAINTING';
       this.lightSystem.update(tx);
-      this.playerSystem.smoothPixels(draft, dtMs);
+      this.playerSystem.smoothPixels(tx.draftState, dtMs);
       this.store.commitTx(tx);
+      this.saveSystem.onPostCommit(this.store.get());
       this.processPendingSaveControl();
     } catch (error) {
       this.store.rollbackTx(tx);
@@ -165,8 +152,17 @@ export class GameApp {
 
   private readonly render = (): void => {
     this.renderer.setLightOverlayVisible(this.showLightOverlay);
+    this.renderer.setPerfHudVisible(this.showPerfHud);
     this.renderer.render(this.store.get(), this.loop.getFps());
   };
+
+  private tryPreemptFaint(tx: ReturnType<StateStore['beginTx']>): boolean {
+    if (tx.draftState.runtime.player.hp <= 0) {
+      this.startFainting(tx.draftState.runtime.mode, tx);
+      return true;
+    }
+    return false;
+  }
 
   private applyCommands(commands: Command[], currentMode: Mode, tx: ReturnType<StateStore['beginTx']>): void {
     let mode = currentMode;
@@ -174,24 +170,19 @@ export class GameApp {
     for (const command of commands) {
       if (command.kind === 'TriggerFaint') {
         this.startFainting(mode, tx);
-        mode = tx.draftState.runtime.mode;
-        continue;
+        return;
       }
 
       if (command.kind === 'DebugDamage') {
         damage(tx, command.amount, command.source, { commandQueue: this.commandQueue });
         if (tx.draftState.runtime.player.hp <= 0) {
           this.startFainting(mode, tx);
-          mode = tx.draftState.runtime.mode;
+          return;
         }
         continue;
       }
 
-      if (command.kind === 'DebugCheckpoint') {
-        this.checkpointSystem.setCheckpoint(tx, `debug_${tx.draftState.runtime.map.currentMapId}_${tx.draftState.runtime.player.x}_${tx.draftState.runtime.player.y}`);
-        this.checkpointSystem.snapshot(tx);
-        tx.touchRuntimeUi();
-        tx.draftState.runtime.ui.messages.push('Checkpoint saved.');
+      if ((command.kind === 'StartScene' || command.kind === 'StartEncounter' || command.kind === 'DialogueChoose') && !isStableForNewMode(tx.draftState)) {
         continue;
       }
 
@@ -203,44 +194,28 @@ export class GameApp {
           tx.touchRuntimeMap();
           tx.draftState.runtime.mode = nextMode;
           tx.draftState.runtime.time.paused = true;
-          tx.draftState.runtime.map.transition = {
-            toMapId: command.toMapId,
-            toX: command.toX,
-            toY: command.toY,
-            phase: 'fadeOut',
-            t: 0,
-          };
+          tx.draftState.runtime.map.transition = { toMapId: command.toMapId, toX: command.toX, toY: command.toY, phase: 'fadeOut', t: 0 };
           this.bus.emit({ type: 'MODE_CHANGED', from: mode, to: nextMode });
-          mode = nextMode;
+          return;
         }
-        continue;
       }
-
-
 
       if (command.kind === 'StartScene') {
         this.dialogueSystem.startScene(tx, command.storyId, command.sceneId);
         mode = tx.draftState.runtime.mode;
         continue;
       }
-
       if (command.kind === 'DialogueChoose') {
         this.dialogueSystem.choose(tx, command.choiceIndex);
-        mode = tx.draftState.runtime.mode;
         continue;
       }
-
       if (command.kind === 'StartEncounter') {
         if (encounterDatabase.hasTemplate(command.templateId)) {
           this.dialogueSystem.startScene(tx, 'encounter', command.templateId);
           mode = tx.draftState.runtime.mode;
-        } else {
-          tx.touchRuntimeUi();
-          tx.draftState.runtime.ui.messages.push(`Encounter missing: ${command.templateId}`);
         }
         continue;
       }
-
       if (command.kind === 'ToggleInventory') {
         tx.touchRuntime();
         tx.touchRuntimeTime();
@@ -249,66 +224,33 @@ export class GameApp {
         tx.draftState.runtime.inventoryUI.open = opening;
         tx.draftState.runtime.mode = opening ? 'INVENTORY' : 'EXPLORE';
         tx.draftState.runtime.time.paused = opening;
+        mode = tx.draftState.runtime.mode;
         continue;
       }
-
       if (command.kind === 'InventorySelectItem') {
         tx.touchRuntimeInventoryUi();
         tx.draftState.runtime.inventoryUI.selectedItemId = command.itemId;
         continue;
       }
-
       if (command.kind === 'InventoryUseSelected') {
         const selected = tx.draftState.runtime.inventoryUI.selectedItemId;
         if (!selected) continue;
         const item = itemDatabase.getItem(selected);
         if (!item?.effects || inventorySystem.getQty(tx.draftState, selected, 'global') <= 0) continue;
-        if (inventorySystem.removeItem(tx, selected, 1, 'global')) {
-          this.effectInterpreter.applyEffects(tx, item.effects, { scope: 'global' });
-        }
+        if (inventorySystem.removeItem(tx, selected, 1, 'global')) this.effectInterpreter.applyEffects(tx, item.effects, { scope: 'global' });
         continue;
       }
-
-      if (command.kind === 'CraftingSetSlot') {
-        this.craftingSystem.setSlot(tx, command.slot, command.itemId);
-        continue;
-      }
-
-      if (command.kind === 'CraftingMix') {
-        this.craftingSystem.mix(tx);
-        continue;
-      }
-
-      if (command.kind === 'CraftingClose') {
-        this.craftingSystem.close(tx);
-        continue;
-      }
-
-      if (command.kind === 'SaveNow') {
-        const result = this.saveSystem.saveNow('force:manual');
-        tx.touchRuntimeUi();
-        tx.draftState.runtime.ui.messages.push(result.ok ? 'Saved.' : `Save failed: ${result.error ?? 'unknown'}`);
-        continue;
-      }
-
-      if (command.kind === 'LoadNow') {
-        this.pendingSaveControl = { kind: 'load' };
-        continue;
-      }
-
-      if (command.kind === 'NewGame') {
-        this.pendingSaveControl = { kind: 'new_game' };
-        continue;
-      }
-
-      if (command.kind === 'NewStory') {
-        this.pendingSaveControl = { kind: 'new_story', storyId: command.storyId };
-        continue;
-      }
+      if (command.kind === 'CraftingSetSlot') { this.craftingSystem.setSlot(tx, command.slot, command.itemId); continue; }
+      if (command.kind === 'CraftingMix') { this.craftingSystem.mix(tx); continue; }
+      if (command.kind === 'CraftingClose') { this.craftingSystem.close(tx); continue; }
+      if (command.kind === 'SaveNow') { this.pendingSaveControl = { kind: 'manual_save' }; continue; }
+      if (command.kind === 'LoadNow') { this.pendingSaveControl = { kind: 'load' }; continue; }
+      if (command.kind === 'NewGame') { this.pendingSaveControl = { kind: 'new_game' }; continue; }
+      if (command.kind === 'NewStory') { this.pendingSaveControl = { kind: 'new_story', storyId: command.storyId }; continue; }
+      if (command.kind === 'TogglePerfHud') { this.showPerfHud = !this.showPerfHud; continue; }
       if (command.kind === 'RequestMode') {
         const requestedMode = command.nextMode === 'MENU' && mode === 'MENU' ? 'EXPLORE' : command.nextMode;
         const nextMode = this.modeMachine.requestMode(mode, requestedMode);
-
         if (nextMode !== mode) {
           tx.touchRuntime();
           tx.touchRuntimeTime();
@@ -317,43 +259,25 @@ export class GameApp {
           this.bus.emit({ type: 'MODE_CHANGED', from: mode, to: nextMode });
           mode = nextMode;
         }
+        continue;
       }
-
       if (command.kind === 'UiMessage') {
         tx.touchRuntimeUi();
         tx.draftState.runtime.ui.messages.push(command.text);
-        this.bus.emit({ type: 'UI_MESSAGE', text: command.text });
-      }
-
-      if (command.kind === 'DebugSkipTime') {
-        this.timeSystem.debugSkipSeconds(command.seconds, tx);
-      }
-
-      if (command.kind === 'DebugToggleLightOverlay') {
-        this.showLightOverlay = !this.showLightOverlay;
       }
     }
   }
 
   private startFainting(mode: Mode, tx: ReturnType<StateStore['beginTx']>): void {
-    if (tx.draftState.runtime.mode === 'FAINTING') {
-      return;
-    }
-
+    if (tx.draftState.runtime.mode === 'FAINTING') return;
     const nextMode = this.modeMachine.forceMode('FAINTING');
     tx.touchRuntime();
     tx.touchRuntimeTime();
     tx.touchRuntimeFainting();
     tx.touchRuntimeUi();
-
     tx.draftState.runtime.mode = nextMode;
     tx.draftState.runtime.time.paused = true;
-    tx.draftState.runtime.fainting = {
-      active: true,
-      phase: 'fadeOut',
-      t: 0,
-      restoreDone: false,
-    };
+    tx.draftState.runtime.fainting = { active: true, phase: 'fadeOut', t: 0, restoreDone: false };
     tx.draftState.runtime.ui.messages.push('Your lantern dims...');
     this.bus.emit({ type: 'MODE_CHANGED', from: mode, to: nextMode });
   }
@@ -361,10 +285,7 @@ export class GameApp {
   private stepFainting(dtMs: number, tx: ReturnType<StateStore['beginTx']>): void {
     tx.touchRuntimeFainting();
     const faint = tx.draftState.runtime.fainting;
-    if (!faint || !faint.active) {
-      return;
-    }
-
+    if (!faint?.active) return;
     if (faint.phase === 'restore') {
       if (!faint.restoreDone) {
         const snapshot = tx.draftState.runtime.checkpoint.snapshot;
@@ -378,80 +299,48 @@ export class GameApp {
       faint.t = 0;
       return;
     }
-
     faint.t = Math.min(1, faint.t + dtMs / FAINT_FADE_MS);
-
     if (faint.t >= 1 && faint.phase === 'fadeOut') {
       faint.phase = 'restore';
       faint.t = 0;
       return;
     }
-
     if (faint.t >= 1 && faint.phase === 'fadeIn') {
       tx.draftState.runtime.fainting = undefined;
-      const nextMode = this.modeMachine.forceMode('EXPLORE');
-      tx.draftState.runtime.mode = nextMode;
+      tx.draftState.runtime.mode = this.modeMachine.forceMode('EXPLORE');
       tx.draftState.runtime.time.paused = false;
-      this.bus.emit({ type: 'MODE_CHANGED', from: 'FAINTING', to: nextMode });
+      this.bus.emit({ type: 'MODE_CHANGED', from: 'FAINTING', to: 'EXPLORE' });
     }
   }
 
   private stepMapTransition(dtMs: number, tx: ReturnType<StateStore['beginTx']>): void {
     const transition = tx.draftState.runtime.map.transition;
-    if (!transition) {
-      return;
-    }
-
+    if (!transition) return;
     const result = advanceMapTransition(transition, dtMs);
     tx.draftState.runtime.map.transition = result.transition ?? undefined;
-
-    if (result.shouldSwap) {
-      applyTransitionSwap(tx.draftState, transition);
-    }
-
+    if (result.shouldSwap) applyTransitionSwap(tx.draftState, transition);
     if (!result.transition) {
-      const nextMode = this.modeMachine.requestMode(tx.draftState.runtime.mode, 'EXPLORE');
-      tx.draftState.runtime.mode = nextMode;
+      tx.draftState.runtime.mode = this.modeMachine.requestMode(tx.draftState.runtime.mode, 'EXPLORE');
       tx.draftState.runtime.time.paused = false;
     }
   }
-
 
   private processPendingSaveControl(): void {
     if (!this.pendingSaveControl) return;
     const action = this.pendingSaveControl;
     this.pendingSaveControl = null;
-
-    if (action.kind === 'load') {
-      const result = this.saveSystem.loadNow();
-      const tx = this.store.beginTx('load_message');
-      tx.touchRuntimeUi();
-      tx.draftState.runtime.ui.messages.push(result.ok ? 'Loaded.' : `Load failed: ${result.error ?? 'unknown'}`);
-      this.store.commitTx(tx);
+    if (action.kind === 'manual_save') {
+      this.saveSystem.markDirty('manual');
+      this.saveSystem.requestAutosave('manual');
       return;
     }
-
-    if (action.kind === 'new_game') {
-      this.saveSystem.newGame();
-      const tx = this.store.beginTx('new_game_message');
-      tx.touchRuntimeUi();
-      tx.draftState.runtime.ui.messages.push('New game started.');
-      this.store.commitTx(tx);
-      return;
-    }
-
+    if (action.kind === 'load') return void this.saveSystem.loadNow();
+    if (action.kind === 'new_game') return void this.saveSystem.newGame();
     this.saveSystem.newStory(action.storyId);
-    const tx = this.store.beginTx('new_story_message');
-    tx.touchRuntimeUi();
-    tx.draftState.runtime.ui.messages.push(`New story started: ${action.storyId}.`);
-    this.store.commitTx(tx);
   }
 
   private ensureFallbackCheckpoint(tx: ReturnType<StateStore['beginTx']>): void {
-    if (tx.draftState.runtime.checkpoint.snapshot) {
-      return;
-    }
-
+    if (tx.draftState.runtime.checkpoint.snapshot) return;
     this.checkpointSystem.setCheckpoint(tx, 'fallback_start');
     this.checkpointSystem.snapshot(tx);
   }
