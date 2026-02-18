@@ -27,11 +27,11 @@ export class ShadowMonster {
     this.sprite.setDisplaySize(this.baseSize, this.baseSize); // ~1.1 cells
     this.sprite.setOrigin(0.5, 0.5); // Center anchor
     this.sprite.setAlpha(0.8); // Semi-transparent
-    this.sprite.setDepth(1000);
+    this.sprite.setDepth(600);
 
     // Create dark overlay (grey area around monster)
     this.darkOverlay = scene.add.graphics();
-    this.darkOverlay.setDepth(999);
+    this.darkOverlay.setDepth(590);
 
     // Random initial wander direction
     this.pickNewWanderDirection();

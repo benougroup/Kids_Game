@@ -12,6 +12,12 @@ describe('inferTileMovementProfile', () => {
     expect(profile.terrainType).toBe('water');
   });
 
+  it('marks shallow water tiles as walkable overlays', () => {
+    const profile = inferTileMovementProfile('water_shallow', 1);
+    expect(profile.walkable).toBe(true);
+    expect(profile.terrainType).toBe('shallow_water');
+  });
+
   it('marks bridge tiles as walkable overrides', () => {
     const profile = inferTileMovementProfile('bridge_h', 1);
     expect(profile.walkable).toBe(true);

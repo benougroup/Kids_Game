@@ -39,11 +39,10 @@ export class GameScene extends Phaser.Scene {
 
   preload(): void {
     // Load new sprite atlases with proper tile system
-    this.load.atlas('tiles_new', 'assets/tiles_new.png', 'assets/tiles_new.json');
-    this.load.atlas('roads_new', 'assets/roads_new.png', 'assets/roads_new.json');
-    this.load.atlas('objects_new', 'assets/objects_original.png', 'assets/objects_new.json');
-    this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
-    this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json');
+    this.load.atlas('tiles', 'assets/tiles_original.png', 'assets/tiles.json');
+    this.load.atlas('objects_new', 'assets/objects_new_original.png', 'assets/objects_new.json');
+    this.load.atlas('characters', 'assets/characters_original.png', 'assets/characters.json');
+    this.load.atlas('monsters', 'assets/monsters_original.png', 'assets/monsters.json');
   }
 
   create(): void {
