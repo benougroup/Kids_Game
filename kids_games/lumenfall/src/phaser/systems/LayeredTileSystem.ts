@@ -18,7 +18,46 @@ export interface TileData {
   collision: boolean;
   elevation: number; // Terrain elevation level (0 = flat ground)
   walkable: boolean;
+  movementCost: number;
+  terrainType: 'ground' | 'water' | 'road' | 'bridge' | 'object' | 'structure';
 }
+
+export interface TileMovementProfile {
+  walkable: boolean;
+  movementCost: number;
+  terrainType: TileData['terrainType'];
+}
+
+/**
+ * Derive movement behavior from tile art frame names.
+ *
+ * This keeps tile behavior data-driven without hand-coding every map cell.
+ */
+export const inferTileMovementProfile = (frame: string, layer: number): TileMovementProfile => {
+  const id = frame.toLowerCase();
+
+  if (layer === 3) {
+    return { walkable: false, movementCost: Infinity, terrainType: 'structure' };
+  }
+
+  if (layer === 2) {
+    return { walkable: false, movementCost: 2, terrainType: 'object' };
+  }
+
+  if (id.includes('water')) {
+    return { walkable: false, movementCost: Infinity, terrainType: 'water' };
+  }
+
+  if (id.includes('bridge')) {
+    return { walkable: true, movementCost: 1, terrainType: 'bridge' };
+  }
+
+  if (id.includes('road')) {
+    return { walkable: true, movementCost: 0.85, terrainType: 'road' };
+  }
+
+  return { walkable: true, movementCost: 1, terrainType: 'ground' };
+};
 
 export interface RoadTile {
   type: 'dirt' | 'stone' | 'bridge';
@@ -141,6 +180,7 @@ export class LayeredTileSystem {
     }
     
     // Store tile data
+    const movementProfile = inferTileMovementProfile(resolvedFrame, layer);
     const tileData: TileData = {
       frame: resolvedFrame,
       x,
@@ -148,14 +188,25 @@ export class LayeredTileSystem {
       layer,
       collision,
       elevation,
-      walkable
+      walkable: walkable && movementProfile.walkable,
+      movementCost: movementProfile.movementCost,
+      terrainType: movementProfile.terrainType,
     };
     this.tiles.set(key, tileData);
 
     const tileKey = `${x},${y}`;
     if (layer === 0 || layer === 1) {
       this.elevationMap.set(tileKey, elevation);
-      this.walkableMap.set(tileKey, walkable && !collision);
+
+      // Layer 0 (ground) always sets the base terrain rules.
+      // Layer 1 (roads/bridges) can override only when explicitly walkable,
+      // so plain roads won't accidentally make water traversable.
+      const nextWalkable = tileData.walkable && !collision;
+      if (layer === 0) {
+        this.walkableMap.set(tileKey, nextWalkable);
+      } else if (nextWalkable) {
+        this.walkableMap.set(tileKey, true);
+      }
     }
     
     if (collision) {
