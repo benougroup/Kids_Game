@@ -89,7 +89,24 @@ export class Player {
       const futureX = this.sprite.x + velocityX * this.speed * 0.016; // Approximate next position
       const futureY = this.sprite.y + velocityY * this.speed * 0.016;
       
-      if (checkWaterCollision(futureX, futureY)) {
+      // Check center and edges of player sprite
+      const checkPoints = [
+        { x: futureX, y: futureY }, // Center
+        { x: futureX - 12, y: futureY }, // Left
+        { x: futureX + 12, y: futureY }, // Right
+        { x: futureX, y: futureY - 12 }, // Top
+        { x: futureX, y: futureY + 12 }, // Bottom
+      ];
+      
+      let hitWater = false;
+      for (const point of checkPoints) {
+        if (checkWaterCollision(point.x, point.y)) {
+          hitWater = true;
+          break;
+        }
+      }
+      
+      if (hitWater) {
         // Stop movement if trying to walk into water
         velocityX = 0;
         velocityY = 0;

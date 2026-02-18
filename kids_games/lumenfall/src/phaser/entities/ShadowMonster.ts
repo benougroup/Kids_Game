@@ -24,7 +24,7 @@ export class ShadowMonster {
 
     // Create shadow sprite from monsters atlas
     this.sprite = scene.physics.add.sprite(x, y, 'monsters', 'shadow_idle_front');
-    this.sprite.setDisplaySize(28, 28); // Slightly smaller than player (1 cell)
+    this.sprite.setDisplaySize(32, 32); // Exactly 1 cell (32x32)
     this.sprite.setOrigin(0.5, 0.5); // Center anchor
     this.sprite.setAlpha(0.8); // Semi-transparent
     this.sprite.setDepth(1000);
@@ -175,8 +175,8 @@ export class ShadowMonster {
   private updateDarkOverlay(): void {
     this.darkOverlay.clear();
 
-    // Draw grey circle around monster
-    const radius = 80 * this.currentScale; // Shrinks with monster
+    // Draw grey circle around monster (smaller to match 1 cell)
+    const radius = 50 * this.currentScale; // Shrinks with monster
     this.darkOverlay.fillStyle(0x000000, 0.3);
     this.darkOverlay.fillCircle(this.sprite.x, this.sprite.y, radius);
   }

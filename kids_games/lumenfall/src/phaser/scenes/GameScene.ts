@@ -20,7 +20,7 @@ export class GameScene extends Phaser.Scene {
   // Day/night system
   private timeOfDay: number = 0.25; // Start at morning
   private dayNightOverlay!: Phaser.GameObjects.Rectangle;
-  private timeSpeed: number = 0.0001; // Slower time progression
+  private timeSpeed: number = 0.000033; // 5 minute full day/night cycle
   
   // Shadow monsters
   private shadowMonsters: ShadowMonster[] = [];
@@ -230,16 +230,16 @@ export class GameScene extends Phaser.Scene {
     console.log('Transitioning to:', portal.targetMap);
     
     this.mapTransitionSystem.transitionToMap(portal, (mapName: string, x: number, y: number) => {
-      // For now, just show a message (will implement full map loading later)
-      console.log(`Would load map: ${mapName} at position (${x}, ${y})`);
-      this.events.emit('showMessage', `Entering ${mapName}...`);
+      // Update current map
+      this.mapTransitionSystem.setCurrentMap(mapName);
       
-      // Move player back slightly to prevent immediate re-trigger
-      const currentPos = this.player.getPosition();
-      if (portal.direction === 'north') this.player.setPosition(currentPos.x, currentPos.y + 50);
-      else if (portal.direction === 'south') this.player.setPosition(currentPos.x, currentPos.y - 50);
-      else if (portal.direction === 'east') this.player.setPosition(currentPos.x - 50, currentPos.y);
-      else if (portal.direction === 'west') this.player.setPosition(currentPos.x + 50, currentPos.y);
+      // Move player to target position
+      this.player.setPosition(x, y);
+      
+      // Show message
+      this.events.emit('showMessage', `Entered ${mapName.replace('_', ' ')}`);
+      
+      console.log(`Loaded map: ${mapName} at position (${x}, ${y})`);
     });
   }
 

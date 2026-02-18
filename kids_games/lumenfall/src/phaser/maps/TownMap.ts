@@ -57,22 +57,20 @@ export class TownMap {
   }
 
   private createPaths(): void {
-    // Main vertical path (slightly curved) - 3 tiles wide
+    // Main vertical path (slightly curved) - 2 tiles wide, dirt only
     const centerX = Math.floor(this.mapWidth / 2);
     for (let y = 0; y < this.mapHeight; y++) {
-      const curve = Math.floor(Math.sin(y * 0.3) * 1); // Gentler curve
-      for (let dx = -1; dx <= 1; dx++) {
-        this.placeTile(centerX + dx + curve, y, 'stone', 1);
-      }
+      const curve = Math.floor(Math.sin(y * 0.4) * 1); // Gentler curve
+      this.placeTile(centerX + curve, y, 'dirt', 1);
+      this.placeTile(centerX + 1 + curve, y, 'dirt', 1);
     }
 
-    // Main horizontal path (slightly curved) - 3 tiles wide
+    // Main horizontal path (slightly curved) - 2 tiles wide, dirt only
     const centerY = Math.floor(this.mapHeight / 2);
     for (let x = 0; x < this.mapWidth; x++) {
-      const curve = Math.floor(Math.sin(x * 0.3) * 1); // Gentler curve
-      for (let dy = -1; dy <= 1; dy++) {
-        this.placeTile(x, centerY + dy + curve, 'stone', 1);
-      }
+      const curve = Math.floor(Math.sin(x * 0.4) * 1); // Gentler curve
+      this.placeTile(x, centerY + curve, 'dirt', 1);
+      this.placeTile(x, centerY + 1 + curve, 'dirt', 1);
     }
 
     // Diagonal paths to corners (for variety)
@@ -156,22 +154,22 @@ export class TownMap {
   }
 
   private placeTree(x: number, y: number): void {
-    // Randomly choose tree size for variety
-    const treeTypes = [
-      { frame: 'tree_large', width: 2, height: 3 },
-      { frame: 'tree_medium', width: 1.5, height: 2.5 },
-      { frame: 'tree_small', width: 1.2, height: 2 },
+    // Randomly vary tree size for variety
+    const sizes = [
+      { width: 2, height: 3 },
+      { width: 1.8, height: 2.8 },
+      { width: 1.5, height: 2.5 },
     ];
-    const treeType = treeTypes[Math.floor(Math.random() * treeTypes.length)];
+    const size = sizes[Math.floor(Math.random() * sizes.length)];
     
     const tree = this.scene.add.sprite(
       x * this.tileSize,
       y * this.tileSize,
       'objects',
-      treeType.frame
+      'tree_large' // Use single frame for now
     );
     tree.setOrigin(0.5, 1);
-    tree.setDisplaySize(this.tileSize * treeType.width, this.tileSize * treeType.height);
+    tree.setDisplaySize(this.tileSize * size.width, this.tileSize * size.height);
     tree.setDepth(y * 10 + 5); // Depth based on Y position for proper layering
     
     // 30% chance to add a bush nearby
