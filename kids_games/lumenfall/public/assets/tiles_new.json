@@ -1,0 +1,67 @@
+{
+  "frames": {
+    "grass_plain": {"frame": {"x": 0, "y": 0, "w": 256, "h": 256}},
+    "grass_flowers_yellow": {"frame": {"x": 256, "y": 0, "w": 256, "h": 256}},
+    "grass_flowers_blue": {"frame": {"x": 512, "y": 0, "w": 256, "h": 256}},
+    "grass_flowers_red": {"frame": {"x": 768, "y": 0, "w": 256, "h": 256}},
+    "grass_rocks": {"frame": {"x": 1024, "y": 0, "w": 256, "h": 256}},
+    "grass_dirt_spot": {"frame": {"x": 1280, "y": 0, "w": 256, "h": 256}},
+    "grass_variant1": {"frame": {"x": 1536, "y": 0, "w": 256, "h": 256}},
+    "grass_variant2": {"frame": {"x": 1792, "y": 0, "w": 256, "h": 256}},
+    
+    "dirt_plain": {"frame": {"x": 0, "y": 256, "w": 256, "h": 256}},
+    "dirt_stones": {"frame": {"x": 256, "y": 256, "w": 256, "h": 256}},
+    "dirt_grass_tufts": {"frame": {"x": 512, "y": 256, "w": 256, "h": 256}},
+    "dirt_dark": {"frame": {"x": 768, "y": 256, "w": 256, "h": 256}},
+    "dirt_light": {"frame": {"x": 1024, "y": 256, "w": 256, "h": 256}},
+    "dirt_sandy": {"frame": {"x": 1280, "y": 256, "w": 256, "h": 256}},
+    "dirt_variant1": {"frame": {"x": 1536, "y": 256, "w": 256, "h": 256}},
+    "dirt_variant2": {"frame": {"x": 1792, "y": 256, "w": 256, "h": 256}},
+    
+    "stone_plain": {"frame": {"x": 0, "y": 512, "w": 256, "h": 256}},
+    "stone_cracked": {"frame": {"x": 256, "y": 512, "w": 256, "h": 256}},
+    "stone_mossy": {"frame": {"x": 512, "y": 512, "w": 256, "h": 256}},
+    "stone_dark": {"frame": {"x": 768, "y": 512, "w": 256, "h": 256}},
+    "stone_light": {"frame": {"x": 1024, "y": 512, "w": 256, "h": 256}},
+    "stone_grass_crack": {"frame": {"x": 1280, "y": 512, "w": 256, "h": 256}},
+    "stone_variant1": {"frame": {"x": 1536, "y": 512, "w": 256, "h": 256}},
+    "stone_variant2": {"frame": {"x": 1792, "y": 512, "w": 256, "h": 256}},
+    
+    "stone_cobble1": {"frame": {"x": 0, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble2": {"frame": {"x": 256, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble3": {"frame": {"x": 512, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble4": {"frame": {"x": 768, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble5": {"frame": {"x": 1024, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble6": {"frame": {"x": 1280, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble7": {"frame": {"x": 1536, "y": 768, "w": 256, "h": 256}},
+    "stone_cobble8": {"frame": {"x": 1792, "y": 768, "w": 256, "h": 256}},
+    
+    "water_plain": {"frame": {"x": 0, "y": 1024, "w": 256, "h": 256}},
+    "water_dark": {"frame": {"x": 256, "y": 1024, "w": 256, "h": 256}},
+    "water_light": {"frame": {"x": 512, "y": 1024, "w": 256, "h": 256}},
+    "water_reflection": {"frame": {"x": 768, "y": 1024, "w": 256, "h": 256}},
+    "water_shallow": {"frame": {"x": 1024, "y": 1024, "w": 256, "h": 256}},
+    "water_edge": {"frame": {"x": 1280, "y": 1024, "w": 256, "h": 256}},
+    "water_variant1": {"frame": {"x": 1536, "y": 1024, "w": 256, "h": 256}},
+    "water_variant2": {"frame": {"x": 1792, "y": 1024, "w": 256, "h": 256}},
+    
+    "sand_plain": {"frame": {"x": 0, "y": 1280, "w": 256, "h": 256}},
+    "sand_shells": {"frame": {"x": 256, "y": 1280, "w": 256, "h": 256}},
+    "sand_stones": {"frame": {"x": 512, "y": 1280, "w": 256, "h": 256}},
+    "sand_dark": {"frame": {"x": 768, "y": 1280, "w": 256, "h": 256}},
+    "sand_light": {"frame": {"x": 1024, "y": 1280, "w": 256, "h": 256}},
+    "sand_variant1": {"frame": {"x": 1280, "y": 1280, "w": 256, "h": 256}},
+    "sand_variant2": {"frame": {"x": 1536, "y": 1280, "w": 256, "h": 256}},
+    "sand_variant3": {"frame": {"x": 1792, "y": 1280, "w": 256, "h": 256}},
+    
+    "snow_plain": {"frame": {"x": 0, "y": 1536, "w": 256, "h": 256}},
+    "snow_sparkles": {"frame": {"x": 256, "y": 1536, "w": 256, "h": 256}},
+    "ice": {"frame": {"x": 512, "y": 1536, "w": 256, "h": 256}},
+    "snow_dirty": {"frame": {"x": 768, "y": 1536, "w": 256, "h": 256}}
+  },
+  "meta": {
+    "image": "tiles_new.png",
+    "size": {"w": 2048, "h": 2048},
+    "scale": "1"
+  }
+}

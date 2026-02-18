@@ -1,0 +1,40 @@
+{
+  "frames": {
+    "tree_oak": {"frame": {"x": 0, "y": 0, "w": 192, "h": 288}},
+    "tree_pine": {"frame": {"x": 192, "y": 0, "w": 144, "h": 240}},
+    "tree_small": {"frame": {"x": 336, "y": 0, "w": 144, "h": 192}},
+    "tree_dead": {"frame": {"x": 480, "y": 0, "w": 144, "h": 192}},
+    "tree_cherry": {"frame": {"x": 624, "y": 0, "w": 192, "h": 240}},
+    
+    "bush_large": {"frame": {"x": 0, "y": 288, "w": 144, "h": 144}},
+    "bush_small": {"frame": {"x": 144, "y": 288, "w": 96, "h": 96}},
+    "flowers_red": {"frame": {"x": 240, "y": 288, "w": 96, "h": 96}},
+    "flowers_blue": {"frame": {"x": 336, "y": 288, "w": 96, "h": 96}},
+    "flowers_yellow": {"frame": {"x": 432, "y": 288, "w": 96, "h": 96}},
+    "flowers_white": {"frame": {"x": 528, "y": 288, "w": 96, "h": 96}},
+    "grass_tall": {"frame": {"x": 624, "y": 288, "w": 96, "h": 144}},
+    
+    "rock_large": {"frame": {"x": 0, "y": 432, "w": 192, "h": 192}},
+    "rock_medium": {"frame": {"x": 192, "y": 432, "w": 144, "h": 144}},
+    "rock_small": {"frame": {"x": 336, "y": 432, "w": 96, "h": 96}},
+    "rock_pile": {"frame": {"x": 432, "y": 432, "w": 144, "h": 144}},
+    
+    "bridge_h": {"frame": {"x": 0, "y": 624, "w": 288, "h": 96}},
+    "bridge_v": {"frame": {"x": 288, "y": 624, "w": 96, "h": 288}},
+    "fence_h": {"frame": {"x": 384, "y": 624, "w": 96, "h": 96}},
+    "fence_v": {"frame": {"x": 480, "y": 624, "w": 96, "h": 96}},
+    "wall_stone_h": {"frame": {"x": 576, "y": 624, "w": 96, "h": 144}},
+    "wall_stone_v": {"frame": {"x": 672, "y": 624, "w": 96, "h": 144}},
+    
+    "house_small": {"frame": {"x": 0, "y": 912, "w": 288, "h": 288}},
+    "shop": {"frame": {"x": 288, "y": 912, "w": 384, "h": 384}},
+    "door": {"frame": {"x": 672, "y": 912, "w": 96, "h": 144}},
+    "window": {"frame": {"x": 768, "y": 912, "w": 96, "h": 96}},
+    "sign": {"frame": {"x": 864, "y": 912, "w": 96, "h": 192}}
+  },
+  "meta": {
+    "image": "objects_new.png",
+    "size": {"w": 1536, "h": 2752},
+    "scale": "1"
+  }
+}

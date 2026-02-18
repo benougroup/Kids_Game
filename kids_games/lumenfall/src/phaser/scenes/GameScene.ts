@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
-import { TownMap } from '../maps/TownMap';
+import { TownMapV2 } from '../maps/TownMapV2';
 import { MapTransitionSystem } from '../systems/MapTransitionSystem';
 import { ShadowMonster } from '../entities/ShadowMonster';
 import { DialogueBox } from '../ui/DialogueBox';
@@ -12,7 +12,7 @@ import { PathfindingSystem } from '../systems/PathfindingSystem';
  */
 export class GameScene extends Phaser.Scene {
   private player!: Player;
-  private townMap!: TownMap;
+  private townMap!: TownMapV2;
   private mapTransitionSystem!: MapTransitionSystem;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
@@ -38,16 +38,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // Load separate sprite atlases
-    this.load.atlas('tiles', 'assets/tiles.png', 'assets/tiles.json');
+    // Load new sprite atlases with proper tile system
+    this.load.atlas('tiles_new', 'assets/tiles_new.png', 'assets/tiles_new.json');
+    this.load.atlas('roads_new', 'assets/roads_new.png', 'assets/roads_new.json');
+    this.load.atlas('objects_new', 'assets/objects_new.png', 'assets/objects_new.json');
     this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
     this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json');
-    this.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
   }
 
   create(): void {
-    // Create 2D top-down town map
-    this.townMap = new TownMap(this);
+    // Create 2D top-down town map with layered system
+    this.townMap = new TownMapV2(this);
     this.townMap.create();
 
     // Set up map transition system
@@ -198,7 +199,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     // Check if near an NPC
-    const nearbyNPC = this.townMap.getNearbyNPC(this.player.getPosition(), 50);
+    const playerPos = this.player.getPosition();
+    const nearbyNPC = this.townMap.getNearbyNPC(playerPos.x, playerPos.y, 50);
     if (nearbyNPC) {
       // Talk to NPC
       const npcName = nearbyNPC.getData('npcName');
