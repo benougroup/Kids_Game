@@ -24,6 +24,7 @@ export class DialogueBox {
     this.container = scene.add.container(0, 0);
     this.container.setDepth(10000);
     this.container.setVisible(false);
+    this.container.setScrollFactor(0); // Fixed to camera, not world
 
     // Background box (bottom of screen)
     this.background = scene.add.graphics();
@@ -33,13 +34,13 @@ export class DialogueBox {
     // Name label background
     const nameBg = scene.add.graphics();
     nameBg.fillStyle(0x2a2a4a, 1);
-    nameBg.fillRoundedRect(40, 420, 150, 40, 8);
+    nameBg.fillRoundedRect(40, 405, 150, 35, 8);
     nameBg.lineStyle(3, 0xffffff, 1);
-    nameBg.strokeRoundedRect(40, 420, 150, 40, 8);
+    nameBg.strokeRoundedRect(40, 405, 150, 35, 8);
     this.container.add(nameBg);
 
     // Name text
-    this.nameText = scene.add.text(115, 440, '', {
+    this.nameText = scene.add.text(115, 422, '', {
       fontSize: '18px',
       fontFamily: 'Arial, sans-serif',
       color: '#ffffff',
@@ -50,7 +51,7 @@ export class DialogueBox {
     this.container.add(this.nameText);
 
     // Dialogue text
-    this.dialogueText = scene.add.text(220, 490, '', {
+    this.dialogueText = scene.add.text(220, 455, '', {
       fontSize: '16px',
       fontFamily: 'Arial, sans-serif',
       color: '#ffffff',
@@ -60,7 +61,7 @@ export class DialogueBox {
     this.container.add(this.dialogueText);
 
     // Continue indicator (blinking arrow)
-    this.continueIndicator = scene.add.text(740, 580, '▼', {
+    this.continueIndicator = scene.add.text(740, 530, '▼', {
       fontSize: '20px',
       color: '#ffffff',
     });
@@ -96,9 +97,9 @@ export class DialogueBox {
 
   private drawBackground(): void {
     const width = 800;
-    const height = 200;
+    const height = 150; // Smaller height
     const x = 0;
-    const y = 400;
+    const y = 400; // Bottom of 550px screen
 
     // Outer border (white)
     this.background.lineStyle(4, 0xffffff, 1);
@@ -112,9 +113,9 @@ export class DialogueBox {
 
     // Portrait frame (left side)
     this.background.fillStyle(0x2a2a4a, 1);
-    this.background.fillRoundedRect(x + 40, y + 470, 140, 100, 8);
+    this.background.fillRoundedRect(x + 40, y + 50, 140, 90, 8);
     this.background.lineStyle(3, 0xffffff, 1);
-    this.background.strokeRoundedRect(x + 40, y + 470, 140, 100, 8);
+    this.background.strokeRoundedRect(x + 40, y + 50, 140, 90, 8);
   }
 
   /**
@@ -147,8 +148,8 @@ export class DialogueBox {
 
     // Add portrait if provided
     if (portraitFrame) {
-      this.portrait = this.scene.add.sprite(110, 520, 'characters', portraitFrame);
-      this.portrait.setDisplaySize(120, 120);
+      this.portrait = this.scene.add.sprite(110, 495, 'characters', portraitFrame);
+      this.portrait.setDisplaySize(100, 100);
       this.container.add(this.portrait);
     }
 

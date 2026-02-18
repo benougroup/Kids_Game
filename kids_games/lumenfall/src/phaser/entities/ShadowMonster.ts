@@ -17,13 +17,14 @@ export class ShadowMonster {
   private wanderTimer: number = 0;
   private wanderDirection: { x: number; y: number } = { x: 0, y: 0 };
   private avoidLightRadius: number = 150; // Distance to avoid light sources
+  private lastDamageTime: number = 0; // Track when last damaged player
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     // this.scene = scene; // Unused for now
 
     // Create shadow sprite from monsters atlas
     this.sprite = scene.physics.add.sprite(x, y, 'monsters', 'shadow_idle_front');
-    this.sprite.setDisplaySize(32, 32); // 32x32 to match player
+    this.sprite.setDisplaySize(28, 28); // Slightly smaller than player (1 cell)
     this.sprite.setOrigin(0.5, 0.5); // Center anchor
     this.sprite.setAlpha(0.8); // Semi-transparent
     this.sprite.setDepth(1000);
@@ -183,6 +184,14 @@ export class ShadowMonster {
   destroy(): void {
     this.sprite.destroy();
     this.darkOverlay.destroy();
+  }
+
+  getLastDamageTime(): number {
+    return this.lastDamageTime;
+  }
+
+  setLastDamageTime(time: number): void {
+    this.lastDamageTime = time;
   }
 
   getPosition(): { x: number; y: number } {

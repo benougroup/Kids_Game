@@ -7,6 +7,7 @@ export class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
   private speed: number = 120;
   private scene: Phaser.Scene;
+  private lanternActive: boolean = false; // Lantern on/off state
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
@@ -125,5 +126,20 @@ export class Player {
 
   setPosition(x: number, y: number): void {
     this.sprite.setPosition(x, y);
+  }
+
+  toggleLantern(): void {
+    this.lanternActive = !this.lanternActive;
+    
+    // Switch sprite frame based on lantern state
+    if (this.lanternActive) {
+      this.sprite.setFrame('hero_lantern');
+    } else {
+      this.sprite.setFrame('hero_idle_front');
+    }
+  }
+
+  isLanternActive(): boolean {
+    return this.lanternActive;
   }
 }

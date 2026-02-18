@@ -4,6 +4,7 @@ import { TownMap } from '../maps/TownMap';
 import { MapTransitionSystem } from '../systems/MapTransitionSystem';
 import { ShadowMonster } from '../entities/ShadowMonster';
 import { DialogueBox } from '../ui/DialogueBox';
+import { PathfindingSystem } from '../systems/PathfindingSystem';
 
 /**
  * Main game scene with 2D top-down view
@@ -26,6 +27,11 @@ export class GameScene extends Phaser.Scene {
   
   // UI
   private dialogueBox!: DialogueBox;
+  
+  // Pathfinding
+  private pathfinding: PathfindingSystem = new PathfindingSystem();
+  private currentPath: { x: number; y: number }[] = [];
+  private pathMoveSpeed: number = 120;
   
   constructor() {
     super({ key: 'GameScene' });
@@ -58,7 +64,7 @@ export class GameScene extends Phaser.Scene {
     
     // Set up camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
-    this.cameras.main.setZoom(2); // Closer zoom for 2D top-down
+    this.cameras.main.setZoom(2.5); // Zoomed in for better visibility
     
     // Set world bounds (not camera bounds) to allow full map access
     this.physics.world.setBounds(0, 0, this.townMap.getMapWidth(), this.townMap.getMapHeight());
@@ -90,15 +96,25 @@ export class GameScene extends Phaser.Scene {
 
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
+    
+    // Add click-to-move
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      this.handleClick(pointer);
+    });
   }
 
   update(_time: number, delta: number): void {
-    // Update player movement (8-direction) with water collision
-    this.player.update(
-      this.cursors,
-      this.wasd,
-      (x, y) => this.townMap.isWaterTile(x, y)
-    );
+    // Follow path if exists, otherwise use keyboard
+    if (this.currentPath.length > 0) {
+      this.followPath(delta);
+    } else {
+      // Update player movement (8-direction) with water collision
+      this.player.update(
+        this.cursors,
+        this.wasd,
+        (x, y) => this.townMap.isWaterTile(x, y)
+      );
+    }
 
     // Check for portal transitions
     const playerPos = this.player.getPosition();
@@ -122,10 +138,27 @@ export class GameScene extends Phaser.Scene {
       this.despawnShadowMonsters();
     }
 
-    // Update shadow monsters
+    // Update shadow monsters and check collision
     const lightSources = this.getLightSources();
     for (const monster of this.shadowMonsters) {
       monster.update(playerPos, lightSources);
+      
+      // Check collision with player (damage every 1 second)
+      const monsterPos = monster.getPosition();
+      const distance = Phaser.Math.Distance.Between(
+        playerPos.x, playerPos.y,
+        monsterPos.x, monsterPos.y
+      );
+      
+      if (distance < 20) { // Touching range
+        // Damage player (throttled to once per second per monster)
+        const now = Date.now();
+        const lastDamage = monster.getLastDamageTime();
+        if (now - lastDamage > 1000) {
+          monster.setLastDamageTime(now);
+          this.events.emit('playerDamaged', 1);
+        }
+      }
     }
 
     // Emit time to UI scene
@@ -167,6 +200,7 @@ export class GameScene extends Phaser.Scene {
     // Check if near an NPC
     const nearbyNPC = this.townMap.getNearbyNPC(this.player.getPosition(), 50);
     if (nearbyNPC) {
+      // Talk to NPC
       const npcName = nearbyNPC.getData('npcName');
       const npcFrame = nearbyNPC.frame.name;
       
@@ -183,6 +217,9 @@ export class GameScene extends Phaser.Scene {
       }
       
       this.dialogueBox.show(npcName, dialogue, npcFrame);
+    } else {
+      // No NPC nearby - toggle lantern
+      this.player.toggleLantern();
     }
   }
 
@@ -208,6 +245,75 @@ export class GameScene extends Phaser.Scene {
 
   public getPlayer(): Player {
     return this.player;
+  }
+
+  private handleClick(pointer: Phaser.Input.Pointer): void {
+    // Don't move if dialogue is open
+    if (this.dialogueBox.getIsVisible()) {
+      return;
+    }
+
+    // Convert screen coordinates to world coordinates
+    const worldX = pointer.worldX;
+    const worldY = pointer.worldY;
+
+    // Find path
+    const playerPos = this.player.getPosition();
+    this.currentPath = this.pathfinding.findPath(
+      playerPos.x,
+      playerPos.y,
+      worldX,
+      worldY,
+      (x, y) => !this.townMap.isWaterTile(x, y)
+    );
+  }
+
+  private followPath(_delta: number): void {
+    if (this.currentPath.length === 0) return;
+
+    const playerPos = this.player.getPosition();
+    const target = this.currentPath[0];
+
+    // Calculate direction to target
+    const dx = target.x - playerPos.x;
+    const dy = target.y - playerPos.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Check if reached target
+    if (distance < 5) {
+      this.currentPath.shift(); // Remove reached waypoint
+      if (this.currentPath.length === 0) {
+        this.player.sprite.setVelocity(0, 0);
+      }
+      return;
+    }
+
+    // Move towards target
+    const speed = this.pathMoveSpeed;
+    const velocityX = (dx / distance) * speed;
+    const velocityY = (dy / distance) * speed;
+    this.player.sprite.setVelocity(velocityX, velocityY);
+
+    // Update animation
+    if (this.player.sprite.anims.currentAnim?.key !== 'player_walk') {
+      this.player.sprite.play('player_walk');
+    }
+
+    // Flip sprite based on direction
+    if (dx < 0) {
+      this.player.sprite.setFlipX(true);
+    } else if (dx > 0) {
+      this.player.sprite.setFlipX(false);
+    }
+
+    // Cancel path if keyboard input detected
+    if (this.cursors.left.isDown || this.cursors.right.isDown ||
+        this.cursors.up.isDown || this.cursors.down.isDown ||
+        this.wasd.W.isDown || this.wasd.A.isDown ||
+        this.wasd.S.isDown || this.wasd.D.isDown) {
+      this.currentPath = [];
+      this.player.sprite.setVelocity(0, 0);
+    }
   }
 
   public getTimeOfDay(): number {
@@ -250,10 +356,12 @@ export class GameScene extends Phaser.Scene {
   private getLightSources(): { x: number; y: number; radius: number }[] {
     const sources: { x: number; y: number; radius: number }[] = [];
 
-    // Player always has a light (lantern)
-    const playerPos = this.player.getPosition();
-    const playerLightRadius = this.timeOfDay > 0.6 || this.timeOfDay < 0.2 ? 120 : 80;
-    sources.push({ x: playerPos.x, y: playerPos.y, radius: playerLightRadius });
+    // Player's lantern (only if active)
+    if (this.player.isLanternActive()) {
+      const playerPos = this.player.getPosition();
+      const lanternRadius = this.timeOfDay > 0.6 || this.timeOfDay < 0.2 ? 150 : 100;
+      sources.push({ x: playerPos.x, y: playerPos.y, radius: lanternRadius });
+    }
 
     // Add other light sources (torches, campfires, etc.) here later
 

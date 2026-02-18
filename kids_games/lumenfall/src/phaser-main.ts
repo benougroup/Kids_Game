@@ -12,10 +12,10 @@ import { UIScene } from './phaser/scenes/UIScene';
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'game-container',
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 800,
+  height: 550, // Smaller vertical size so buttons aren't cut off
   scale: {
-    mode: Phaser.Scale.RESIZE,
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   physics: {
@@ -32,9 +32,6 @@ const config: Phaser.Types.Core.GameConfig = {
 // Create game instance
 const game = new Phaser.Game(config);
 
-// Handle window resize
-window.addEventListener('resize', () => {
-  game.scale.resize(window.innerWidth, window.innerHeight);
-});
+// No resize handler needed - using FIT mode with fixed size
 
 export default game;

@@ -57,20 +57,20 @@ export class TownMap {
   }
 
   private createPaths(): void {
-    // Main vertical path (slightly curved)
+    // Main vertical path (slightly curved) - 3 tiles wide
     const centerX = Math.floor(this.mapWidth / 2);
     for (let y = 0; y < this.mapHeight; y++) {
-      const curve = Math.floor(Math.sin(y * 0.3) * 2); // Slight curve
-      for (let dx = -2; dx <= 2; dx++) {
+      const curve = Math.floor(Math.sin(y * 0.3) * 1); // Gentler curve
+      for (let dx = -1; dx <= 1; dx++) {
         this.placeTile(centerX + dx + curve, y, 'stone', 1);
       }
     }
 
-    // Main horizontal path (slightly curved)
+    // Main horizontal path (slightly curved) - 3 tiles wide
     const centerY = Math.floor(this.mapHeight / 2);
     for (let x = 0; x < this.mapWidth; x++) {
-      const curve = Math.floor(Math.sin(x * 0.3) * 2); // Slight curve
-      for (let dy = -2; dy <= 2; dy++) {
+      const curve = Math.floor(Math.sin(x * 0.3) * 1); // Gentler curve
+      for (let dy = -1; dy <= 1; dy++) {
         this.placeTile(x, centerY + dy + curve, 'stone', 1);
       }
     }
@@ -88,9 +88,9 @@ export class TownMap {
       const t = i / steps;
       const x = Math.floor(startX + (endX - startX) * t);
       const y = Math.floor(startY + (endY - startY) * t);
+      // 2 tiles wide dirt path
       this.placeTile(x, y, 'dirt', 1);
       this.placeTile(x + 1, y, 'dirt', 1);
-      this.placeTile(x, y + 1, 'dirt', 1);
     }
   }
 
@@ -156,15 +156,38 @@ export class TownMap {
   }
 
   private placeTree(x: number, y: number): void {
+    // Randomly choose tree size for variety
+    const treeTypes = [
+      { frame: 'tree_large', width: 2, height: 3 },
+      { frame: 'tree_medium', width: 1.5, height: 2.5 },
+      { frame: 'tree_small', width: 1.2, height: 2 },
+    ];
+    const treeType = treeTypes[Math.floor(Math.random() * treeTypes.length)];
+    
     const tree = this.scene.add.sprite(
       x * this.tileSize,
       y * this.tileSize,
       'objects',
-      'tree_large'
+      treeType.frame
     );
     tree.setOrigin(0.5, 1);
-    tree.setDisplaySize(this.tileSize * 2, this.tileSize * 3);
+    tree.setDisplaySize(this.tileSize * treeType.width, this.tileSize * treeType.height);
     tree.setDepth(y * 10 + 5); // Depth based on Y position for proper layering
+    
+    // 30% chance to add a bush nearby
+    if (Math.random() < 0.3) {
+      const bushX = x + (Math.random() > 0.5 ? 1 : -1);
+      const bushY = y + (Math.random() > 0.5 ? 1 : -1);
+      const bush = this.scene.add.sprite(
+        bushX * this.tileSize,
+        bushY * this.tileSize,
+        'objects',
+        'bush'
+      );
+      bush.setOrigin(0.5, 1);
+      bush.setDisplaySize(this.tileSize, this.tileSize);
+      bush.setDepth(bushY * 10);
+    }
   }
 
   private createHouses(): void {
