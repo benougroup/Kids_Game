@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { TownMap } from '../maps/TownMap';
+import { MapTransitionSystem } from '../systems/MapTransitionSystem';
 
 /**
  * Main game scene with 2D top-down view
@@ -9,6 +10,7 @@ import { TownMap } from '../maps/TownMap';
 export class GameScene extends Phaser.Scene {
   private player!: Player;
   private townMap!: TownMap;
+  private mapTransitionSystem!: MapTransitionSystem;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
   
@@ -31,13 +33,21 @@ export class GameScene extends Phaser.Scene {
     this.townMap = new TownMap(this);
     this.townMap.create();
 
+    // Set up map transition system
+    this.mapTransitionSystem = new MapTransitionSystem(this, 'town');
+    this.mapTransitionSystem.createEdgePortals(
+      this.townMap.getMapWidth(),
+      this.townMap.getMapHeight(),
+      'town'
+    );
+
     // Create player at spawn point (center of village)
     this.player = new Player(this, 512, 384);
     
     // Set up camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
     this.cameras.main.setZoom(2); // Closer zoom for 2D top-down
-    this.cameras.main.setBounds(0, 0, 1024, 768); // Map bounds
+    this.cameras.main.setBounds(0, 0, this.townMap.getMapWidth(), this.townMap.getMapHeight()); // Map bounds
     
     // Set up input
     this.cursors = this.input.keyboard!.createCursorKeys();
@@ -66,6 +76,13 @@ export class GameScene extends Phaser.Scene {
   update(_time: number, delta: number): void {
     // Update player movement (8-direction)
     this.player.update(this.cursors, this.wasd);
+
+    // Check for portal transitions
+    const playerPos = this.player.getPosition();
+    const portal = this.mapTransitionSystem.checkPortalCollision(playerPos.x, playerPos.y);
+    if (portal) {
+      this.handleMapTransition(portal);
+    }
 
     // Update day/night cycle (slow progression)
     this.timeOfDay += delta * this.timeSpeed;
@@ -113,6 +130,26 @@ export class GameScene extends Phaser.Scene {
     } else {
       console.log('No NPC nearby');
     }
+  }
+
+  private handleMapTransition(portal: any): void {
+    // Prevent multiple transitions
+    if (this.scene.isPaused()) return;
+
+    console.log('Transitioning to:', portal.targetMap);
+    
+    this.mapTransitionSystem.transitionToMap(portal, (mapName: string, x: number, y: number) => {
+      // For now, just show a message (will implement full map loading later)
+      console.log(`Would load map: ${mapName} at position (${x}, ${y})`);
+      this.events.emit('showMessage', `Entering ${mapName}...`);
+      
+      // Move player back slightly to prevent immediate re-trigger
+      const currentPos = this.player.getPosition();
+      if (portal.direction === 'north') this.player.setPosition(currentPos.x, currentPos.y + 50);
+      else if (portal.direction === 'south') this.player.setPosition(currentPos.x, currentPos.y - 50);
+      else if (portal.direction === 'east') this.player.setPosition(currentPos.x - 50, currentPos.y);
+      else if (portal.direction === 'west') this.player.setPosition(currentPos.x + 50, currentPos.y);
+    });
   }
 
   public getPlayer(): Player {
