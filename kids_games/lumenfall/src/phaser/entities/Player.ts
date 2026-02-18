@@ -11,12 +11,12 @@ export class Player {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
 
-    // Create player sprite (32x48 to show full character)
+    // Create player sprite (48x48 to show full character, centered on tile)
     this.sprite = scene.physics.add.sprite(x, y, 'atlas');
-    this.sprite.setDisplaySize(32, 48); // Taller sprite to show full character
-    this.sprite.setOrigin(0.5, 0.75); // Anchor at bottom-center (feet position)
-    this.sprite.setSize(24, 16); // Collision box (feet area only)
-    this.sprite.setOffset(4, 40); // Adjust collision box to feet
+    this.sprite.setDisplaySize(48, 48); // Square sprite for full character
+    this.sprite.setOrigin(0.5, 0.5); // Center anchor
+    this.sprite.setSize(24, 24); // Collision box
+    this.sprite.setOffset(12, 12); // Center collision box
     this.sprite.setDepth(100);
 
     // Create animations
@@ -25,8 +25,7 @@ export class Player {
     // Play idle animation
     this.sprite.play('player_idle');
 
-    // Enable physics
-    this.sprite.setCollideWorldBounds(true);
+    // Enable physics (no world bounds collision - allow portal transitions)
   }
 
   private createAnimations(): void {

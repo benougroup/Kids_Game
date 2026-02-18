@@ -359,9 +359,9 @@ export class TownMap {
 
   private createNPC(x: number, y: number, frame: string, name: string): void {
     const npc = this.scene.add.sprite(x, y, 'atlas', frame);
-    npc.setDisplaySize(this.tileSize, this.tileSize * 1.5); // Taller sprite (32x48)
-    npc.setOrigin(0.5, 0.75); // Anchor at feet position (same as player)
-    npc.setDepth(Math.floor(y / this.tileSize) * 10 + 100); // Proper depth sorting
+    npc.setDisplaySize(this.tileSize * 1.5, this.tileSize * 1.5); // 48x48 sprite
+    npc.setOrigin(0.5, 0.5); // Center anchor to align with tile grid
+    npc.setDepth(Math.floor(y / this.tileSize) * 10 + 5); // Lower depth than player
 
     // Add name label
     const label = this.scene.add.text(x, y - this.tileSize * 1.5 - 5, name, {

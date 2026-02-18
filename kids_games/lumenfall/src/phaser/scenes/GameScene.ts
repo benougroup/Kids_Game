@@ -51,7 +51,9 @@ export class GameScene extends Phaser.Scene {
     // Set up camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
     this.cameras.main.setZoom(2); // Closer zoom for 2D top-down
-    this.cameras.main.setBounds(0, 0, this.townMap.getMapWidth(), this.townMap.getMapHeight()); // Map bounds
+    
+    // Set world bounds (not camera bounds) to allow full map access
+    this.physics.world.setBounds(0, 0, this.townMap.getMapWidth(), this.townMap.getMapHeight());
     
     // Set up input
     this.cursors = this.input.keyboard!.createCursorKeys();
@@ -73,8 +75,7 @@ export class GameScene extends Phaser.Scene {
     this.dayNightOverlay.setScrollFactor(1);
     this.dayNightOverlay.setDepth(1000);
 
-    // Spawn shadow monsters in darker areas (corners of map)
-    this.spawnShadowMonsters();
+    // Shadow monsters will spawn at night (spawned dynamically in update)
 
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
@@ -97,6 +98,14 @@ export class GameScene extends Phaser.Scene {
 
     // Update day/night overlay
     this.updateDayNightOverlay();
+
+    // Spawn/despawn shadow monsters based on time of day
+    const isNightTime = this.timeOfDay > 0.6 || this.timeOfDay < 0.2;
+    if (isNightTime && this.shadowMonsters.length === 0) {
+      this.spawnShadowMonsters();
+    } else if (!isNightTime && this.shadowMonsters.length > 0) {
+      this.despawnShadowMonsters();
+    }
 
     // Update shadow monsters
     const lightSources = this.getLightSources();
@@ -194,6 +203,16 @@ export class GameScene extends Phaser.Scene {
       const monster = new ShadowMonster(this, point.x, point.y);
       this.shadowMonsters.push(monster);
     }
+    console.log('Shadow monsters spawned at night');
+  }
+
+  private despawnShadowMonsters(): void {
+    // Remove all shadow monsters
+    for (const monster of this.shadowMonsters) {
+      monster.destroy();
+    }
+    this.shadowMonsters = [];
+    console.log('Shadow monsters despawned at day');
   }
 
   private getLightSources(): { x: number; y: number; radius: number }[] {
