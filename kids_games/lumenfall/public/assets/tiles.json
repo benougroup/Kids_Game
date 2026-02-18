@@ -1,0 +1,49 @@
+{
+  "frames": {
+    "grass": { "frame": { "x": 0, "y": 0, "w": 256, "h": 256 } },
+    "dirt": { "frame": { "x": 256, "y": 0, "w": 256, "h": 256 } },
+    "stone": { "frame": { "x": 512, "y": 0, "w": 256, "h": 256 } },
+    "water": { "frame": { "x": 768, "y": 0, "w": 256, "h": 256 } },
+    "wood": { "frame": { "x": 1024, "y": 0, "w": 256, "h": 256 } },
+    "brick": { "frame": { "x": 1280, "y": 0, "w": 256, "h": 256 } },
+    "stone_wall": { "frame": { "x": 1536, "y": 0, "w": 256, "h": 256 } },
+    "mud": { "frame": { "x": 1792, "y": 0, "w": 256, "h": 256 } },
+    
+    "forest_grass": { "frame": { "x": 0, "y": 256, "w": 256, "h": 256 } },
+    "sand": { "frame": { "x": 256, "y": 256, "w": 256, "h": 256 } },
+    "snow": { "frame": { "x": 512, "y": 256, "w": 256, "h": 256 } },
+    "lava": { "frame": { "x": 768, "y": 256, "w": 256, "h": 256 } },
+    "ice": { "frame": { "x": 1024, "y": 256, "w": 256, "h": 256 } },
+    "cracked_stone": { "frame": { "x": 1280, "y": 256, "w": 256, "h": 256 } },
+    "mossy_stone": { "frame": { "x": 1536, "y": 256, "w": 256, "h": 256 } },
+    "wood_floor": { "frame": { "x": 1792, "y": 256, "w": 256, "h": 256 } },
+    
+    "cobblestone": { "frame": { "x": 0, "y": 512, "w": 256, "h": 256 } },
+    "marble": { "frame": { "x": 256, "y": 512, "w": 256, "h": 256 } },
+    "dungeon_floor": { "frame": { "x": 512, "y": 512, "w": 256, "h": 256 } },
+    "grass_flowers": { "frame": { "x": 768, "y": 512, "w": 256, "h": 256 } },
+    "desert_sand": { "frame": { "x": 1024, "y": 512, "w": 256, "h": 256 } },
+    "swamp": { "frame": { "x": 1280, "y": 512, "w": 256, "h": 256 } },
+    "rocky": { "frame": { "x": 1536, "y": 512, "w": 256, "h": 256 } },
+    "cave_floor": { "frame": { "x": 1792, "y": 512, "w": 256, "h": 256 } },
+    
+    "ruined_brick": { "frame": { "x": 0, "y": 768, "w": 256, "h": 256 } },
+    "weathered_wood": { "frame": { "x": 256, "y": 768, "w": 256, "h": 256 } },
+    "crystal_floor": { "frame": { "x": 512, "y": 768, "w": 256, "h": 256 } },
+    "corrupted": { "frame": { "x": 768, "y": 768, "w": 256, "h": 256 } },
+    "temple_floor": { "frame": { "x": 1024, "y": 768, "w": 256, "h": 256 } },
+    "ruins_stone": { "frame": { "x": 1280, "y": 768, "w": 256, "h": 256 } },
+    "vines_wall": { "frame": { "x": 1536, "y": 768, "w": 256, "h": 256 } },
+    "metal_grate": { "frame": { "x": 1792, "y": 768, "w": 256, "h": 256 } },
+    
+    "overgrown_grass": { "frame": { "x": 0, "y": 1024, "w": 256, "h": 256 } },
+    "wooden_planks": { "frame": { "x": 256, "y": 1024, "w": 256, "h": 256 } },
+    "dark_stone": { "frame": { "x": 512, "y": 1024, "w": 256, "h": 256 } },
+    "ancient_ruins": { "frame": { "x": 768, "y": 1024, "w": 256, "h": 256 } }
+  },
+  "meta": {
+    "image": "tiles.png",
+    "size": { "w": 2048, "h": 2048 },
+    "scale": "1"
+  }
+}

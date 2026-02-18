@@ -11,12 +11,12 @@ export class Player {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
 
-    // Create player sprite (48x48 to show full character, centered on tile)
-    this.sprite = scene.physics.add.sprite(x, y, 'atlas');
-    this.sprite.setDisplaySize(48, 48); // Square sprite for full character
+    // Create player sprite from characters atlas (64x64 in atlas → 32x32 on screen)
+    this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle_front');
+    this.sprite.setDisplaySize(32, 32); // 32x32 to fit tile grid
     this.sprite.setOrigin(0.5, 0.5); // Center anchor
     this.sprite.setSize(24, 24); // Collision box
-    this.sprite.setOffset(12, 12); // Center collision box
+    this.sprite.setOffset(4, 4); // Center collision box
     this.sprite.setDepth(100);
 
     // Create animations
@@ -34,8 +34,7 @@ export class Player {
       this.scene.anims.create({
         key: 'player_idle',
         frames: [
-          { key: 'atlas', frame: 'player_idle_0' },
-          { key: 'atlas', frame: 'player_idle_1' },
+          { key: 'characters', frame: 'hero_idle_front' },
         ],
         frameRate: 2,
         repeat: -1,
@@ -47,9 +46,8 @@ export class Player {
       this.scene.anims.create({
         key: 'player_walk',
         frames: [
-          { key: 'atlas', frame: 'player_walk_0' },
-          { key: 'atlas', frame: 'player_walk_1' },
-          { key: 'atlas', frame: 'player_walk_2' },
+          { key: 'characters', frame: 'hero_walk_front_1' },
+          { key: 'characters', frame: 'hero_walk_front_2' },
         ],
         frameRate: 8,
         repeat: -1,
@@ -59,7 +57,8 @@ export class Player {
 
   update(
     cursors: Phaser.Types.Input.Keyboard.CursorKeys,
-    wasd: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key }
+    wasd: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key },
+    checkWaterCollision?: (x: number, y: number) => boolean
   ): void {
     // Get input direction
     let velocityX = 0;
@@ -82,6 +81,18 @@ export class Player {
     if (velocityX !== 0 && velocityY !== 0) {
       velocityX *= 0.707; // 1/sqrt(2)
       velocityY *= 0.707;
+    }
+
+    // Check water collision before applying velocity
+    if (checkWaterCollision) {
+      const futureX = this.sprite.x + velocityX * this.speed * 0.016; // Approximate next position
+      const futureY = this.sprite.y + velocityY * this.speed * 0.016;
+      
+      if (checkWaterCollision(futureX, futureY)) {
+        // Stop movement if trying to walk into water
+        velocityX = 0;
+        velocityY = 0;
+      }
     }
 
     // Apply velocity

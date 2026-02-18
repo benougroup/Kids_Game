@@ -3,6 +3,7 @@ import { Player } from '../entities/Player';
 import { TownMap } from '../maps/TownMap';
 import { MapTransitionSystem } from '../systems/MapTransitionSystem';
 import { ShadowMonster } from '../entities/ShadowMonster';
+import { DialogueBox } from '../ui/DialogueBox';
 
 /**
  * Main game scene with 2D top-down view
@@ -23,13 +24,19 @@ export class GameScene extends Phaser.Scene {
   // Shadow monsters
   private shadowMonsters: ShadowMonster[] = [];
   
+  // UI
+  private dialogueBox!: DialogueBox;
+  
   constructor() {
     super({ key: 'GameScene' });
   }
 
   preload(): void {
-    // Load sprite atlas using Phaser's atlas format
-    this.load.atlas('atlas', 'assets/atlas.png', 'assets/atlas-phaser.json');
+    // Load separate sprite atlases
+    this.load.atlas('tiles', 'assets/tiles.png', 'assets/tiles.json');
+    this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
+    this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json');
+    this.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
   }
 
   create(): void {
@@ -46,7 +53,8 @@ export class GameScene extends Phaser.Scene {
     );
 
     // Create player at spawn point (center of village)
-    this.player = new Player(this, 512, 384);
+    // Position at tile center: (tileX * 32) + 16, (tileY * 32) + 16
+    this.player = new Player(this, 16 * 32 + 16, 12 * 32 + 16);
     
     // Set up camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
@@ -77,13 +85,20 @@ export class GameScene extends Phaser.Scene {
 
     // Shadow monsters will spawn at night (spawned dynamically in update)
 
+    // Create dialogue box UI
+    this.dialogueBox = new DialogueBox(this);
+
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
   }
 
   update(_time: number, delta: number): void {
-    // Update player movement (8-direction)
-    this.player.update(this.cursors, this.wasd);
+    // Update player movement (8-direction) with water collision
+    this.player.update(
+      this.cursors,
+      this.wasd,
+      (x, y) => this.townMap.isWaterTile(x, y)
+    );
 
     // Check for portal transitions
     const playerPos = this.player.getPosition();
@@ -144,13 +159,30 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handleAction(): void {
+    // Don't interact if dialogue is already open
+    if (this.dialogueBox.getIsVisible()) {
+      return;
+    }
+
     // Check if near an NPC
     const nearbyNPC = this.townMap.getNearbyNPC(this.player.getPosition(), 50);
     if (nearbyNPC) {
-      console.log('Interacting with:', nearbyNPC.getData('npcName'));
-      this.events.emit('showDialogue', nearbyNPC.getData('npcName'));
-    } else {
-      console.log('No NPC nearby');
+      const npcName = nearbyNPC.getData('npcName');
+      const npcFrame = nearbyNPC.frame.name;
+      
+      // Show dialogue based on NPC
+      let dialogue = '';
+      if (npcName === 'Guard') {
+        dialogue = 'Welcome to Bright Hollow! I keep watch over the village. The shadows have been growing stronger lately...';
+      } else if (npcName === 'Apprentice') {
+        dialogue = 'I\'m studying light magic! Did you know that shadows flee from bright light? Maybe you can help us!';
+      } else if (npcName === 'Merchant') {
+        dialogue = 'Looking for supplies? I have potions and lanterns. You\'ll need them when exploring the dark forest!';
+      } else {
+        dialogue = 'Hello there, young adventurer!';
+      }
+      
+      this.dialogueBox.show(npcName, dialogue, npcFrame);
     }
   }
 

@@ -10,6 +10,7 @@ export class TownMap {
   private mapWidth: number = 40; // tiles (larger for more detail)
   private mapHeight: number = 30; // tiles
   private npcs: Phaser.GameObjects.Sprite[] = [];
+  private waterTiles: Set<string> = new Set(); // Track water tile positions
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -39,14 +40,14 @@ export class TownMap {
   }
 
   private createGround(): void {
-    // Fill entire map with grass tiles
+    // Fill entire map with grass tiles (256x256 in atlas → 32x32 on screen)
     for (let y = 0; y < this.mapHeight; y++) {
       for (let x = 0; x < this.mapWidth; x++) {
         const tile = this.scene.add.sprite(
           x * this.tileSize,
           y * this.tileSize,
-          'atlas',
-          'tile_grass'
+          'tiles',
+          'grass'
         );
         tile.setOrigin(0, 0);
         tile.setDisplaySize(this.tileSize, this.tileSize);
@@ -61,7 +62,7 @@ export class TownMap {
     for (let y = 0; y < this.mapHeight; y++) {
       const curve = Math.floor(Math.sin(y * 0.3) * 2); // Slight curve
       for (let dx = -2; dx <= 2; dx++) {
-        this.placeTile(centerX + dx + curve, y, 'tile_stone', 1);
+        this.placeTile(centerX + dx + curve, y, 'stone', 1);
       }
     }
 
@@ -70,7 +71,7 @@ export class TownMap {
     for (let x = 0; x < this.mapWidth; x++) {
       const curve = Math.floor(Math.sin(x * 0.3) * 2); // Slight curve
       for (let dy = -2; dy <= 2; dy++) {
-        this.placeTile(x, centerY + dy + curve, 'tile_stone', 1);
+        this.placeTile(x, centerY + dy + curve, 'stone', 1);
       }
     }
 
@@ -87,9 +88,9 @@ export class TownMap {
       const t = i / steps;
       const x = Math.floor(startX + (endX - startX) * t);
       const y = Math.floor(startY + (endY - startY) * t);
-      this.placeTile(x, y, 'tile_dirt', 1);
-      this.placeTile(x + 1, y, 'tile_dirt', 1);
-      this.placeTile(x, y + 1, 'tile_dirt', 1);
+      this.placeTile(x, y, 'dirt', 1);
+      this.placeTile(x + 1, y, 'dirt', 1);
+      this.placeTile(x, y + 1, 'dirt', 1);
     }
   }
 
@@ -102,42 +103,21 @@ export class TownMap {
     for (let dy = -radius; dy <= radius; dy++) {
       for (let dx = -radius; dx <= radius; dx++) {
         if (dx * dx + dy * dy <= radius * radius) {
-          this.placeTile(centerX + dx, centerY + dy, 'tile_stone', 2);
+          this.placeTile(centerX + dx, centerY + dy, 'stone', 2);
         }
       }
     }
 
-    // Central fountain/light post
-    const lightPost = this.scene.add.sprite(
+    // Central fountain
+    const fountain = this.scene.add.sprite(
       centerX * this.tileSize,
       centerY * this.tileSize,
-      'atlas',
-      'obj_lightpost'
+      'objects',
+      'fountain'
     );
-    lightPost.setOrigin(0.5, 1);
-    lightPost.setDisplaySize(this.tileSize * 1.5, this.tileSize * 2);
-    lightPost.setDepth(50);
-
-    // Add glow effect
-    const glow = this.scene.add.sprite(
-      centerX * this.tileSize,
-      (centerY - 1) * this.tileSize,
-      'atlas',
-      'light_glow'
-    );
-    glow.setDisplaySize(this.tileSize * 4, this.tileSize * 4);
-    glow.setAlpha(0.5);
-    glow.setDepth(49);
-
-    // Animate glow
-    this.scene.tweens.add({
-      targets: glow,
-      alpha: 0.7,
-      scale: 1.1,
-      duration: 2000,
-      yoyo: true,
-      repeat: -1,
-    });
+    fountain.setOrigin(0.5, 0.5);
+    fountain.setDisplaySize(this.tileSize * 3, this.tileSize * 3);
+    fountain.setDepth(50);
   }
 
   private createTrees(): void {
@@ -179,8 +159,8 @@ export class TownMap {
     const tree = this.scene.add.sprite(
       x * this.tileSize,
       y * this.tileSize,
-      'atlas',
-      'obj_tree'
+      'objects',
+      'tree_large'
     );
     tree.setOrigin(0.5, 1);
     tree.setDisplaySize(this.tileSize * 2, this.tileSize * 3);
@@ -208,8 +188,8 @@ export class TownMap {
         const tile = this.scene.add.sprite(
           (x + dx) * this.tileSize,
           (y + dy) * this.tileSize,
-          'atlas',
-          'tile_wood'
+          'tiles',
+          'wood'
         );
         tile.setOrigin(0, 0);
         tile.setDisplaySize(this.tileSize, this.tileSize);
@@ -226,25 +206,23 @@ export class TownMap {
     const door = this.scene.add.sprite(
       (x + 1) * this.tileSize,
       (y + 2) * this.tileSize,
-      'atlas',
-      'tile_stone'
+      'objects',
+      'door'
     );
-    door.setOrigin(0, 0);
-    door.setDisplaySize(this.tileSize, this.tileSize);
+    door.setOrigin(0.5, 1);
+    door.setDisplaySize(this.tileSize, this.tileSize * 1.5);
     door.setDepth(4);
-    door.setTint(0x664422);
 
     // Window
     const window1 = this.scene.add.sprite(
       (x + 0.5) * this.tileSize,
       (y + 1) * this.tileSize,
-      'atlas',
-      'tile_water'
+      'objects',
+      'window'
     );
     window1.setOrigin(0, 0);
     window1.setDisplaySize(this.tileSize * 0.5, this.tileSize * 0.5);
     window1.setDepth(4);
-    window1.setTint(0x88ccff);
   }
 
   private createDecorations(): void {
@@ -258,8 +236,8 @@ export class TownMap {
       const bush = this.scene.add.sprite(
         x * this.tileSize,
         y * this.tileSize,
-        'atlas',
-        'obj_bush'
+        'objects',
+        'bush'
       );
       bush.setOrigin(0.5, 1);
       bush.setDisplaySize(this.tileSize, this.tileSize);
@@ -292,12 +270,11 @@ export class TownMap {
         const flower = this.scene.add.sprite(
           (x + dx) * this.tileSize,
           (y + dy) * this.tileSize,
-          'atlas',
-          'tile_grass'
+          'objects',
+          'flowers'
         );
         flower.setOrigin(0, 0);
         flower.setDisplaySize(this.tileSize, this.tileSize);
-        flower.setTint(0xffccff); // Pink tint for flowers
         flower.setDepth(0.5);
       }
     }
@@ -307,7 +284,7 @@ export class TownMap {
     // 2x2 dirt patch
     for (let dy = 0; dy < 2; dy++) {
       for (let dx = 0; dx < 2; dx++) {
-        this.placeTile(x + dx, y + dy, 'tile_dirt', 0.5);
+        this.placeTile(x + dx, y + dy, 'dirt', 0.5);
       }
     }
   }
@@ -316,15 +293,21 @@ export class TownMap {
     // 3x3 water pond
     for (let dy = 0; dy < 3; dy++) {
       for (let dx = 0; dx < 3; dx++) {
+        const tileX = x + dx;
+        const tileY = y + dy;
+        
         const water = this.scene.add.sprite(
-          (x + dx) * this.tileSize,
-          (y + dy) * this.tileSize,
-          'atlas',
-          'tile_water'
+          tileX * this.tileSize,
+          tileY * this.tileSize,
+          'tiles',
+          'water'
         );
         water.setOrigin(0, 0);
         water.setDisplaySize(this.tileSize, this.tileSize);
         water.setDepth(0.5);
+        
+        // Track water tile for collision
+        this.waterTiles.add(`${tileX},${tileY}`);
       }
     }
   }
@@ -335,7 +318,7 @@ export class TownMap {
     const tile = this.scene.add.sprite(
       x * this.tileSize,
       y * this.tileSize,
-      'atlas',
+      'tiles',
       frame
     );
     tile.setOrigin(0, 0);
@@ -347,19 +330,19 @@ export class TownMap {
     const centerX = Math.floor(this.mapWidth / 2);
     const centerY = Math.floor(this.mapHeight / 2);
 
-    // Guard (north of plaza)
-    this.createNPC(centerX * this.tileSize, (centerY - 8) * this.tileSize, 'npc_guard_idle_0', 'Guard');
+    // Guard (north of plaza) - position at tile center
+    this.createNPC(centerX * this.tileSize + 16, (centerY - 8) * this.tileSize + 16, 'guard_idle_front', 'Guard');
 
     // Apprentice (east of plaza)
-    this.createNPC((centerX + 8) * this.tileSize, centerY * this.tileSize, 'npc_apprentice_idle_0', 'Apprentice');
+    this.createNPC((centerX + 8) * this.tileSize + 16, centerY * this.tileSize + 16, 'apprentice_idle_front', 'Apprentice');
 
     // Merchant (south of plaza)
-    this.createNPC(centerX * this.tileSize, (centerY + 8) * this.tileSize, 'npc_merchant_idle_0', 'Merchant');
+    this.createNPC(centerX * this.tileSize + 16, (centerY + 8) * this.tileSize + 16, 'merchant_idle_front', 'Merchant');
   }
 
   private createNPC(x: number, y: number, frame: string, name: string): void {
-    const npc = this.scene.add.sprite(x, y, 'atlas', frame);
-    npc.setDisplaySize(this.tileSize * 1.5, this.tileSize * 1.5); // 48x48 sprite
+    const npc = this.scene.add.sprite(x, y, 'characters', frame);
+    npc.setDisplaySize(this.tileSize, this.tileSize); // 32x32 to match player
     npc.setOrigin(0.5, 0.5); // Center anchor to align with tile grid
     npc.setDepth(Math.floor(y / this.tileSize) * 10 + 5); // Lower depth than player
 
@@ -394,6 +377,15 @@ export class TownMap {
       }
     }
     return null;
+  }
+
+  /**
+   * Check if a position is on a water tile (non-walkable)
+   */
+  public isWaterTile(x: number, y: number): boolean {
+    const tileX = Math.floor(x / this.tileSize);
+    const tileY = Math.floor(y / this.tileSize);
+    return this.waterTiles.has(`${tileX},${tileY}`);
   }
 
   public getNPCs(): Phaser.GameObjects.Sprite[] {
