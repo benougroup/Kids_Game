@@ -189,16 +189,24 @@ export class TownMapV2 {
   }
 
   private createNPC(tileX: number, tileY: number, type: string, name: string): void {
+    const npcIdleFrameByType: Record<string, string> = {
+      guard: 'guard_idle_front',
+      merchant: 'merchant_idle_front',
+      apprentice: 'apprentice_idle_front',
+      elder: 'sage_idle_front',
+    };
+
     const npc = this.scene.add.sprite(
       tileX * this.tileSize + this.tileSize / 2,
       tileY * this.tileSize + this.tileSize / 2,
       'characters',
-      `${type}_idle`
+      npcIdleFrameByType[type] ?? 'hero_idle_front'
     );
     npc.setOrigin(0.5, 0.5);
     npc.setDisplaySize(48, 48);
     npc.setDepth(400);
     npc.setData('name', name);
+    npc.setData('npcName', name);
     npc.setData('type', type);
     this.npcs.push(npc);
   }
