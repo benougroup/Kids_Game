@@ -28,6 +28,19 @@ export interface TileMovementProfile {
   terrainType: TileData['terrainType'];
 }
 
+// Terrain below this elevation is considered deep water and blocks movement,
+// unless a bridge tile explicitly overrides traversal.
+export const DEEP_WATER_BLOCK_ELEVATION = -0.5;
+
+export const isDepthWalkable = (
+  elevation: number,
+  terrainType: TileData['terrainType'],
+  minWalkableElevation: number = DEEP_WATER_BLOCK_ELEVATION
+): boolean => {
+  if (terrainType === 'bridge') return true;
+  return elevation >= minWalkableElevation;
+};
+
 /**
  * Derive movement behavior from tile art frame names.
  *
@@ -73,6 +86,7 @@ export class LayeredTileSystem {
   private collisionTiles: Set<string>;
   private elevationMap: Map<string, number>;
   private walkableMap: Map<string, boolean>;
+  private frameMinWalkableElevation: Map<string, number>;
   
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -81,6 +95,7 @@ export class LayeredTileSystem {
     this.collisionTiles = new Set();
     this.elevationMap = new Map();
     this.walkableMap = new Map();
+    this.frameMinWalkableElevation = new Map();
     
     // Create layer containers
     for (let i = 0; i <= 4; i++) {
@@ -201,7 +216,8 @@ export class LayeredTileSystem {
       // Layer 0 (ground) always sets the base terrain rules.
       // Layer 1 (roads/bridges) can override only when explicitly walkable,
       // so plain roads won't accidentally make water traversable.
-      const nextWalkable = tileData.walkable && !collision;
+      const minWalkableElevation = this.getFrameMinWalkableElevation(atlasKey, resolvedFrame);
+      const nextWalkable = tileData.walkable && !collision && isDepthWalkable(elevation, tileData.terrainType, minWalkableElevation);
       if (layer === 0) {
         this.walkableMap.set(tileKey, nextWalkable);
       } else if (nextWalkable) {
@@ -251,6 +267,35 @@ export class LayeredTileSystem {
     return this.elevationMap.get(`${tileX},${tileY}`) ?? 0;
   }
 
+
+
+  private getFrameMinWalkableElevation(atlasKey: string, frame: string): number {
+    if (this.frameMinWalkableElevation.size === 0) {
+      this.loadFrameMovementMetadata();
+    }
+
+    return this.frameMinWalkableElevation.get(`${atlasKey}:${frame}`) ?? DEEP_WATER_BLOCK_ELEVATION;
+  }
+
+  private loadFrameMovementMetadata(): void {
+    const atlasKeys = ['tiles_new', 'roads_new', 'objects_new'];
+
+    for (const atlasKey of atlasKeys) {
+      const atlasData = this.scene.cache.json.get(atlasKey) as {
+        frames?: Record<string, { movement?: { minWalkableElevation?: number } }>
+      } | undefined;
+
+      if (!atlasData?.frames) continue;
+
+      for (const [frameName, frameData] of Object.entries(atlasData.frames)) {
+        const minWalkableElevation = frameData?.movement?.minWalkableElevation;
+        if (typeof minWalkableElevation === 'number') {
+          this.frameMinWalkableElevation.set(`${atlasKey}:${frameName}`, minWalkableElevation);
+        }
+      }
+    }
+  }
+
   private resolveFrame(atlasKey: string, frame: string): string {
     const texture = this.scene.textures.get(atlasKey);
     if (texture && texture.has(frame)) {
@@ -291,6 +336,7 @@ export class LayeredTileSystem {
     this.collisionTiles.clear();
     this.elevationMap.clear();
     this.walkableMap.clear();
+    this.frameMinWalkableElevation.clear();
     this.layers.forEach(container => container.removeAll(true));
   }
   
