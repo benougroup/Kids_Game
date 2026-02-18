@@ -12,11 +12,11 @@ export class ShadowMonster {
   // private scene: Phaser.Scene; // Unused for now
   private speed: number = 40; // Slower than player
   private darkOverlay: Phaser.GameObjects.Graphics;
-  private baseScale: number = 1.0;
-  private currentScale: number = 1.0;
+  private baseSize: number = 36;
+  private currentScale: number = 1.1;
   private wanderTimer: number = 0;
   private wanderDirection: { x: number; y: number } = { x: 0, y: 0 };
-  private avoidLightRadius: number = 150; // Distance to avoid light sources
+  private avoidLightRadius: number = 120; // Distance to avoid light sources
   private lastDamageTime: number = 0; // Track when last damaged player
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -24,7 +24,7 @@ export class ShadowMonster {
 
     // Create shadow sprite from monsters atlas
     this.sprite = scene.physics.add.sprite(x, y, 'monsters', 'shadow_idle_front');
-    this.sprite.setDisplaySize(32, 32); // Exactly 1 cell (32x32)
+    this.sprite.setDisplaySize(this.baseSize, this.baseSize); // ~1.1 cells
     this.sprite.setOrigin(0.5, 0.5); // Center anchor
     this.sprite.setAlpha(0.8); // Semi-transparent
     this.sprite.setDepth(1000);
@@ -55,7 +55,7 @@ export class ShadowMonster {
       // Shrink when in light
       if (distance < nearestLight.radius) {
         const shrinkFactor = 1 - (nearestLight.radius - distance) / nearestLight.radius;
-        this.currentScale = this.baseScale * Math.max(0.3, shrinkFactor);
+        this.currentScale = Math.max(0.8, shrinkFactor);
         
         // Flee from light
         this.fleeFromLight(nearestLight);
@@ -64,15 +64,16 @@ export class ShadowMonster {
         this.avoidLight(nearestLight);
       } else {
         // Return to normal size
-        this.currentScale = Phaser.Math.Linear(this.currentScale, this.baseScale, 0.05);
+        this.currentScale = Phaser.Math.Linear(this.currentScale, 1.1, 0.05);
       }
     } else {
       // No light nearby, return to normal
-      this.currentScale = Phaser.Math.Linear(this.currentScale, this.baseScale, 0.05);
+      this.currentScale = Phaser.Math.Linear(this.currentScale, 1.1, 0.05);
     }
 
-    // Apply scale
-    this.sprite.setScale(this.currentScale);
+    // Apply size (avoid setScale to prevent giant frame scaling)
+    const size = this.baseSize * this.currentScale;
+    this.sprite.setDisplaySize(size, size);
 
     // Update dark overlay
     this.updateDarkOverlay();
@@ -176,8 +177,8 @@ export class ShadowMonster {
     this.darkOverlay.clear();
 
     // Draw grey circle around monster (smaller to match 1 cell)
-    const radius = 50 * this.currentScale; // Shrinks with monster
-    this.darkOverlay.fillStyle(0x000000, 0.3);
+    const radius = 20 * this.currentScale; // Keep shadow near 1-1.5 cell size
+    this.darkOverlay.fillStyle(0x000000, 0.22);
     this.darkOverlay.fillCircle(this.sprite.x, this.sprite.y, radius);
   }
 

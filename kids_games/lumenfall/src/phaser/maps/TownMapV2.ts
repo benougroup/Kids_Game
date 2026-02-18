@@ -41,15 +41,34 @@ export class TownMapV2 {
         // Vary grass tiles for visual interest
         const grassTypes = ['grass_plain', 'grass_flowers_yellow', 'grass_flowers_blue', 'grass_flowers_red', 'grass_rocks'];
         const grassType = Math.random() < 0.8 ? 'grass_plain' : grassTypes[Math.floor(Math.random() * grassTypes.length)];
-        this.tileSystem.placeGroundTile(x, y, grassType);
+        this.tileSystem.placeGroundTile(x, y, grassType, 0, true);
       }
     }
+
+    // Add low rolling hill so map has elevation changes.
+    this.createHill(24, 8, 5, 1);
+    this.createHill(26, 10, 3, 2);
     
     // Add water pond in bottom right
     this.createWaterPond(30, 20, 5);
     
     // Add water pond in top left
     this.createWaterPond(5, 5, 4);
+  }
+
+  private createHill(centerX: number, centerY: number, radius: number, elevation: number): void {
+    for (let dy = -radius; dy <= radius; dy++) {
+      for (let dx = -radius; dx <= radius; dx++) {
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist <= radius) {
+          const x = centerX + dx;
+          const y = centerY + dy;
+          if (x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight) {
+            this.tileSystem.placeGroundTile(x, y, 'grass_plain', elevation, true);
+          }
+        }
+      }
+    }
   }
 
   private createWaterPond(centerX: number, centerY: number, radius: number): void {
@@ -60,7 +79,7 @@ export class TownMapV2 {
           const x = centerX + dx;
           const y = centerY + dy;
           if (x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight) {
-            this.tileSystem.placeGroundTile(x, y, 'water_plain');
+            this.tileSystem.placeGroundTile(x, y, 'water_plain', -1, false);
           }
         }
       }
@@ -135,6 +154,9 @@ export class TownMapV2 {
   }
 
   private createStructures(): void {
+    const centerX = Math.floor(this.mapWidth / 2);
+    const centerY = Math.floor(this.mapHeight / 2);
+
     // Small houses in corners
     this.tileSystem.placeStructure(5, 5, 'house_small', 0);
     this.tileSystem.placeStructure(this.mapWidth - 8, 5, 'house_small', 0);
@@ -142,6 +164,10 @@ export class TownMapV2 {
     
     // Shop in center-right
     this.tileSystem.placeStructure(this.mapWidth - 10, Math.floor(this.mapHeight / 2) - 3, 'shop', 0);
+
+    // Sign posts act as light post placeholders for now.
+    this.tileSystem.placeObject(centerX - 4, centerY - 2, 'sign', true);
+    this.tileSystem.placeObject(centerX + 5, centerY + 2, 'sign', true);
     
     // Bridges over water ponds
     this.tileSystem.placeStructure(30, 20, 'bridge_h', 1);
@@ -191,6 +217,10 @@ export class TownMapV2 {
 
   public hasCollision(x: number, y: number): boolean {
     return this.tileSystem.hasCollision(x, y);
+  }
+
+  public isWalkable(fromX: number, fromY: number, toX: number, toY: number): boolean {
+    return this.tileSystem.isWalkableAtWorld(toX, toY, fromX, fromY);
   }
 
   public isWaterTile(x: number, y: number): boolean {

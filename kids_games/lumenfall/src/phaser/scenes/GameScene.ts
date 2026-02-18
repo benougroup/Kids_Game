@@ -20,7 +20,7 @@ export class GameScene extends Phaser.Scene {
   // Day/night system
   private timeOfDay: number = 0.25; // Start at morning
   private dayNightOverlay!: Phaser.GameObjects.Rectangle;
-  private timeSpeed: number = 0.000033; // 5 minute full day/night cycle
+  private timeSpeed: number = 1 / (20 * 60 * 1000); // 5 minutes per phase (20 minute full cycle)
   
   // Shadow monsters
   private shadowMonsters: ShadowMonster[] = [];
@@ -65,7 +65,8 @@ export class GameScene extends Phaser.Scene {
     
     // Set up camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
-    this.cameras.main.setZoom(2.5); // Zoomed in for better visibility
+    this.cameras.main.setZoom(2.3); // Zoomed in for better visibility
+    this.applyGameplayViewport();
     
     // Set world bounds (not camera bounds) to allow full map access
     this.physics.world.setBounds(0, 0, this.townMap.getMapWidth(), this.townMap.getMapHeight());
@@ -102,6 +103,8 @@ export class GameScene extends Phaser.Scene {
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       this.handleClick(pointer);
     });
+
+    this.scale.on('resize', () => this.applyGameplayViewport());
   }
 
   update(_time: number, delta: number): void {
@@ -113,7 +116,7 @@ export class GameScene extends Phaser.Scene {
       this.player.update(
         this.cursors,
         this.wasd,
-        (x, y) => this.townMap.isWaterTile(x, y)
+        (fromX, fromY, toX, toY) => this.townMap.isWalkable(fromX, fromY, toX, toY)
       );
     }
 
@@ -151,7 +154,7 @@ export class GameScene extends Phaser.Scene {
         monsterPos.x, monsterPos.y
       );
       
-      if (distance < 20) { // Touching range
+      if (distance < 24) { // Touching range
         // Damage player (throttled to once per second per monster)
         const now = Date.now();
         const lastDamage = monster.getLastDamageTime();
@@ -164,6 +167,15 @@ export class GameScene extends Phaser.Scene {
 
     // Emit time to UI scene
     this.events.emit('timeUpdate', this.timeOfDay);
+  }
+
+
+  private applyGameplayViewport(): void {
+    const viewportX = 0;
+    const viewportY = 80;
+    const viewportWidth = this.scale.width - 210;
+    const viewportHeight = this.scale.height - 90;
+    this.cameras.main.setViewport(viewportX, viewportY, viewportWidth, viewportHeight);
   }
 
   private updateDayNightOverlay(): void {
@@ -266,7 +278,7 @@ export class GameScene extends Phaser.Scene {
       playerPos.y,
       worldX,
       worldY,
-      (x, y) => !this.townMap.isWaterTile(x, y)
+      (x, y) => this.townMap.isWalkable(playerPos.x, playerPos.y, x, y)
     );
   }
 
@@ -365,7 +377,9 @@ export class GameScene extends Phaser.Scene {
       sources.push({ x: playerPos.x, y: playerPos.y, radius: lanternRadius });
     }
 
-    // Add other light sources (torches, campfires, etc.) here later
+    // Village light post placeholders (using sign sprites for now)
+    sources.push({ x: 16 * 32, y: 13 * 32, radius: 110 });
+    sources.push({ x: 25 * 32, y: 17 * 32, radius: 110 });
 
     return sources;
   }
