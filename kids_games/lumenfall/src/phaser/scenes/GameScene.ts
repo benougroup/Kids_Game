@@ -22,28 +22,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // Load sprite atlas
-    this.load.image('atlas', 'assets/atlas.png');
-    this.load.json('atlasData', 'assets/atlas.json');
+    // Load sprite atlas using Phaser's atlas format
+    this.load.atlas('atlas', 'assets/atlas.png', 'assets/atlas-phaser.json');
   }
 
   create(): void {
-    // Parse atlas data
-    const atlasData = this.cache.json.get('atlasData');
-    
-    // Create frames from atlas
-    if (atlasData && atlasData.sprites) {
-      Object.keys(atlasData.sprites).forEach(key => {
-        const sprite = atlasData.sprites[key];
-        this.textures.addSpriteSheetFromAtlas('atlas', {
-          atlas: 'atlas',
-          frame: key,
-          frameWidth: sprite.w,
-          frameHeight: sprite.h,
-        });
-      });
-    }
-
     // Create 2D top-down town map
     this.townMap = new TownMap(this);
     this.townMap.create();
