@@ -3,7 +3,7 @@ import { Player } from '../entities/Player';
 import { TownMap } from '../maps/TownMap';
 
 /**
- * Main game scene with isometric rendering
+ * Main game scene with 2D top-down view
  * Handles world, NPCs, player movement, day/night cycle
  */
 export class GameScene extends Phaser.Scene {
@@ -13,30 +13,48 @@ export class GameScene extends Phaser.Scene {
   private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
   
   // Day/night system
-  private timeOfDay: number = 0; // 0-1 (0=dawn, 0.5=noon, 1=midnight)
+  private timeOfDay: number = 0.25; // Start at morning
   private dayNightOverlay!: Phaser.GameObjects.Rectangle;
+  private timeSpeed: number = 0.0001; // Slower time progression
   
   constructor() {
     super({ key: 'GameScene' });
   }
 
   preload(): void {
-    // For now, we'll use simple shapes
-    // Later we can add sprite sheets
-    this.load.setPath('assets');
+    // Load sprite atlas
+    this.load.image('atlas', 'assets/atlas.png');
+    this.load.json('atlasData', 'assets/atlas.json');
   }
 
   create(): void {
-    // Create isometric town map
+    // Parse atlas data
+    const atlasData = this.cache.json.get('atlasData');
+    
+    // Create frames from atlas
+    if (atlasData && atlasData.sprites) {
+      Object.keys(atlasData.sprites).forEach(key => {
+        const sprite = atlasData.sprites[key];
+        this.textures.addSpriteSheetFromAtlas('atlas', {
+          atlas: 'atlas',
+          frame: key,
+          frameWidth: sprite.w,
+          frameHeight: sprite.h,
+        });
+      });
+    }
+
+    // Create 2D top-down town map
     this.townMap = new TownMap(this);
     this.townMap.create();
 
-    // Create player at spawn point
-    this.player = new Player(this, 400, 300);
+    // Create player at spawn point (center of village)
+    this.player = new Player(this, 512, 384);
     
     // Set up camera to follow player
     this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
-    this.cameras.main.setZoom(1.5); // Closer view like Diablo
+    this.cameras.main.setZoom(2); // Closer zoom for 2D top-down
+    this.cameras.main.setBounds(0, 0, 1024, 768); // Map bounds
     
     // Set up input
     this.cursors = this.input.keyboard!.createCursorKeys();
@@ -50,17 +68,16 @@ export class GameScene extends Phaser.Scene {
     // Create day/night overlay
     this.dayNightOverlay = this.add.rectangle(
       0, 0,
-      this.scale.width * 2,
-      this.scale.height * 2,
+      2048, 2048,
       0x000033,
       0
     );
     this.dayNightOverlay.setOrigin(0, 0);
-    this.dayNightOverlay.setScrollFactor(0);
+    this.dayNightOverlay.setScrollFactor(1);
     this.dayNightOverlay.setDepth(1000);
 
-    // Start at day time
-    this.timeOfDay = 0.25; // Morning
+    // Listen for action button from UI
+    this.events.on('playerAction', () => this.handleAction());
   }
 
   update(_time: number, delta: number): void {
@@ -68,7 +85,7 @@ export class GameScene extends Phaser.Scene {
     this.player.update(this.cursors, this.wasd);
 
     // Update day/night cycle (slow progression)
-    this.timeOfDay += delta / 120000; // Full cycle every 2 minutes
+    this.timeOfDay += delta * this.timeSpeed;
     if (this.timeOfDay > 1) this.timeOfDay = 0;
 
     // Update day/night overlay
@@ -83,7 +100,7 @@ export class GameScene extends Phaser.Scene {
     // 0-0.25: Dawn (getting lighter)
     // 0.25-0.5: Day (bright)
     // 0.5-0.75: Dusk (getting darker)
-    // 0.75-1: Night (dark like Diablo)
+    // 0.75-1: Night (dark)
 
     let darkness = 0;
     
@@ -104,6 +121,17 @@ export class GameScene extends Phaser.Scene {
     this.dayNightOverlay.setAlpha(darkness);
   }
 
+  private handleAction(): void {
+    // Check if near an NPC
+    const nearbyNPC = this.townMap.getNearbyNPC(this.player.getPosition(), 50);
+    if (nearbyNPC) {
+      console.log('Interacting with:', nearbyNPC.getData('npcName'));
+      this.events.emit('showDialogue', nearbyNPC.getData('npcName'));
+    } else {
+      console.log('No NPC nearby');
+    }
+  }
+
   public getPlayer(): Player {
     return this.player;
   }
@@ -114,5 +142,9 @@ export class GameScene extends Phaser.Scene {
 
   public isNight(): boolean {
     return this.timeOfDay > 0.6 || this.timeOfDay < 0.2;
+  }
+
+  public getAtlasTexture(): string {
+    return 'atlas';
   }
 }
