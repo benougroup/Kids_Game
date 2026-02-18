@@ -59,7 +59,7 @@ export class Player {
   update(
     cursors: Phaser.Types.Input.Keyboard.CursorKeys,
     wasd: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key },
-    checkWaterCollision?: (x: number, y: number) => boolean
+    checkMovementAllowed?: (fromX: number, fromY: number, toX: number, toY: number) => boolean
   ): void {
     // Get input direction
     let velocityX = 0;
@@ -84,8 +84,8 @@ export class Player {
       velocityY *= 0.707;
     }
 
-    // Check water collision before applying velocity
-    if (checkWaterCollision) {
+    // Check movement constraints before applying velocity
+    if (checkMovementAllowed) {
       const futureX = this.sprite.x + velocityX * this.speed * 0.016; // Approximate next position
       const futureY = this.sprite.y + velocityY * this.speed * 0.016;
       
@@ -98,16 +98,16 @@ export class Player {
         { x: futureX, y: futureY + 12 }, // Bottom
       ];
       
-      let hitWater = false;
+      let blocked = false;
       for (const point of checkPoints) {
-        if (checkWaterCollision(point.x, point.y)) {
-          hitWater = true;
+        if (!checkMovementAllowed(this.sprite.x, this.sprite.y, point.x, point.y)) {
+          blocked = true;
           break;
         }
       }
       
-      if (hitWater) {
-        // Stop movement if trying to walk into water
+      if (blocked) {
+        // Stop movement if trying to walk into blocked terrain/object
         velocityX = 0;
         velocityY = 0;
       }
