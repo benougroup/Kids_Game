@@ -3,11 +3,11 @@
  * Manages multiple rendering layers similar to Ragnarok Online
  * 
  * Layers:
- * 0 - Ground: Base terrain (grass, dirt, stone, water, sand, snow)
- * 1 - Roads: Paths and roads with proper orientation
- * 2 - Objects: Trees, rocks, bushes (collision objects)
- * 3 - Structures: Buildings, bridges (elevated, can walk under)
- * 4 - Entities: Player, NPCs, monsters (dynamic)
+ * 0 - Background tiles: base terrain (grass, dirt, stone)
+ * 1 - Environment overlays: roads + water overlays
+ * 2 - Buildings: houses/shops/static structures (blocking)
+ * 3 - Large objects: trees/rocks/signs (blocking)
+ * 4 - Dynamic actors: entities rendered above map layers
  */
 
 export interface TileData {
@@ -19,7 +19,7 @@ export interface TileData {
   elevation: number; // Terrain elevation level (0 = flat ground)
   walkable: boolean;
   movementCost: number;
-  terrainType: 'ground' | 'water' | 'road' | 'bridge' | 'object' | 'structure';
+  terrainType: 'ground' | 'water' | 'road' | 'bridge' | 'object' | 'structure' | 'shallow_water';
 }
 
 export interface TileMovementProfile {
@@ -49,12 +49,16 @@ export const isDepthWalkable = (
 export const inferTileMovementProfile = (frame: string, layer: number): TileMovementProfile => {
   const id = frame.toLowerCase();
 
-  if (layer === 3) {
+  if (layer === 2) {
     return { walkable: false, movementCost: Infinity, terrainType: 'structure' };
   }
 
-  if (layer === 2) {
+  if (layer === 3) {
     return { walkable: false, movementCost: 2, terrainType: 'object' };
+  }
+
+  if (id.includes('water_shallow')) {
+    return { walkable: true, movementCost: 1.4, terrainType: 'shallow_water' };
   }
 
   if (id.includes('water')) {
@@ -98,9 +102,10 @@ export class LayeredTileSystem {
     this.frameMinWalkableElevation = new Map();
     
     // Create layer containers
+    const layerDepthByIndex = [0, 100, 200, 300, 650];
     for (let i = 0; i <= 4; i++) {
       const container = scene.add.container(0, 0);
-      container.setDepth(i * 100);
+      container.setDepth(layerDepthByIndex[i]);
       this.layers.set(i, container);
     }
   }
@@ -121,17 +126,22 @@ export class LayeredTileSystem {
   }
   
   /**
-   * Place an object (tree, rock, bush) with collision (layer 2)
+   * Place a large object (tree, rock, bush) with collision (layer 3)
    */
   public placeObject(x: number, y: number, objectType: string, collision: boolean = true): void {
-    this.placeTile(x, y, 2, objectType, collision, this.getElevationAtTile(x, y), !collision);
+    this.placeTile(x, y, 3, objectType, collision, -1, !collision);
   }
   
   /**
-   * Place a structure (building, bridge) (layer 3)
+   * Place a structure (building) (layer 2)
    */
   public placeStructure(x: number, y: number, structureType: string, height: number = 0): void {
-    this.placeTile(x, y, 3, structureType, true, height, false);
+    if (structureType.includes('bridge')) {
+      this.placeTile(x, y, 1, structureType, false, height, true);
+      return;
+    }
+
+    this.placeTile(x, y, 2, structureType, true, height > 0 ? height : -1, false);
   }
   
   /**
@@ -149,9 +159,9 @@ export class LayeredTileSystem {
     const key = `${x},${y},${layer}`;
     
     // Check which atlas this frame belongs to
-    let atlasKey = 'tiles_new';
+    let atlasKey = 'tiles';
     if (frame.includes('road') || frame.includes('bridge')) {
-      atlasKey = 'roads_new';
+      atlasKey = 'tiles';
     } else if (frame.includes('tree') || frame.includes('rock') || frame.includes('house') || 
                frame.includes('bush') || frame.includes('flowers') || frame.includes('wall') ||
                frame.includes('fence') || frame.includes('door') || frame.includes('window') ||
@@ -169,20 +179,14 @@ export class LayeredTileSystem {
     sprite.setOrigin(0, 0);
     
     // Scale down from atlas size (256px) to tile size (32px)
-    if (atlasKey === 'tiles_new') {
+    if (atlasKey === 'tiles') {
       sprite.setDisplaySize(this.tileSize, this.tileSize);
-    } else if (atlasKey === 'roads_new') {
-      // Roads vary in size, scale proportionally
-      // Roads vary in size, scale proportionally
-      const scale = this.tileSize / 172; // Base road tile is 172px
-      sprite.setScale(scale);
     } else if (atlasKey === 'objects_new') {
-      // Objects keep their relative sizes
-      const scale = this.tileSize / 96; // Base unit is 96px (1 tile)
+      // New object atlas uses ~96px as one world tile of width.
+      const scale = this.tileSize / 96;
       sprite.setScale(scale);
 
-      // Anchor multi-cell objects to the tile's ground contact point.
-      // This keeps trees/buildings rooted to the intended cell instead of drifting down.
+      // Root objects to the tile base so trees/rocks line up with their cell.
       sprite.setOrigin(0.5, 1);
       sprite.x = baseX + this.tileSize / 2;
       sprite.y = baseY + this.tileSize;
@@ -278,7 +282,7 @@ export class LayeredTileSystem {
   }
 
   private loadFrameMovementMetadata(): void {
-    const atlasKeys = ['tiles_new', 'roads_new', 'objects_new'];
+    const atlasKeys = ['tiles', 'objects_new'];
 
     for (const atlasKey of atlasKeys) {
       const atlasData = this.scene.cache.json.get(atlasKey) as {
@@ -302,9 +306,34 @@ export class LayeredTileSystem {
       return frame;
     }
 
+    const frameAliases: Record<string, string> = {
+      // Ground / water
+      grass_plain: 'grass',
+      grass_flowers_yellow: 'grass_flowers',
+      grass_flowers_blue: 'forest_grass',
+      grass_flowers_red: 'grass_flowers',
+      grass_rocks: 'mossy_stone',
+      dirt_plain: 'dirt',
+      stone_plain: 'stone',
+      water_plain: 'water',
+      water_shallow: 'water',
+      // Roads
+      dirt_road_vertical: 'dirt',
+      dirt_road_horizontal: 'dirt',
+      dirt_road_cross: 'dirt',
+      stone_road_vertical: 'cobblestone',
+      stone_road_horizontal: 'cobblestone',
+      stone_road_cross: 'cobblestone',
+      // Objects/structures in objects_new atlas already match names.
+    };
+
+    const mappedFrame = frameAliases[frame] ?? frame;
+    if (texture && texture.has(mappedFrame)) {
+      return mappedFrame;
+    }
+
     if (atlasKey === 'objects_new') return 'sign';
-    if (atlasKey === 'roads_new') return 'dirt_road_horizontal';
-    return 'grass_plain';
+    return 'grass';
   }
   
   /**

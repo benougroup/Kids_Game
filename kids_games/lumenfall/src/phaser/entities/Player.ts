@@ -18,7 +18,7 @@ export class Player {
     this.sprite.setOrigin(0.5, 0.5); // Center anchor
     this.sprite.setSize(24, 24); // Collision box
     this.sprite.setOffset(4, 4); // Center collision box
-    this.sprite.setDepth(100);
+    this.sprite.setDepth(500);
 
     // Create animations
     this.createAnimations();

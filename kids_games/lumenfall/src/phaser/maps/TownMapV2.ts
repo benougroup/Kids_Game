@@ -79,7 +79,12 @@ export class TownMapV2 {
           const x = centerX + dx;
           const y = centerY + dy;
           if (x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight) {
-            this.tileSystem.placeGroundTile(x, y, 'water_plain', -1, false);
+            // Shallow water ring is walkable and sits on top of ground at -0.5.
+            if (dist > radius - 1.25) {
+              this.tileSystem.placeGroundTile(x, y, 'water_shallow', -0.5, true);
+            } else {
+              this.tileSystem.placeGroundTile(x, y, 'water_plain', -1, false);
+            }
           }
         }
       }
@@ -203,7 +208,7 @@ export class TownMapV2 {
       npcIdleFrameByType[type] ?? 'hero_idle_front'
     );
     npc.setOrigin(0.5, 0.5);
-    npc.setDisplaySize(48, 48);
+    npc.setDisplaySize(34, 34);
     npc.setDepth(400);
     npc.setData('name', name);
     npc.setData('npcName', name);
