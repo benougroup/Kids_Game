@@ -11,11 +11,12 @@ export class Player {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
 
-    // Create player sprite (32x32 scaled from 256x256 atlas)
+    // Create player sprite (32x48 to show full character)
     this.sprite = scene.physics.add.sprite(x, y, 'atlas');
-    this.sprite.setDisplaySize(32, 32); // Scale down from 256x256
-    this.sprite.setSize(24, 24); // Collision box
-    this.sprite.setOffset(4, 8); // Center collision box
+    this.sprite.setDisplaySize(32, 48); // Taller sprite to show full character
+    this.sprite.setOrigin(0.5, 0.75); // Anchor at bottom-center (feet position)
+    this.sprite.setSize(24, 16); // Collision box (feet area only)
+    this.sprite.setOffset(4, 40); // Adjust collision box to feet
     this.sprite.setDepth(100);
 
     // Create animations

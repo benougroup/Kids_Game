@@ -265,6 +265,68 @@ export class TownMap {
       bush.setDisplaySize(this.tileSize, this.tileSize);
       bush.setDepth(y * 10);
     }
+
+    // Add flower patches (bigger 2x2 for contrast)
+    this.createFlowerPatch(5, 8);
+    this.createFlowerPatch(12, 6);
+    this.createFlowerPatch(28, 9);
+    this.createFlowerPatch(35, 7);
+    this.createFlowerPatch(8, 22);
+    this.createFlowerPatch(33, 23);
+
+    // Add dirt patches (natural variation)
+    this.createDirtPatch(15, 12);
+    this.createDirtPatch(25, 11);
+    this.createDirtPatch(18, 18);
+    this.createDirtPatch(22, 19);
+
+    // Add small water pond (3x3)
+    this.createWaterPond(4, 25);
+    this.createWaterPond(36, 24);
+  }
+
+  private createFlowerPatch(x: number, y: number): void {
+    // 2x2 flower patch for better visibility
+    for (let dy = 0; dy < 2; dy++) {
+      for (let dx = 0; dx < 2; dx++) {
+        const flower = this.scene.add.sprite(
+          (x + dx) * this.tileSize,
+          (y + dy) * this.tileSize,
+          'atlas',
+          'tile_grass'
+        );
+        flower.setOrigin(0, 0);
+        flower.setDisplaySize(this.tileSize, this.tileSize);
+        flower.setTint(0xffccff); // Pink tint for flowers
+        flower.setDepth(0.5);
+      }
+    }
+  }
+
+  private createDirtPatch(x: number, y: number): void {
+    // 2x2 dirt patch
+    for (let dy = 0; dy < 2; dy++) {
+      for (let dx = 0; dx < 2; dx++) {
+        this.placeTile(x + dx, y + dy, 'tile_dirt', 0.5);
+      }
+    }
+  }
+
+  private createWaterPond(x: number, y: number): void {
+    // 3x3 water pond
+    for (let dy = 0; dy < 3; dy++) {
+      for (let dx = 0; dx < 3; dx++) {
+        const water = this.scene.add.sprite(
+          (x + dx) * this.tileSize,
+          (y + dy) * this.tileSize,
+          'atlas',
+          'tile_water'
+        );
+        water.setOrigin(0, 0);
+        water.setDisplaySize(this.tileSize, this.tileSize);
+        water.setDepth(0.5);
+      }
+    }
   }
 
   private placeTile(x: number, y: number, frame: string, depth: number): void {
@@ -297,8 +359,8 @@ export class TownMap {
 
   private createNPC(x: number, y: number, frame: string, name: string): void {
     const npc = this.scene.add.sprite(x, y, 'atlas', frame);
-    npc.setDisplaySize(this.tileSize, this.tileSize * 1.5); // Taller for better visibility
-    npc.setOrigin(0.5, 1); // Bottom-center anchor
+    npc.setDisplaySize(this.tileSize, this.tileSize * 1.5); // Taller sprite (32x48)
+    npc.setOrigin(0.5, 0.75); // Anchor at feet position (same as player)
     npc.setDepth(Math.floor(y / this.tileSize) * 10 + 100); // Proper depth sorting
 
     // Add name label

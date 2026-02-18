@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { TownMap } from '../maps/TownMap';
 import { MapTransitionSystem } from '../systems/MapTransitionSystem';
+import { ShadowMonster } from '../entities/ShadowMonster';
 
 /**
  * Main game scene with 2D top-down view
@@ -18,6 +19,9 @@ export class GameScene extends Phaser.Scene {
   private timeOfDay: number = 0.25; // Start at morning
   private dayNightOverlay!: Phaser.GameObjects.Rectangle;
   private timeSpeed: number = 0.0001; // Slower time progression
+  
+  // Shadow monsters
+  private shadowMonsters: ShadowMonster[] = [];
   
   constructor() {
     super({ key: 'GameScene' });
@@ -69,6 +73,9 @@ export class GameScene extends Phaser.Scene {
     this.dayNightOverlay.setScrollFactor(1);
     this.dayNightOverlay.setDepth(1000);
 
+    // Spawn shadow monsters in darker areas (corners of map)
+    this.spawnShadowMonsters();
+
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
   }
@@ -90,6 +97,12 @@ export class GameScene extends Phaser.Scene {
 
     // Update day/night overlay
     this.updateDayNightOverlay();
+
+    // Update shadow monsters
+    const lightSources = this.getLightSources();
+    for (const monster of this.shadowMonsters) {
+      monster.update(playerPos, lightSources);
+    }
 
     // Emit time to UI scene
     this.events.emit('timeUpdate', this.timeOfDay);
@@ -166,5 +179,33 @@ export class GameScene extends Phaser.Scene {
 
   public getAtlasTexture(): string {
     return 'atlas';
+  }
+
+  private spawnShadowMonsters(): void {
+    // Spawn 3-4 shadow monsters in darker areas
+    const spawnPoints = [
+      { x: 200, y: 200 },   // Top-left
+      { x: 1000, y: 200 },  // Top-right
+      { x: 200, y: 800 },   // Bottom-left
+      { x: 1000, y: 800 },  // Bottom-right
+    ];
+
+    for (const point of spawnPoints) {
+      const monster = new ShadowMonster(this, point.x, point.y);
+      this.shadowMonsters.push(monster);
+    }
+  }
+
+  private getLightSources(): { x: number; y: number; radius: number }[] {
+    const sources: { x: number; y: number; radius: number }[] = [];
+
+    // Player always has a light (lantern)
+    const playerPos = this.player.getPosition();
+    const playerLightRadius = this.timeOfDay > 0.6 || this.timeOfDay < 0.2 ? 120 : 80;
+    sources.push({ x: playerPos.x, y: playerPos.y, radius: playerLightRadius });
+
+    // Add other light sources (torches, campfires, etc.) here later
+
+    return sources;
   }
 }
