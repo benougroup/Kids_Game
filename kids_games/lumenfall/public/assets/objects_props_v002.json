@@ -1,0 +1,405 @@
+{
+  "frames": {
+    "tree_oak_large": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tree_pine_tall": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tree_dead": {
+      "frame": {
+        "x": 512,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "logs_stack": {
+      "frame": {
+        "x": 768,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "rock_large": {
+      "frame": {
+        "x": 1024,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "hay_bales_stack": {
+      "frame": {
+        "x": 1280,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stump_with_axe": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "campfire": {
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "berry_bush": {
+      "frame": {
+        "x": 512,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "mushrooms_cluster": {
+      "frame": {
+        "x": 768,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      }
+    },
+    "wooden_crate_large": {
+      "frame": {
+        "x": 1024,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wooden_crate_double": {
+      "frame": {
+        "x": 1280,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "barrel_pair": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "barrel_triple": {
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sack_bundle": {
+      "frame": {
+        "x": 512,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fence_short": {
+      "frame": {
+        "x": 768,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fence_long": {
+      "frame": {
+        "x": 1024,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "well_small": {
+      "frame": {
+        "x": 1280,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sign_village": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sign_forest": {
+      "frame": {
+        "x": 256,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sign_market": {
+      "frame": {
+        "x": 512,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wooden_gate": {
+      "frame": {
+        "x": 768,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lamp_post": {
+      "frame": {
+        "x": 1024,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cart_small": {
+      "frame": {
+        "x": 1280,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gravestone_plain": {
+      "frame": {
+        "x": 0,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gravestone_cross": {
+      "frame": {
+        "x": 256,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gravestone_rounded": {
+      "frame": {
+        "x": 512,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "skull_pile": {
+      "frame": {
+        "x": 768,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "treasure_chest": {
+      "frame": {
+        "x": 1024,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "crate_broken": {
+      "frame": {
+        "x": 1280,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cooking_station": {
+      "frame": {
+        "x": 0,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wooden_table": {
+      "frame": {
+        "x": 256,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "blacksmith_table": {
+      "frame": {
+        "x": 512,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "market_stall_food": {
+      "frame": {
+        "x": 768,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "market_stall_goods": {
+      "frame": {
+        "x": 1024,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "market_stall_small": {
+      "frame": {
+        "x": 1280,
+        "y": 1280,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    }
+  },
+  "meta": {
+    "image": "objects_props_v002.PNG",
+    "size": {
+      "w": 1536,
+      "h": 1536
+    },
+    "scale": "1"
+  }
+}

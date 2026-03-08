@@ -1,0 +1,342 @@
+{
+  "frames": {
+    "cliff_sandstone_flat": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_stone_jagged": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_moss_heavy": {
+      "frame": {
+        "x": 512,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_grass_edge": {
+      "frame": {
+        "x": 768,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_granite": {
+      "frame": {
+        "x": 1024,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_grass_patch": {
+      "frame": {
+        "x": 1280,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_corner_left": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_corner_right": {
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "rock_wall_stacked": {
+      "frame": {
+        "x": 512,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_dark_wall": {
+      "frame": {
+        "x": 768,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_moss_drop": {
+      "frame": {
+        "x": 1024,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_sandstone_stepped": {
+      "frame": {
+        "x": 1280,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "rock_wall_round": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "rock_wall_dense": {
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "rock_wall_mossy": {
+      "frame": {
+        "x": 512,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "canyon_wall": {
+      "frame": {
+        "x": 768,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_grass_slope": {
+      "frame": {
+        "x": 1024,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_snow_cap": {
+      "frame": {
+        "x": 1280,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_wall_dark": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_wall_rock": {
+      "frame": {
+        "x": 256,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lava_cliff_cracked": {
+      "frame": {
+        "x": 512,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "desert_cliff_face": {
+      "frame": {
+        "x": 768,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "desert_plateau": {
+      "frame": {
+        "x": 1024,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "granite_wall_smooth": {
+      "frame": {
+        "x": 1280,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "waterfall_cliff": {
+      "frame": {
+        "x": 0,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_opening": {
+      "frame": {
+        "x": 256,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sandstone_outcrop": {
+      "frame": {
+        "x": 512,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "volcanic_wall": {
+      "frame": {
+        "x": 768,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lava_rock_face": {
+      "frame": {
+        "x": 1024,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "granite_block_wall": {
+      "frame": {
+        "x": 1280,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    }
+  },
+  "meta": {
+    "image": "terrain_walls_natural_v001.PNG",
+    "size": {
+      "w": 1536,
+      "h": 1280
+    },
+    "scale": "1"
+  }
+}
