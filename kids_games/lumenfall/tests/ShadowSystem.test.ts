@@ -83,7 +83,7 @@ describe('ShadowSystem', () => {
     tx.touchRuntimeShadows();
     tx.touchRuntimeFlags();
     tx.touchRuntime();
-    tx.draftState.runtime.encounterContext = { shadowId: 's1', category: 'environmental', tileLight: 'DARK', mapId: 'bright_hollow' };
+    tx.draftState.runtime.encounterContext = { shadowId: 's1', category: 'environmental', tileLight: 'DARK', mapId: 'bright_hollow_town' };
     tx.draftState.runtime.shadows.env = [{ id: 's1', category: 'environmental', x: 14, y: 11, state: 'calm', cooldownUntilMs: 0 }];
     tx.draftState.runtime.runtimeFlags['runtime.shadowAction'] = { action: 'dissolve' };
     shadowSystem.update(tx, 2000, 16);

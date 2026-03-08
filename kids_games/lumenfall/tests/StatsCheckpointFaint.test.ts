@@ -60,7 +60,7 @@ describe('CheckpointSystem restore', () => {
     tx.touchRuntimeUi();
     tx.draftState.runtime.dialogue = { active: true, nodeId: 'abc' };
     tx.draftState.runtime.crafting = { open: true, mixingTableId: 'r1' };
-    tx.draftState.runtime.map.transition = { toMapId: 'light_hall', toX: 1, toY: 1, phase: 'fadeOut', t: 0.5 };
+    tx.draftState.runtime.map.transition = { toMapId: 'light_hall_interior', toX: 1, toY: 1, phase: 'fadeOut', t: 0.5 };
     tx.draftState.runtime.ui.messages = ['old'];
 
     checkpointSystem.restoreFromSnapshot(tx, snapshot);
@@ -110,7 +110,7 @@ describe('Faint flow integration', () => {
     checkpointSystem.snapshot(tx);
     tx.touchRuntimeMap();
     tx.touchRuntimePlayer();
-    tx.draftState.runtime.map.currentMapId = 'light_hall';
+    tx.draftState.runtime.map.currentMapId = 'light_hall_interior';
     tx.draftState.runtime.player.x = 9;
     tx.draftState.runtime.player.y = 9;
     tx.draftState.runtime.player.hp = 1;
@@ -132,7 +132,7 @@ describe('Faint flow integration', () => {
 
     const state = store.get();
     expect(state.runtime.mode).toBe('EXPLORE');
-    expect(state.runtime.map.currentMapId).toBe('bright_hollow');
+    expect(state.runtime.map.currentMapId).toBe('bright_hollow_town');
     expect(state.runtime.player.x).toBe(14);
     expect(state.runtime.player.y).toBe(10);
     expect(state.runtime.player.hp).toBe(6);

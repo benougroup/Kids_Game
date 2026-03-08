@@ -1,4 +1,5 @@
 import demoScenesJson from '../data/scenes/demo.scenes.json';
+import flickeringScenesJson from '../data/scenes/flickering_light.scenes.json';
 import encountersJson from '../data/encounters.json';
 
 export type SceneText = string | string[];
@@ -52,6 +53,7 @@ interface SceneFileShape {
 
 const sceneFileRegistry: Record<string, SceneFileShape> = {
   'scenes/demo.scenes.json': demoScenesJson as SceneFileShape,
+  'scenes/flickering_light.scenes.json': flickeringScenesJson as SceneFileShape,
   'encounters.json': encountersJson as SceneFileShape,
 };
 

@@ -50,7 +50,7 @@ export class TriggerSystem {
     }
 
     if (context.interactPressed) {
-      const interactable = this.mapSystem.findInteractableAt(mapId, playerX, playerY);
+      const interactable = this.mapSystem.findInteractableNear(state);
       if (interactable?.type === 'door' && interactable.toMapId && typeof interactable.toX === 'number' && typeof interactable.toY === 'number') {
         commandQueue.enqueue({
           kind: 'RequestMapTransition',
