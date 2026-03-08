@@ -158,16 +158,7 @@ export class LayeredTileSystem {
   ): TileData | null {
     const key = `${x},${y},${layer}`;
     
-    // Check which atlas this frame belongs to
-    let atlasKey = 'tiles';
-    if (frame.includes('road') || frame.includes('bridge')) {
-      atlasKey = 'tiles';
-    } else if (frame.includes('tree') || frame.includes('rock') || frame.includes('house') || 
-               frame.includes('bush') || frame.includes('flowers') || frame.includes('wall') ||
-               frame.includes('fence') || frame.includes('door') || frame.includes('window') ||
-               frame.includes('sign') || frame.includes('shop')) {
-      atlasKey = 'objects_new';
-    }
+    const atlasKey = this.selectAtlasKey(frame, layer);
     
     const resolvedFrame = this.resolveFrame(atlasKey, frame);
 
@@ -282,7 +273,19 @@ export class LayeredTileSystem {
   }
 
   private loadFrameMovementMetadata(): void {
-    const atlasKeys = ['tiles', 'objects_new'];
+    const atlasKeys = [
+      'tiles',
+      'terrain_grassland_v001',
+      'terrain_dungeon_v001',
+      'terrain_walls_natural_v001',
+      'terrain_walls_natural_v002_irregular',
+      'terrain_walls_manmade_v001',
+      'objects_new',
+      'objects_props_v002',
+      'objects_props_v003',
+      'buildings_v002',
+      'buildings_v003',
+    ];
 
     for (const atlasKey of atlasKeys) {
       const atlasData = this.scene.cache.json.get(atlasKey) as {
@@ -298,6 +301,41 @@ export class LayeredTileSystem {
         }
       }
     }
+  }
+
+  private selectAtlasKey(frame: string, layer: number): string {
+    const id = frame.toLowerCase();
+
+    if (id.includes('road') || id.startsWith('bridge_') || id === 'bridge_h' || id === 'bridge_v') return 'tiles';
+
+    if (layer === 0) {
+      if (id.startsWith('dungeon_') || id.startsWith('cliff_') || id.startsWith('cave_') || id.startsWith('lava_')) {
+        return 'terrain_dungeon_v001';
+      }
+      return 'terrain_grassland_v001';
+    }
+
+    if (layer === 2) {
+      if (id.includes('castle') || id.includes('tavern') || id.includes('chapel') || id.includes('windmill') || id.includes('tower')) {
+        return 'buildings_v003';
+      }
+      return 'buildings_v002';
+    }
+
+    if (id.includes('plateau') || id.includes('outcrop') || id.includes('massive') || id.includes('canyon')) {
+      return 'terrain_walls_natural_v002_irregular';
+    }
+    if (id.includes('cliff') || id.includes('wall') || id.includes('granite') || id.includes('sandstone') || id.includes('volcanic')) {
+      return 'terrain_walls_natural_v001';
+    }
+    if (id.includes('ruin_') || id.includes('statue') || id.includes('tent') || id.includes('platform') || id.includes('cauldron')) {
+      return 'objects_props_v003';
+    }
+    if (id.includes('tree') || id.includes('crate') || id.includes('fence') || id.includes('market') || id.includes('gravestone') || id.includes('lamp') || id.includes('cart') || id.includes('barrel') || id.includes('campfire') || id.includes('sign')) {
+      return 'objects_props_v002';
+    }
+
+    return 'objects_new';
   }
 
   private resolveFrame(atlasKey: string, frame: string): string {

@@ -38,9 +38,17 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // Load new sprite atlases with proper tile system
+    // Load terrain/object/building atlases used by the layered tile system.
     this.load.atlas('tiles', 'assets/tiles_original.png', 'assets/tiles.json');
+    this.load.atlas('terrain_grassland_v001', 'assets/terrain_grassland_v001.PNG', 'assets/terrain_grassland_v001.json');
+    this.load.atlas('terrain_walls_natural_v001', 'assets/terrain_walls_natural_v001.PNG', 'assets/terrain_walls_natural_v001.json');
+    this.load.atlas('terrain_walls_natural_v002_irregular', 'assets/terrain_walls_natural_v002_irregular.PNG', 'assets/terrain_walls_natural_v002_irregular.json');
+    this.load.atlas('terrain_walls_manmade_v001', 'assets/terrain_walls_manmade_v001.PNG', 'assets/terrain_walls_manmade_v001.json');
     this.load.atlas('objects_new', 'assets/objects_new_original.png', 'assets/objects_new.json');
+    this.load.atlas('objects_props_v002', 'assets/objects_props_v002.PNG', 'assets/objects_props_v002.json');
+    this.load.atlas('objects_props_v003', 'assets/objects_props_v003.PNG', 'assets/objects_props_v003.json');
+    this.load.atlas('buildings_v002', 'assets/buildings_v002.PNG', 'assets/buildings_v002.json');
+    this.load.atlas('buildings_v003', 'assets/buildings_v003.PNG', 'assets/buildings_v003.json');
     this.load.atlas('characters', 'assets/characters_original.png', 'assets/characters.json');
     this.load.atlas('monsters', 'assets/monsters_original.png', 'assets/monsters.json');
   }

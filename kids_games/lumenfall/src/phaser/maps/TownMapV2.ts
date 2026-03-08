@@ -39,8 +39,8 @@ export class TownMapV2 {
     for (let y = 0; y < this.mapHeight; y++) {
       for (let x = 0; x < this.mapWidth; x++) {
         // Vary grass tiles for visual interest
-        const grassTypes = ['grass_plain', 'grass_flowers_yellow', 'grass_flowers_blue', 'grass_flowers_red', 'grass_rocks'];
-        const grassType = Math.random() < 0.8 ? 'grass_plain' : grassTypes[Math.floor(Math.random() * grassTypes.length)];
+        const grassTypes = ['grass_plain_01', 'grass_flowers_yellow', 'grass_flowers_blue', 'grass_flowers_red', 'grass_muddy_patch'];
+        const grassType = Math.random() < 0.8 ? 'grass_plain_01' : grassTypes[Math.floor(Math.random() * grassTypes.length)];
         this.tileSystem.placeGroundTile(x, y, grassType, 0, true);
       }
     }
@@ -64,7 +64,7 @@ export class TownMapV2 {
           const x = centerX + dx;
           const y = centerY + dy;
           if (x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight) {
-            this.tileSystem.placeGroundTile(x, y, 'grass_plain', elevation, true);
+            this.tileSystem.placeGroundTile(x, y, 'grass_plain_01', elevation, true);
           }
         }
       }
@@ -81,9 +81,9 @@ export class TownMapV2 {
           if (x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight) {
             // Shallow water ring is walkable and sits on top of ground at -0.5.
             if (dist > radius - 1.25) {
-              this.tileSystem.placeGroundTile(x, y, 'water_shallow', -0.5, true);
+              this.tileSystem.placeGroundTile(x, y, 'shallow_water', -0.5, true);
             } else {
-              this.tileSystem.placeGroundTile(x, y, 'water_plain', -1, false);
+              this.tileSystem.placeGroundTile(x, y, 'water_deep', -1, false);
             }
           }
         }
@@ -129,7 +129,7 @@ export class TownMapV2 {
       const x = Math.random() < 0.5 ? Math.floor(Math.random() * 5) : this.mapWidth - Math.floor(Math.random() * 5);
       const y = Math.floor(Math.random() * this.mapHeight);
       
-      const treeTypes = ['tree_oak', 'tree_pine', 'tree_small', 'tree_cherry'];
+      const treeTypes = ['tree_oak_large', 'tree_pine_tall', 'tree_dead', 'tree_oak_large'];
       const treeType = treeTypes[Math.floor(Math.random() * treeTypes.length)];
       
       this.tileSystem.placeObject(x, y, treeType, true);
@@ -140,7 +140,7 @@ export class TownMapV2 {
       const x = Math.floor(Math.random() * this.mapWidth);
       const y = Math.floor(Math.random() * this.mapHeight);
       
-      const bushTypes = ['bush_large', 'bush_small', 'flowers_red', 'flowers_blue', 'flowers_yellow'];
+      const bushTypes = ['berry_bush', 'mushrooms_cluster', 'stump_with_axe', 'campfire', 'sign_forest'];
       const bushType = bushTypes[Math.floor(Math.random() * bushTypes.length)];
       
       this.tileSystem.placeObject(x, y, bushType, false);
@@ -151,7 +151,7 @@ export class TownMapV2 {
       const x = Math.floor(Math.random() * this.mapWidth);
       const y = Math.floor(Math.random() * this.mapHeight);
       
-      const rockTypes = ['rock_large', 'rock_medium', 'rock_small', 'rock_pile'];
+      const rockTypes = ['rock_large', 'logs_stack', 'barrel_pair', 'sack_bundle'];
       const rockType = rockTypes[Math.floor(Math.random() * rockTypes.length)];
       
       this.tileSystem.placeObject(x, y, rockType, true);
@@ -163,20 +163,20 @@ export class TownMapV2 {
     const centerY = Math.floor(this.mapHeight / 2);
 
     // Small houses in corners
-    this.tileSystem.placeStructure(5, 5, 'house_small', 0);
-    this.tileSystem.placeStructure(this.mapWidth - 8, 5, 'house_small', 0);
-    this.tileSystem.placeStructure(5, this.mapHeight - 8, 'house_small', 0);
-    
-    // Shop in center-right
-    this.tileSystem.placeStructure(this.mapWidth - 10, Math.floor(this.mapHeight / 2) - 3, 'shop', 0);
+    this.tileSystem.placeStructure(5, 5, 'house_thatch_small', 0);
+    this.tileSystem.placeStructure(this.mapWidth - 8, 5, 'house_blue_roof_large', 0);
+    this.tileSystem.placeStructure(5, this.mapHeight - 8, 'windmill_large', 0);
+
+    // Tavern in center-right
+    this.tileSystem.placeStructure(this.mapWidth - 10, Math.floor(this.mapHeight / 2) - 3, 'tavern_red_balcony', 0);
 
     // Sign posts act as light post placeholders for now.
-    this.tileSystem.placeObject(centerX - 4, centerY - 2, 'sign', true);
-    this.tileSystem.placeObject(centerX + 5, centerY + 2, 'sign', true);
+    this.tileSystem.placeObject(centerX - 4, centerY - 2, 'lamp_post', true);
+    this.tileSystem.placeObject(centerX + 5, centerY + 2, 'sign_village', true);
     
     // Bridges over water ponds
-    this.tileSystem.placeStructure(30, 20, 'bridge_h', 1);
-    this.tileSystem.placeStructure(5, 5, 'bridge_v', 1);
+    this.tileSystem.placeStructure(30, 20, 'stone_bridge_short', 1);
+    this.tileSystem.placeStructure(5, 5, 'stone_bridge_short', 1);
   }
 
   private createNPCs(): void {

@@ -1,0 +1,287 @@
+{
+  "frames": {
+    "ruin_arch_stone": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "knight_statue_sword": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stone_tower_small": {
+      "frame": {
+        "x": 512,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fountain_round": {
+      "frame": {
+        "x": 768,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "monk_statue": {
+      "frame": {
+        "x": 1024,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "snow_house_small": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stone_bridge_short": {
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "angel_statue": {
+      "frame": {
+        "x": 512,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "angel_statue_scales": {
+      "frame": {
+        "x": 768,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "crystal_platform": {
+      "frame": {
+        "x": 1024,
+        "y": 256,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tent_large": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tent_red_stripe": {
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tent_simple": {
+      "frame": {
+        "x": 512,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tent_low": {
+      "frame": {
+        "x": 768,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "ruin_tree_cluster": {
+      "frame": {
+        "x": 1024,
+        "y": 512,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stone_platform": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "crate_stack_large": {
+      "frame": {
+        "x": 256,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "treasure_chest_large": {
+      "frame": {
+        "x": 512,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "campfire_large": {
+      "frame": {
+        "x": 768,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cauldron_fire": {
+      "frame": {
+        "x": 1024,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "alchemy_table": {
+      "frame": {
+        "x": 0,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "storage_table": {
+      "frame": {
+        "x": 256,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gold_table": {
+      "frame": {
+        "x": 512,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sack_large": {
+      "frame": {
+        "x": 768,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "banner_pillars": {
+      "frame": {
+        "x": 1024,
+        "y": 1024,
+        "w": 256,
+        "h": 256
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    }
+  },
+  "meta": {
+    "image": "objects_props_v003.PNG",
+    "size": {
+      "w": 1280,
+      "h": 1280
+    },
+    "scale": "1"
+  }
+}
