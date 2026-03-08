@@ -1,5 +1,7 @@
 import brightHollowMap from '../data/maps/bright_hollow.json';
 import lightHallMap from '../data/maps/light_hall.json';
+import forestEdgeDemoMap from '../data/maps/forest_edge_demo.json';
+import shrineDemoMap from '../data/maps/shrine_demo.json';
 import { TILE_SIZE } from '../app/Config';
 import type { GameState, LightSourceRuntime } from '../state/StateTypes';
 
@@ -37,6 +39,60 @@ export interface Interactable {
   toY?: number;
 }
 
+export type TerrainMovementType = 'normal' | 'shallowWater' | 'deepWater' | 'mud' | 'ice' | 'sand' | 'blocked';
+
+export interface TerrainTileMetadata {
+  terrainLevel?: number;
+  movementType?: TerrainMovementType;
+  moveCostMultiplier?: number;
+}
+
+export interface NpcInteractionVariant {
+  defaultSceneId: string;
+  conditions?: {
+    timePhase?: Array<'DAY' | 'DUSK' | 'NIGHT' | 'DAWN'>;
+    flags?: Record<string, boolean>;
+    trustMin?: number;
+  };
+}
+
+export interface NpcDefinition {
+  id: string;
+  name: string;
+  mapId: string;
+  x: number;
+  y: number;
+  spriteId: string;
+  interaction: {
+    storyId: string;
+    defaultSceneId: string;
+    variants?: NpcInteractionVariant[];
+  };
+  collision?: boolean;
+  facing?: 'up' | 'down' | 'left' | 'right';
+}
+
+export interface MapObject {
+  id: string;
+  objectType: 'building' | 'prop' | 'wall' | 'tree' | 'lightPost' | 'pickup' | 'door' | 'npcSpawn';
+  assetId: string;
+  x: number;
+  y: number;
+  wTiles: number;
+  hTiles: number;
+  collision: boolean;
+  interaction?: {
+    type: 'door' | 'pickup';
+    toMapId?: string;
+    toX?: number;
+    toY?: number;
+    itemId?: string;
+  };
+  renderOffsetPx?: { x: number; y: number };
+  zOrder?: number;
+  terrainLevel?: number;
+}
+
 export interface ShadowSpawnZoneRect {
   id: string;
   shape: 'rect';
@@ -61,11 +117,13 @@ export interface TileMap {
   height: number;
   layers: Record<LayerName, number[]>;
   tilePalette: Record<string, { name: string; color: string; spriteId?: string }>;
+  terrainMetaByTileId?: Record<string, TerrainTileMetadata>;
   tileDefs?: Record<string, { baseLight?: 'BRIGHT' | 'DIM' | 'DARK' }>;
   safeZones?: Array<{ id: string; x: number; y: number; radius: number }>;
   embeddedLightSources?: Array<Omit<LightSourceRuntime, 'falloff'> & { falloff?: 'hard' | 'gradient' }>;
   shadowSpawn?: ShadowSpawnConfig;
-  npcs?: Array<{ id: string; x: number; y: number; spriteId: string }>;
+  npcs?: NpcDefinition[];
+  objects?: MapObject[];
   interactables: Interactable[];
   triggers: MapTrigger[];
 }
@@ -81,6 +139,8 @@ export interface TransitionState {
 const maps: Record<string, TileMap> = {
   [brightHollowMap.id]: brightHollowMap as TileMap,
   [lightHallMap.id]: lightHallMap as TileMap,
+  [forestEdgeDemoMap.id]: forestEdgeDemoMap as TileMap,
+  [shrineDemoMap.id]: shrineDemoMap as TileMap,
 };
 
 export const MAP_TRANSITION_MS = 200;
@@ -115,7 +175,83 @@ export class MapSystem {
     if (!this.inBounds(mapId, x, y)) {
       return true;
     }
+    const map = this.getMap(mapId);
+    const hasObjectCollision = (map.objects ?? []).some((obj) => {
+      if (!obj.collision) return false;
+      return x >= obj.x && y >= obj.y && x < obj.x + obj.wTiles && y < obj.y + obj.hTiles;
+    });
+    if (hasObjectCollision) return true;
+
+    const terrain = this.getTerrainAt(mapId, x, y);
+    if (terrain.terrainLevel <= -1) {
+      return true;
+    }
     return this.getTileId(mapId, 'collision', x, y) === 1;
+  }
+
+  getTerrainAt(mapId: string, x: number, y: number): Required<TerrainTileMetadata> {
+    const tileId = this.getTileId(mapId, 'ground', x, y);
+    const map = this.getMap(mapId);
+    const meta = map.terrainMetaByTileId?.[String(tileId)] ?? {};
+    const terrainLevel = meta.terrainLevel ?? 0;
+    const movementType = meta.movementType ?? (terrainLevel <= -1 ? 'blocked' : terrainLevel < 0 ? 'shallowWater' : 'normal');
+    return {
+      terrainLevel,
+      movementType,
+      moveCostMultiplier: meta.moveCostMultiplier ?? 1,
+    };
+  }
+
+  findNearbyNpc(state: Readonly<GameState>): NpcDefinition | undefined {
+    const map = this.getCurrentMap(state);
+    const npcs = map.npcs ?? [];
+    const player = state.runtime.player;
+    const facing = player.facing;
+
+    const candidates = npcs
+      .map((npc) => {
+        const distance = Math.abs(npc.x - player.x) + Math.abs(npc.y - player.y);
+        const inFront =
+          (facing === 'up' && npc.x === player.x && npc.y === player.y - 1)
+          || (facing === 'down' && npc.x === player.x && npc.y === player.y + 1)
+          || (facing === 'left' && npc.x === player.x - 1 && npc.y === player.y)
+          || (facing === 'right' && npc.x === player.x + 1 && npc.y === player.y);
+        return { npc, distance, inFront };
+      })
+      .filter((entry) => entry.distance <= 1)
+      .sort((a, b) => Number(b.inFront) - Number(a.inFront) || a.distance - b.distance);
+
+    return candidates[0]?.npc;
+  }
+
+  resolveNpcSceneId(state: Readonly<GameState>, npc: NpcDefinition): { storyId: string; sceneId: string } {
+    const interaction = npc.interaction;
+    for (const variant of interaction.variants ?? []) {
+      const c = variant.conditions;
+      if (!c) return { storyId: interaction.storyId, sceneId: variant.defaultSceneId };
+      if (c.timePhase && !c.timePhase.includes(state.runtime.time.phase)) continue;
+      if (c.flags) {
+        const flagsOk = Object.entries(c.flags).every(([k, v]) => Boolean(state.story.flags[k]) === v);
+        if (!flagsOk) continue;
+      }
+      if (typeof c.trustMin === 'number') {
+        const trust = state.story.npc.trust[npc.id] ?? 0;
+        if (trust < c.trustMin) continue;
+      }
+      return { storyId: interaction.storyId, sceneId: variant.defaultSceneId };
+    }
+    return { storyId: interaction.storyId, sceneId: interaction.defaultSceneId };
+  }
+
+  getObjects(mapId: string): MapObject[] {
+    return this.getMap(mapId).objects ?? [];
+  }
+
+
+  findInteractableNear(state: Readonly<GameState>): Interactable | undefined {
+    const map = this.getCurrentMap(state);
+    const player = state.runtime.player;
+    return map.interactables.find((i) => Math.abs(i.x - player.x) + Math.abs(i.y - player.y) <= 1);
   }
 
   findInteractableAt(mapId: string, x: number, y: number): Interactable | undefined {

@@ -245,9 +245,9 @@ export const createInitialState = (): GameState => ({
       chunkSize: 16,
     },
     map: {
-      currentMapId: 'bright_hollow',
+      currentMapId: 'bright_hollow_town',
       mapsVisited: {
-        bright_hollow: { lastX: 14, lastY: 10 },
+        bright_hollow_town: { lastX: 14, lastY: 10 },
       },
     },
     mapTriggerFlags: {},

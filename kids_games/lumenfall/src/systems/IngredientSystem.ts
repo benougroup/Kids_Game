@@ -65,13 +65,8 @@ export class IngredientSystem {
         continue;
       }
 
-      // Check if tile is walkable (not collision)
-      const collisionLayer = map.layers?.collision;
-      if (!collisionLayer || !Array.isArray(collisionLayer)) continue;
-      const collisionRow = collisionLayer[y];
-      if (!collisionRow || !Array.isArray(collisionRow)) continue;
-      const collision = collisionRow[x];
-      if (collision === 1) {
+      // Check if tile is walkable (terrain + object collision)
+      if (this.mapSystem.isBlocked(state.runtime.map.currentMapId, x, y)) {
         continue;
       }
 

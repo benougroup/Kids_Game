@@ -72,7 +72,7 @@ describe('Hardening stability rules', () => {
 
   it('command queue prioritizes faint ahead of map transition', () => {
     const queue = new CommandQueue(new EventBus());
-    queue.enqueue({ kind: 'RequestMapTransition', toMapId: 'light_hall', toX: 1, toY: 1 });
+    queue.enqueue({ kind: 'RequestMapTransition', toMapId: 'light_hall_interior', toX: 1, toY: 1 });
     queue.enqueue({ kind: 'TriggerFaint' });
     const drained = queue.drain();
     expect(drained[0].kind).toBe('TriggerFaint');
@@ -83,7 +83,7 @@ describe('Hardening stability rules', () => {
     const tx = store.beginTx('dialogue_guard');
     tx.touchRuntime();
     tx.draftState.runtime.mode = 'MAP_TRANSITION';
-    tx.draftState.runtime.map.transition = { toMapId: 'light_hall', toX: 1, toY: 1, phase: 'fadeOut', t: 0 };
+    tx.draftState.runtime.map.transition = { toMapId: 'light_hall_interior', toX: 1, toY: 1, phase: 'fadeOut', t: 0 };
 
     const d = new DialogueSystem({ commandQueue: new CommandQueue(new EventBus()), modeMachine: new ModeMachine(), checkpointSystem: new CheckpointSystem(new EventBus()), bus: new EventBus() });
     d.startScene(tx, 'demo', 'demo_start');

@@ -171,12 +171,12 @@ export class SaveSystem {
       storyInventory: createEmptyInventory(),
       storyShadow: { byId: {} },
     };
-    next.runtime.map.currentMapId = 'bright_hollow';
+    next.runtime.map.currentMapId = 'bright_hollow_town';
     next.runtime.player.x = 14;
     next.runtime.player.y = 10;
     next.runtime.player.px = 14 * 32;
     next.runtime.player.py = 10 * 32;
-    next.runtime.map.mapsVisited = { bright_hollow: { lastX: 14, lastY: 10 } };
+    next.runtime.map.mapsVisited = { bright_hollow_town: { lastX: 14, lastY: 10 } };
 
     this.store.replaceState(next);
     this.markDirty('new_story');

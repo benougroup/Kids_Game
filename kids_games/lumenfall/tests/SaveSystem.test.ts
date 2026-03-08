@@ -56,7 +56,7 @@ describe('SaveSystem', () => {
       story: createInitialState().story,
       runtime: {
         time: createInitialState().runtime.time,
-        map: { currentMapId: 'light_hall', mapsVisited: { light_hall: { lastX: 2, lastY: 3 } } },
+        map: { currentMapId: 'light_hall_interior', mapsVisited: { light_hall_interior: { lastX: 2, lastY: 3 } } },
         player: { x: 2, y: 3, facing: 'right', hp: 3, sp: 2, status: {} },
         checkpoint: createInitialState().runtime.checkpoint,
       },
@@ -67,7 +67,7 @@ describe('SaveSystem', () => {
 
     const result = save.loadNow();
     expect(result.ok).toBe(true);
-    expect(store.get().runtime.map.currentMapId).toBe('light_hall');
+    expect(store.get().runtime.map.currentMapId).toBe('light_hall_interior');
     expect(store.get().runtime.player.x).toBe(2);
   });
 
@@ -82,7 +82,7 @@ describe('SaveSystem', () => {
       story: init.story,
       runtime: {
         time: init.runtime.time,
-        map: { currentMapId: 'light_hall', mapsVisited: { light_hall: { lastX: 4, lastY: 5 } } },
+        map: { currentMapId: 'light_hall_interior', mapsVisited: { light_hall_interior: { lastX: 4, lastY: 5 } } },
         player: { x: 4, y: 5, facing: 'up', hp: 4, sp: 1, status: { poison: { expiresAtMs: 99 } } },
         checkpoint: init.runtime.checkpoint,
       },

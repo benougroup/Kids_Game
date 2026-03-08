@@ -11,6 +11,7 @@ export type RequestMapTransitionCommand = {
 };
 export type DebugSkipTimeCommand = { kind: 'DebugSkipTime'; seconds: number };
 export type DebugToggleLightOverlayCommand = { kind: 'DebugToggleLightOverlay' };
+export type DebugToggleTerrainOverlayCommand = { kind: 'DebugToggleTerrainOverlay' };
 export type DebugDamageCommand = { kind: 'DebugDamage'; amount: number; source: string };
 export type DebugCheckpointCommand = { kind: 'DebugCheckpoint' };
 export type TriggerFaintCommand = { kind: 'TriggerFaint' };
@@ -35,6 +36,7 @@ export type Command =
   | RequestMapTransitionCommand
   | DebugSkipTimeCommand
   | DebugToggleLightOverlayCommand
+  | DebugToggleTerrainOverlayCommand
   | DebugDamageCommand
   | DebugCheckpointCommand
   | TriggerFaintCommand
@@ -69,7 +71,7 @@ const commandPriority = (command: Command): CommandPriority => {
   if (command.kind === 'RequestMapTransition') return 2;
   if (command.kind === 'StartScene' || command.kind === 'StartEncounter' || command.kind === 'DialogueChoose') return 3;
   if (command.kind === 'ToggleInventory' || command.kind === 'InventorySelectItem' || command.kind === 'InventoryUseSelected' || command.kind === 'CraftingSetSlot' || command.kind === 'CraftingMix' || command.kind === 'CraftingClose') return 4;
-  if (command.kind === 'UiMessage' || command.kind === 'TogglePerfHud') return 6;
+  if (command.kind === 'UiMessage' || command.kind === 'TogglePerfHud' || command.kind === 'DebugToggleTerrainOverlay') return 6;
   return 5;
 };
 

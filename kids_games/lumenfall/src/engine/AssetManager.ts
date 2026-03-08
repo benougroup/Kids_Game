@@ -1,3 +1,33 @@
+
+export type AssetSheetManifest = {
+  id: string;
+  image: string;
+  json: string;
+  sliceMode: 'grid' | 'manual';
+  tileSize?: number;
+};
+
+export type AssetManifest = {
+  terrainSheets: AssetSheetManifest[];
+  objectSheets: AssetSheetManifest[];
+  buildingSheets: AssetSheetManifest[];
+  sprites: Record<string, { sheetId: string; spriteId: string; renderScale?: number }>;
+};
+
+export const assetManifest: AssetManifest = {
+  terrainSheets: [{ id: 'atlas_terrain', image: 'assets/atlas.png', json: 'assets/atlas.json', sliceMode: 'grid', tileSize: 32 }],
+  objectSheets: [{ id: 'atlas_objects', image: 'assets/atlas.png', json: 'assets/atlas.json', sliceMode: 'manual' }],
+  buildingSheets: [{ id: 'atlas_buildings', image: 'assets/atlas.png', json: 'assets/atlas.json', sliceMode: 'manual' }],
+  sprites: {
+    building_light_hall: { sheetId: 'atlas_buildings', spriteId: 'tile_stone' },
+    building_house: { sheetId: 'atlas_buildings', spriteId: 'tile_floor' },
+    wall_fence: { sheetId: 'atlas_objects', spriteId: 'tile_stone' },
+    tree_large: { sheetId: 'atlas_objects', spriteId: 'tile_grass' },
+    light_post: { sheetId: 'atlas_objects', spriteId: 'tile_floor' },
+    sparkle_pickup: { sheetId: 'atlas_objects', spriteId: 'tile_floor' },
+  },
+};
+
 export type SpriteRect = { x: number; y: number; w: number; h: number };
 
 type AtlasJSON = {

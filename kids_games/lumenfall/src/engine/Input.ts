@@ -1,4 +1,4 @@
-import { TILE_SIZE } from '../app/Config';
+import { DIALOGUE_UI_CONFIG, TILE_SIZE } from '../app/Config';
 import type { Command } from '../app/Commands';
 import type { Mode } from '../app/ModeMachine';
 import type { GameState } from '../state/StateTypes';
@@ -139,6 +139,10 @@ export class Input {
       this.commands.push({ kind: 'DebugToggleLightOverlay' });
       return;
     }
+    if (key === 'g' && this.isDevMode) {
+      this.commands.push({ kind: 'DebugToggleTerrainOverlay' });
+      return;
+    }
     if (key === 'k' && this.isDevMode) {
       this.commands.push({ kind: 'DebugDamage', amount: 2, source: 'debug_key_k' });
       return;
@@ -171,13 +175,18 @@ export class Input {
     }
 
     if (mode === 'DIALOGUE') {
-      const boxLeft = 70;
-      const boxRight = rect.width - 70;
-      const baseY = rect.height - 250;
-      const buttonHeight = 52;
+      const boxHeight = Math.floor(rect.height * DIALOGUE_UI_CONFIG.dialogueBoxHeightRatio);
+      const boxY = rect.height - boxHeight;
+      const buttonHeight = DIALOGUE_UI_CONFIG.buttonHeightPx;
+      const padding = DIALOGUE_UI_CONFIG.paddingPx;
+      const isNarrow = rect.width < 900;
       for (let i = 0; i < 4; i += 1) {
-        const top = baseY + 82 + i * (buttonHeight + 10);
-        if (x > boxLeft + 20 && x < boxRight - 20 && y > top && y < top + buttonHeight) {
+        const top = isNarrow
+          ? boxY + boxHeight - ((4 - i) * (buttonHeight + 8)) - 8
+          : boxY + 20 + i * (buttonHeight + 10);
+        const left = isNarrow ? padding : rect.width * 0.58;
+        const width = isNarrow ? rect.width - padding * 2 : rect.width * 0.38;
+        if (x >= left && x <= left + width && y >= top && y <= top + buttonHeight) {
           this.commands.push({ kind: 'DialogueChoose', choiceIndex: i });
           return;
         }

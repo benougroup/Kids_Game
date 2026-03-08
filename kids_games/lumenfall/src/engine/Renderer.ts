@@ -1,4 +1,4 @@
-import { TILE_SIZE } from '../app/Config';
+import { DIALOGUE_UI_CONFIG, TILE_SIZE } from '../app/Config';
 import { Camera } from './Camera';
 import type { GameState } from '../state/StateTypes';
 import { MapSystem, getTransitionOverlayAlpha } from '../systems/MapSystem';
@@ -25,6 +25,7 @@ export class Renderer {
   private dpr = 1;
   private readonly showGrid = typeof window !== 'undefined' && window.location.hostname === 'localhost';
   private showLightOverlay = false;
+  private showTerrainDebug = false;
   // private showPerfHud = true; // Unused - removed debug HUD
   private frameDtMs = 0;
   private frameAvgMs = 0;
@@ -88,6 +89,7 @@ export class Renderer {
 
     this.drawMap(state, 'ground');
     this.drawMap(state, 'decor');
+    this.drawObjects(state);
     this.drawMap(state, 'overlay');
     if (this.showLightOverlay) this.drawLightOverlay(state);
     this.drawIngredients(state);
@@ -97,6 +99,7 @@ export class Renderer {
     if (this.showGrid) this.drawGrid();
 
     this.drawHud(state, fps);
+    if (this.showTerrainDebug) this.drawTerrainDebugOverlay(state);
     this.drawTransition(state);
     this.drawFaintOverlay(state);
     this.drawInteractButton();
@@ -106,6 +109,7 @@ export class Renderer {
   }
 
   setLightOverlayVisible(visible: boolean): void { this.showLightOverlay = visible; }
+  setTerrainDebugVisible(visible: boolean): void { this.showTerrainDebug = visible; }
   setPerfHudVisible(_visible: boolean): void { /* this.showPerfHud = visible; */ }
 
   private computeViewportRange(mapId: string): void {
@@ -149,6 +153,36 @@ export class Renderer {
             this.ctx.fillRect(px, py, tileSize, tileSize);
           }
         }
+      }
+    }
+  }
+
+
+  private drawObjects(state: Readonly<GameState>): void {
+    const objects = this.mapSystem.getObjects(state.runtime.map.currentMapId);
+    const zoom = this.camera.getZoom();
+    const tileSize = TILE_SIZE * zoom;
+    for (const obj of objects) {
+      if (obj.objectType === 'pickup' && state.story.flags[`pickup.${obj.id}`]) {
+        continue;
+      }
+      const screen = this.camera.worldToScreen(obj.x * TILE_SIZE, obj.y * TILE_SIZE);
+      const w = obj.wTiles * tileSize;
+      const h = obj.hTiles * tileSize;
+      const colors: Record<string, string> = {
+        building: '#6e5b4b',
+        wall: '#5e6470',
+        tree: '#2f6d3f',
+        lightPost: '#e6c76f',
+        prop: '#7f6a54',
+        pickup: '#ffd700',
+        door: '#4f7aa3',
+        npcSpawn: '#7a4fa3',
+      };
+      this.ctx.fillStyle = colors[obj.objectType] ?? '#777';
+      this.ctx.fillRect(Math.round(screen.x), Math.round(screen.y), w, h);
+      if (obj.objectType === 'pickup') {
+        this.modernRenderer.drawGlowingItem(Math.round(screen.x) + w / 2, Math.round(screen.y) + h / 2, tileSize * 0.12, '#ffd700');
       }
     }
   }
@@ -364,7 +398,12 @@ export class Renderer {
     this.ctx.font = '14px sans-serif';
     this.ctx.fillText(`Day ${state.runtime.time.dayCount}`, this.cssWidth - padding - 160, 48);
     this.ctx.textAlign = 'left';
-    
+
+    const terrain = this.mapSystem.getTerrainAt(state.runtime.map.currentMapId, state.runtime.player.x, state.runtime.player.y);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = '13px sans-serif';
+    this.ctx.fillText(`Tile: ${terrain.movementType} (${terrain.terrainLevel})`, 220, 24);
+
     // Draw minimap
     this.drawMinimap(state);
   }
@@ -431,6 +470,17 @@ export class Renderer {
       );
       this.ctx.fill();
     }
+  }
+
+
+  private drawTerrainDebugOverlay(state: Readonly<GameState>): void {
+    const p = state.runtime.player;
+    const terrain = this.mapSystem.getTerrainAt(state.runtime.map.currentMapId, p.x, p.y);
+    this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+    this.ctx.fillRect(14, this.cssHeight - 64, 300, 48);
+    this.ctx.fillStyle = '#a8f0ff';
+    this.ctx.font = '14px monospace';
+    this.ctx.fillText(`Terrain ${terrain.movementType} level ${terrain.terrainLevel}`, 24, this.cssHeight - 34);
   }
 
   private drawTransition(state: Readonly<GameState>): void {
@@ -521,25 +571,44 @@ export class Renderer {
     const runtime = state.runtime.dialogue;
     const sceneDb = storyDatabase.getSceneDatabase(runtime.storyId);
     const node = sceneDb?.getNode(runtime.sceneId);
-    this.ctx.fillStyle = 'rgba(5,10,18,0.86)';
-    this.ctx.fillRect(70, this.cssHeight - 340, this.cssWidth - 140, 300);
-    this.ctx.strokeStyle = '#cbe8ff';
-    this.ctx.strokeRect(70, this.cssHeight - 340, this.cssWidth - 140, 300);
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.font = '20px sans-serif';
+    const boxHeight = Math.floor(this.cssHeight * DIALOGUE_UI_CONFIG.dialogueBoxHeightRatio);
+    const boxY = this.cssHeight - boxHeight;
+    const padding = DIALOGUE_UI_CONFIG.paddingPx;
+
+    this.ctx.fillStyle = DIALOGUE_UI_CONFIG.theme.panelBg;
+    this.ctx.fillRect(0, boxY, this.cssWidth, boxHeight);
+    this.ctx.strokeStyle = DIALOGUE_UI_CONFIG.theme.panelStroke;
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeRect(0, boxY, this.cssWidth, boxHeight);
+
+    const speaker = node?.speaker ?? 'Guide';
+    this.ctx.fillStyle = DIALOGUE_UI_CONFIG.theme.text;
+    this.ctx.font = `bold ${DIALOGUE_UI_CONFIG.speakerFontPx}px sans-serif`;
+    this.ctx.fillText(speaker, padding, boxY + 30);
+
+    this.ctx.font = `${DIALOGUE_UI_CONFIG.bodyFontPx}px sans-serif`;
     const lines = !node ? ['Dialogue unavailable.'] : (Array.isArray(node.text) ? node.text : [node.text]);
-    lines.slice(0, 2).forEach((line, idx) => this.ctx.fillText(line, 100, this.cssHeight - 300 + idx * 26));
+    lines.slice(0, DIALOGUE_UI_CONFIG.maxLinesBeforeOverflow).forEach((line, idx) => this.ctx.fillText(line, padding, boxY + 64 + idx * DIALOGUE_UI_CONFIG.lineHeightPx));
+
     const choices = node?.choices ?? [{ label: 'Return', next: 'returnToMap' }];
-    choices.slice(0, 4).forEach((choice, idx) => this.drawBigButton(100, this.cssHeight - 220 + idx * 62, this.cssWidth - 200, 52, choice.label));
+    const isNarrow = this.cssWidth < 900;
+    choices.slice(0, 4).forEach((choice, idx) => {
+      const y = isNarrow
+        ? boxY + boxHeight - ((choices.length - idx) * (DIALOGUE_UI_CONFIG.buttonHeightPx + 8)) - 8
+        : boxY + 20 + idx * (DIALOGUE_UI_CONFIG.buttonHeightPx + 10);
+      const x = isNarrow ? padding : this.cssWidth * 0.58;
+      const w = isNarrow ? this.cssWidth - padding * 2 : this.cssWidth * 0.38;
+      this.drawBigButton(x, y, w, DIALOGUE_UI_CONFIG.buttonHeightPx, choice.label);
+    });
   }
 
   private drawBigButton(x: number, y: number, w: number, h: number, text: string): void {
-    this.ctx.fillStyle = 'rgba(82,194,255,0.25)';
+    this.ctx.fillStyle = DIALOGUE_UI_CONFIG.theme.choiceBg;
     this.ctx.fillRect(x, y, w, h);
-    this.ctx.strokeStyle = '#8fdcff';
+    this.ctx.strokeStyle = DIALOGUE_UI_CONFIG.theme.choiceStroke;
     this.ctx.strokeRect(x, y, w, h);
-    this.ctx.fillStyle = '#ffffff';
-    this.ctx.font = '20px sans-serif';
+    this.ctx.fillStyle = DIALOGUE_UI_CONFIG.theme.text;
+    this.ctx.font = `${DIALOGUE_UI_CONFIG.choiceFontPx}px sans-serif`;
     this.ctx.fillText(text, x + 20, y + h / 2 + 7);
   }
 

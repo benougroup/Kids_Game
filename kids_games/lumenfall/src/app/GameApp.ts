@@ -60,6 +60,7 @@ export class GameApp {
   private readonly input: Input;
   private readonly loop: GameLoop;
   private showLightOverlay = false;
+  private showTerrainDebug = false;
   private showPerfHud = true;
   private pendingSaveControl: null | { kind: 'load' } | { kind: 'new_game' } | { kind: 'new_story'; storyId: string } | { kind: 'manual_save' } = null;
 
@@ -156,6 +157,25 @@ export class GameApp {
           // Check for ingredient pickup after movement
           if (moveResult.movedTile) {
             this.ingredientSystem.checkPickup(tx, tx.draftState.runtime.player.x, tx.draftState.runtime.player.y);
+            const mapId = tx.draftState.runtime.map.currentMapId;
+            const mapObjects = this.mapSystem.getObjects(mapId);
+            const pickupObject = mapObjects.find((obj) => obj.objectType === 'pickup'
+              && tx.draftState.runtime.player.x >= obj.x
+              && tx.draftState.runtime.player.y >= obj.y
+              && tx.draftState.runtime.player.x < obj.x + obj.wTiles
+              && tx.draftState.runtime.player.y < obj.y + obj.hTiles
+              && obj.interaction?.itemId
+              && !tx.draftState.story.flags[`pickup.${obj.id}`]);
+            if (pickupObject?.interaction?.itemId) {
+              inventorySystem.addItem(tx, pickupObject.interaction.itemId, 1, 'global');
+              tx.touchStoryFlags();
+              tx.draftState.story.flags[`pickup.${pickupObject.id}`] = true;
+              const required = ['pickup.pickup_sunleaf_town', 'pickup.pickup_moth_dust_forest', 'pickup.pickup_crystal_water_hall'];
+              if (required.every((f) => tx.draftState.story.flags[f])) {
+                tx.draftState.story.flags['demo_collected_all_ingredients'] = true;
+              }
+              this.bus.emit({ type: 'INGREDIENT_COLLECTED', itemId: pickupObject.interaction.itemId, x: tx.draftState.runtime.player.x, y: tx.draftState.runtime.player.y });
+            }
           }
           if (shouldProcessTriggers(tx.draftState)) {
             this.triggerSystem.evaluate(tx, this.commandQueue, {
@@ -165,9 +185,15 @@ export class GameApp {
             });
           }
           if (intent.interactPressed) {
-            const i = this.mapSystem.findInteractableAt(tx.draftState.runtime.map.currentMapId, tx.draftState.runtime.player.x, tx.draftState.runtime.player.y);
-            if (i?.type === 'mixingTable') {
-              this.craftingSystem.open(tx, i.id);
+            const nearbyNpc = this.mapSystem.findNearbyNpc(tx.draftState);
+            if (nearbyNpc) {
+              const scene = this.mapSystem.resolveNpcSceneId(tx.draftState, nearbyNpc);
+              this.commandQueue.enqueue({ kind: 'StartScene', storyId: scene.storyId, sceneId: scene.sceneId });
+            } else {
+              const i = this.mapSystem.findInteractableNear(tx.draftState);
+              if (i?.type === 'mixingTable') {
+                this.craftingSystem.open(tx, i.id);
+              }
             }
           }
           this.applyCommands(this.commandQueue.drain(), tx.draftState.runtime.mode, tx);
@@ -188,6 +214,7 @@ export class GameApp {
 
   private readonly render = (): void => {
     this.renderer.setLightOverlayVisible(this.showLightOverlay);
+    this.renderer.setTerrainDebugVisible(this.showTerrainDebug);
     this.renderer.setPerfHudVisible(this.showPerfHud);
     this.renderer.render(this.store.get(), this.loop.getFps());
   };
@@ -313,6 +340,8 @@ export class GameApp {
       if (command.kind === 'NewGame') { this.pendingSaveControl = { kind: 'new_game' }; continue; }
       if (command.kind === 'NewStory') { this.pendingSaveControl = { kind: 'new_story', storyId: command.storyId }; continue; }
       if (command.kind === 'TogglePerfHud') { this.showPerfHud = !this.showPerfHud; continue; }
+      if (command.kind === 'DebugToggleLightOverlay') { this.showLightOverlay = !this.showLightOverlay; continue; }
+      if (command.kind === 'DebugToggleTerrainOverlay') { this.showTerrainDebug = !this.showTerrainDebug; continue; }
       if (command.kind === 'RequestMode') {
         const requestedMode = command.nextMode === 'MENU' && mode === 'MENU' ? 'EXPLORE' : command.nextMode;
         const nextMode = this.modeMachine.requestMode(mode, requestedMode);

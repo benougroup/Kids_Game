@@ -10,9 +10,9 @@ import { StateStore } from '../src/state/StateStore';
 describe('MapSystem collisions', () => {
   it('isBlocked returns collision state', () => {
     const mapSystem = new MapSystem();
-    expect(mapSystem.isBlocked('bright_hollow', 0, 0)).toBe(true);
-    expect(mapSystem.isBlocked('bright_hollow', 15, 9)).toBe(false);
-    expect(mapSystem.isBlocked('bright_hollow', -1, 5)).toBe(true);
+    expect(mapSystem.isBlocked('bright_hollow_town', 0, 0)).toBe(true);
+    expect(mapSystem.isBlocked('bright_hollow_town', 15, 9)).toBe(false);
+    expect(mapSystem.isBlocked('bright_hollow_town', -1, 5)).toBe(true);
   });
 });
 
@@ -26,13 +26,13 @@ describe('TriggerSystem behavior', () => {
 
     const tx = store.beginTx('trigger_once');
     tx.touchRuntimePlayer();
-    tx.draftState.runtime.player.x = 14;
-    tx.draftState.runtime.player.y = 8;
+    tx.draftState.runtime.player.x = 13;
+    tx.draftState.runtime.player.y = 9;
 
     triggerSystem.evaluate(tx, queue, {
       movedTile: true,
-      fromX: 12,
-      fromY: 8,
+      fromX: 11,
+      fromY: 9,
       interactPressed: false,
       nowMs: 100,
     });
@@ -40,8 +40,8 @@ describe('TriggerSystem behavior', () => {
 
     triggerSystem.evaluate(tx, queue, {
       movedTile: true,
-      fromX: 12,
-      fromY: 8,
+      fromX: 11,
+      fromY: 9,
       interactPressed: false,
       nowMs: 200,
     });
@@ -60,13 +60,13 @@ describe('TriggerSystem behavior', () => {
 
     const tx = store.beginTx('trigger_enter');
     tx.touchRuntimePlayer();
-    tx.draftState.runtime.player.x = 14;
+    tx.draftState.runtime.player.x = 13;
     tx.draftState.runtime.player.y = 9;
 
     triggerSystem.evaluate(tx, queue, {
       movedTile: true,
-      fromX: 14,
-      fromY: 8,
+      fromX: 13,
+      fromY: 9,
       interactPressed: false,
       nowMs: 100,
     });
@@ -75,7 +75,7 @@ describe('TriggerSystem behavior', () => {
 
     triggerSystem.evaluate(tx, queue, {
       movedTile: true,
-      fromX: 12,
+      fromX: 11,
       fromY: 9,
       interactPressed: false,
       nowMs: 200,
@@ -92,7 +92,7 @@ describe('Map transition state machine', () => {
   it('reaches explore and updates map/player', () => {
     const state = createInitialState();
     let transition = {
-      toMapId: 'light_hall',
+      toMapId: 'light_hall_interior',
       toX: 6,
       toY: 9,
       phase: 'fadeOut' as const,
@@ -117,7 +117,7 @@ describe('Map transition state machine', () => {
     }
 
     expect(state.runtime.mode).toBe('EXPLORE');
-    expect(state.runtime.map.currentMapId).toBe('light_hall');
+    expect(state.runtime.map.currentMapId).toBe('light_hall_interior');
     expect(state.runtime.player.x).toBe(6);
     expect(state.runtime.player.y).toBe(9);
   });
