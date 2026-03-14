@@ -1,9 +1,13 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
-import { TownMapV3 } from '../maps/TownMapV3';
-import { ShadowMonster } from '../entities/ShadowMonster';
 import { DialogueBox } from '../ui/DialogueBox';
 import { StorySystem } from '../systems/StorySystem';
+import { MathGameSystem } from '../systems/MathGameSystem';
+import { MapBuilder } from '../maps/MapBuilder';
+import { createTestTownData, createTestForestData, createTestDungeonData } from '../maps/TestMaps';
+import { Entity } from '../entities/Entity';
+import { DEFAULT_FLAGS } from '../systems/TileSystem';
+import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
 
 /**
  * Main Game Scene - Lumenfall RPG
@@ -13,13 +17,16 @@ import { StorySystem } from '../systems/StorySystem';
  * - Map boundaries with road exits (N/E/S/W)
  * - Click-to-move + keyboard movement
  * - NPC dialogue with story system
+ * - Math mini-games triggered by NPCs
  * - Day/night cycle (5 minutes)
- * - Shadow monsters at night
- * - HP system
+ * - Shadow monsters at night (height-based passability)
+ * - HP/Magic system
+ * - Character states: idle, walk, dead, fainted, frozen
  */
 export class GameScene extends Phaser.Scene {
   private player!: Player;
-  private currentMap!: TownMapV3;
+  private currentMapBuilder: MapBuilder | null = null;
+  private currentMapId: string = 'test_town';
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
   
@@ -28,11 +35,12 @@ export class GameScene extends Phaser.Scene {
   private dayNightOverlay!: Phaser.GameObjects.Rectangle;
   private timeSpeed: number = 0.000033; // ~5 minute full cycle
   
-  // Shadow monsters
-  private shadowMonsters: ShadowMonster[] = [];
+  // Shadow monsters (spawned at night from Entity system)
+  private nightMonsters: Entity[] = [];
   
   // UI
   private dialogueBox!: DialogueBox;
+  private mathGame!: MathGameSystem;
   
   // Story system
   private storySystem: StorySystem = new StorySystem();
@@ -43,7 +51,8 @@ export class GameScene extends Phaser.Scene {
   
   // Transition cooldown
   private lastTransitionTime: number = 0;
-  
+  private isTransitioning: boolean = false;
+
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -51,7 +60,6 @@ export class GameScene extends Phaser.Scene {
   preload(): void {
     // Terrain atlases
     this.load.atlas('terrain_grassland', 'assets/terrain_grassland.png', 'assets/terrain_grassland.json');
-    this.load.atlas('terrain_dungeon', 'assets/terrain_dungeon.png', 'assets/terrain_dungeon.json');
     this.load.atlas('terrain_walls_natural', 'assets/terrain_walls_natural.png', 'assets/terrain_walls_natural.json');
     this.load.atlas('terrain_walls_manmade', 'assets/terrain_walls_manmade.png', 'assets/terrain_walls_manmade.json');
     
@@ -63,29 +71,16 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('objects_props_v002', 'assets/objects_props_v002.png', 'assets/objects_props_v002.json');
     this.load.atlas('objects_props_v003', 'assets/objects_props_v003.png', 'assets/objects_props_v003.json');
     
-    // Character atlases
+    // Character atlases (new expanded versions with states)
     this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
-    this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json');
+    this.load.atlas('characters_states', 'assets/characters_states.png', 'assets/characters_states.json');
+    this.load.atlas('monsters_states', 'assets/monsters_states.png', 'assets/monsters_states.json');
   }
 
   create(): void {
-    // Create town map
-    this.currentMap = new TownMapV3(this);
-    this.currentMap.create();
+    // Load initial map
+    this.loadMap('test_town', 15, 12);
 
-    // Create player at spawn point (center of village)
-    const spawnX = Math.floor(this.currentMap.getMapWidth() / 2);
-    const spawnY = Math.floor(this.currentMap.getMapHeight() / 2);
-    this.player = new Player(this, spawnX, spawnY);
-    
-    // Set up camera
-    this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
-    this.cameras.main.setZoom(2.0);
-    this.cameras.main.setBounds(0, 0, this.currentMap.getMapWidth(), this.currentMap.getMapHeight());
-    
-    // Set physics world bounds
-    this.physics.world.setBounds(0, 0, this.currentMap.getMapWidth(), this.currentMap.getMapHeight());
-    
     // Set up keyboard input
     this.cursors = this.input.keyboard!.createCursorKeys();
     this.wasd = {
@@ -95,13 +90,8 @@ export class GameScene extends Phaser.Scene {
       D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
     };
 
-    // Day/night overlay (covers entire map)
-    this.dayNightOverlay = this.add.rectangle(
-      0, 0,
-      this.currentMap.getMapWidth() + 200,
-      this.currentMap.getMapHeight() + 200,
-      0x000033, 0
-    );
+    // Day/night overlay
+    this.dayNightOverlay = this.add.rectangle(0, 0, 4000, 4000, 0x000033, 0);
     this.dayNightOverlay.setOrigin(0, 0);
     this.dayNightOverlay.setScrollFactor(1);
     this.dayNightOverlay.setDepth(5000);
@@ -113,6 +103,9 @@ export class GameScene extends Phaser.Scene {
     // Dialogue box
     this.dialogueBox = new DialogueBox(this);
 
+    // Math game system
+    this.mathGame = new MathGameSystem(this);
+
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
     
@@ -123,9 +116,66 @@ export class GameScene extends Phaser.Scene {
 
     // Emit initial state
     this.events.emit('timeUpdate', this.timeOfDay);
+    this.events.emit('hpUpdate', { hp: 10, maxHp: 10 });
+  }
+
+  private loadMap(mapId: string, spawnTileX: number, spawnTileY: number): void {
+    // Destroy previous map
+    if (this.currentMapBuilder) {
+      this.currentMapBuilder.destroy();
+      this.currentMapBuilder = null;
+    }
+    
+    // Destroy night monsters
+    for (const m of this.nightMonsters) m.destroy();
+    this.nightMonsters = [];
+    
+    this.currentMapId = mapId;
+    
+    // Get map data
+    let mapData;
+    switch (mapId) {
+      case 'test_town': mapData = createTestTownData(); break;
+      case 'test_forest': mapData = createTestForestData(); break;
+      case 'test_dungeon': mapData = createTestDungeonData(); break;
+      default: mapData = createTestTownData(); break;
+    }
+    
+    // Build map
+    this.currentMapBuilder = new MapBuilder(this, mapData.cols, mapData.rows, mapData.tileSize);
+    this.currentMapBuilder.build(mapData);
+    
+    const mapW = mapData.cols * mapData.tileSize;
+    const mapH = mapData.rows * mapData.tileSize;
+    
+    // Create or move player
+    const spawnX = spawnTileX * mapData.tileSize + mapData.tileSize / 2;
+    const spawnY = spawnTileY * mapData.tileSize + mapData.tileSize / 2;
+    
+    if (!this.player) {
+      this.player = new Player(this, spawnX, spawnY);
+    } else {
+      this.player.setPosition(spawnX, spawnY);
+    }
+    
+    // Camera setup
+    this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
+    this.cameras.main.setZoom(2.0);
+    this.cameras.main.setBounds(0, 0, mapW, mapH);
+    this.physics.world.setBounds(0, 0, mapW, mapH);
+    
+    // Ambient light for this map
+    const ambientLight = mapData.ambientLight ?? 0.8;
+    this.events.emit('ambientLightUpdate', ambientLight);
   }
 
   update(_time: number, delta: number): void {
+    if (!this.currentMapBuilder || this.isTransitioning) return;
+    
+    // Update math game timer
+    this.mathGame.update(delta);
+    if (this.mathGame.isShowing()) return; // Pause game during math challenge
+    
     // Handle movement
     const hasKeyboardInput = this.cursors.left.isDown || this.cursors.right.isDown ||
                              this.cursors.up.isDown || this.cursors.down.isDown ||
@@ -133,19 +183,16 @@ export class GameScene extends Phaser.Scene {
                              this.wasd.S.isDown || this.wasd.D.isDown;
     
     if (hasKeyboardInput) {
-      // Keyboard overrides click-to-move
       this.clickTarget = null;
       this.clearClickMarker();
       this.player.update(
         this.cursors,
         this.wasd,
-        (x, y) => !this.currentMap.isWalkable(x, y)
+        (x, y) => !this.currentMapBuilder!.isWalkable(x, y, DEFAULT_FLAGS)
       );
     } else if (this.clickTarget) {
-      // Follow click target
       this.moveTowardsClick(delta);
     } else {
-      // Stop player
       this.player.sprite.setVelocity(0, 0);
       this.player.playIdleAnimation();
     }
@@ -153,12 +200,18 @@ export class GameScene extends Phaser.Scene {
     // Check map exits
     const playerPos = this.player.getPosition();
     const now = Date.now();
-    if (now - this.lastTransitionTime > 2000) { // 2 second cooldown
-      const exit = this.currentMap.checkExit(playerPos.x, playerPos.y);
+    if (now - this.lastTransitionTime > 2000) {
+      const exit = this.currentMapBuilder.checkExit(playerPos.x, playerPos.y);
       if (exit) {
         this.lastTransitionTime = now;
         this.handleMapExit(exit);
       }
+    }
+
+    // Check tile effects (water damage, lava damage, slow)
+    const effect = this.currentMapBuilder.getTileEffect(playerPos.x, playerPos.y);
+    if (effect.damage > 0 && now % 1000 < 50) {
+      this.events.emit('playerDamaged', effect.damage);
     }
 
     // Update day/night cycle
@@ -168,38 +221,48 @@ export class GameScene extends Phaser.Scene {
 
     // Shadow monsters at night
     const isNight = this.timeOfDay > 0.65 || this.timeOfDay < 0.15;
-    if (isNight && this.shadowMonsters.length === 0) {
-      this.spawnShadowMonsters();
-    } else if (!isNight && this.shadowMonsters.length > 0) {
-      this.despawnShadowMonsters();
+    if (isNight && this.nightMonsters.length === 0 && this.currentMapId !== 'test_dungeon') {
+      this.spawnNightMonsters();
+    } else if (!isNight && this.nightMonsters.length > 0) {
+      this.despawnNightMonsters();
     }
 
-    // Update shadow monsters
+    // Update all entities (map NPCs + night monsters)
     const lightSources = this.getLightSources();
-    for (const monster of this.shadowMonsters) {
-      monster.update(playerPos, lightSources);
+    this.currentMapBuilder.update(delta, playerPos.x, playerPos.y, lightSources);
+    
+    for (const monster of this.nightMonsters) {
+      monster.update(delta, playerPos.x, playerPos.y, lightSources);
       
-      // Check collision with player
+      // Shadow monster light shrink
+      let inLight = false;
+      for (const light of lightSources) {
+        const dist = Phaser.Math.Distance.Between(monster.getPosition().x, monster.getPosition().y, light.x, light.y);
+        if (dist < light.radius) {
+          monster.shrinkFromLight(1 - dist / light.radius);
+          inLight = true;
+          break;
+        }
+      }
+      if (!inLight) monster.restoreSize();
+      
+      // Damage player on contact
       const monsterPos = monster.getPosition();
       const dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, monsterPos.x, monsterPos.y);
-      if (dist < 24) {
-        const lastDmg = monster.getLastDamageTime();
-        if (now - lastDmg > 1000) {
-          monster.setLastDamageTime(now);
-          this.events.emit('playerDamaged', 1);
-        }
+      if (dist < 24 && monster.canDealDamage(now)) {
+        this.events.emit('playerDamaged', monster.getDamage());
       }
     }
 
-    // Update NPC movement
-    this.currentMap.updateNPCs(delta);
+    // Update player depth
+    this.player.sprite.setDepth(playerPos.y);
 
     // Emit time to UI
     this.events.emit('timeUpdate', this.timeOfDay);
   }
 
   private moveTowardsClick(delta: number): void {
-    if (!this.clickTarget) return;
+    if (!this.clickTarget || !this.currentMapBuilder) return;
     
     const playerPos = this.player.getPosition();
     const dx = this.clickTarget.x - playerPos.x;
@@ -207,7 +270,6 @@ export class GameScene extends Phaser.Scene {
     const dist = Math.sqrt(dx * dx + dy * dy);
     
     if (dist < 8) {
-      // Reached target
       this.clickTarget = null;
       this.clearClickMarker();
       this.player.sprite.setVelocity(0, 0);
@@ -215,19 +277,19 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     
-    const speed = 120;
+    // Apply speed factor from tile (slow in water/sand)
+    const effect = this.currentMapBuilder.getTileEffect(playerPos.x, playerPos.y);
+    const speed = 120 * effect.speedFactor;
     const vx = (dx / dist) * speed;
     const vy = (dy / dist) * speed;
     
-    // Check if next position is walkable
     const nextX = playerPos.x + vx * (delta / 1000);
     const nextY = playerPos.y + vy * (delta / 1000);
     
-    if (this.currentMap.isWalkable(nextX, nextY)) {
+    if (this.currentMapBuilder.isWalkable(nextX, nextY, DEFAULT_FLAGS)) {
       this.player.sprite.setVelocity(vx, vy);
       this.player.playWalkAnimation(vx, vy);
     } else {
-      // Blocked - cancel path
       this.clickTarget = null;
       this.clearClickMarker();
       this.player.sprite.setVelocity(0, 0);
@@ -236,12 +298,13 @@ export class GameScene extends Phaser.Scene {
 
   private handleClick(pointer: Phaser.Input.Pointer): void {
     if (this.dialogueBox.getIsVisible()) return;
+    if (this.mathGame.isShowing()) return;
+    if (!this.currentMapBuilder) return;
     
     const worldX = pointer.worldX;
     const worldY = pointer.worldY;
     
-    // Only move if target is walkable
-    if (this.currentMap.isWalkable(worldX, worldY)) {
+    if (this.currentMapBuilder.isWalkable(worldX, worldY, DEFAULT_FLAGS)) {
       this.clickTarget = { x: worldX, y: worldY };
       this.drawClickMarker(worldX, worldY);
     }
@@ -257,9 +320,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private clearClickMarker(): void {
-    if (this.clickMarker) {
-      this.clickMarker.clear();
-    }
+    if (this.clickMarker) this.clickMarker.clear();
   }
 
   private updateDayNightOverlay(): void {
@@ -283,56 +344,95 @@ export class GameScene extends Phaser.Scene {
       this.dialogueBox.hide();
       return;
     }
+    if (this.mathGame.isShowing()) return;
+    if (!this.currentMapBuilder) return;
 
     const playerPos = this.player.getPosition();
-    const nearbyNPC = this.currentMap.getNearbyNPC(playerPos.x, playerPos.y, 80);
+    const nearbyEntity = this.currentMapBuilder.getNearbyEntity(playerPos.x, playerPos.y, 80);
     
-    if (nearbyNPC) {
-      const dialogueKey = nearbyNPC.getData('dialogueKey');
-      const dialogue = this.storySystem.getDialogue(dialogueKey, this.timeOfDay);
-      this.dialogueBox.show(dialogue.name, dialogue.text, dialogue.portrait);
+    if (nearbyEntity) {
+      const def = nearbyEntity.getDefinition();
+      
+      // Check if this NPC triggers a math challenge
+      if (def.mathDifficulty && def.mathDifficulty > 0) {
+        const dialogue = this.storySystem.getDialogue(def.dialogueKey ?? 'default', this.timeOfDay);
+        this.dialogueBox.show(def.name, dialogue.text + '\n\n"Let me test your knowledge!"', dialogue.portrait);
+        
+        // Start math challenge after dialogue
+        this.time.delayedCall(2000, () => {
+          this.dialogueBox.hide();
+          this.mathGame.startChallenge(def.name, def.mathDifficulty!, (result) => {
+            this.handleMathResult(result, def.name);
+          });
+        });
+      } else {
+        // Regular dialogue
+        const dialogue = this.storySystem.getDialogue(def.dialogueKey ?? 'default', this.timeOfDay);
+        this.dialogueBox.show(def.name, dialogue.text, dialogue.portrait);
+      }
     } else {
       // Toggle lantern
       this.player.toggleLantern();
     }
   }
 
-  private handleMapExit(exit: any): void {
-    const mapName = exit.targetMap.replace('_', ' ');
-    
-    // Flash screen
-    this.cameras.main.flash(500, 255, 255, 255);
-    
-    // Show message
-    this.events.emit('showMessage', `Entering ${mapName}...`);
-    
-    // Move player to opposite side (same map for now - will add more maps later)
-    this.time.delayedCall(300, () => {
-      this.player.setPosition(exit.targetX, exit.targetY);
-    });
-    
-    console.log(`Map exit: ${exit.direction} → ${exit.targetMap}`);
+  private handleMathResult(result: any, npcName: string): void {
+    if (result.correct) {
+      // Reward
+      this.events.emit('showMessage', `${npcName}: "${result.reward?.message ?? 'Well done!'}" +${result.reward?.xp ?? 10} XP`);
+      if (result.reward?.hp && result.reward.hp > 0) {
+        this.events.emit('playerHealed', result.reward.hp);
+      }
+    } else {
+      // Penalty
+      this.events.emit('playerDamaged', Math.abs(result.reward?.hp ?? 1));
+      this.events.emit('showMessage', `${npcName}: "That's wrong! ${result.reward?.message ?? 'Try again!'}"`);
+    }
   }
 
-  private spawnShadowMonsters(): void {
+  private handleMapExit(exit: any): void {
+    this.isTransitioning = true;
+    this.cameras.main.flash(500, 255, 255, 255);
+    this.events.emit('showMessage', `Entering ${exit.targetMap.replace(/_/g, ' ')}...`);
+    
+    this.time.delayedCall(500, () => {
+      this.loadMap(exit.targetMap, exit.targetTileX, exit.targetTileY);
+      this.isTransitioning = false;
+    });
+  }
+
+  private spawnNightMonsters(): void {
+    if (!this.currentMapBuilder) return;
+    
+    const mapW = this.currentMapBuilder.getWidth();
+    const mapH = this.currentMapBuilder.getHeight();
+    const tileSize = this.currentMapBuilder.getTileSize();
+    
+    // Spawn shadow wisps in corners
     const spawnPoints = [
-      { x: 150, y: 150 },
-      { x: this.currentMap.getMapWidth() - 150, y: 150 },
-      { x: 150, y: this.currentMap.getMapHeight() - 150 },
-      { x: this.currentMap.getMapWidth() - 150, y: this.currentMap.getMapHeight() - 150 },
+      { tx: 3, ty: 3 },
+      { tx: Math.floor(mapW / tileSize) - 4, ty: 3 },
+      { tx: 3, ty: Math.floor(mapH / tileSize) - 4 },
+      { tx: Math.floor(mapW / tileSize) - 4, ty: Math.floor(mapH / tileSize) - 4 },
     ];
 
-    for (const point of spawnPoints) {
-      const monster = new ShadowMonster(this, point.x, point.y);
-      this.shadowMonsters.push(monster);
+    for (const pt of spawnPoints) {
+      const def = MONSTER_DEFINITIONS['shadow_small'];
+      if (def) {
+        const entity = new Entity(this, pt.tx, pt.ty, def, tileSize);
+        entity.setCollisionCallback((x, y, flags) => 
+          !this.currentMapBuilder!.isWalkable(x, y, flags)
+        );
+        this.nightMonsters.push(entity);
+      }
     }
   }
 
-  private despawnShadowMonsters(): void {
-    for (const monster of this.shadowMonsters) {
+  private despawnNightMonsters(): void {
+    for (const monster of this.nightMonsters) {
       monster.destroy();
     }
-    this.shadowMonsters = [];
+    this.nightMonsters = [];
   }
 
   private getLightSources(): { x: number; y: number; radius: number }[] {
@@ -350,11 +450,11 @@ export class GameScene extends Phaser.Scene {
   public getPlayer(): Player {
     return this.player;
   }
-
+  
   public getTimeOfDay(): number {
     return this.timeOfDay;
   }
-
+  
   public getStorySystem(): StorySystem {
     return this.storySystem;
   }

@@ -1,0 +1,1034 @@
+{
+  "textures": [
+    {
+      "image": "characters_states.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2752,
+        "h": 1536
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "hero_idle",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "hero_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "hero_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "hero_dead",
+          "frame": {
+            "x": 750,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "hero_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "hero_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "guard_idle",
+          "frame": {
+            "x": 0,
+            "y": 192,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "guard_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 192,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "guard_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 192,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "guard_dead",
+          "frame": {
+            "x": 750,
+            "y": 192,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "guard_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 192,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "guard_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 192,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "apprentice_idle",
+          "frame": {
+            "x": 0,
+            "y": 384,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "apprentice_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 384,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "apprentice_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 384,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "apprentice_dead",
+          "frame": {
+            "x": 750,
+            "y": 384,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "apprentice_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 384,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "apprentice_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 384,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "merchant_idle",
+          "frame": {
+            "x": 0,
+            "y": 576,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "merchant_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 576,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "merchant_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 576,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "merchant_dead",
+          "frame": {
+            "x": 750,
+            "y": 576,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "merchant_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 576,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "merchant_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 576,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "elder_idle",
+          "frame": {
+            "x": 0,
+            "y": 768,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "elder_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 768,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "elder_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 768,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "elder_dead",
+          "frame": {
+            "x": 750,
+            "y": 768,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "elder_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 768,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "elder_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 768,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "villager_idle",
+          "frame": {
+            "x": 0,
+            "y": 960,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "villager_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 960,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "villager_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 960,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "villager_dead",
+          "frame": {
+            "x": 750,
+            "y": 960,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "villager_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 960,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "villager_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 960,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "child_idle",
+          "frame": {
+            "x": 0,
+            "y": 1152,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "child_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 1152,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "child_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 1152,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "child_dead",
+          "frame": {
+            "x": 750,
+            "y": 1152,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "child_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 1152,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "child_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 1152,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "mage_idle",
+          "frame": {
+            "x": 0,
+            "y": 1344,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "mage_walk_1",
+          "frame": {
+            "x": 250,
+            "y": 1344,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "mage_walk_2",
+          "frame": {
+            "x": 500,
+            "y": 1344,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "mage_dead",
+          "frame": {
+            "x": 750,
+            "y": 1344,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "mage_fainted",
+          "frame": {
+            "x": 1000,
+            "y": 1344,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        },
+        {
+          "filename": "mage_frozen",
+          "frame": {
+            "x": 1250,
+            "y": 1344,
+            "w": 250,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 250,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 250,
+            "h": 192
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "Lumenfall Sprite Processor",
+    "version": "1.0",
+    "image": "characters_states.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 2752,
+      "h": 1536
+    },
+    "scale": 1
+  }
+}

@@ -1,0 +1,866 @@
+{
+  "textures": [
+    {
+      "image": "monsters_states.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2752,
+        "h": 1536
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "shadow_wisp_idle",
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_wisp_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_wisp_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_wisp_dead",
+          "frame": {
+            "x": 1032,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_wisp_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_stalker_idle",
+          "frame": {
+            "x": 0,
+            "y": 192,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_stalker_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 192,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_stalker_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 192,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_stalker_dead",
+          "frame": {
+            "x": 1032,
+            "y": 192,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "shadow_stalker_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 192,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "goblin_idle",
+          "frame": {
+            "x": 0,
+            "y": 384,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "goblin_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 384,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "goblin_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 384,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "goblin_dead",
+          "frame": {
+            "x": 1032,
+            "y": 384,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "goblin_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 384,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "orc_idle",
+          "frame": {
+            "x": 0,
+            "y": 576,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "orc_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 576,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "orc_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 576,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "orc_dead",
+          "frame": {
+            "x": 1032,
+            "y": 576,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "orc_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 576,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "skeleton_idle",
+          "frame": {
+            "x": 0,
+            "y": 768,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "skeleton_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 768,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "skeleton_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 768,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "skeleton_dead",
+          "frame": {
+            "x": 1032,
+            "y": 768,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "skeleton_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 768,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "wolf_idle",
+          "frame": {
+            "x": 0,
+            "y": 960,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "wolf_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 960,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "wolf_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 960,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "wolf_dead",
+          "frame": {
+            "x": 1032,
+            "y": 960,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "wolf_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 960,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "slime_idle",
+          "frame": {
+            "x": 0,
+            "y": 1152,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "slime_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 1152,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "slime_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 1152,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "slime_dead",
+          "frame": {
+            "x": 1032,
+            "y": 1152,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "slime_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 1152,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "ghost_idle",
+          "frame": {
+            "x": 0,
+            "y": 1344,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "ghost_walk_1",
+          "frame": {
+            "x": 344,
+            "y": 1344,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "ghost_walk_2",
+          "frame": {
+            "x": 688,
+            "y": 1344,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "ghost_dead",
+          "frame": {
+            "x": 1032,
+            "y": 1344,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        },
+        {
+          "filename": "ghost_frozen",
+          "frame": {
+            "x": 1376,
+            "y": 1344,
+            "w": 344,
+            "h": 192
+          },
+          "rotated": false,
+          "trimmed": false,
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 344,
+            "h": 192
+          },
+          "sourceSize": {
+            "w": 344,
+            "h": 192
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "Lumenfall Sprite Processor",
+    "version": "1.0",
+    "image": "monsters_states.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 2752,
+      "h": 1536
+    },
+    "scale": 1
+  }
+}
