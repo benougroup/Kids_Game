@@ -1,0 +1,1307 @@
+{
+  "textures": [
+    {
+      "image": "terrain_grassland.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1536,
+        "h": 1024
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "grass_plain_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "grass_flowers_yellow",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 153,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "grass_flowers_blue",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 306,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "grass_flowers_mixed",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 459,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "grass_muddy_patch",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 612,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dirt_light",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 0,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dirt_medium",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 153,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dirt_grass_mix",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 306,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dirt_dark",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 459,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dirt_sandy",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 612,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_cobble_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 0,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_cobble_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 153,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_cobble_cracked",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 306,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_path",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 459,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sand_light",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 612,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "water_deep",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 0,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "water_light",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 153,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "water_shore",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 306,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "beach_sand",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 459,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sand_dune",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 612,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sky_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 0,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sky_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 153,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "ice_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 306,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "ice_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 459,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "snow_plain",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 612,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sand_footprints",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 0,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sand_ripple",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 153,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "sand_wet",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 306,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "water_shallow",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 459,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "water_foam",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 612,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_grey_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_grey_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 921,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_grey_03",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1074,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_grey_04",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1227,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_brown_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1380,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_brown_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_brown_03",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 921,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_moss_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1074,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_moss_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1227,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_dark_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1380,
+            "y": 170,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_wall_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_wall_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 921,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_wall_moss",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1074,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_wall_cracked",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1227,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "stone_floor_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1380,
+            "y": 340,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dungeon_floor_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dungeon_floor_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 921,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dungeon_wall_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1074,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dungeon_wall_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1227,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "dungeon_grate",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1380,
+            "y": 510,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "lava_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "lava_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 921,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "purple_crystal",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1074,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "gold_tile",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1227,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "marble_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1380,
+            "y": 680,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "jungle_floor",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "brick_red",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 921,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "wood_floor",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1074,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cave_floor",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1227,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cave_arch",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 1380,
+            "y": 850,
+            "w": 153,
+            "h": 170
+          }
+        },
+        {
+          "filename": "cliff_grass_edge",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 153,
+            "h": 170
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          },
+          "frame": {
+            "x": 768,
+            "y": 0,
+            "w": 153,
+            "h": 170
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "Lumenfall Atlas Generator",
+    "version": "1.0",
+    "image": "terrain_grassland.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "scale": "1"
+  }
+}

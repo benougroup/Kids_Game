@@ -2,47 +2,40 @@ import Phaser from 'phaser';
 
 /**
  * Player character with animated sprite and smooth 8-direction movement
+ * Properly sized for 64x64 tile grid
  */
 export class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
-  private speed: number = 120;
+  private speed: number = 150;
   private scene: Phaser.Scene;
-  private lanternActive: boolean = false; // Lantern on/off state
+  private lanternActive: boolean = false;
+  private TILE_SIZE: number = 64;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
 
-    // Create player sprite from characters atlas (64x64 in atlas → 32x32 on screen)
+    // Create player sprite - 48x48 display size (slightly smaller than 64px tile)
     this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle_front');
-    this.sprite.setDisplaySize(32, 32); // 32x32 to fit tile grid
-    this.sprite.setOrigin(0.5, 0.5); // Center anchor
-    this.sprite.setSize(24, 24); // Collision box
-    this.sprite.setOffset(4, 4); // Center collision box
-    this.sprite.setDepth(500);
+    this.sprite.setDisplaySize(48, 48);
+    this.sprite.setOrigin(0.5, 0.5);
+    this.sprite.setSize(32, 32); // Collision box (smaller than display)
+    this.sprite.setOffset(8, 8);
+    this.sprite.setDepth(500); // High depth so player is above tiles
 
-    // Create animations
     this.createAnimations();
-
-    // Play idle animation
     this.sprite.play('player_idle');
-
-    // Enable physics (no world bounds collision - allow portal transitions)
   }
 
   private createAnimations(): void {
-    // Idle animation
     if (!this.scene.anims.exists('player_idle')) {
       this.scene.anims.create({
         key: 'player_idle',
-        frames: [
-          { key: 'characters', frame: 'hero_idle_front' },
-        ],
+        frames: [{ key: 'characters', frame: 'hero_idle_front' }],
         frameRate: 2,
         repeat: -1,
       });
     }
 
-    // Walk animation
     if (!this.scene.anims.exists('player_walk')) {
       this.scene.anims.create({
         key: 'player_walk',
@@ -54,83 +47,88 @@ export class Player {
         repeat: -1,
       });
     }
+    
+    if (!this.scene.anims.exists('player_walk_side')) {
+      this.scene.anims.create({
+        key: 'player_walk_side',
+        frames: [
+          { key: 'characters', frame: 'hero_walk_side_1' },
+          { key: 'characters', frame: 'hero_walk_side_2' },
+        ],
+        frameRate: 8,
+        repeat: -1,
+      });
+    }
   }
 
   update(
     cursors: Phaser.Types.Input.Keyboard.CursorKeys,
     wasd: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key },
-    checkMovementAllowed?: (fromX: number, fromY: number, toX: number, toY: number) => boolean
+    isBlocked?: (x: number, y: number) => boolean
   ): void {
-    // Get input direction
-    let velocityX = 0;
-    let velocityY = 0;
+    let vx = 0;
+    let vy = 0;
 
-    // Check arrow keys and WASD
-    if (cursors.left.isDown || wasd.A.isDown) {
-      velocityX = -1;
-    } else if (cursors.right.isDown || wasd.D.isDown) {
-      velocityX = 1;
+    if (cursors.left.isDown || wasd.A.isDown) vx = -1;
+    else if (cursors.right.isDown || wasd.D.isDown) vx = 1;
+    if (cursors.up.isDown || wasd.W.isDown) vy = -1;
+    else if (cursors.down.isDown || wasd.S.isDown) vy = 1;
+
+    // Normalize diagonal
+    if (vx !== 0 && vy !== 0) {
+      vx *= 0.707;
+      vy *= 0.707;
     }
 
-    if (cursors.up.isDown || wasd.W.isDown) {
-      velocityY = -1;
-    } else if (cursors.down.isDown || wasd.S.isDown) {
-      velocityY = 1;
-    }
-
-    // Normalize diagonal movement
-    if (velocityX !== 0 && velocityY !== 0) {
-      velocityX *= 0.707; // 1/sqrt(2)
-      velocityY *= 0.707;
-    }
-
-    // Check movement constraints before applying velocity
-    if (checkMovementAllowed) {
-      const futureX = this.sprite.x + velocityX * this.speed * 0.016; // Approximate next position
-      const futureY = this.sprite.y + velocityY * this.speed * 0.016;
+    // Collision check
+    if (isBlocked && (vx !== 0 || vy !== 0)) {
+      const margin = 20;
+      const futureX = this.sprite.x + vx * this.speed * 0.016;
+      const futureY = this.sprite.y + vy * this.speed * 0.016;
       
-      // Check center and edges of player sprite
+      // Check corners of player hitbox
       const checkPoints = [
-        { x: futureX, y: futureY }, // Center
-        { x: futureX - 12, y: futureY }, // Left
-        { x: futureX + 12, y: futureY }, // Right
-        { x: futureX, y: futureY - 12 }, // Top
-        { x: futureX, y: futureY + 12 }, // Bottom
+        { x: futureX - margin, y: futureY - margin },
+        { x: futureX + margin, y: futureY - margin },
+        { x: futureX - margin, y: futureY + margin },
+        { x: futureX + margin, y: futureY + margin },
       ];
       
-      let blocked = false;
-      for (const point of checkPoints) {
-        if (!checkMovementAllowed(this.sprite.x, this.sprite.y, point.x, point.y)) {
-          blocked = true;
-          break;
-        }
+      let blockedX = false;
+      let blockedY = false;
+      
+      for (const pt of checkPoints) {
+        if (isBlocked(pt.x, this.sprite.y)) blockedX = true;
+        if (isBlocked(this.sprite.x, pt.y)) blockedY = true;
       }
       
-      if (blocked) {
-        // Stop movement if trying to walk into blocked terrain/object
-        velocityX = 0;
-        velocityY = 0;
-      }
+      if (blockedX) vx = 0;
+      if (blockedY) vy = 0;
     }
 
-    // Apply velocity
-    this.sprite.setVelocity(velocityX * this.speed, velocityY * this.speed);
+    this.sprite.setVelocity(vx * this.speed, vy * this.speed);
+    this.updateAnimation(vx, vy);
+  }
 
-    // Update animation
-    if (velocityX !== 0 || velocityY !== 0) {
-      // Moving
-      if (this.sprite.anims.currentAnim?.key !== 'player_walk') {
-        this.sprite.play('player_walk');
+  public playWalkAnimation(vx: number, vy: number): void {
+    this.updateAnimation(vx, vy);
+  }
+
+  public playIdleAnimation(): void {
+    if (this.sprite.anims.currentAnim?.key !== 'player_idle') {
+      this.sprite.play('player_idle');
+    }
+  }
+
+  private updateAnimation(vx: number, vy: number): void {
+    if (vx !== 0 || vy !== 0) {
+      const animKey = Math.abs(vx) > Math.abs(vy) ? 'player_walk_side' : 'player_walk';
+      if (this.sprite.anims.currentAnim?.key !== animKey) {
+        this.sprite.play(animKey);
       }
-      
-      // Flip sprite based on direction
-      if (velocityX < 0) {
-        this.sprite.setFlipX(true);
-      } else if (velocityX > 0) {
-        this.sprite.setFlipX(false);
-      }
+      if (vx < 0) this.sprite.setFlipX(true);
+      else if (vx > 0) this.sprite.setFlipX(false);
     } else {
-      // Idle
       if (this.sprite.anims.currentAnim?.key !== 'player_idle') {
         this.sprite.play('player_idle');
       }
@@ -147,16 +145,13 @@ export class Player {
 
   toggleLantern(): void {
     this.lanternActive = !this.lanternActive;
-    
-    // Switch sprite frame based on lantern state
-    if (this.lanternActive) {
-      this.sprite.setFrame('hero_lantern');
-    } else {
-      this.sprite.setFrame('hero_idle_front');
-    }
   }
 
   isLanternActive(): boolean {
     return this.lanternActive;
+  }
+
+  getTileSize(): number {
+    return this.TILE_SIZE;
   }
 }

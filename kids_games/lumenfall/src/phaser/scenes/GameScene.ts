@@ -1,26 +1,32 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
-import { TownMapV2 } from '../maps/TownMapV2';
-import { MapTransitionSystem } from '../systems/MapTransitionSystem';
+import { TownMapV3 } from '../maps/TownMapV3';
 import { ShadowMonster } from '../entities/ShadowMonster';
 import { DialogueBox } from '../ui/DialogueBox';
-import { PathfindingSystem } from '../systems/PathfindingSystem';
+import { StorySystem } from '../systems/StorySystem';
 
 /**
- * Main game scene with 2D top-down view
- * Handles world, NPCs, player movement, day/night cycle
+ * Main Game Scene - Lumenfall RPG
+ * 
+ * Features:
+ * - Layered tile rendering with real sprite assets
+ * - Map boundaries with road exits (N/E/S/W)
+ * - Click-to-move + keyboard movement
+ * - NPC dialogue with story system
+ * - Day/night cycle (5 minutes)
+ * - Shadow monsters at night
+ * - HP system
  */
 export class GameScene extends Phaser.Scene {
   private player!: Player;
-  private townMap!: TownMapV2;
-  private mapTransitionSystem!: MapTransitionSystem;
+  private currentMap!: TownMapV3;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
   
   // Day/night system
-  private timeOfDay: number = 0.25; // Start at morning
+  private timeOfDay: number = 0.3; // Start at morning
   private dayNightOverlay!: Phaser.GameObjects.Rectangle;
-  private timeSpeed: number = 1 / (20 * 60 * 1000); // 5 minutes per phase (20 minute full cycle)
+  private timeSpeed: number = 0.000033; // ~5 minute full cycle
   
   // Shadow monsters
   private shadowMonsters: ShadowMonster[] = [];
@@ -28,57 +34,59 @@ export class GameScene extends Phaser.Scene {
   // UI
   private dialogueBox!: DialogueBox;
   
-  // Pathfinding
-  private pathfinding: PathfindingSystem = new PathfindingSystem();
-  private currentPath: { x: number; y: number }[] = [];
-  private pathMoveSpeed: number = 120;
+  // Story system
+  private storySystem: StorySystem = new StorySystem();
+  
+  // Click-to-move
+  private clickTarget: { x: number; y: number } | null = null;
+  private clickMarker: Phaser.GameObjects.Graphics | null = null;
+  
+  // Transition cooldown
+  private lastTransitionTime: number = 0;
   
   constructor() {
     super({ key: 'GameScene' });
   }
 
   preload(): void {
-    // Load terrain/object/building atlases used by the layered tile system.
-    this.load.atlas('tiles', 'assets/tiles_original.png', 'assets/tiles.json');
-    this.load.atlas('terrain_grassland_v001', 'assets/terrain_grassland_v001.PNG', 'assets/terrain_grassland_v001.json');
-    this.load.atlas('terrain_walls_natural_v001', 'assets/terrain_walls_natural_v001.PNG', 'assets/terrain_walls_natural_v001.json');
-    this.load.atlas('terrain_walls_natural_v002_irregular', 'assets/terrain_walls_natural_v002_irregular.PNG', 'assets/terrain_walls_natural_v002_irregular.json');
-    this.load.atlas('terrain_walls_manmade_v001', 'assets/terrain_walls_manmade_v001.PNG', 'assets/terrain_walls_manmade_v001.json');
-    this.load.atlas('objects_new', 'assets/objects_new_original.png', 'assets/objects_new.json');
-    this.load.atlas('objects_props_v002', 'assets/objects_props_v002.PNG', 'assets/objects_props_v002.json');
-    this.load.atlas('objects_props_v003', 'assets/objects_props_v003.PNG', 'assets/objects_props_v003.json');
-    this.load.atlas('buildings_v002', 'assets/buildings_v002.PNG', 'assets/buildings_v002.json');
-    this.load.atlas('buildings_v003', 'assets/buildings_v003.PNG', 'assets/buildings_v003.json');
-    this.load.atlas('characters', 'assets/characters_original.png', 'assets/characters.json');
-    this.load.atlas('monsters', 'assets/monsters_original.png', 'assets/monsters.json');
+    // Terrain atlases
+    this.load.atlas('terrain_grassland', 'assets/terrain_grassland.png', 'assets/terrain_grassland.json');
+    this.load.atlas('terrain_dungeon', 'assets/terrain_dungeon.png', 'assets/terrain_dungeon.json');
+    this.load.atlas('terrain_walls_natural', 'assets/terrain_walls_natural.png', 'assets/terrain_walls_natural.json');
+    this.load.atlas('terrain_walls_manmade', 'assets/terrain_walls_manmade.png', 'assets/terrain_walls_manmade.json');
+    
+    // Building atlases
+    this.load.atlas('buildings_v003', 'assets/buildings_v003.png', 'assets/buildings_v003.json');
+    this.load.atlas('buildings_v002', 'assets/buildings_v002.png', 'assets/buildings_v002.json');
+    
+    // Object atlases
+    this.load.atlas('objects_props_v002', 'assets/objects_props_v002.png', 'assets/objects_props_v002.json');
+    this.load.atlas('objects_props_v003', 'assets/objects_props_v003.png', 'assets/objects_props_v003.json');
+    
+    // Character atlases
+    this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
+    this.load.atlas('monsters', 'assets/monsters.png', 'assets/monsters.json');
   }
 
   create(): void {
-    // Create 2D top-down town map with layered system
-    this.townMap = new TownMapV2(this);
-    this.townMap.create();
-
-    // Set up map transition system
-    this.mapTransitionSystem = new MapTransitionSystem(this, 'town');
-    this.mapTransitionSystem.createEdgePortals(
-      this.townMap.getMapWidth(),
-      this.townMap.getMapHeight(),
-      'town'
-    );
+    // Create town map
+    this.currentMap = new TownMapV3(this);
+    this.currentMap.create();
 
     // Create player at spawn point (center of village)
-    // Position at tile center: (tileX * 32) + 16, (tileY * 32) + 16
-    this.player = new Player(this, 16 * 32 + 16, 12 * 32 + 16);
+    const spawnX = Math.floor(this.currentMap.getMapWidth() / 2);
+    const spawnY = Math.floor(this.currentMap.getMapHeight() / 2);
+    this.player = new Player(this, spawnX, spawnY);
     
-    // Set up camera to follow player
-    this.cameras.main.startFollow(this.player.sprite, true, 0.1, 0.1);
-    this.cameras.main.setZoom(2.3); // Zoomed in for better visibility
-    this.applyGameplayViewport();
+    // Set up camera
+    this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
+    this.cameras.main.setZoom(2.0);
+    this.cameras.main.setBounds(0, 0, this.currentMap.getMapWidth(), this.currentMap.getMapHeight());
     
-    // Set world bounds (not camera bounds) to allow full map access
-    this.physics.world.setBounds(0, 0, this.townMap.getMapWidth(), this.townMap.getMapHeight());
+    // Set physics world bounds
+    this.physics.world.setBounds(0, 0, this.currentMap.getMapWidth(), this.currentMap.getMapHeight());
     
-    // Set up input
+    // Set up keyboard input
     this.cursors = this.input.keyboard!.createCursorKeys();
     this.wasd = {
       W: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -87,307 +95,267 @@ export class GameScene extends Phaser.Scene {
       D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
     };
 
-    // Create day/night overlay
+    // Day/night overlay (covers entire map)
     this.dayNightOverlay = this.add.rectangle(
       0, 0,
-      2048, 2048,
-      0x000033,
-      0
+      this.currentMap.getMapWidth() + 200,
+      this.currentMap.getMapHeight() + 200,
+      0x000033, 0
     );
     this.dayNightOverlay.setOrigin(0, 0);
     this.dayNightOverlay.setScrollFactor(1);
-    this.dayNightOverlay.setDepth(1000);
+    this.dayNightOverlay.setDepth(5000);
 
-    // Shadow monsters will spawn at night (spawned dynamically in update)
+    // Click marker
+    this.clickMarker = this.add.graphics();
+    this.clickMarker.setDepth(4999);
 
-    // Create dialogue box UI
+    // Dialogue box
     this.dialogueBox = new DialogueBox(this);
 
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
     
-    // Add click-to-move
+    // Click-to-move
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       this.handleClick(pointer);
     });
 
-    this.scale.on('resize', () => this.applyGameplayViewport());
+    // Emit initial state
+    this.events.emit('timeUpdate', this.timeOfDay);
   }
 
   update(_time: number, delta: number): void {
-    // Follow path if exists, otherwise use keyboard
-    if (this.currentPath.length > 0) {
-      this.followPath(delta);
-    } else {
-      // Update player movement (8-direction) with water collision
+    // Handle movement
+    const hasKeyboardInput = this.cursors.left.isDown || this.cursors.right.isDown ||
+                             this.cursors.up.isDown || this.cursors.down.isDown ||
+                             this.wasd.W.isDown || this.wasd.A.isDown ||
+                             this.wasd.S.isDown || this.wasd.D.isDown;
+    
+    if (hasKeyboardInput) {
+      // Keyboard overrides click-to-move
+      this.clickTarget = null;
+      this.clearClickMarker();
       this.player.update(
         this.cursors,
         this.wasd,
-        (fromX, fromY, toX, toY) => this.townMap.isWalkable(fromX, fromY, toX, toY)
+        (x, y) => !this.currentMap.isWalkable(x, y)
       );
+    } else if (this.clickTarget) {
+      // Follow click target
+      this.moveTowardsClick(delta);
+    } else {
+      // Stop player
+      this.player.sprite.setVelocity(0, 0);
+      this.player.playIdleAnimation();
     }
 
-    // Check for portal transitions
+    // Check map exits
     const playerPos = this.player.getPosition();
-    const portal = this.mapTransitionSystem.checkPortalCollision(playerPos.x, playerPos.y);
-    if (portal) {
-      this.handleMapTransition(portal);
+    const now = Date.now();
+    if (now - this.lastTransitionTime > 2000) { // 2 second cooldown
+      const exit = this.currentMap.checkExit(playerPos.x, playerPos.y);
+      if (exit) {
+        this.lastTransitionTime = now;
+        this.handleMapExit(exit);
+      }
     }
 
-    // Update day/night cycle (slow progression)
+    // Update day/night cycle
     this.timeOfDay += delta * this.timeSpeed;
     if (this.timeOfDay > 1) this.timeOfDay = 0;
-
-    // Update day/night overlay
     this.updateDayNightOverlay();
 
-    // Spawn/despawn shadow monsters based on time of day
-    const isNightTime = this.timeOfDay > 0.6 || this.timeOfDay < 0.2;
-    if (isNightTime && this.shadowMonsters.length === 0) {
+    // Shadow monsters at night
+    const isNight = this.timeOfDay > 0.65 || this.timeOfDay < 0.15;
+    if (isNight && this.shadowMonsters.length === 0) {
       this.spawnShadowMonsters();
-    } else if (!isNightTime && this.shadowMonsters.length > 0) {
+    } else if (!isNight && this.shadowMonsters.length > 0) {
       this.despawnShadowMonsters();
     }
 
-    // Update shadow monsters and check collision
+    // Update shadow monsters
     const lightSources = this.getLightSources();
     for (const monster of this.shadowMonsters) {
       monster.update(playerPos, lightSources);
       
-      // Check collision with player (damage every 1 second)
+      // Check collision with player
       const monsterPos = monster.getPosition();
-      const distance = Phaser.Math.Distance.Between(
-        playerPos.x, playerPos.y,
-        monsterPos.x, monsterPos.y
-      );
-      
-      if (distance < 24) { // Touching range
-        // Damage player (throttled to once per second per monster)
-        const now = Date.now();
-        const lastDamage = monster.getLastDamageTime();
-        if (now - lastDamage > 1000) {
+      const dist = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, monsterPos.x, monsterPos.y);
+      if (dist < 24) {
+        const lastDmg = monster.getLastDamageTime();
+        if (now - lastDmg > 1000) {
           monster.setLastDamageTime(now);
           this.events.emit('playerDamaged', 1);
         }
       }
     }
 
-    // Emit time to UI scene
+    // Update NPC movement
+    this.currentMap.updateNPCs(delta);
+
+    // Emit time to UI
     this.events.emit('timeUpdate', this.timeOfDay);
   }
 
+  private moveTowardsClick(delta: number): void {
+    if (!this.clickTarget) return;
+    
+    const playerPos = this.player.getPosition();
+    const dx = this.clickTarget.x - playerPos.x;
+    const dy = this.clickTarget.y - playerPos.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    
+    if (dist < 8) {
+      // Reached target
+      this.clickTarget = null;
+      this.clearClickMarker();
+      this.player.sprite.setVelocity(0, 0);
+      this.player.playIdleAnimation();
+      return;
+    }
+    
+    const speed = 120;
+    const vx = (dx / dist) * speed;
+    const vy = (dy / dist) * speed;
+    
+    // Check if next position is walkable
+    const nextX = playerPos.x + vx * (delta / 1000);
+    const nextY = playerPos.y + vy * (delta / 1000);
+    
+    if (this.currentMap.isWalkable(nextX, nextY)) {
+      this.player.sprite.setVelocity(vx, vy);
+      this.player.playWalkAnimation(vx, vy);
+    } else {
+      // Blocked - cancel path
+      this.clickTarget = null;
+      this.clearClickMarker();
+      this.player.sprite.setVelocity(0, 0);
+    }
+  }
 
-  private applyGameplayViewport(): void {
-    const viewportX = 0;
-    const viewportY = 80;
-    const viewportWidth = this.scale.width - 210;
-    const viewportHeight = this.scale.height - 90;
-    this.cameras.main.setViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+  private handleClick(pointer: Phaser.Input.Pointer): void {
+    if (this.dialogueBox.getIsVisible()) return;
+    
+    const worldX = pointer.worldX;
+    const worldY = pointer.worldY;
+    
+    // Only move if target is walkable
+    if (this.currentMap.isWalkable(worldX, worldY)) {
+      this.clickTarget = { x: worldX, y: worldY };
+      this.drawClickMarker(worldX, worldY);
+    }
+  }
+
+  private drawClickMarker(x: number, y: number): void {
+    if (!this.clickMarker) return;
+    this.clickMarker.clear();
+    this.clickMarker.lineStyle(2, 0xffff00, 0.8);
+    this.clickMarker.strokeCircle(x, y, 8);
+    this.clickMarker.lineStyle(1, 0xffff00, 0.4);
+    this.clickMarker.strokeCircle(x, y, 12);
+  }
+
+  private clearClickMarker(): void {
+    if (this.clickMarker) {
+      this.clickMarker.clear();
+    }
   }
 
   private updateDayNightOverlay(): void {
-    // Calculate darkness based on time
-    // 0-0.25: Dawn (getting lighter)
-    // 0.25-0.5: Day (bright)
-    // 0.5-0.75: Dusk (getting darker)
-    // 0.75-1: Night (dark)
-
     let darkness = 0;
     
-    if (this.timeOfDay < 0.25) {
-      // Dawn: 0.4 -> 0
-      darkness = 0.4 * (1 - this.timeOfDay / 0.25);
+    if (this.timeOfDay < 0.15) {
+      darkness = 0.65 * (1 - this.timeOfDay / 0.15);
     } else if (this.timeOfDay < 0.5) {
-      // Day: 0
       darkness = 0;
-    } else if (this.timeOfDay < 0.75) {
-      // Dusk: 0 -> 0.6
-      darkness = 0.6 * ((this.timeOfDay - 0.5) / 0.25);
+    } else if (this.timeOfDay < 0.65) {
+      darkness = 0.65 * ((this.timeOfDay - 0.5) / 0.15);
     } else {
-      // Night: 0.6
-      darkness = 0.6;
+      darkness = 0.65;
     }
 
     this.dayNightOverlay.setAlpha(darkness);
   }
 
   private handleAction(): void {
-    // Don't interact if dialogue is already open
     if (this.dialogueBox.getIsVisible()) {
+      this.dialogueBox.hide();
       return;
     }
 
-    // Check if near an NPC
     const playerPos = this.player.getPosition();
-    const nearbyNPC = this.townMap.getNearbyNPC(playerPos.x, playerPos.y, 50);
+    const nearbyNPC = this.currentMap.getNearbyNPC(playerPos.x, playerPos.y, 80);
+    
     if (nearbyNPC) {
-      // Talk to NPC
-      const npcName = nearbyNPC.getData('npcName');
-      const npcFrame = nearbyNPC.frame.name;
-      
-      // Show dialogue based on NPC
-      let dialogue = '';
-      if (npcName === 'Guard') {
-        dialogue = 'Welcome to Bright Hollow! I keep watch over the village. The shadows have been growing stronger lately...';
-      } else if (npcName === 'Apprentice') {
-        dialogue = 'I\'m studying light magic! Did you know that shadows flee from bright light? Maybe you can help us!';
-      } else if (npcName === 'Merchant') {
-        dialogue = 'Looking for supplies? I have potions and lanterns. You\'ll need them when exploring the dark forest!';
-      } else {
-        dialogue = 'Hello there, young adventurer!';
-      }
-      
-      this.dialogueBox.show(npcName, dialogue, npcFrame);
+      const dialogueKey = nearbyNPC.getData('dialogueKey');
+      const dialogue = this.storySystem.getDialogue(dialogueKey, this.timeOfDay);
+      this.dialogueBox.show(dialogue.name, dialogue.text, dialogue.portrait);
     } else {
-      // No NPC nearby - toggle lantern
+      // Toggle lantern
       this.player.toggleLantern();
     }
   }
 
-  private handleMapTransition(portal: any): void {
-    // Prevent multiple transitions
-    if (this.scene.isPaused()) return;
-
-    console.log('Transitioning to:', portal.targetMap);
+  private handleMapExit(exit: any): void {
+    const mapName = exit.targetMap.replace('_', ' ');
     
-    this.mapTransitionSystem.transitionToMap(portal, (mapName: string, x: number, y: number) => {
-      // Update current map
-      this.mapTransitionSystem.setCurrentMap(mapName);
-      
-      // Move player to target position
-      this.player.setPosition(x, y);
-      
-      // Show message
-      this.events.emit('showMessage', `Entered ${mapName.replace('_', ' ')}`);
-      
-      console.log(`Loaded map: ${mapName} at position (${x}, ${y})`);
+    // Flash screen
+    this.cameras.main.flash(500, 255, 255, 255);
+    
+    // Show message
+    this.events.emit('showMessage', `Entering ${mapName}...`);
+    
+    // Move player to opposite side (same map for now - will add more maps later)
+    this.time.delayedCall(300, () => {
+      this.player.setPosition(exit.targetX, exit.targetY);
     });
-  }
-
-  public getPlayer(): Player {
-    return this.player;
-  }
-
-  private handleClick(pointer: Phaser.Input.Pointer): void {
-    // Don't move if dialogue is open
-    if (this.dialogueBox.getIsVisible()) {
-      return;
-    }
-
-    // Convert screen coordinates to world coordinates
-    const worldX = pointer.worldX;
-    const worldY = pointer.worldY;
-
-    // Find path
-    const playerPos = this.player.getPosition();
-    this.currentPath = this.pathfinding.findPath(
-      playerPos.x,
-      playerPos.y,
-      worldX,
-      worldY,
-      (x, y) => this.townMap.isWalkable(playerPos.x, playerPos.y, x, y)
-    );
-  }
-
-  private followPath(_delta: number): void {
-    if (this.currentPath.length === 0) return;
-
-    const playerPos = this.player.getPosition();
-    const target = this.currentPath[0];
-
-    // Calculate direction to target
-    const dx = target.x - playerPos.x;
-    const dy = target.y - playerPos.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // Check if reached target
-    if (distance < 5) {
-      this.currentPath.shift(); // Remove reached waypoint
-      if (this.currentPath.length === 0) {
-        this.player.sprite.setVelocity(0, 0);
-      }
-      return;
-    }
-
-    // Move towards target
-    const speed = this.pathMoveSpeed;
-    const velocityX = (dx / distance) * speed;
-    const velocityY = (dy / distance) * speed;
-    this.player.sprite.setVelocity(velocityX, velocityY);
-
-    // Update animation
-    if (this.player.sprite.anims.currentAnim?.key !== 'player_walk') {
-      this.player.sprite.play('player_walk');
-    }
-
-    // Flip sprite based on direction
-    if (dx < 0) {
-      this.player.sprite.setFlipX(true);
-    } else if (dx > 0) {
-      this.player.sprite.setFlipX(false);
-    }
-
-    // Cancel path if keyboard input detected
-    if (this.cursors.left.isDown || this.cursors.right.isDown ||
-        this.cursors.up.isDown || this.cursors.down.isDown ||
-        this.wasd.W.isDown || this.wasd.A.isDown ||
-        this.wasd.S.isDown || this.wasd.D.isDown) {
-      this.currentPath = [];
-      this.player.sprite.setVelocity(0, 0);
-    }
-  }
-
-  public getTimeOfDay(): number {
-    return this.timeOfDay;
-  }
-
-  public isNight(): boolean {
-    return this.timeOfDay > 0.6 || this.timeOfDay < 0.2;
-  }
-
-  public getAtlasTexture(): string {
-    return 'atlas';
+    
+    console.log(`Map exit: ${exit.direction} → ${exit.targetMap}`);
   }
 
   private spawnShadowMonsters(): void {
-    // Spawn 3-4 shadow monsters in darker areas
     const spawnPoints = [
-      { x: 200, y: 200 },   // Top-left
-      { x: 1000, y: 200 },  // Top-right
-      { x: 200, y: 800 },   // Bottom-left
-      { x: 1000, y: 800 },  // Bottom-right
+      { x: 150, y: 150 },
+      { x: this.currentMap.getMapWidth() - 150, y: 150 },
+      { x: 150, y: this.currentMap.getMapHeight() - 150 },
+      { x: this.currentMap.getMapWidth() - 150, y: this.currentMap.getMapHeight() - 150 },
     ];
 
     for (const point of spawnPoints) {
       const monster = new ShadowMonster(this, point.x, point.y);
       this.shadowMonsters.push(monster);
     }
-    console.log('Shadow monsters spawned at night');
   }
 
   private despawnShadowMonsters(): void {
-    // Remove all shadow monsters
     for (const monster of this.shadowMonsters) {
       monster.destroy();
     }
     this.shadowMonsters = [];
-    console.log('Shadow monsters despawned at day');
   }
 
   private getLightSources(): { x: number; y: number; radius: number }[] {
     const sources: { x: number; y: number; radius: number }[] = [];
 
-    // Player's lantern (only if active)
     if (this.player.isLanternActive()) {
-      const playerPos = this.player.getPosition();
-      const lanternRadius = this.timeOfDay > 0.6 || this.timeOfDay < 0.2 ? 150 : 100;
-      sources.push({ x: playerPos.x, y: playerPos.y, radius: lanternRadius });
+      const pos = this.player.getPosition();
+      const radius = this.timeOfDay > 0.65 || this.timeOfDay < 0.15 ? 160 : 100;
+      sources.push({ x: pos.x, y: pos.y, radius });
     }
 
-    // Village light post placeholders (using sign sprites for now)
-    sources.push({ x: 16 * 32, y: 13 * 32, radius: 110 });
-    sources.push({ x: 25 * 32, y: 17 * 32, radius: 110 });
-
     return sources;
+  }
+
+  public getPlayer(): Player {
+    return this.player;
+  }
+
+  public getTimeOfDay(): number {
+    return this.timeOfDay;
+  }
+
+  public getStorySystem(): StorySystem {
+    return this.storySystem;
   }
 }

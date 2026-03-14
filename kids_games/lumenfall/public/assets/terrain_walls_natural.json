@@ -1,0 +1,761 @@
+{
+  "textures": [
+    {
+      "image": "terrain_walls_natural.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1536,
+        "h": 1024
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "cliff_brown_top",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_brown_full",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 219,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grass_edge",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 438,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grass_full",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 657,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grass_corner",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 876,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grey_top",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1095,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grey_full",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1314,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grass_yellow",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 0,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_grass_flowers",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 219,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_dark_top",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 438,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_dark_full",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 657,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_sandy_top",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 876,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_sandy_full",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1095,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_rocky_full",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1314,
+            "y": 204,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_stone_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 0,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_stone_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 219,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_moss_top",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 438,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_sandy_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 657,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_sandy_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 876,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_snow_top",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1095,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_tropical",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1314,
+            "y": 408,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_moss_side",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 0,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_lava_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 219,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_white_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 438,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_white_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 657,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_cave_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 876,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_cave_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1095,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_lava_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1314,
+            "y": 612,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_waterfall",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 0,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_cave_entrance",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 219,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_desert_01",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 438,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_desert_02",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 657,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_dark_cave",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 876,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_lava_03",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1095,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        },
+        {
+          "filename": "cliff_marble",
+          "rotated": false,
+          "trimmed": false,
+          "sourceSize": {
+            "w": 219,
+            "h": 204
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 219,
+            "h": 204
+          },
+          "frame": {
+            "x": 1314,
+            "y": 816,
+            "w": 219,
+            "h": 204
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "Lumenfall Atlas Generator",
+    "version": "1.0",
+    "image": "terrain_walls_natural.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "scale": "1"
+  }
+}

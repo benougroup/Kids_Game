@@ -12,13 +12,11 @@ import { UIScene } from './phaser/scenes/UIScene';
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'game-container',
-  width: 1024,
-  height: 640, // Fixed play area for iPad Safari/GitHub Pages
+  width: 800,
+  height: 550, // Smaller vertical size so buttons aren't cut off
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    min: { width: 800, height: 500 },
-    max: { width: 1280, height: 800 },
   },
   physics: {
     default: 'arcade',
