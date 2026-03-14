@@ -22,11 +22,13 @@ export class ShadowMonster {
   constructor(scene: Phaser.Scene, x: number, y: number) {
     // this.scene = scene; // Unused for now
 
-    // Create shadow sprite from monsters atlas
-    this.sprite = scene.physics.add.sprite(x, y, 'monsters', 'shadow_idle_front');
-    this.sprite.setDisplaySize(32, 32); // Exactly 1 cell (32x32)
-    this.sprite.setOrigin(0.5, 0.5); // Center anchor
-    this.sprite.setAlpha(0.8); // Semi-transparent
+    // Create shadow sprite using characters atlas with black tint
+    // This ensures it always loads even if monsters atlas is missing
+    this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle_front');
+    this.sprite.setDisplaySize(48, 48); // 1 cell size (matches 64px tile)
+    this.sprite.setOrigin(0.5, 0.5);
+    this.sprite.setTint(0x000000); // Pure black
+    this.sprite.setAlpha(0.85);
     this.sprite.setDepth(1000);
 
     // Create dark overlay (grey area around monster)
