@@ -71,10 +71,11 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('objects_props_v002', 'assets/objects_props_v002.png', 'assets/objects_props_v002.json');
     this.load.atlas('objects_props_v003', 'assets/objects_props_v003.png', 'assets/objects_props_v003.json');
     
-    // Character atlases (new expanded versions with states)
+    // Character atlases
+    // NOTE: characters_states and monsters_states are NOT loaded because they contain
+    // duplicate frame names (elder_idle, hero_idle, etc.) that would overwrite the
+    // correct pixel-art frames from the 'characters' atlas.
     this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
-    this.load.atlas('characters_states', 'assets/characters_states.png', 'assets/characters_states.json');
-    this.load.atlas('monsters_states', 'assets/monsters_states.png', 'assets/monsters_states.json');
   }
 
   create(): void {
