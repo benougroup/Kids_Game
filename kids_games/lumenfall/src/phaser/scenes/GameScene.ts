@@ -326,7 +326,7 @@ export class GameScene extends Phaser.Scene {
     
     // Apply speed factor from tile (slow in water/sand)
     const effect = this.currentMapBuilder.getTileEffect(playerPos.x, playerPos.y);
-    const speed = 120 * effect.speedFactor;
+    const speed = 200 * effect.speedFactor;
     const vx = (dx / dist) * speed;
     const vy = (dy / dist) * speed;
     

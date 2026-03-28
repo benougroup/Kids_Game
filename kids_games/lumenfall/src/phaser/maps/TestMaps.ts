@@ -186,16 +186,18 @@ export function createTestTownData(): MapData {
   // Alchemy shop (bottom-right)
   structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Watchtower near north exit (384x256 = 3:2, use widthTiles:3, heightTiles:2 = 192x128px)
-  // Placed at row 3 so the full tower is visible above the cliff border
-  // Watchtowers moved to cols 10 and 17 to widen the gate corridor
-  // Watchtower 1: cols 10-12, rows 3-4 (leaves cols 13-16 clear for the gate)
-  // Watchtower 2: cols 17-19, rows 3-4 (same)
-  structureLayer.push({ x: 10, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  structureLayer.push({ x: 17, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  // Moved to row 5 so the full tower is visible when player approaches from south
+  // (at row 3 the tower top was cut off at the camera edge)
+  // Watchtowers at cols 10 and 17 to widen the gate corridor (cols 13-16 clear)
+  structureLayer.push({ x: 10, y: 5, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 17, y: 5, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  // Add fence posts at the gate entrance (cols 13 and 16, rows 3-4)
+  objectLayer.push({ x: 13, y: 3, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 16, y: 3, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
   // --- NPCs ---
-  npcs.push({ x: 13, y: 4, entityId: 'guard' });           // Guard at north gate (left)
-  npcs.push({ x: 16, y: 4, entityId: 'guard2' });          // Guard at north gate (right)
+  npcs.push({ x: 13, y: 6, entityId: 'guard' });           // Guard at north gate (left, moved to row 6 to match watchtower)
+  npcs.push({ x: 16, y: 6, entityId: 'guard2' });          // Guard at north gate (right, moved to row 6)
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
   npcs.push({ x: 5, y: 9, entityId: 'merchant' });          // Merchant at market stall
   npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)

@@ -6,7 +6,7 @@ import Phaser from 'phaser';
  */
 export class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
-  private speed: number = 150;
+  private speed: number = 200;
   private scene: Phaser.Scene;
   private lanternActive: boolean = false;
   private TILE_SIZE: number = 64;
