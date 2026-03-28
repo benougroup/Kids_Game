@@ -40,7 +40,7 @@
         "h": 204
       }
     },
-    "tower_ruins": {
+    "fountain_round": {
       "frame": {
         "x": 614,
         "y": 0,
@@ -60,7 +60,7 @@
         "h": 204
       }
     },
-    "fountain_round": {
+    "statue_robed": {
       "frame": {
         "x": 921,
         "y": 0,
@@ -80,7 +80,7 @@
         "h": 204
       }
     },
-    "statue_robed": {
+    "tent_plain_01": {
       "frame": {
         "x": 1228,
         "y": 0,
@@ -180,7 +180,7 @@
         "h": 204
       }
     },
-    "crystal_blue": {
+    "tent_plain_02": {
       "frame": {
         "x": 1228,
         "y": 204,
@@ -240,7 +240,7 @@
         "h": 204
       }
     },
-    "tent_plain_01": {
+    "tent_plain_03": {
       "frame": {
         "x": 614,
         "y": 408,
@@ -260,7 +260,7 @@
         "h": 204
       }
     },
-    "tent_plain_02": {
+    "tent_plain_04": {
       "frame": {
         "x": 921,
         "y": 408,
@@ -484,6 +484,26 @@
       "frame": {
         "x": 1228,
         "y": 816,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tower_ruins": {
+      "frame": {
+        "x": 1228,
+        "y": 408,
         "w": 307,
         "h": 204
       },
