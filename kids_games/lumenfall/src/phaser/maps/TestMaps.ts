@@ -171,9 +171,10 @@ export function createTestTownData(): MapData {
   structureLayer.push({ x: 4, y: 19, frame: 'chapel_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Alchemy shop (bottom-right)
   structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  // Watchtower near north exit (384x256 = 3:2, use widthTiles:2, heightTiles:1 = 128x64)
-  structureLayer.push({ x: 12, y: 2, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 2, heightTiles: 2 });
-  structureLayer.push({ x: 16, y: 2, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 2, heightTiles: 2 });
+  // Watchtower near north exit (384x256 = 3:2, use widthTiles:3, heightTiles:2 = 192x128px)
+  // Placed at row 3 so the full tower is visible above the cliff border
+  structureLayer.push({ x: 11, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 16, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
 
   // --- NPCs ---
   npcs.push({ x: 13, y: 3, entityId: 'guard' });           // Guard at north gate
