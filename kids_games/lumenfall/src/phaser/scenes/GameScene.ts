@@ -319,12 +319,15 @@ export class GameScene extends Phaser.Scene {
     
     const worldX = pointer.worldX;
     const worldY = pointer.worldY;
-    const walkable = this.currentMapBuilder.isWalkable(worldX, worldY, DEFAULT_FLAGS);
-    
-    if (walkable) {
-      this.clickTarget = { x: worldX, y: worldY };
-      this.drawClickMarker(worldX, worldY);
-    }
+
+    // Allow clicking anywhere — moveTowardsClick will handle wall-sliding
+    // Only reject clicks that are completely out of bounds
+    const mapW = this.currentMapBuilder.getWidth();
+    const mapH = this.currentMapBuilder.getHeight();
+    if (worldX < 0 || worldY < 0 || worldX > mapW || worldY > mapH) return;
+
+    this.clickTarget = { x: worldX, y: worldY };
+    this.drawClickMarker(worldX, worldY);
   }
 
   private drawClickMarker(x: number, y: number): void {
