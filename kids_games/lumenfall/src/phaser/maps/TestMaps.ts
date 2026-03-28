@@ -196,8 +196,8 @@ export function createTestTownData(): MapData {
   objectLayer.push({ x: 16, y: 3, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
   // --- NPCs ---
-  npcs.push({ x: 13, y: 6, entityId: 'guard' });           // Guard at north gate (left, moved to row 6 to match watchtower)
-  npcs.push({ x: 16, y: 6, entityId: 'guard2' });          // Guard at north gate (right, moved to row 6)
+  npcs.push({ x: 12, y: 7, entityId: 'guard' });           // Guard at north gate (left side, off road)
+  npcs.push({ x: 17, y: 7, entityId: 'guard2' });          // Guard at north gate (right side, off road)
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
   npcs.push({ x: 5, y: 9, entityId: 'merchant' });          // Merchant at market stall
   npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)
