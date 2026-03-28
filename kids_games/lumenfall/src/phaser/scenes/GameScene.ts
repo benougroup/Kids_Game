@@ -84,6 +84,17 @@ export class GameScene extends Phaser.Scene {
   create(): void {
     // Load initial map
     this.loadMap('test_town', 15, 14);
+    
+    // Expose debug API globally
+    (window as any).lumenfall = {
+      getPlayerPos: () => this.player?.getPosition(),
+      getPlayerTile: () => {
+        const p = this.player?.getPosition();
+        return p ? { tileX: Math.floor(p.x/64), tileY: Math.floor(p.y/64) } : null;
+      },
+      isWalkable: (tx: number, ty: number) => this.currentMapBuilder?.isWalkable(tx*64+32, ty*64+32),
+      teleport: (tx: number, ty: number) => this.player?.setPosition(tx*64+32, ty*64+32),
+    };
 
     // Set up keyboard input
     this.cursors = this.input.keyboard!.createCursorKeys();
