@@ -80,7 +80,7 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     // Load initial map
-    this.loadMap('test_town', 15, 12);
+    this.loadMap('test_town', 15, 14);
 
     // Set up keyboard input
     this.cursors = this.input.keyboard!.createCursorKeys();
@@ -305,7 +305,6 @@ export class GameScene extends Phaser.Scene {
     const worldX = pointer.worldX;
     const worldY = pointer.worldY;
     const walkable = this.currentMapBuilder.isWalkable(worldX, worldY, DEFAULT_FLAGS);
-    console.log(`[CLICK] screen=(${pointer.x.toFixed(0)},${pointer.y.toFixed(0)}) world=(${worldX.toFixed(0)},${worldY.toFixed(0)}) walkable=${walkable}`);
     
     if (walkable) {
       this.clickTarget = { x: worldX, y: worldY };

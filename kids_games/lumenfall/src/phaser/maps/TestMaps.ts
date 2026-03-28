@@ -135,7 +135,9 @@ export function createTestTownData(): MapData {
   });
 
   // --- OBJECTS: Fountain in plaza center ---
-  objectLayer.push({ x: 14, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 2, heightTiles: 2 });
+  // Fountain at (13,9) covering tiles (13-15, 9-11) - 3x3 display, center of stone plaza
+  // Player spawns at (15,13) which is south of the fountain, fully walkable
+  objectLayer.push({ x: 13, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3 });
 
   // --- OBJECTS: Well ---
   objectLayer.push({ x: 8, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2 });
@@ -155,19 +157,21 @@ export function createTestTownData(): MapData {
   objectLayer.push({ x: 8, y: 15, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 1 });
 
   // --- STRUCTURES: Buildings ---
+  // Building sprites are 384x256px (3:2 ratio). Using widthTiles:3, heightTiles:2 = 192x128px
+  // preserves the correct aspect ratio so tops/flags are not cut off.
   // Inn (top-left area)
-  structureLayer.push({ x: 4, y: 4, frame: 'tavern_blue_roof', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 3 });
+  structureLayer.push({ x: 4, y: 4, frame: 'tavern_blue_roof', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Blacksmith (top-right area)
-  structureLayer.push({ x: 22, y: 4, frame: 'blacksmith_forge_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 3 });
+  structureLayer.push({ x: 22, y: 4, frame: 'blacksmith_forge_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Market (left-center)
-  structureLayer.push({ x: 4, y: 13, frame: 'market_food_building', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 3 });
+  structureLayer.push({ x: 4, y: 13, frame: 'market_food_building', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Magic Shop (right-center)
-  structureLayer.push({ x: 22, y: 13, frame: 'magic_shop_crystal', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 3 });
+  structureLayer.push({ x: 22, y: 13, frame: 'magic_shop_crystal', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Chapel (bottom-left)
-  structureLayer.push({ x: 4, y: 19, frame: 'chapel_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 3 });
+  structureLayer.push({ x: 4, y: 19, frame: 'chapel_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Alchemy shop (bottom-right)
-  structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 3 });
-  // Watchtower near north exit
+  structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  // Watchtower near north exit (384x256 = 3:2, use widthTiles:2, heightTiles:1 = 128x64)
   structureLayer.push({ x: 12, y: 2, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 2, heightTiles: 2 });
   structureLayer.push({ x: 16, y: 2, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 2, heightTiles: 2 });
 
@@ -176,7 +180,7 @@ export function createTestTownData(): MapData {
   npcs.push({ x: 16, y: 3, entityId: 'guard2' });          // Guard at north gate
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
   npcs.push({ x: 8, y: 9, entityId: 'merchant' });         // Merchant at market
-  npcs.push({ x: 14, y: 10, entityId: 'elder' });          // Elder at fountain
+  npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)
   npcs.push({ x: 22, y: 14, entityId: 'scholar' });        // Scholar at magic shop
   npcs.push({ x: 10, y: 13, entityId: 'child' });          // Child wandering
   npcs.push({ x: 22, y: 5, entityId: 'blacksmith' });      // Blacksmith at forge

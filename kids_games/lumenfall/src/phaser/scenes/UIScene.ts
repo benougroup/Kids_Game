@@ -13,9 +13,13 @@ export class UIScene extends Phaser.Scene {
   
   private inventoryPanel!: Phaser.GameObjects.Container;
   private inventoryVisible: boolean = false;
+
+  private mapPanel!: Phaser.GameObjects.Container;
+  private mapVisible: boolean = false;
   
   private actionButton!: Phaser.GameObjects.Container;
   private bagButton!: Phaser.GameObjects.Container;
+  private mapButton!: Phaser.GameObjects.Container;
 
   // Player stats
   private hp: number = 6;
@@ -29,7 +33,6 @@ export class UIScene extends Phaser.Scene {
 
   create(): void {
     const width = this.scale.width;
-    // height used in buttons
 
     // Create HUD background (top bar)
     const hudBg = this.add.rectangle(0, 0, width, 80, 0x000000, 0.8);
@@ -88,11 +91,14 @@ export class UIScene extends Phaser.Scene {
     this.timeText.setScrollFactor(0);
     this.timeText.setDepth(2003);
 
-    // Create buttons (moved up from bottom edge)
+    // Create buttons (bottom-right: MAP, ACT, BAG)
     this.createButtons();
 
     // Create inventory panel (hidden by default)
     this.createInventoryPanel();
+
+    // Create map panel (hidden by default)
+    this.createMapPanel();
 
     // Listen for time updates from GameScene
     const gameScene = this.scene.get('GameScene');
@@ -113,9 +119,9 @@ export class UIScene extends Phaser.Scene {
     const width = this.scale.width;
     const height = this.scale.height;
 
-    // BAG button (bottom-right, moved up)
-    const bagX = width - 90;
-    const bagY = height - 120; // Moved up from edge
+    // BAG button (bottom-right)
+    const bagX = width - 50;
+    const bagY = height - 120;
 
     this.bagButton = this.add.container(bagX, bagY);
     this.bagButton.setScrollFactor(0);
@@ -136,9 +142,9 @@ export class UIScene extends Phaser.Scene {
     this.bagButton.setInteractive();
     this.bagButton.on('pointerdown', () => this.toggleInventory());
 
-    // ACT button (left of BAG, moved up)
-    const actX = width - 180;
-    const actY = height - 120; // Moved up from edge
+    // ACT button (left of BAG)
+    const actX = width - 140;
+    const actY = height - 120;
 
     this.actionButton = this.add.container(actX, actY);
     this.actionButton.setScrollFactor(0);
@@ -158,6 +164,29 @@ export class UIScene extends Phaser.Scene {
     this.actionButton.setSize(70, 70);
     this.actionButton.setInteractive();
     this.actionButton.on('pointerdown', () => this.handleAction());
+
+    // MAP button (left of ACT)
+    const mapX = width - 230;
+    const mapY = height - 120;
+
+    this.mapButton = this.add.container(mapX, mapY);
+    this.mapButton.setScrollFactor(0);
+    this.mapButton.setDepth(2010);
+
+    const mapBg = this.add.rectangle(0, 0, 70, 70, 0x27ae60, 1);
+    mapBg.setStrokeStyle(3, 0xffffff);
+    const mapText = this.add.text(0, 0, 'MAP', {
+      fontSize: '16px',
+      color: '#ffffff',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
+    });
+    mapText.setOrigin(0.5);
+
+    this.mapButton.add([mapBg, mapText]);
+    this.mapButton.setSize(70, 70);
+    this.mapButton.setInteractive();
+    this.mapButton.on('pointerdown', () => this.toggleMap());
   }
 
   private createInventoryPanel(): void {
@@ -213,9 +242,134 @@ export class UIScene extends Phaser.Scene {
     this.inventoryPanel.add([overlay, box, title, itemsText, closeBtn]);
   }
 
+  private createMapPanel(): void {
+    const width = this.scale.width;
+    const height = this.scale.height;
+
+    this.mapPanel = this.add.container(0, 0);
+    this.mapPanel.setScrollFactor(0);
+    this.mapPanel.setDepth(3000);
+    this.mapPanel.setVisible(false);
+
+    // Full-screen overlay
+    const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.85);
+    overlay.setOrigin(0, 0);
+    overlay.setInteractive();
+    overlay.on('pointerdown', () => this.toggleMap());
+
+    // Map panel box
+    const boxWidth = Math.min(560, width - 40);
+    const boxHeight = Math.min(460, height - 80);
+    const boxX = width / 2;
+    const boxY = height / 2;
+
+    const box = this.add.rectangle(boxX, boxY, boxWidth, boxHeight, 0x1a2a3a, 1);
+    box.setStrokeStyle(4, 0x4a90e2);
+
+    const title = this.add.text(boxX, boxY - boxHeight / 2 + 30, 'World Map', {
+      fontSize: '26px',
+      color: '#4a90e2',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
+    });
+    title.setOrigin(0.5);
+
+    // Draw a simple schematic map
+    const mapGraphics = this.add.graphics();
+    const mapLeft = boxX - boxWidth / 2 + 30;
+    const mapTop = boxY - boxHeight / 2 + 60;
+    const mapW = boxWidth - 60;
+    const mapH = boxHeight - 120;
+
+    // Background
+    mapGraphics.fillStyle(0x2d5a27, 1);
+    mapGraphics.fillRect(mapLeft, mapTop, mapW, mapH);
+
+    // Town (center)
+    const townX = mapLeft + mapW * 0.5;
+    const townY = mapTop + mapH * 0.55;
+    mapGraphics.fillStyle(0x8b7355, 1);
+    mapGraphics.fillRect(townX - 30, townY - 20, 60, 40);
+    mapGraphics.lineStyle(2, 0xffd700, 1);
+    mapGraphics.strokeRect(townX - 30, townY - 20, 60, 40);
+
+    // Forest (north)
+    const forestX = mapLeft + mapW * 0.5;
+    const forestY = mapTop + mapH * 0.2;
+    mapGraphics.fillStyle(0x1a5c1a, 1);
+    mapGraphics.fillRect(forestX - 25, forestY - 15, 50, 30);
+    mapGraphics.lineStyle(2, 0x44aa44, 1);
+    mapGraphics.strokeRect(forestX - 25, forestY - 15, 50, 30);
+
+    // Dungeon (south)
+    const dungeonX = mapLeft + mapW * 0.5;
+    const dungeonY = mapTop + mapH * 0.85;
+    mapGraphics.fillStyle(0x3a1a1a, 1);
+    mapGraphics.fillRect(dungeonX - 25, dungeonY - 15, 50, 30);
+    mapGraphics.lineStyle(2, 0xaa4444, 1);
+    mapGraphics.strokeRect(dungeonX - 25, dungeonY - 15, 50, 30);
+
+    // Roads connecting areas
+    mapGraphics.lineStyle(2, 0xc8a96e, 0.8);
+    mapGraphics.lineBetween(townX, townY - 20, forestX, forestY + 15);
+    mapGraphics.lineBetween(townX, townY + 20, dungeonX, dungeonY - 15);
+
+    // Map labels
+    const townLabel = this.add.text(townX, townY, 'Bright\nHollow', {
+      fontSize: '10px', color: '#ffffff', fontFamily: 'Arial', fontStyle: 'bold', align: 'center',
+    });
+    townLabel.setOrigin(0.5);
+
+    const forestLabel = this.add.text(forestX, forestY, 'Whispering\nForest', {
+      fontSize: '10px', color: '#aaffaa', fontFamily: 'Arial', align: 'center',
+    });
+    forestLabel.setOrigin(0.5);
+
+    const dungeonLabel = this.add.text(dungeonX, dungeonY, 'Shadow\nCaverns', {
+      fontSize: '10px', color: '#ffaaaa', fontFamily: 'Arial', align: 'center',
+    });
+    dungeonLabel.setOrigin(0.5);
+
+    // Player position indicator (YOU ARE HERE)
+    mapGraphics.fillStyle(0xffff00, 1);
+    mapGraphics.fillCircle(townX + 5, townY - 5, 5);
+
+    const youLabel = this.add.text(townX + 14, townY - 5, '← You', {
+      fontSize: '10px', color: '#ffff00', fontFamily: 'Arial', fontStyle: 'bold',
+    });
+    youLabel.setOrigin(0, 0.5);
+
+    // Close button
+    const closeBtn = this.add.text(boxX, boxY + boxHeight / 2 - 30, 'Close Map', {
+      fontSize: '18px',
+      color: '#ffffff',
+      fontFamily: 'Arial',
+      backgroundColor: '#27ae60',
+      padding: { x: 20, y: 8 },
+    });
+    closeBtn.setOrigin(0.5);
+    closeBtn.setInteractive();
+    closeBtn.on('pointerdown', () => this.toggleMap());
+
+    this.mapPanel.add([overlay, box, title, mapGraphics, townLabel, forestLabel, dungeonLabel, youLabel, closeBtn]);
+  }
+
   private toggleInventory(): void {
     this.inventoryVisible = !this.inventoryVisible;
     this.inventoryPanel.setVisible(this.inventoryVisible);
+    if (this.inventoryVisible && this.mapVisible) {
+      this.mapVisible = false;
+      this.mapPanel.setVisible(false);
+    }
+  }
+
+  private toggleMap(): void {
+    this.mapVisible = !this.mapVisible;
+    this.mapPanel.setVisible(this.mapVisible);
+    if (this.mapVisible && this.inventoryVisible) {
+      this.inventoryVisible = false;
+      this.inventoryPanel.setVisible(false);
+    }
   }
 
   private handleAction(): void {
@@ -252,10 +406,13 @@ export class UIScene extends Phaser.Scene {
 
     // Reposition buttons
     if (this.bagButton) {
-      this.bagButton.setPosition(width - 90, height - 120);
+      this.bagButton.setPosition(width - 50, height - 120);
     }
     if (this.actionButton) {
-      this.actionButton.setPosition(width - 180, height - 120);
+      this.actionButton.setPosition(width - 140, height - 120);
+    }
+    if (this.mapButton) {
+      this.mapButton.setPosition(width - 230, height - 120);
     }
 
     // Reposition time text
