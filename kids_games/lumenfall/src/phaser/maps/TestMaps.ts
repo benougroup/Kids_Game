@@ -186,17 +186,16 @@ export function createTestTownData(): MapData {
   // Alchemy shop (bottom-right)
   structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Watchtower near north exit
-  // Collision at row 7 (visible when player is at rows 8-10)
-  // yOffset: -128 renders the sprite 2 tiles higher (rows 5-8) so the full tower is visible
+  // Collision at row 9 (blocks cols 10-12 and 17-19 at row 9)
+  // yOffset: -64 renders the sprite 1 tile higher (rows 8-9) so the full tower is visible
+  // when player is at rows 9-11 (camera top ~y=471, tower at y=512-640)
   // widthTiles:3, heightTiles:2 = 192x128px display (correct 3:2 aspect ratio)
   // Watchtowers at cols 10 and 17 to widen the gate corridor (cols 13-16 clear)
-  structureLayer.push({ x: 10, y: 7, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -128 });
-  structureLayer.push({ x: 17, y: 7, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -128 });
-  // Fence posts at gate entrance (cols 13 and 16, row 8 - flanking the road)
-  // At row 8 these are visible when player is at rows 8-10
+  structureLayer.push({ x: 10, y: 9, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -64 });
+  structureLayer.push({ x: 17, y: 9, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -64 });
+  // Fence posts at gate entrance (cols 13 and 16, rows 8-9 - flanking the road)
   objectLayer.push({ x: 13, y: 8, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
   objectLayer.push({ x: 16, y: 8, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-  // Additional fence posts at row 9 to create a longer fence line
   objectLayer.push({ x: 13, y: 9, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
   objectLayer.push({ x: 16, y: 9, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
