@@ -142,7 +142,8 @@ export function createTestTownData(): MapData {
   // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
   // Placed at col 6, row 11: moved south so top is not cut by HUD when player is nearby
   // Collision covers tiles (6-8, 11-13) - 3x3 tile footprint
-  objectLayer.push({ x: 6, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
+  // yOffset: -64 shifts sprite up 1 tile so top is visible when player approaches from south
+  objectLayer.push({ x: 6, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256, yOffset: -64 });
 
   // --- OBJECTS: Well ---
   // well_large sprite is 192x170px; placed at col 5 away from fountain

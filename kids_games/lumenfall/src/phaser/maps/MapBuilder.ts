@@ -45,6 +45,7 @@ export interface MapTileEntry {
   pixelHeight?: number;   // Override display height in pixels (for correct aspect ratio)
   collisionW?: number;    // Collision footprint width in tiles (defaults to widthTiles)
   collisionH?: number;    // Collision footprint height in tiles (defaults to heightTiles)
+  yOffset?: number;       // Pixel offset to shift sprite upward (negative = up) relative to tile position
 }
 
 export interface MapEntityEntry {
@@ -136,7 +137,8 @@ export class MapBuilder {
       const w = (entry.widthTiles ?? 1) * tileSize;
       const h = (entry.heightTiles ?? 1) * tileSize;
       
-      const sprite = this.scene.add.sprite(x, y, entry.atlas, entry.frame);
+      const yOff = entry.yOffset ?? 0;
+      const sprite = this.scene.add.sprite(x, y + yOff, entry.atlas, entry.frame);
       sprite.setOrigin(0, 0);
       // Use pixelWidth/pixelHeight if specified (for aspect-ratio-correct rendering)
       // Otherwise fall back to tile-based sizing
