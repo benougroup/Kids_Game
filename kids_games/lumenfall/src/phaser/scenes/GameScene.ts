@@ -304,8 +304,10 @@ export class GameScene extends Phaser.Scene {
     
     const worldX = pointer.worldX;
     const worldY = pointer.worldY;
+    const walkable = this.currentMapBuilder.isWalkable(worldX, worldY, DEFAULT_FLAGS);
+    console.log(`[CLICK] screen=(${pointer.x.toFixed(0)},${pointer.y.toFixed(0)}) world=(${worldX.toFixed(0)},${worldY.toFixed(0)}) walkable=${walkable}`);
     
-    if (this.currentMapBuilder.isWalkable(worldX, worldY, DEFAULT_FLAGS)) {
+    if (walkable) {
       this.clickTarget = { x: worldX, y: worldY };
       this.drawClickMarker(worldX, worldY);
     }
