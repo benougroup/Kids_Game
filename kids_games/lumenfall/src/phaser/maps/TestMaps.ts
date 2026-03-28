@@ -140,10 +140,9 @@ export function createTestTownData(): MapData {
 
   // --- OBJECTS: Fountain in plaza center ---
   // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
-  // Placed at col 6, row 9: sprite ends at x = 6*64 + 307 = 691px = col 10.8
-  // Moved further west to avoid player drift toward lamp posts
-  // Collision covers tiles (6-8, 9-11) - 3x3 tile footprint
-  objectLayer.push({ x: 6, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
+  // Placed at col 6, row 11: moved south so top is not cut by HUD when player is nearby
+  // Collision covers tiles (6-8, 11-13) - 3x3 tile footprint
+  objectLayer.push({ x: 6, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
 
   // --- OBJECTS: Well ---
   // well_large sprite is 192x170px; placed at col 5 away from fountain
@@ -167,7 +166,7 @@ export function createTestTownData(): MapData {
   // --- OBJECTS: Market stalls ---
   // market_stall sprites are 192x170px; placed at col 5 (left side)
   // collision is 2x1 (stall footprint)
-  objectLayer.push({ x: 5, y: 8, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
+  objectLayer.push({ x: 5, y: 9, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
   objectLayer.push({ x: 5, y: 15, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
 
   // --- STRUCTURES: Buildings ---
@@ -191,15 +190,16 @@ export function createTestTownData(): MapData {
   // Watchtowers at cols 10 and 17 to widen the gate corridor (cols 13-16 clear)
   structureLayer.push({ x: 10, y: 5, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   structureLayer.push({ x: 17, y: 5, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  // Add fence posts at the gate entrance (cols 13 and 16, rows 3-4)
-  objectLayer.push({ x: 13, y: 3, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-  objectLayer.push({ x: 16, y: 3, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  // Add fence posts at the gate entrance (cols 13 and 16, row 7 - just south of watchtower base)
+  // Moved from row 3 to row 7 so they are visible when player approaches the gate
+  objectLayer.push({ x: 13, y: 7, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 16, y: 7, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
   // --- NPCs ---
   npcs.push({ x: 12, y: 7, entityId: 'guard' });           // Guard at north gate (left side, off road)
   npcs.push({ x: 17, y: 7, entityId: 'guard2' });          // Guard at north gate (right side, off road)
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
-  npcs.push({ x: 5, y: 9, entityId: 'merchant' });          // Merchant at market stall
+  npcs.push({ x: 5, y: 10, entityId: 'merchant' });         // Merchant at market stall
   npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)
   npcs.push({ x: 22, y: 14, entityId: 'scholar' });        // Scholar at magic shop
   npcs.push({ x: 10, y: 13, entityId: 'child' });          // Child wandering
