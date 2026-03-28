@@ -153,7 +153,9 @@ export function createTestTownData(): MapData {
   // --- OBJECTS: Lamp posts along roads ---
   // lamp_post sprite is 192x170px (1.13:1 aspect ratio)
   // Display at native pixel size; collision is 1x1 (just the base tile)
-  const lampPosns = [{ x: 13, y: 5 }, { x: 16, y: 5 }, { x: 13, y: 19 }, { x: 16, y: 19 }];
+  // Lamp posts moved to cols 12 and 17 (2 tiles from road at cols 14-15)
+  // This gives 82px clearance from the player's collision box edges
+  const lampPosns = [{ x: 12, y: 5 }, { x: 17, y: 5 }, { x: 12, y: 19 }, { x: 17, y: 19 }];
   lampPosns.forEach(p => {
     objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
   });
@@ -185,12 +187,15 @@ export function createTestTownData(): MapData {
   structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Watchtower near north exit (384x256 = 3:2, use widthTiles:3, heightTiles:2 = 192x128px)
   // Placed at row 3 so the full tower is visible above the cliff border
-  structureLayer.push({ x: 11, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  structureLayer.push({ x: 16, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  // Watchtowers moved to cols 10 and 17 to widen the gate corridor
+  // Watchtower 1: cols 10-12, rows 3-4 (leaves cols 13-16 clear for the gate)
+  // Watchtower 2: cols 17-19, rows 3-4 (same)
+  structureLayer.push({ x: 10, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 17, y: 3, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
 
   // --- NPCs ---
-  npcs.push({ x: 13, y: 3, entityId: 'guard' });           // Guard at north gate
-  npcs.push({ x: 16, y: 3, entityId: 'guard2' });          // Guard at north gate
+  npcs.push({ x: 13, y: 4, entityId: 'guard' });           // Guard at north gate (left)
+  npcs.push({ x: 16, y: 4, entityId: 'guard2' });          // Guard at north gate (right)
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
   npcs.push({ x: 5, y: 9, entityId: 'merchant' });          // Merchant at market stall
   npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)

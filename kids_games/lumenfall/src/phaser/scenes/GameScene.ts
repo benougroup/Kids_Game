@@ -50,7 +50,7 @@ export class GameScene extends Phaser.Scene {
   private clickMarker: Phaser.GameObjects.Graphics | null = null;
   
   // Player collision half-size (must match Player.ts setSize)
-  private readonly PLAYER_HALF: number = 14; // 28px collision box / 2
+  private readonly PLAYER_HALF: number = 12; // 24px collision box / 2 (reduced for better navigation)
   
   // Transition cooldown
   private lastTransitionTime: number = 0;
