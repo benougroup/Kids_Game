@@ -142,8 +142,9 @@ export function createTestTownData(): MapData {
   // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
   // Placed at col 6, row 11: moved south so top is not cut by HUD when player is nearby
   // Collision covers tiles (6-8, 11-13) - 3x3 tile footprint
-  // yOffset: -64 shifts sprite up 1 tile so top is visible when player approaches from south
-  objectLayer.push({ x: 6, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256, yOffset: -64 });
+  // yOffset: -128 shifts sprite up 2 tiles so full fountain is visible when player approaches from south
+  // Collision at row 12 (2 rows south of visual top) - 3x3 tile footprint at rows 12-14
+  objectLayer.push({ x: 6, y: 13, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256, yOffset: -128 });
 
   // --- OBJECTS: Well ---
   // well_large sprite is 192x170px; placed at col 5 away from fountain
@@ -201,7 +202,7 @@ export function createTestTownData(): MapData {
   npcs.push({ x: 17, y: 7, entityId: 'guard2' });          // Guard at north gate (right side, off road)
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
   npcs.push({ x: 5, y: 10, entityId: 'merchant' });         // Merchant at market stall
-  npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)
+  npcs.push({ x: 15, y: 14, entityId: 'elder' });          // Elder near fountain (south-east)
   npcs.push({ x: 22, y: 14, entityId: 'scholar' });        // Scholar at magic shop
   npcs.push({ x: 10, y: 13, entityId: 'child' });          // Child wandering
   npcs.push({ x: 22, y: 5, entityId: 'blacksmith' });      // Blacksmith at forge
