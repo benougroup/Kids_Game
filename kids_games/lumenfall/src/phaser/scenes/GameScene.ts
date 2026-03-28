@@ -420,13 +420,14 @@ export class GameScene extends Phaser.Scene {
     const worldX = pointer.worldX;
     const worldY = pointer.worldY;
 
-    // Allow clicking anywhere — moveTowardsClick will handle wall-sliding
-    // Only reject clicks that are completely out of bounds
+    // Clamp click coordinates to map bounds
+    // (camera has -64 offset so clicks near edges can be out of bounds)
     const mapW = this.currentMapBuilder.getWidth();
     const mapH = this.currentMapBuilder.getHeight();
-    if (worldX < 0 || worldY < 0 || worldX > mapW || worldY > mapH) return;
+    const clampedX = Math.max(0, Math.min(mapW - 1, worldX));
+    const clampedY = Math.max(0, Math.min(mapH - 1, worldY));
 
-    this.clickTarget = { x: worldX, y: worldY };
+    this.clickTarget = { x: clampedX, y: clampedY };
     this.drawClickMarker(worldX, worldY);
   }
 
