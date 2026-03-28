@@ -115,14 +115,18 @@ export function createTestTownData(): MapData {
     { x: 20, y: 3 }, { x: 22, y: 5 }, { x: 25, y: 4 }, { x: 27, y: 6 },
     { x: 21, y: 19 }, { x: 24, y: 21 }, { x: 26, y: 19 }, { x: 27, y: 22 },
   ];
+  // tree_oak_large sprite is 192x170px
+  // Display at native pixel size; collision is 1x1 (just the trunk tile)
   treePosns.forEach(p => {
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 2 });
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
   });
 
   // Pine trees near border
   const pinePosns = [{ x: 9, y: 4 }, { x: 11, y: 3 }, { x: 18, y: 4 }, { x: 20, y: 3 }];
+  // tree_pine_tall sprite is 192x170px
+  // Display at native pixel size; collision is 1x1 (just the trunk tile)
   pinePosns.forEach(p => {
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 2 });
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
   });
 
   // --- OBJECTS: Bushes ---
@@ -135,18 +139,23 @@ export function createTestTownData(): MapData {
   });
 
   // --- OBJECTS: Fountain in plaza center ---
-  // Fountain at (10,9) covering tiles (10-12, 9-11) - 3x3 display
+  // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
+  // Using pixelWidth:307, pixelHeight:256 for correct proportions
+  // Collision covers tiles (10-12, 9-11) - 3x3 tile footprint
   // Road runs through cols 13-15; fountain at col 10 keeps road completely clear.
   // Player spawns at (15,14) which is on the road south of the crossing, fully walkable.
-  objectLayer.push({ x: 10, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3 });
+  objectLayer.push({ x: 10, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
 
   // --- OBJECTS: Well ---
-  objectLayer.push({ x: 8, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2 });
+  // well_large sprite is 192x170px; collision is 1x1 (just the well base tile)
+  objectLayer.push({ x: 8, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
 
   // --- OBJECTS: Lamp posts along roads ---
+  // lamp_post sprite is 192x170px (1.13:1 aspect ratio)
+  // Display at native pixel size; collision is 1x1 (just the base tile)
   const lampPosns = [{ x: 13, y: 5 }, { x: 16, y: 5 }, { x: 13, y: 19 }, { x: 16, y: 19 }];
   lampPosns.forEach(p => {
-    objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2 });
+    objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
   });
 
   // --- OBJECTS: Signs at road junctions ---
@@ -154,8 +163,9 @@ export function createTestTownData(): MapData {
   objectLayer.push({ x: 16, y: 11, frame: 'sign_forest', atlas: 'objects_props_v002', height: 1 });
 
   // --- OBJECTS: Market stalls ---
-  objectLayer.push({ x: 8, y: 8, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 1 });
-  objectLayer.push({ x: 8, y: 15, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 1 });
+  // market_stall sprites are 192x170px; collision is 2x1 (stall footprint)
+  objectLayer.push({ x: 8, y: 8, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
+  objectLayer.push({ x: 8, y: 15, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
 
   // --- STRUCTURES: Buildings ---
   // Building sprites are 384x256px (3:2 ratio). Using widthTiles:3, heightTiles:2 = 192x128px

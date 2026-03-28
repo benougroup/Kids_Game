@@ -41,6 +41,10 @@ export interface MapTileEntry {
   slowFactor?: number;
   widthTiles?: number;
   heightTiles?: number;
+  pixelWidth?: number;    // Override display width in pixels (for correct aspect ratio)
+  pixelHeight?: number;   // Override display height in pixels (for correct aspect ratio)
+  collisionW?: number;    // Collision footprint width in tiles (defaults to widthTiles)
+  collisionH?: number;    // Collision footprint height in tiles (defaults to heightTiles)
 }
 
 export interface MapEntityEntry {
@@ -134,7 +138,11 @@ export class MapBuilder {
       
       const sprite = this.scene.add.sprite(x, y, entry.atlas, entry.frame);
       sprite.setOrigin(0, 0);
-      sprite.setDisplaySize(w, h);
+      // Use pixelWidth/pixelHeight if specified (for aspect-ratio-correct rendering)
+      // Otherwise fall back to tile-based sizing
+      const displayW = entry.pixelWidth ?? w;
+      const displayH = entry.pixelHeight ?? h;
+      sprite.setDisplaySize(displayW, displayH);
       sprite.setDepth(baseDepth + entry.y);
       this.allSprites.push(sprite);
       
@@ -148,9 +156,12 @@ export class MapBuilder {
         slowFactor: entry.slowFactor,
       };
       
-      // Mark all covered tiles
-      for (let dy = 0; dy < (entry.heightTiles ?? 1); dy++) {
-        for (let dx = 0; dx < (entry.widthTiles ?? 1); dx++) {
+      // Mark collision tiles - use collisionW/collisionH if specified,
+      // otherwise fall back to widthTiles/heightTiles
+      const collW = entry.collisionW ?? (entry.widthTiles ?? 1);
+      const collH = entry.collisionH ?? (entry.heightTiles ?? 1);
+      for (let dy = 0; dy < collH; dy++) {
+        for (let dx = 0; dx < collW; dx++) {
           this.tileGrid.setTile(entry.x + dx, entry.y + dy, tileData);
         }
       }
