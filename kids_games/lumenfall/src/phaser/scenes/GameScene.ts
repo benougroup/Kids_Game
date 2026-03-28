@@ -294,6 +294,7 @@ export class GameScene extends Phaser.Scene {
       this.player.playWalkAnimation(vx, vy);
     } else {
       // Try wall-sliding: attempt X-only or Y-only movement
+      const step = speed * (delta / 1000);
       const canMoveX = this.currentMapBuilder.isWalkable(nextX, playerPos.y, DEFAULT_FLAGS);
       const canMoveY = this.currentMapBuilder.isWalkable(playerPos.x, nextY, DEFAULT_FLAGS);
       if (canMoveX) {
@@ -303,11 +304,53 @@ export class GameScene extends Phaser.Scene {
         this.player.sprite.setVelocity(0, vy);
         this.player.playWalkAnimation(0, vy);
       } else {
-        // Truly blocked — stop and cancel target
-        this.clickTarget = null;
-        this.clearClickMarker();
-        this.player.sprite.setVelocity(0, 0);
-        this.player.playIdleAnimation();
+        // Both primary slides blocked — try perpendicular slides to navigate around obstacle
+        const canSlideRight = this.currentMapBuilder.isWalkable(playerPos.x + step, playerPos.y, DEFAULT_FLAGS);
+        const canSlideLeft  = this.currentMapBuilder.isWalkable(playerPos.x - step, playerPos.y, DEFAULT_FLAGS);
+        const canSlideDown  = this.currentMapBuilder.isWalkable(playerPos.x, playerPos.y + step, DEFAULT_FLAGS);
+        const canSlideUp    = this.currentMapBuilder.isWalkable(playerPos.x, playerPos.y - step, DEFAULT_FLAGS);
+        // Pick the perpendicular direction that gets us closer to the target
+        if (Math.abs(dy) > Math.abs(dx)) {
+          // Primarily moving vertically — try horizontal escape
+          if (canSlideRight && dx >= 0) {
+            this.player.sprite.setVelocity(speed, 0);
+            this.player.playWalkAnimation(speed, 0);
+          } else if (canSlideLeft && dx <= 0) {
+            this.player.sprite.setVelocity(-speed, 0);
+            this.player.playWalkAnimation(-speed, 0);
+          } else if (canSlideRight) {
+            this.player.sprite.setVelocity(speed, 0);
+            this.player.playWalkAnimation(speed, 0);
+          } else if (canSlideLeft) {
+            this.player.sprite.setVelocity(-speed, 0);
+            this.player.playWalkAnimation(-speed, 0);
+          } else {
+            this.clickTarget = null;
+            this.clearClickMarker();
+            this.player.sprite.setVelocity(0, 0);
+            this.player.playIdleAnimation();
+          }
+        } else {
+          // Primarily moving horizontally — try vertical escape
+          if (canSlideDown && dy >= 0) {
+            this.player.sprite.setVelocity(0, speed);
+            this.player.playWalkAnimation(0, speed);
+          } else if (canSlideUp && dy <= 0) {
+            this.player.sprite.setVelocity(0, -speed);
+            this.player.playWalkAnimation(0, -speed);
+          } else if (canSlideDown) {
+            this.player.sprite.setVelocity(0, speed);
+            this.player.playWalkAnimation(0, speed);
+          } else if (canSlideUp) {
+            this.player.sprite.setVelocity(0, -speed);
+            this.player.playWalkAnimation(0, -speed);
+          } else {
+            this.clickTarget = null;
+            this.clearClickMarker();
+            this.player.sprite.setVelocity(0, 0);
+            this.player.playIdleAnimation();
+          }
+        }
       }
     }
   }
