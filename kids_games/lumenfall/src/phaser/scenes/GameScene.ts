@@ -162,7 +162,8 @@ export class GameScene extends Phaser.Scene {
     // Camera setup
     this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
     this.cameras.main.setZoom(2.0);
-    this.cameras.main.setBounds(0, 0, mapW, mapH);
+    // Add top padding (64px = 1 tile) so buildings near the top edge are not hidden behind the HUD
+    this.cameras.main.setBounds(-64, -64, mapW + 128, mapH + 128);
     this.physics.world.setBounds(0, 0, mapW, mapH);
     
     // Ambient light for this map
