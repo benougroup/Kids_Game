@@ -140,11 +140,10 @@ export function createTestTownData(): MapData {
 
   // --- OBJECTS: Fountain in plaza center ---
   // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
-  // Placed at col 6, row 11: moved south so top is not cut by HUD when player is nearby
-  // Collision covers tiles (6-8, 11-13) - 3x3 tile footprint
-  // yOffset: -128 shifts sprite up 2 tiles so full fountain is visible when player approaches from south
-  // Collision at row 12 (2 rows south of visual top) - 3x3 tile footprint at rows 12-14
-  objectLayer.push({ x: 6, y: 13, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256, yOffset: -128 });
+  // Displayed at 192x160px (3x2.5 tiles) - fits within 3x3 tile collision area
+  // Collision at rows 10-12, cols 6-8 (3x3 tile footprint)
+  // yOffset: -64 shifts sprite up 1 tile so top is visible when player approaches from south
+  objectLayer.push({ x: 6, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 160, yOffset: -64 });
 
   // --- OBJECTS: Well ---
   // well_large sprite is 192x170px; placed at col 5 away from fountain
@@ -186,16 +185,20 @@ export function createTestTownData(): MapData {
   structureLayer.push({ x: 4, y: 19, frame: 'chapel_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
   // Alchemy shop (bottom-right)
   structureLayer.push({ x: 22, y: 19, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  // Watchtower near north exit (384x256 = 3:2, use widthTiles:3, heightTiles:2 = 192x128px)
-  // Moved to row 5 so the full tower is visible when player approaches from south
-  // (at row 3 the tower top was cut off at the camera edge)
+  // Watchtower near north exit
+  // Collision at row 7 (visible when player is at rows 8-10)
+  // yOffset: -128 renders the sprite 2 tiles higher (rows 5-8) so the full tower is visible
+  // widthTiles:3, heightTiles:2 = 192x128px display (correct 3:2 aspect ratio)
   // Watchtowers at cols 10 and 17 to widen the gate corridor (cols 13-16 clear)
-  structureLayer.push({ x: 10, y: 5, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  structureLayer.push({ x: 17, y: 5, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
-  // Add fence posts at the gate entrance (cols 13 and 16, row 7 - just south of watchtower base)
-  // Moved from row 3 to row 7 so they are visible when player approaches the gate
-  objectLayer.push({ x: 13, y: 7, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-  objectLayer.push({ x: 16, y: 7, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  structureLayer.push({ x: 10, y: 7, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -128 });
+  structureLayer.push({ x: 17, y: 7, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -128 });
+  // Fence posts at gate entrance (cols 13 and 16, row 8 - flanking the road)
+  // At row 8 these are visible when player is at rows 8-10
+  objectLayer.push({ x: 13, y: 8, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 16, y: 8, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  // Additional fence posts at row 9 to create a longer fence line
+  objectLayer.push({ x: 13, y: 9, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 16, y: 9, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
   // --- NPCs ---
   npcs.push({ x: 12, y: 7, entityId: 'guard' });           // Guard at north gate (left side, off road)
