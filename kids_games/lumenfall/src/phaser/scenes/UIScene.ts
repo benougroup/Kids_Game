@@ -120,8 +120,8 @@ export class UIScene extends Phaser.Scene {
     const height = this.scale.height;
 
     // BAG button (bottom-right)
-    const bagX = width - 50;
-    const bagY = height - 120;
+    const bagX = width - 60;
+    const bagY = height - 90;
 
     this.bagButton = this.add.container(bagX, bagY);
     this.bagButton.setScrollFactor(0);
@@ -143,8 +143,8 @@ export class UIScene extends Phaser.Scene {
     this.bagButton.on('pointerdown', () => this.toggleInventory());
 
     // ACT button (left of BAG)
-    const actX = width - 140;
-    const actY = height - 120;
+    const actX = width - 150;
+    const actY = height - 90;
 
     this.actionButton = this.add.container(actX, actY);
     this.actionButton.setScrollFactor(0);
@@ -166,8 +166,8 @@ export class UIScene extends Phaser.Scene {
     this.actionButton.on('pointerdown', () => this.handleAction());
 
     // MAP button (left of ACT)
-    const mapX = width - 230;
-    const mapY = height - 120;
+    const mapX = width - 240;
+    const mapY = height - 90;
 
     this.mapButton = this.add.container(mapX, mapY);
     this.mapButton.setScrollFactor(0);
@@ -406,13 +406,13 @@ export class UIScene extends Phaser.Scene {
 
     // Reposition buttons
     if (this.bagButton) {
-      this.bagButton.setPosition(width - 50, height - 120);
+      this.bagButton.setPosition(width - 60, height - 90);
     }
     if (this.actionButton) {
-      this.actionButton.setPosition(width - 140, height - 120);
+      this.actionButton.setPosition(width - 150, height - 90);
     }
     if (this.mapButton) {
-      this.mapButton.setPosition(width - 230, height - 120);
+      this.mapButton.setPosition(width - 240, height - 90);
     }
 
     // Reposition time text
