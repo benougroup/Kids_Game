@@ -289,12 +289,26 @@ export class GameScene extends Phaser.Scene {
     const nextY = playerPos.y + vy * (delta / 1000);
     
     if (this.currentMapBuilder.isWalkable(nextX, nextY, DEFAULT_FLAGS)) {
+      // Full movement is clear
       this.player.sprite.setVelocity(vx, vy);
       this.player.playWalkAnimation(vx, vy);
     } else {
-      this.clickTarget = null;
-      this.clearClickMarker();
-      this.player.sprite.setVelocity(0, 0);
+      // Try wall-sliding: attempt X-only or Y-only movement
+      const canMoveX = this.currentMapBuilder.isWalkable(nextX, playerPos.y, DEFAULT_FLAGS);
+      const canMoveY = this.currentMapBuilder.isWalkable(playerPos.x, nextY, DEFAULT_FLAGS);
+      if (canMoveX) {
+        this.player.sprite.setVelocity(vx, 0);
+        this.player.playWalkAnimation(vx, 0);
+      } else if (canMoveY) {
+        this.player.sprite.setVelocity(0, vy);
+        this.player.playWalkAnimation(0, vy);
+      } else {
+        // Truly blocked — stop and cancel target
+        this.clickTarget = null;
+        this.clearClickMarker();
+        this.player.sprite.setVelocity(0, 0);
+        this.player.playIdleAnimation();
+      }
     }
   }
 
