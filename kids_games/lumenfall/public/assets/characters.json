@@ -480,7 +480,7 @@
         "h": 256
       }
     },
-    "apprentice_0": {
+    "scholar_row_0": {
       "frame": {
         "x": 0,
         "y": 768,
@@ -500,7 +500,7 @@
         "h": 256
       }
     },
-    "apprentice_1": {
+    "scholar_row_1": {
       "frame": {
         "x": 256,
         "y": 768,
@@ -520,7 +520,7 @@
         "h": 256
       }
     },
-    "apprentice_2": {
+    "scholar_row_2": {
       "frame": {
         "x": 512,
         "y": 768,
@@ -540,7 +540,7 @@
         "h": 256
       }
     },
-    "apprentice_3": {
+    "scholar_row_3": {
       "frame": {
         "x": 768,
         "y": 768,
@@ -560,7 +560,7 @@
         "h": 256
       }
     },
-    "apprentice_4": {
+    "scholar_row_4": {
       "frame": {
         "x": 1024,
         "y": 768,
@@ -580,7 +580,7 @@
         "h": 256
       }
     },
-    "apprentice_5": {
+    "scholar_row_5": {
       "frame": {
         "x": 1280,
         "y": 768,
@@ -600,7 +600,7 @@
         "h": 256
       }
     },
-    "apprentice_6": {
+    "scholar_row_6": {
       "frame": {
         "x": 1536,
         "y": 768,
@@ -620,7 +620,7 @@
         "h": 256
       }
     },
-    "apprentice_7": {
+    "scholar_row_7": {
       "frame": {
         "x": 1792,
         "y": 768,
@@ -640,7 +640,7 @@
         "h": 256
       }
     },
-    "scholar_0": {
+    "merchant_row_0": {
       "frame": {
         "x": 0,
         "y": 1024,
@@ -660,7 +660,7 @@
         "h": 256
       }
     },
-    "scholar_1": {
+    "merchant_row_1": {
       "frame": {
         "x": 256,
         "y": 1024,
@@ -680,7 +680,7 @@
         "h": 256
       }
     },
-    "scholar_2": {
+    "merchant_row_2": {
       "frame": {
         "x": 512,
         "y": 1024,
@@ -700,7 +700,7 @@
         "h": 256
       }
     },
-    "scholar_3": {
+    "merchant_row_3": {
       "frame": {
         "x": 768,
         "y": 1024,
@@ -720,7 +720,7 @@
         "h": 256
       }
     },
-    "scholar_4": {
+    "merchant_row_4": {
       "frame": {
         "x": 1024,
         "y": 1024,
@@ -740,7 +740,7 @@
         "h": 256
       }
     },
-    "scholar_5": {
+    "merchant_row_5": {
       "frame": {
         "x": 1280,
         "y": 1024,
@@ -760,7 +760,7 @@
         "h": 256
       }
     },
-    "scholar_6": {
+    "merchant_row_6": {
       "frame": {
         "x": 1536,
         "y": 1024,
@@ -780,7 +780,7 @@
         "h": 256
       }
     },
-    "scholar_7": {
+    "merchant_row_7": {
       "frame": {
         "x": 1792,
         "y": 1024,
@@ -800,7 +800,7 @@
         "h": 256
       }
     },
-    "merchant_0": {
+    "elder_row_0": {
       "frame": {
         "x": 0,
         "y": 1280,
@@ -820,7 +820,7 @@
         "h": 256
       }
     },
-    "merchant_1": {
+    "elder_row_1": {
       "frame": {
         "x": 256,
         "y": 1280,
@@ -840,7 +840,7 @@
         "h": 256
       }
     },
-    "merchant_2": {
+    "elder_row_2": {
       "frame": {
         "x": 512,
         "y": 1280,
@@ -860,7 +860,7 @@
         "h": 256
       }
     },
-    "merchant_3": {
+    "elder_row_3": {
       "frame": {
         "x": 768,
         "y": 1280,
@@ -880,7 +880,7 @@
         "h": 256
       }
     },
-    "merchant_4": {
+    "elder_row_4": {
       "frame": {
         "x": 1024,
         "y": 1280,
@@ -900,7 +900,7 @@
         "h": 256
       }
     },
-    "merchant_5": {
+    "elder_row_5": {
       "frame": {
         "x": 1280,
         "y": 1280,
@@ -920,7 +920,7 @@
         "h": 256
       }
     },
-    "merchant_6": {
+    "elder_row_6": {
       "frame": {
         "x": 1536,
         "y": 1280,
@@ -940,7 +940,7 @@
         "h": 256
       }
     },
-    "merchant_7": {
+    "elder_row_7": {
       "frame": {
         "x": 1792,
         "y": 1280,
@@ -960,7 +960,7 @@
         "h": 256
       }
     },
-    "elder_0": {
+    "child_row_0": {
       "frame": {
         "x": 0,
         "y": 1536,
@@ -980,7 +980,7 @@
         "h": 256
       }
     },
-    "elder_1": {
+    "child_row_1": {
       "frame": {
         "x": 256,
         "y": 1536,
@@ -1000,7 +1000,7 @@
         "h": 256
       }
     },
-    "elder_2": {
+    "child_row_2": {
       "frame": {
         "x": 512,
         "y": 1536,
@@ -1020,7 +1020,7 @@
         "h": 256
       }
     },
-    "elder_3": {
+    "child_row_3": {
       "frame": {
         "x": 768,
         "y": 1536,
@@ -1040,7 +1040,7 @@
         "h": 256
       }
     },
-    "elder_4": {
+    "child_row_4": {
       "frame": {
         "x": 1024,
         "y": 1536,
@@ -1060,7 +1060,7 @@
         "h": 256
       }
     },
-    "elder_5": {
+    "child_row_5": {
       "frame": {
         "x": 1280,
         "y": 1536,
@@ -1080,7 +1080,7 @@
         "h": 256
       }
     },
-    "elder_6": {
+    "child_row_6": {
       "frame": {
         "x": 1536,
         "y": 1536,
@@ -1100,7 +1100,7 @@
         "h": 256
       }
     },
-    "elder_7": {
+    "child_row_7": {
       "frame": {
         "x": 1792,
         "y": 1536,
@@ -1120,7 +1120,7 @@
         "h": 256
       }
     },
-    "child_0": {
+    "knight_0": {
       "frame": {
         "x": 0,
         "y": 1792,
@@ -1140,7 +1140,7 @@
         "h": 256
       }
     },
-    "child_1": {
+    "knight_1": {
       "frame": {
         "x": 256,
         "y": 1792,
@@ -1160,7 +1160,7 @@
         "h": 256
       }
     },
-    "child_2": {
+    "knight_2": {
       "frame": {
         "x": 512,
         "y": 1792,
@@ -1180,7 +1180,7 @@
         "h": 256
       }
     },
-    "child_3": {
+    "knight_3": {
       "frame": {
         "x": 768,
         "y": 1792,
@@ -1200,7 +1200,7 @@
         "h": 256
       }
     },
-    "child_4": {
+    "knight_4": {
       "frame": {
         "x": 1024,
         "y": 1792,
@@ -1220,7 +1220,7 @@
         "h": 256
       }
     },
-    "child_5": {
+    "knight_5": {
       "frame": {
         "x": 1280,
         "y": 1792,
@@ -1240,7 +1240,7 @@
         "h": 256
       }
     },
-    "child_6": {
+    "knight_6": {
       "frame": {
         "x": 1536,
         "y": 1792,
@@ -1260,7 +1260,7 @@
         "h": 256
       }
     },
-    "child_7": {
+    "knight_7": {
       "frame": {
         "x": 1792,
         "y": 1792,
@@ -1680,6 +1680,106 @@
         "h": 256
       }
     },
+    "scholar_idle": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "scholar_walk_1": {
+      "frame": {
+        "x": 256,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "scholar_walk_2": {
+      "frame": {
+        "x": 512,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "scholar_side_1": {
+      "frame": {
+        "x": 768,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "scholar_back_1": {
+      "frame": {
+        "x": 1024,
+        "y": 768,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
     "apprentice_idle": {
       "frame": {
         "x": 0,
@@ -1780,90 +1880,10 @@
         "h": 256
       }
     },
-    "scholar_idle": {
-      "frame": {
-        "x": 0,
-        "y": 1024,
-        "w": 256,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 256
-      }
-    },
-    "scholar_walk_1": {
-      "frame": {
-        "x": 256,
-        "y": 1024,
-        "w": 256,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 256
-      }
-    },
-    "scholar_walk_2": {
-      "frame": {
-        "x": 512,
-        "y": 1024,
-        "w": 256,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 256
-      }
-    },
-    "scholar_side_1": {
-      "frame": {
-        "x": 768,
-        "y": 1024,
-        "w": 256,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 256,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 256,
-        "h": 256
-      }
-    },
     "merchant_idle": {
       "frame": {
         "x": 0,
-        "y": 1280,
+        "y": 1024,
         "w": 256,
         "h": 256
       },
@@ -1883,7 +1903,7 @@
     "merchant_walk_1": {
       "frame": {
         "x": 256,
-        "y": 1280,
+        "y": 1024,
         "w": 256,
         "h": 256
       },
@@ -1903,7 +1923,7 @@
     "merchant_walk_2": {
       "frame": {
         "x": 512,
-        "y": 1280,
+        "y": 1024,
         "w": 256,
         "h": 256
       },
@@ -1923,7 +1943,7 @@
     "merchant_side_1": {
       "frame": {
         "x": 768,
-        "y": 1280,
+        "y": 1024,
         "w": 256,
         "h": 256
       },
@@ -1943,7 +1963,7 @@
     "elder_idle": {
       "frame": {
         "x": 0,
-        "y": 1536,
+        "y": 1280,
         "w": 256,
         "h": 256
       },
@@ -1963,7 +1983,7 @@
     "elder_walk_1": {
       "frame": {
         "x": 256,
-        "y": 1536,
+        "y": 1280,
         "w": 256,
         "h": 256
       },
@@ -1983,7 +2003,7 @@
     "elder_walk_2": {
       "frame": {
         "x": 512,
-        "y": 1536,
+        "y": 1280,
         "w": 256,
         "h": 256
       },
@@ -2003,7 +2023,7 @@
     "elder_side_1": {
       "frame": {
         "x": 768,
-        "y": 1536,
+        "y": 1280,
         "w": 256,
         "h": 256
       },
@@ -2023,7 +2043,7 @@
     "child_idle": {
       "frame": {
         "x": 0,
-        "y": 1792,
+        "y": 1536,
         "w": 256,
         "h": 256
       },
@@ -2043,7 +2063,7 @@
     "child_walk_1": {
       "frame": {
         "x": 256,
-        "y": 1792,
+        "y": 1536,
         "w": 256,
         "h": 256
       },
@@ -2063,7 +2083,7 @@
     "child_walk_2": {
       "frame": {
         "x": 512,
-        "y": 1792,
+        "y": 1536,
         "w": 256,
         "h": 256
       },
@@ -2083,6 +2103,106 @@
     "child_side_1": {
       "frame": {
         "x": 768,
+        "y": 1536,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "knight_idle": {
+      "frame": {
+        "x": 0,
+        "y": 1792,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "knight_walk_1": {
+      "frame": {
+        "x": 256,
+        "y": 1792,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "knight_walk_2": {
+      "frame": {
+        "x": 512,
+        "y": 1792,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "knight_side_1": {
+      "frame": {
+        "x": 768,
+        "y": 1792,
+        "w": 256,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 256,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 256,
+        "h": 256
+      }
+    },
+    "knight_back_1": {
+      "frame": {
+        "x": 1024,
         "y": 1792,
         "w": 256,
         "h": 256
@@ -2102,7 +2222,10 @@
     }
   },
   "meta": {
+    "app": "Lumenfall Character Atlas",
+    "version": "2.0",
     "image": "characters.png",
+    "format": "RGBA8888",
     "size": {
       "w": 2048,
       "h": 2048
