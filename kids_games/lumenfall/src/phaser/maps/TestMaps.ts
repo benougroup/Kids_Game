@@ -135,10 +135,10 @@ export function createTestTownData(): MapData {
   });
 
   // --- OBJECTS: Fountain in plaza center ---
-  // Fountain at (11,9) covering tiles (11-13, 9-11) - 3x3 display
-  // Road runs through cols 14-15; fountain at col 11 keeps road completely clear.
+  // Fountain at (10,9) covering tiles (10-12, 9-11) - 3x3 display
+  // Road runs through cols 13-15; fountain at col 10 keeps road completely clear.
   // Player spawns at (15,14) which is on the road south of the crossing, fully walkable.
-  objectLayer.push({ x: 11, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3 });
+  objectLayer.push({ x: 10, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3 });
 
   // --- OBJECTS: Well ---
   objectLayer.push({ x: 8, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2 });
