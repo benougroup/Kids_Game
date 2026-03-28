@@ -1,379 +1,348 @@
 {
-  "textures": [
-    {
-      "image": "buildings_v003.png",
-      "format": "RGBA8888",
-      "size": {
-        "w": 1536,
-        "h": 1024
+  "frames": {
+    "house_thatch_small": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
       },
-      "scale": 1,
-      "frames": [
-        {
-          "filename": "house_thatch_small",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "tavern_blue_roof",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 384,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "house_thatch_large",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 768,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "house_stone_red_roof",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 1152,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "tavern_red_balcony",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 0,
-            "y": 256,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "market_food_building",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 384,
-            "y": 256,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "blacksmith_forge_large",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 768,
-            "y": 256,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "watchtower_small",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 1152,
-            "y": 256,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "chapel_large",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 0,
-            "y": 512,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "alchemy_shop",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 384,
-            "y": 512,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "castle_gate_medium",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 768,
-            "y": 512,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "ruin_castle_small",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 1152,
-            "y": 512,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "castle_fortress_large",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 0,
-            "y": 768,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "dockside_building",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 384,
-            "y": 768,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "windmill_large",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 768,
-            "y": 768,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "magic_shop_crystal",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 1152,
-            "y": 768,
-            "w": 384,
-            "h": 256
-          }
-        },
-        {
-          "filename": "house_blue_roof_large",
-          "rotated": false,
-          "trimmed": false,
-          "sourceSize": {
-            "w": 384,
-            "h": 256
-          },
-          "spriteSourceSize": {
-            "x": 0,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          },
-          "frame": {
-            "x": 384,
-            "y": 0,
-            "w": 384,
-            "h": 256
-          }
-        }
-      ]
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "tavern_blue_roof": {
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "house_thatch_large": {
+      "frame": {
+        "x": 768,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "house_stone_red_roof": {
+      "frame": {
+        "x": 1152,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "tavern_red_balcony": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "market_food_building": {
+      "frame": {
+        "x": 384,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "blacksmith_forge_large": {
+      "frame": {
+        "x": 768,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "watchtower_small": {
+      "frame": {
+        "x": 1152,
+        "y": 256,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "chapel_large": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "alchemy_shop": {
+      "frame": {
+        "x": 384,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "castle_gate_medium": {
+      "frame": {
+        "x": 768,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "ruin_castle_small": {
+      "frame": {
+        "x": 1152,
+        "y": 512,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "castle_fortress_large": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "dockside_building": {
+      "frame": {
+        "x": 384,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "windmill_large": {
+      "frame": {
+        "x": 768,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "magic_shop_crystal": {
+      "frame": {
+        "x": 1152,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
+    },
+    "house_blue_roof_large": {
+      "frame": {
+        "x": 1152,
+        "y": 768,
+        "w": 384,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 384,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 384,
+        "h": 256
+      }
     }
-  ],
+  },
   "meta": {
-    "app": "Lumenfall Atlas Generator",
-    "version": "1.0",
     "image": "buildings_v003.png",
-    "format": "RGBA8888",
     "size": {
       "w": 1536,
       "h": 1024

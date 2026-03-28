@@ -15,7 +15,7 @@ export class Player {
     this.scene = scene;
 
     // Create player sprite - 48x48 display size (slightly smaller than 64px tile)
-    this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle_front');
+    this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle');
     this.sprite.setDisplaySize(48, 48);
     this.sprite.setOrigin(0.5, 0.5);
     this.sprite.setSize(32, 32); // Collision box (smaller than display)
@@ -30,7 +30,7 @@ export class Player {
     if (!this.scene.anims.exists('player_idle')) {
       this.scene.anims.create({
         key: 'player_idle',
-        frames: [{ key: 'characters', frame: 'hero_idle_front' }],
+        frames: [{ key: 'characters', frame: 'hero_idle' }],
         frameRate: 2,
         repeat: -1,
       });
@@ -40,8 +40,9 @@ export class Player {
       this.scene.anims.create({
         key: 'player_walk',
         frames: [
-          { key: 'characters', frame: 'hero_walk_front_1' },
-          { key: 'characters', frame: 'hero_walk_front_2' },
+          { key: 'characters', frame: 'hero_walk_1' },
+          { key: 'characters', frame: 'hero_walk_2' },
+          { key: 'characters', frame: 'hero_walk_3' },
         ],
         frameRate: 8,
         repeat: -1,
@@ -52,8 +53,8 @@ export class Player {
       this.scene.anims.create({
         key: 'player_walk_side',
         frames: [
-          { key: 'characters', frame: 'hero_walk_side_1' },
-          { key: 'characters', frame: 'hero_walk_side_2' },
+          { key: 'characters', frame: 'hero_side_1' },
+          { key: 'characters', frame: 'hero_walk_1' },
         ],
         frameRate: 8,
         repeat: -1,
