@@ -140,15 +140,15 @@ export function createTestTownData(): MapData {
 
   // --- OBJECTS: Fountain in plaza center ---
   // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
-  // Using pixelWidth:307, pixelHeight:256 for correct proportions
-  // Collision covers tiles (10-12, 9-11) - 3x3 tile footprint
-  // Road runs through cols 13-15; fountain at col 10 keeps road completely clear.
-  // Player spawns at (15,14) which is on the road south of the crossing, fully walkable.
-  objectLayer.push({ x: 10, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
+  // Placed at col 9, row 9: sprite ends at x = 9*64 + 307 = 883px = col 13.8
+  // This keeps the road at cols 14-15 visually AND collisionally clear.
+  // Collision covers tiles (9-11, 9-11) - 3x3 tile footprint
+  objectLayer.push({ x: 9, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
 
   // --- OBJECTS: Well ---
-  // well_large sprite is 192x170px; collision is 1x1 (just the well base tile)
-  objectLayer.push({ x: 8, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
+  // well_large sprite is 192x170px; placed at col 5 away from fountain
+  // collision is 1x1 (just the well base tile)
+  objectLayer.push({ x: 5, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
 
   // --- OBJECTS: Lamp posts along roads ---
   // lamp_post sprite is 192x170px (1.13:1 aspect ratio)
@@ -163,9 +163,10 @@ export function createTestTownData(): MapData {
   objectLayer.push({ x: 16, y: 11, frame: 'sign_forest', atlas: 'objects_props_v002', height: 1 });
 
   // --- OBJECTS: Market stalls ---
-  // market_stall sprites are 192x170px; collision is 2x1 (stall footprint)
-  objectLayer.push({ x: 8, y: 8, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
-  objectLayer.push({ x: 8, y: 15, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
+  // market_stall sprites are 192x170px; placed at col 5 (left side)
+  // collision is 2x1 (stall footprint)
+  objectLayer.push({ x: 5, y: 8, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
+  objectLayer.push({ x: 5, y: 15, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
 
   // --- STRUCTURES: Buildings ---
   // Building sprites are 384x256px (3:2 ratio). Using widthTiles:3, heightTiles:2 = 192x128px
@@ -191,7 +192,7 @@ export function createTestTownData(): MapData {
   npcs.push({ x: 13, y: 3, entityId: 'guard' });           // Guard at north gate
   npcs.push({ x: 16, y: 3, entityId: 'guard2' });          // Guard at north gate
   npcs.push({ x: 14, y: 14, entityId: 'apprentice' });     // Apprentice near plaza
-  npcs.push({ x: 8, y: 9, entityId: 'merchant' });         // Merchant at market
+  npcs.push({ x: 5, y: 9, entityId: 'merchant' });          // Merchant at market stall
   npcs.push({ x: 15, y: 12, entityId: 'elder' });          // Elder near fountain (south-east)
   npcs.push({ x: 22, y: 14, entityId: 'scholar' });        // Scholar at magic shop
   npcs.push({ x: 10, y: 13, entityId: 'child' });          // Child wandering
