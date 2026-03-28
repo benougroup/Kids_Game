@@ -49,6 +49,9 @@ export class GameScene extends Phaser.Scene {
   private clickTarget: { x: number; y: number } | null = null;
   private clickMarker: Phaser.GameObjects.Graphics | null = null;
   
+  // Player collision half-size (must match Player.ts setSize)
+  private readonly PLAYER_HALF: number = 14; // 28px collision box / 2
+  
   // Transition cooldown
   private lastTransitionTime: number = 0;
   private isTransitioning: boolean = false;
@@ -190,7 +193,7 @@ export class GameScene extends Phaser.Scene {
       this.player.update(
         this.cursors,
         this.wasd,
-        (x, y) => !this.currentMapBuilder!.isWalkable(x, y, DEFAULT_FLAGS)
+        (x, y) => !this.isPositionWalkable(x, y)
       );
     } else if (this.clickTarget) {
       this.moveTowardsClick(delta);
@@ -263,6 +266,47 @@ export class GameScene extends Phaser.Scene {
     this.events.emit('timeUpdate', this.timeOfDay);
   }
 
+  /**
+   * Check if a world position is walkable, accounting for player collision box.
+   * Tests multiple points around the player's bounding box to prevent edge clipping.
+   */
+  private isPositionWalkable(cx: number, cy: number): boolean {
+    if (!this.currentMapBuilder) return false;
+    const h = this.PLAYER_HALF;
+    // Check center + 4 corners of collision box
+    return (
+      this.currentMapBuilder.isWalkable(cx, cy, DEFAULT_FLAGS) &&
+      this.currentMapBuilder.isWalkable(cx - h, cy - h, DEFAULT_FLAGS) &&
+      this.currentMapBuilder.isWalkable(cx + h, cy - h, DEFAULT_FLAGS) &&
+      this.currentMapBuilder.isWalkable(cx - h, cy + h, DEFAULT_FLAGS) &&
+      this.currentMapBuilder.isWalkable(cx + h, cy + h, DEFAULT_FLAGS)
+    );
+  }
+
+  /**
+   * Check if a world position is walkable using only horizontal edges (for Y-axis sliding).
+   */
+  private isPositionWalkableX(cx: number, cy: number): boolean {
+    if (!this.currentMapBuilder) return false;
+    const h = this.PLAYER_HALF;
+    return (
+      this.currentMapBuilder.isWalkable(cx - h, cy, DEFAULT_FLAGS) &&
+      this.currentMapBuilder.isWalkable(cx + h, cy, DEFAULT_FLAGS)
+    );
+  }
+
+  /**
+   * Check if a world position is walkable using only vertical edges (for X-axis sliding).
+   */
+  private isPositionWalkableY(cx: number, cy: number): boolean {
+    if (!this.currentMapBuilder) return false;
+    const h = this.PLAYER_HALF;
+    return (
+      this.currentMapBuilder.isWalkable(cx, cy - h, DEFAULT_FLAGS) &&
+      this.currentMapBuilder.isWalkable(cx, cy + h, DEFAULT_FLAGS)
+    );
+  }
+
   private moveTowardsClick(delta: number): void {
     if (!this.clickTarget || !this.currentMapBuilder) return;
     
@@ -285,72 +329,85 @@ export class GameScene extends Phaser.Scene {
     const vx = (dx / dist) * speed;
     const vy = (dy / dist) * speed;
     
-    const nextX = playerPos.x + vx * (delta / 1000);
-    const nextY = playerPos.y + vy * (delta / 1000);
+    const dt = delta / 1000;
+    const nextX = playerPos.x + vx * dt;
+    const nextY = playerPos.y + vy * dt;
     
-    if (this.currentMapBuilder.isWalkable(nextX, nextY, DEFAULT_FLAGS)) {
-      // Full movement is clear
+    // Full movement check using multi-point collision
+    if (this.isPositionWalkable(nextX, nextY)) {
       this.player.sprite.setVelocity(vx, vy);
       this.player.playWalkAnimation(vx, vy);
-    } else {
-      // Try wall-sliding: attempt X-only or Y-only movement
-      const step = speed * (delta / 1000);
-      const canMoveX = this.currentMapBuilder.isWalkable(nextX, playerPos.y, DEFAULT_FLAGS);
-      const canMoveY = this.currentMapBuilder.isWalkable(playerPos.x, nextY, DEFAULT_FLAGS);
-      if (canMoveX) {
-        this.player.sprite.setVelocity(vx, 0);
-        this.player.playWalkAnimation(vx, 0);
-      } else if (canMoveY) {
-        this.player.sprite.setVelocity(0, vy);
-        this.player.playWalkAnimation(0, vy);
+      return;
+    }
+    
+    // Wall-sliding: try X-only movement
+    const canMoveX = this.isPositionWalkableX(nextX, playerPos.y) && 
+                     this.isPositionWalkable(nextX, playerPos.y);
+    // Wall-sliding: try Y-only movement  
+    const canMoveY = this.isPositionWalkableY(playerPos.x, nextY) && 
+                     this.isPositionWalkable(playerPos.x, nextY);
+    
+    if (canMoveX && Math.abs(vx) > 1) {
+      this.player.sprite.setVelocity(vx, 0);
+      this.player.playWalkAnimation(vx, 0);
+      return;
+    }
+    
+    if (canMoveY && Math.abs(vy) > 1) {
+      this.player.sprite.setVelocity(0, vy);
+      this.player.playWalkAnimation(0, vy);
+      return;
+    }
+    
+    // Both primary slides blocked — try perpendicular escape
+    const step = speed * dt;
+    const canSlideRight = this.isPositionWalkable(playerPos.x + step, playerPos.y);
+    const canSlideLeft  = this.isPositionWalkable(playerPos.x - step, playerPos.y);
+    const canSlideDown  = this.isPositionWalkable(playerPos.x, playerPos.y + step);
+    const canSlideUp    = this.isPositionWalkable(playerPos.x, playerPos.y - step);
+    
+    // Pick the perpendicular direction that gets us closer to the target
+    if (Math.abs(dy) >= Math.abs(dx)) {
+      // Primarily moving vertically — try horizontal escape
+      if (canSlideRight && dx >= 0) {
+        this.player.sprite.setVelocity(speed, 0);
+        this.player.playWalkAnimation(speed, 0);
+      } else if (canSlideLeft && dx <= 0) {
+        this.player.sprite.setVelocity(-speed, 0);
+        this.player.playWalkAnimation(-speed, 0);
+      } else if (canSlideRight) {
+        this.player.sprite.setVelocity(speed, 0);
+        this.player.playWalkAnimation(speed, 0);
+      } else if (canSlideLeft) {
+        this.player.sprite.setVelocity(-speed, 0);
+        this.player.playWalkAnimation(-speed, 0);
       } else {
-        // Both primary slides blocked — try perpendicular slides to navigate around obstacle
-        const canSlideRight = this.currentMapBuilder.isWalkable(playerPos.x + step, playerPos.y, DEFAULT_FLAGS);
-        const canSlideLeft  = this.currentMapBuilder.isWalkable(playerPos.x - step, playerPos.y, DEFAULT_FLAGS);
-        const canSlideDown  = this.currentMapBuilder.isWalkable(playerPos.x, playerPos.y + step, DEFAULT_FLAGS);
-        const canSlideUp    = this.currentMapBuilder.isWalkable(playerPos.x, playerPos.y - step, DEFAULT_FLAGS);
-        // Pick the perpendicular direction that gets us closer to the target
-        if (Math.abs(dy) > Math.abs(dx)) {
-          // Primarily moving vertically — try horizontal escape
-          if (canSlideRight && dx >= 0) {
-            this.player.sprite.setVelocity(speed, 0);
-            this.player.playWalkAnimation(speed, 0);
-          } else if (canSlideLeft && dx <= 0) {
-            this.player.sprite.setVelocity(-speed, 0);
-            this.player.playWalkAnimation(-speed, 0);
-          } else if (canSlideRight) {
-            this.player.sprite.setVelocity(speed, 0);
-            this.player.playWalkAnimation(speed, 0);
-          } else if (canSlideLeft) {
-            this.player.sprite.setVelocity(-speed, 0);
-            this.player.playWalkAnimation(-speed, 0);
-          } else {
-            this.clickTarget = null;
-            this.clearClickMarker();
-            this.player.sprite.setVelocity(0, 0);
-            this.player.playIdleAnimation();
-          }
-        } else {
-          // Primarily moving horizontally — try vertical escape
-          if (canSlideDown && dy >= 0) {
-            this.player.sprite.setVelocity(0, speed);
-            this.player.playWalkAnimation(0, speed);
-          } else if (canSlideUp && dy <= 0) {
-            this.player.sprite.setVelocity(0, -speed);
-            this.player.playWalkAnimation(0, -speed);
-          } else if (canSlideDown) {
-            this.player.sprite.setVelocity(0, speed);
-            this.player.playWalkAnimation(0, speed);
-          } else if (canSlideUp) {
-            this.player.sprite.setVelocity(0, -speed);
-            this.player.playWalkAnimation(0, -speed);
-          } else {
-            this.clickTarget = null;
-            this.clearClickMarker();
-            this.player.sprite.setVelocity(0, 0);
-            this.player.playIdleAnimation();
-          }
-        }
+        // Truly stuck — cancel movement
+        this.clickTarget = null;
+        this.clearClickMarker();
+        this.player.sprite.setVelocity(0, 0);
+        this.player.playIdleAnimation();
+      }
+    } else {
+      // Primarily moving horizontally — try vertical escape
+      if (canSlideDown && dy >= 0) {
+        this.player.sprite.setVelocity(0, speed);
+        this.player.playWalkAnimation(0, speed);
+      } else if (canSlideUp && dy <= 0) {
+        this.player.sprite.setVelocity(0, -speed);
+        this.player.playWalkAnimation(0, -speed);
+      } else if (canSlideDown) {
+        this.player.sprite.setVelocity(0, speed);
+        this.player.playWalkAnimation(0, speed);
+      } else if (canSlideUp) {
+        this.player.sprite.setVelocity(0, -speed);
+        this.player.playWalkAnimation(0, -speed);
+      } else {
+        // Truly stuck — cancel movement
+        this.clickTarget = null;
+        this.clearClickMarker();
+        this.player.sprite.setVelocity(0, 0);
+        this.player.playIdleAnimation();
       }
     }
   }

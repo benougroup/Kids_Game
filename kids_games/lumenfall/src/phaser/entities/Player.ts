@@ -18,8 +18,8 @@ export class Player {
     this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle');
     this.sprite.setDisplaySize(48, 48);
     this.sprite.setOrigin(0.5, 0.5);
-    this.sprite.setSize(32, 32); // Collision box (smaller than display)
-    this.sprite.setOffset(8, 8);
+    this.sprite.setSize(28, 28); // Collision box (28px = PLAYER_HALF*2 = 14*2)
+    this.sprite.setOffset(10, 10);
     this.sprite.setDepth(500); // High depth so player is above tiles
 
     this.createAnimations();
