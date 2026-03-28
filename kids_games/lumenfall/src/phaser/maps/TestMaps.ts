@@ -135,9 +135,10 @@ export function createTestTownData(): MapData {
   });
 
   // --- OBJECTS: Fountain in plaza center ---
-  // Fountain at (13,9) covering tiles (13-15, 9-11) - 3x3 display, center of stone plaza
-  // Player spawns at (15,13) which is south of the fountain, fully walkable
-  objectLayer.push({ x: 13, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3 });
+  // Fountain at (12,9) covering tiles (12-14, 9-11) - 3x3 display, left of center plaza
+  // Road runs through cols 14-15; fountain at col 12 keeps road clear.
+  // Player spawns at (15,13) which is south of the road crossing, fully walkable.
+  objectLayer.push({ x: 12, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3 });
 
   // --- OBJECTS: Well ---
   objectLayer.push({ x: 8, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2 });
