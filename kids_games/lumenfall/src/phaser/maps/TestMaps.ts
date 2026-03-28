@@ -121,8 +121,8 @@ export function createTestTownData(): MapData {
     objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
   });
 
-  // Pine trees near border
-  const pinePosns = [{ x: 9, y: 4 }, { x: 11, y: 3 }, { x: 18, y: 4 }, { x: 20, y: 3 }];
+  // Pine trees near border (moved away from gate corridor cols 13-16)
+  const pinePosns = [{ x: 9, y: 4 }, { x: 20, y: 4 }];
   // tree_pine_tall sprite is 192x170px
   // Display at native pixel size; collision is 1x1 (just the trunk tile)
   pinePosns.forEach(p => {
@@ -140,10 +140,10 @@ export function createTestTownData(): MapData {
 
   // --- OBJECTS: Fountain in plaza center ---
   // fountain_round sprite is 307x256px (1.2:1 aspect ratio)
-  // Placed at col 9, row 9: sprite ends at x = 9*64 + 307 = 883px = col 13.8
-  // This keeps the road at cols 14-15 visually AND collisionally clear.
-  // Collision covers tiles (9-11, 9-11) - 3x3 tile footprint
-  objectLayer.push({ x: 9, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
+  // Placed at col 6, row 9: sprite ends at x = 6*64 + 307 = 691px = col 10.8
+  // Moved further west to avoid player drift toward lamp posts
+  // Collision covers tiles (6-8, 9-11) - 3x3 tile footprint
+  objectLayer.push({ x: 6, y: 9, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 307, pixelHeight: 256 });
 
   // --- OBJECTS: Well ---
   // well_large sprite is 192x170px; placed at col 5 away from fountain
@@ -153,9 +153,9 @@ export function createTestTownData(): MapData {
   // --- OBJECTS: Lamp posts along roads ---
   // lamp_post sprite is 192x170px (1.13:1 aspect ratio)
   // Display at native pixel size; collision is 1x1 (just the base tile)
-  // Lamp posts moved to cols 12 and 17 (2 tiles from road at cols 14-15)
-  // This gives 82px clearance from the player's collision box edges
-  const lampPosns = [{ x: 12, y: 5 }, { x: 17, y: 5 }, { x: 12, y: 19 }, { x: 17, y: 19 }];
+  // Lamp posts moved to cols 11 and 18 (3+ tiles from road at cols 14-15)
+  // This gives 146px clearance from the player's collision box edges
+  const lampPosns = [{ x: 11, y: 5 }, { x: 18, y: 5 }, { x: 11, y: 19 }, { x: 18, y: 19 }];
   lampPosns.forEach(p => {
     objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
   });

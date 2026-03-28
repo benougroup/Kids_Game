@@ -206,19 +206,6 @@ export class GameScene extends Phaser.Scene {
     const playerPos = this.player.getPosition();
     const now = Date.now();
     
-    // DEBUG: Log player position and walkability every 2 seconds
-    if (Math.floor(now / 2000) !== Math.floor((now - delta) / 2000)) {
-      const tileX = Math.floor(playerPos.x / 64);
-      const tileY = Math.floor(playerPos.y / 64);
-      const walkN = this.currentMapBuilder?.isWalkable(playerPos.x, playerPos.y - 64);
-      const walkN2 = this.currentMapBuilder?.isWalkable(playerPos.x, playerPos.y - 128);
-      const walkN3 = this.currentMapBuilder?.isWalkable(playerPos.x, playerPos.y - 192);
-      console.log(`[DEBUG] Player tile:(${tileX},${tileY}) world:(${Math.round(playerPos.x)},${Math.round(playerPos.y)}) walkN-1:${walkN} walkN-2:${walkN2} walkN-3:${walkN3} target:${JSON.stringify(this.clickTarget)}`);
-      // Check isPositionWalkable for next step north
-      const nextY = playerPos.y - 8;
-      console.log(`[DEBUG] isPositionWalkable(${Math.round(playerPos.x)},${Math.round(nextY)}):${this.isPositionWalkable(playerPos.x, nextY)}`);
-    }
-    
     if (now - this.lastTransitionTime > 2000) {
       const exit = this.currentMapBuilder.checkExit(playerPos.x, playerPos.y);
       if (exit) {
