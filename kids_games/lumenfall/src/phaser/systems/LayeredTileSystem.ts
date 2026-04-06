@@ -25,10 +25,89 @@ export interface RoadTile {
                 't_north' | 't_south' | 't_east' | 't_west' | 'cross' | 'end_n' | 'end_s' | 'end_e' | 'end_w';
 }
 
+/**
+ * iPad-first logical grid defaults.
+ * Uses 64px tiles and a landscape play-space tuned for 1024x768 style viewports.
+ */
+export const GRID_TILE_SIZE = 64;
+export const GRID_COLS_IPAD = 32;
+export const GRID_ROWS_IPAD = 24;
+
+/**
+ * Inferred terrain movement profile from sprite frame metadata.
+ * This lets rendering art drive gameplay behavior in a deterministic way.
+ */
+export interface TileMovementProfile {
+  walkable: boolean;
+  terrainType: 'ground' | 'road' | 'water' | 'shallow_water' | 'bridge' | 'blocked';
+  depthElevation: number;
+}
+
+/**
+ * Default cutoff: any water with elevation lower than this is treated as deep/blocked.
+ * Values are normalized world depth where 0 = ground, negative = lower than ground.
+ */
+export const DEEP_WATER_BLOCK_ELEVATION = -0.5;
+
+/**
+ * Infer gameplay movement semantics from tile frame names and layer.
+ */
+export function inferTileMovementProfile(frame: string, layer: number, depthElevation = 0): TileMovementProfile {
+  const normalized = frame.toLowerCase();
+  const isBridge = normalized.includes('bridge');
+  const isWater = normalized.includes('water');
+  const isShallow = normalized.includes('shallow');
+  const isRoad = normalized.includes('road');
+  const isBlockingLayer = layer >= 2 && !isBridge;
+
+  if (isBridge) {
+    return { walkable: true, terrainType: 'bridge', depthElevation };
+  }
+
+  if (isWater && isShallow) {
+    return { walkable: true, terrainType: 'shallow_water', depthElevation };
+  }
+
+  if (isWater) {
+    return { walkable: false, terrainType: 'water', depthElevation };
+  }
+
+  if (isRoad) {
+    return { walkable: true, terrainType: 'road', depthElevation };
+  }
+
+  if (isBlockingLayer) {
+    return { walkable: false, terrainType: 'blocked', depthElevation };
+  }
+
+  return { walkable: true, terrainType: 'ground', depthElevation };
+}
+
+/**
+ * Deep/shallow walkability rule that supports per-texture thresholds.
+ */
+export function isDepthWalkable(
+  depthElevation: number,
+  terrainType: TileMovementProfile['terrainType'],
+  deepWaterThreshold = DEEP_WATER_BLOCK_ELEVATION
+): boolean {
+  if (terrainType === 'bridge') return true;
+  if (terrainType === 'water') return depthElevation >= deepWaterThreshold;
+  if (terrainType === 'blocked') return false;
+  return true;
+}
+
+/**
+ * 4D-like sort key (x, y, layer, depth-elevation) collapsed into a single render depth.
+ */
+export function toRenderDepth(y: number, layer: number, depthElevation = 0): number {
+  return y * 1000 + layer * 100 + Math.round(depthElevation * 10);
+}
+
 export class LayeredTileSystem {
   private scene: Phaser.Scene;
   private layers: Map<number, Phaser.GameObjects.Container>;
-  private tileSize: number = 32;
+  private tileSize: number = GRID_TILE_SIZE;
   private tiles: Map<string, TileData>;
   private collisionTiles: Set<string>;
   
@@ -41,7 +120,7 @@ export class LayeredTileSystem {
     // Create layer containers
     for (let i = 0; i <= 4; i++) {
       const container = scene.add.container(0, 0);
-      container.setDepth(i * 100);
+      container.setDepth(toRenderDepth(0, i));
       this.layers.set(i, container);
     }
   }

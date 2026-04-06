@@ -8,6 +8,7 @@ import { createTestTownData, createTestForestData, createTestDungeonData } from 
 import { Entity } from '../entities/Entity';
 import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
+import { toRenderDepth } from '../systems/LayeredTileSystem';
 
 /**
  * Main Game Scene - Lumenfall RPG
@@ -272,7 +273,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // Update player depth
-    this.player.sprite.setDepth(playerPos.y);
+    this.player.sprite.setDepth(toRenderDepth(playerPos.y, 4));
 
     // Emit time to UI
     this.events.emit('timeUpdate', this.timeOfDay);
@@ -440,7 +441,7 @@ export class GameScene extends Phaser.Scene {
     const clampedY = Math.max(0, Math.min(mapH - 1, worldY));
 
     this.clickTarget = { x: clampedX, y: clampedY };
-    this.drawClickMarker(worldX, worldY);
+    this.drawClickMarker(clampedX, clampedY);
   }
 
   private drawClickMarker(x: number, y: number): void {
