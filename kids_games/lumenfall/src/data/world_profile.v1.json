@@ -1,0 +1,78 @@
+{
+  "id": "lumenfall_core_v1",
+  "setting": {
+    "title": "Lumenfall: Against the Shadows",
+    "description": "Shadows rise after dusk. Every race fears the dark and survives by carrying fire into the night."
+  },
+  "spatialAxes": {
+    "primary": ["x", "y"],
+    "extended": ["depth", "hazard", "perspective", "aux1", "aux2"],
+    "defaults": {
+      "depth": 0,
+      "hazard": 0,
+      "perspective": 0,
+      "aux1": 0,
+      "aux2": 0
+    },
+    "walkability": {
+      "blockedDepthAtOrBelow": -1,
+      "maxDepthStepDelta": 0.5,
+      "blockedDepthAtOrAbove": 100
+    }
+  },
+  "environment": {
+    "shadowSpawnMultiplierByPhase": {
+      "DAY": 0,
+      "DUSK": 0.35,
+      "NIGHT": 1,
+      "DAWN": 0.15
+    },
+    "shadowSpawnMultiplierByWeather": {
+      "CLEAR": 1,
+      "FOG": 1.35,
+      "STORM": 1.15
+    },
+    "panicBoostByPhase": {
+      "DAY": 0,
+      "DUSK": 20,
+      "NIGHT": 40,
+      "DAWN": 10
+    },
+    "panicBoostByWeather": {
+      "CLEAR": 0,
+      "FOG": 15,
+      "STORM": 10
+    }
+  },
+  "npcBehaviorProfiles": [
+    {
+      "id": "town_guard",
+      "panicThreshold": 85,
+      "hideThreshold": 95,
+      "statuses": {
+        "calm": "standing",
+        "watch": "walking",
+        "panic": "panic",
+        "hide": "panic"
+      }
+    },
+    {
+      "id": "commoner",
+      "panicThreshold": 60,
+      "hideThreshold": 80,
+      "statuses": {
+        "calm": "standing",
+        "watch": "talking",
+        "panic": "panic",
+        "hide": "panic"
+      }
+    }
+  ],
+  "combatRules": {
+    "damageAffinities": {
+      "shadow": ["torch", "fire", "lighthouse_light"],
+      "monster": ["sword", "knife", "spear"],
+      "hostileNpc": ["sword", "knife"]
+    }
+  }
+}

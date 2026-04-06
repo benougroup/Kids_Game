@@ -73,3 +73,15 @@ Maps are now data-driven and include:
 - `shrine_demo`
 
 Each map can define transitions through `interactables` (`type: "door"`).
+
+## Re-architecture baseline (RPG Story Engine V1)
+
+The project now includes a first-pass world profile for JSON-tunable mechanics:
+
+- `src/data/world_profile.v1.json`: world setting, 7-axis spatial model, environment multipliers, NPC panic behavior profiles, and combat damage affinities.
+- `src/systems/WorldProfileSystem.ts`: typed helper layer used by game systems to resolve:
+  - depth-step walkability (`-1` blocked, `0.5` climb delta support),
+  - shadow spawn multiplier from `time phase x weather`,
+  - NPC runtime status (`standing/walking/panic`) from profile + panic score + time/weather.
+
+See `ARCHITECTURE_V1.md` for the longer-term roadmap to support story packs, puzzles, multi-map progression, and richer trigger-driven gameplay.
