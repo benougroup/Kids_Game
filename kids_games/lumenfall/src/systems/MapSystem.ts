@@ -4,6 +4,7 @@ import forestEdgeDemoMap from '../data/maps/forest_edge_demo.json';
 import shrineDemoMap from '../data/maps/shrine_demo.json';
 import { TILE_SIZE } from '../app/Config';
 import type { GameState, LightSourceRuntime } from '../state/StateTypes';
+import { worldProfileSystem, type WeatherType } from './WorldProfileSystem';
 
 export type LayerName = 'ground' | 'decor' | 'collision' | 'overlay';
 
@@ -63,6 +64,11 @@ export interface NpcDefinition {
   x: number;
   y: number;
   spriteId: string;
+  homeX?: number;
+  homeY?: number;
+  walkRadius?: number;
+  behaviorProfileId?: string;
+  panicBase?: number;
   interaction: {
     storyId: string;
     defaultSceneId: string;
@@ -245,6 +251,20 @@ export class MapSystem {
 
   getObjects(mapId: string): MapObject[] {
     return this.getMap(mapId).objects ?? [];
+  }
+
+  resolveNpcRuntimeStatus(
+    state: Readonly<GameState>,
+    npc: NpcDefinition,
+    weather: WeatherType = 'CLEAR',
+  ): string {
+    const basePanic = npc.panicBase ?? state.story.npc.townFear;
+    return worldProfileSystem.resolveNpcStatus({
+      behaviorProfileId: npc.behaviorProfileId,
+      basePanic,
+      phase: state.runtime.time.phase,
+      weather,
+    });
   }
 
 
