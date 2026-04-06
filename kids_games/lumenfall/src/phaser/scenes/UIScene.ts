@@ -13,6 +13,8 @@ export class UIScene extends Phaser.Scene {
   
   private inventoryPanel!: Phaser.GameObjects.Container;
   private inventoryVisible: boolean = false;
+  private inventoryItemsText!: Phaser.GameObjects.Text;
+  private inventoryItems: string[] = [];
 
   private mapPanel!: Phaser.GameObjects.Container;
   private mapVisible: boolean = false;
@@ -109,6 +111,14 @@ export class UIScene extends Phaser.Scene {
     // Listen for dialogue events
     gameScene.events.on('showDialogue', (npcName: string) => {
       this.showDialogue(npcName);
+    });
+    gameScene.events.on('inventoryChanged', (items: string[]) => {
+      this.inventoryItems = [...items];
+      this.refreshInventoryText();
+    });
+    gameScene.events.on('inventoryAddItem', (itemName: string) => {
+      this.inventoryItems.push(itemName);
+      this.refreshInventoryText();
     });
 
     // Handle resize
@@ -221,12 +231,14 @@ export class UIScene extends Phaser.Scene {
     });
     title.setOrigin(0.5);
 
-    const itemsText = this.add.text(boxX, boxY, 'No items yet', {
+    this.inventoryItemsText = this.add.text(boxX, boxY, 'No items yet', {
       fontSize: '18px',
       color: '#ecf0f1',
       fontFamily: 'Arial',
+      align: 'center',
+      wordWrap: { width: boxWidth - 60 },
     });
-    itemsText.setOrigin(0.5);
+    this.inventoryItemsText.setOrigin(0.5);
 
     const closeBtn = this.add.text(boxX, boxY + boxHeight / 2 - 40, 'Close', {
       fontSize: '20px',
@@ -239,7 +251,7 @@ export class UIScene extends Phaser.Scene {
     closeBtn.setInteractive();
     closeBtn.on('pointerdown', () => this.toggleInventory());
 
-    this.inventoryPanel.add([overlay, box, title, itemsText, closeBtn]);
+    this.inventoryPanel.add([overlay, box, title, this.inventoryItemsText, closeBtn]);
   }
 
   private createMapPanel(): void {
@@ -339,6 +351,17 @@ export class UIScene extends Phaser.Scene {
     });
     youLabel.setOrigin(0, 0.5);
 
+    const cropAuditTitle = this.add.text(mapLeft + 6, mapTop + mapH - 86, 'Sprite crop review (current map sizing):', {
+      fontSize: '12px', color: '#ffffff', fontFamily: 'Arial', fontStyle: 'bold',
+    });
+    const cropAuditText = this.add.text(mapLeft + 6, mapTop + mapH - 68,
+      '• buildings 384x256 → 192x128 (ratio OK)\n' +
+      '• large props 192x170 → 192x170 (ratio OK)\n' +
+      '• fountain 307x256 → 192x160 (ratio adjusted)\n' +
+      '• fence 64x57 → 64x57 (ratio OK)',
+      { fontSize: '11px', color: '#d6e6ff', fontFamily: 'Arial' },
+    );
+
     // Close button
     const closeBtn = this.add.text(boxX, boxY + boxHeight / 2 - 30, 'Close Map', {
       fontSize: '18px',
@@ -351,7 +374,7 @@ export class UIScene extends Phaser.Scene {
     closeBtn.setInteractive();
     closeBtn.on('pointerdown', () => this.toggleMap());
 
-    this.mapPanel.add([overlay, box, title, mapGraphics, townLabel, forestLabel, dungeonLabel, youLabel, closeBtn]);
+    this.mapPanel.add([overlay, box, title, mapGraphics, townLabel, forestLabel, dungeonLabel, youLabel, cropAuditTitle, cropAuditText, closeBtn]);
   }
 
   private toggleInventory(): void {
@@ -382,6 +405,15 @@ export class UIScene extends Phaser.Scene {
     // TODO: Implement dialogue system
     console.log('Show dialogue for:', npcName);
     alert(`Talking to ${npcName}\n\n(Dialogue system coming next!)`);
+  }
+
+  private refreshInventoryText(): void {
+    if (!this.inventoryItemsText) return;
+    if (this.inventoryItems.length === 0) {
+      this.inventoryItemsText.setText('No items yet');
+      return;
+    }
+    this.inventoryItemsText.setText(this.inventoryItems.map((item, index) => `${index + 1}. ${item}`).join('\n'));
   }
 
   private updateTimeDisplay(timeOfDay: number): void {

@@ -49,6 +49,7 @@ export class GameScene extends Phaser.Scene {
   // Click-to-move
   private clickTarget: { x: number; y: number } | null = null;
   private clickMarker: Phaser.GameObjects.Graphics | null = null;
+  private pickups: Array<{ id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number }> = [];
   
   // Player collision half-size (must match Player.ts setSize)
   private readonly PLAYER_HALF: number = 12; // 24px collision box / 2 (reduced for better navigation)
@@ -105,6 +106,10 @@ export class GameScene extends Phaser.Scene {
       S: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
       D: this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D),
     };
+    this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.input.keyboard!.on('keydown-E', () => this.handleAction());
+    this.input.keyboard!.on('keydown-SPACE', () => this.handleAction());
 
     // Day/night overlay
     this.dayNightOverlay = this.add.rectangle(0, 0, 4000, 4000, 0x000033, 0);
@@ -133,6 +138,7 @@ export class GameScene extends Phaser.Scene {
     // Emit initial state
     this.events.emit('timeUpdate', this.timeOfDay);
     this.events.emit('hpUpdate', { hp: 10, maxHp: 10 });
+    this.events.emit('inventoryChanged', []);
   }
 
   private loadMap(mapId: string, spawnTileX: number, spawnTileY: number): void {
@@ -145,6 +151,8 @@ export class GameScene extends Phaser.Scene {
     // Destroy night monsters
     for (const m of this.nightMonsters) m.destroy();
     this.nightMonsters = [];
+    for (const pickup of this.pickups) pickup.sprite.destroy();
+    this.pickups = [];
     
     this.currentMapId = mapId;
     
@@ -184,6 +192,7 @@ export class GameScene extends Phaser.Scene {
     // Ambient light for this map
     const ambientLight = mapData.ambientLight ?? 0.8;
     this.events.emit('ambientLightUpdate', ambientLight);
+    this.spawnDemoPickups(mapData.tileSize);
   }
 
   update(_time: number, delta: number): void {
@@ -483,6 +492,14 @@ export class GameScene extends Phaser.Scene {
 
     const playerPos = this.player.getPosition();
     const nearbyEntity = this.currentMapBuilder.getNearbyEntity(playerPos.x, playerPos.y, 80);
+    const nearbyPickup = this.getNearbyPickup(playerPos.x, playerPos.y, 64);
+    if (nearbyPickup) {
+      nearbyPickup.sprite.destroy();
+      this.pickups = this.pickups.filter((p) => p.id !== nearbyPickup.id);
+      this.events.emit('inventoryAddItem', nearbyPickup.itemName);
+      this.events.emit('showMessage', `Picked up ${nearbyPickup.itemName}!`);
+      return;
+    }
     
     if (nearbyEntity) {
       const def = nearbyEntity.getDefinition();
@@ -508,6 +525,51 @@ export class GameScene extends Phaser.Scene {
       // Toggle lantern
       this.player.toggleLantern();
     }
+  }
+
+  private spawnDemoPickups(tileSize: number): void {
+    const byMap: Record<string, Array<{ tx: number; ty: number; itemName: string }>> = {
+      test_town: [
+        { tx: 13, ty: 14, itemName: 'Sunleaf' },
+        { tx: 16, ty: 14, itemName: 'Glow Moth Dust' },
+      ],
+      test_forest: [
+        { tx: 13, ty: 18, itemName: 'Forest Herb' },
+      ],
+      test_dungeon: [
+        { tx: 14, ty: 6, itemName: 'Crystal Water' },
+      ],
+    };
+    for (const entry of byMap[this.currentMapId] ?? []) {
+      const x = entry.tx * tileSize + tileSize / 2;
+      const y = entry.ty * tileSize + tileSize / 2;
+      const sprite = this.add.sprite(x, y, 'objects_props_v003', 'sparkle_pickup');
+      sprite.setDisplaySize(tileSize * 0.9, tileSize * 0.9);
+      sprite.setDepth(toRenderDepth(entry.ty, 2));
+      this.tweens.add({
+        targets: sprite,
+        y: y - 8,
+        duration: 900,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.inOut',
+      });
+      this.pickups.push({
+        id: `${this.currentMapId}_${entry.tx}_${entry.ty}`,
+        itemName: entry.itemName,
+        sprite,
+        x,
+        y,
+      });
+    }
+  }
+
+  private getNearbyPickup(worldX: number, worldY: number, radius: number): { id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number } | null {
+    for (const pickup of this.pickups) {
+      const dist = Phaser.Math.Distance.Between(worldX, worldY, pickup.x, pickup.y);
+      if (dist <= radius) return pickup;
+    }
+    return null;
   }
 
   private handleMathResult(result: any, npcName: string): void {

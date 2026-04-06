@@ -16,6 +16,7 @@ export class DialogueBox {
   private textIndex: number = 0;
   private textSpeed: number = 30; // Characters per second
   private onCloseCallback: (() => void) | null = null;
+  private nameBg!: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -28,19 +29,14 @@ export class DialogueBox {
 
     // Background box (bottom of screen)
     this.background = scene.add.graphics();
-    this.drawBackground();
     this.container.add(this.background);
 
     // Name label background
-    const nameBg = scene.add.graphics();
-    nameBg.fillStyle(0x2a2a4a, 1);
-    nameBg.fillRoundedRect(70, 395, 140, 30, 8);
-    nameBg.lineStyle(3, 0xffffff, 1);
-    nameBg.strokeRoundedRect(70, 395, 140, 30, 8);
-    this.container.add(nameBg);
+    this.nameBg = scene.add.graphics();
+    this.container.add(this.nameBg);
 
     // Name text
-    this.nameText = scene.add.text(140, 410, '', {
+    this.nameText = scene.add.text(0, 0, '', {
       fontSize: '18px',
       fontFamily: 'Arial, sans-serif',
       color: '#ffffff',
@@ -51,7 +47,7 @@ export class DialogueBox {
     this.container.add(this.nameText);
 
     // Dialogue text
-    this.dialogueText = scene.add.text(240, 445, '', {
+    this.dialogueText = scene.add.text(0, 0, '', {
       fontSize: '16px',
       fontFamily: 'Arial, sans-serif',
       color: '#ffffff',
@@ -61,7 +57,7 @@ export class DialogueBox {
     this.container.add(this.dialogueText);
 
     // Continue indicator (blinking arrow)
-    this.continueIndicator = scene.add.text(720, 515, '▼', {
+    this.continueIndicator = scene.add.text(0, 0, '▼', {
       fontSize: '20px',
       color: '#ffffff',
     });
@@ -93,29 +89,63 @@ export class DialogueBox {
         }
       }
     });
+
+    this.layout();
+    scene.scale.on('resize', this.layout, this);
   }
 
-  private drawBackground(): void {
-    const width = 700;
-    const height = 140; // Smaller height
-    const x = 50; // Center horizontally
-    const y = 390; // Bottom of 550px screen (550 - 140 - 20 margin)
+  private layout(): void {
+    const viewportW = this.scene.scale.width;
+    const viewportH = this.scene.scale.height;
+    const boxWidth = Math.min(760, viewportW - 24);
+    const boxHeight = Math.min(190, Math.max(140, Math.round(viewportH * 0.3)));
+    const margin = 14;
+    const x = Math.round((viewportW - boxWidth) / 2);
+    const y = Math.round(viewportH - boxHeight - margin);
+    const portraitSize = Math.min(96, Math.max(64, Math.round(boxHeight * 0.58)));
+    const innerPad = 18;
+    const portraitX = x + innerPad + portraitSize / 2 + 8;
+    const portraitY = y + boxHeight / 2 + 8;
+    const textLeft = x + portraitSize + 44;
+    const textTop = y + innerPad + 18;
+    const textWrap = boxWidth - portraitSize - 72;
+
+    this.drawBackground(x, y, boxWidth, boxHeight, portraitSize);
+
+    this.nameBg.clear();
+    this.nameBg.fillStyle(0x2a2a4a, 1);
+    this.nameBg.fillRoundedRect(x + 20, y - 12, 160, 32, 8);
+    this.nameBg.lineStyle(2, 0xffffff, 1);
+    this.nameBg.strokeRoundedRect(x + 20, y - 12, 160, 32, 8);
+
+    this.nameText.setPosition(x + 100, y + 4);
+    this.dialogueText.setPosition(textLeft, textTop);
+    this.dialogueText.setWordWrapWidth(Math.max(220, textWrap), true);
+    this.continueIndicator.setPosition(x + boxWidth - 24, y + boxHeight - 20);
+    if (this.portrait) {
+      this.portrait.setPosition(portraitX, portraitY);
+      this.portrait.setDisplaySize(portraitSize, portraitSize);
+    }
+  }
+
+  private drawBackground(x: number, y: number, width: number, height: number, portraitSize: number): void {
+    this.background.clear();
 
     // Outer border (white)
-    this.background.lineStyle(4, 0xffffff, 1);
+    this.background.lineStyle(3, 0xffffff, 1);
     this.background.fillStyle(0x1a1a3a, 0.95);
-    this.background.fillRoundedRect(x + 20, y + 20, width - 40, height - 40, 12);
-    this.background.strokeRoundedRect(x + 20, y + 20, width - 40, height - 40, 12);
+    this.background.fillRoundedRect(x, y, width, height, 12);
+    this.background.strokeRoundedRect(x, y, width, height, 12);
 
     // Inner border (lighter)
     this.background.lineStyle(2, 0x6666aa, 1);
-    this.background.strokeRoundedRect(x + 28, y + 28, width - 56, height - 56, 8);
+    this.background.strokeRoundedRect(x + 8, y + 8, width - 16, height - 16, 8);
 
     // Portrait frame (left side)
     this.background.fillStyle(0x2a2a4a, 1);
-    this.background.fillRoundedRect(x + 20, y + 40, 120, 90, 8);
-    this.background.lineStyle(3, 0xffffff, 1);
-    this.background.strokeRoundedRect(x + 20, y + 40, 120, 90, 8);
+    this.background.fillRoundedRect(x + 18, y + Math.round((height - portraitSize) / 2), portraitSize + 16, portraitSize + 16, 8);
+    this.background.lineStyle(2, 0xffffff, 1);
+    this.background.strokeRoundedRect(x + 18, y + Math.round((height - portraitSize) / 2), portraitSize + 16, portraitSize + 16, 8);
   }
 
   /**
@@ -148,8 +178,7 @@ export class DialogueBox {
 
     // Add portrait if provided
     if (portraitFrame) {
-      this.portrait = this.scene.add.sprite(130, 475, 'characters', portraitFrame);
-      this.portrait.setDisplaySize(90, 90);
+      this.portrait = this.scene.add.sprite(0, 0, 'characters', portraitFrame);
       this.container.add(this.portrait);
     }
 
@@ -159,6 +188,7 @@ export class DialogueBox {
 
     // Show container
     this.container.setVisible(true);
+    this.layout();
 
     // Start text animation
     this.animateText();
@@ -206,6 +236,7 @@ export class DialogueBox {
    * Destroy dialogue box
    */
   public destroy(): void {
+    this.scene.scale.off('resize', this.layout, this);
     this.container.destroy();
   }
 }
