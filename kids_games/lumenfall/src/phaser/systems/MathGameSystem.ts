@@ -63,21 +63,18 @@ export class MathGameSystem {
   private onComplete: ((result: MathResult) => void) | null = null;
   private startTime: number = 0;
   
-  // Screen dimensions
-  private screenW: number = 800;
-  private screenH: number = 550;
+  private currentBoxWidth: number = 600;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.createUI();
+    this.scene.scale.on('resize', this.layoutUI, this);
   }
 
   private createUI(): void {
-    const cx = this.screenW / 2;
-    const cy = this.screenH / 2;
-    const boxW = 600;
-    const boxH = 380;
-    const boxY = cy - boxH / 2;
+    const cx = this.scene.scale.width / 2;
+    const cy = this.scene.scale.height / 2;
+    const boxY = cy - 190;
 
     // Main container (fixed to camera)
     this.container = this.scene.add.container(0, 0);
@@ -86,16 +83,18 @@ export class MathGameSystem {
     this.container.setVisible(false);
 
     // Dark overlay
-    const overlay = this.scene.add.rectangle(cx, cy, this.screenW, this.screenH, 0x000000, 0.6);
+    const overlay = this.scene.add.rectangle(cx, cy, this.scene.scale.width, this.scene.scale.height, 0x000000, 0.6);
+    overlay.setData('role', 'overlay');
     this.container.add(overlay);
 
     // Main box
-    this.bg = this.scene.add.rectangle(cx, cy, boxW, boxH, 0x1a1a2e, 0.98);
+    this.bg = this.scene.add.rectangle(cx, cy, 600, 380, 0x1a1a2e, 0.98);
     this.bg.setStrokeStyle(3, 0x4488ff);
     this.container.add(this.bg);
 
     // Title bar
-    const titleBar = this.scene.add.rectangle(cx, boxY + 30, boxW, 50, 0x16213e);
+    const titleBar = this.scene.add.rectangle(cx, boxY + 30, 600, 50, 0x16213e);
+    titleBar.setData('role', 'titleBar');
     this.container.add(titleBar);
 
     // NPC name
@@ -108,11 +107,11 @@ export class MathGameSystem {
     this.container.add(this.npcNameText);
 
     // Timer bar background
-    this.timerBarBg = this.scene.add.rectangle(cx, boxY + 70, boxW - 40, 16, 0x333333);
+    this.timerBarBg = this.scene.add.rectangle(cx, boxY + 70, 560, 16, 0x333333);
     this.container.add(this.timerBarBg);
 
     // Timer bar (fills from left to right)
-    this.timerBar = this.scene.add.rectangle(cx, boxY + 70, boxW - 40, 16, 0x44ff44);
+    this.timerBar = this.scene.add.rectangle(cx, boxY + 70, 560, 16, 0x44ff44);
     this.timerBar.setOrigin(0.5, 0.5);
     this.container.add(this.timerBar);
 
@@ -145,20 +144,12 @@ export class MathGameSystem {
     this.container.add(this.resultText);
 
     // Choice buttons (4 choices in 2x2 grid)
-    const btnW = 220;
-    const btnH = 60;
-    const btnPositions = [
-      { x: cx - 120, y: cy + 80 },
-      { x: cx + 120, y: cy + 80 },
-      { x: cx - 120, y: cy + 155 },
-      { x: cx + 120, y: cy + 155 },
-    ];
-
     for (let i = 0; i < 4; i++) {
-      const btn = this.createChoiceButton(btnPositions[i].x, btnPositions[i].y, btnW, btnH, i);
+      const btn = this.createChoiceButton(cx, cy, 220, 60, i);
       this.choiceButtons.push(btn);
       this.container.add(btn);
     }
+    this.layoutUI();
   }
 
   private createChoiceButton(x: number, y: number, w: number, h: number, index: number): Phaser.GameObjects.Container {
@@ -194,6 +185,65 @@ export class MathGameSystem {
     });
 
     return btn;
+  }
+
+  private layoutUI(): void {
+    if (!this.container || !this.bg || !this.timerBarBg || !this.timerBar || !this.timerText || !this.questionText || !this.resultText || !this.npcNameText) return;
+    const screenW = this.scene.scale.width;
+    const screenH = this.scene.scale.height;
+    const cx = screenW / 2;
+    const cy = screenH / 2;
+    const boxW = Math.min(680, screenW - 24);
+    const boxH = Math.min(420, Math.max(280, screenH - 48));
+    const boxY = cy - boxH / 2;
+    this.currentBoxWidth = boxW;
+
+    const overlay = this.container.list.find((obj) => obj.getData('role') === 'overlay') as Phaser.GameObjects.Rectangle | undefined;
+    const titleBar = this.container.list.find((obj) => obj.getData('role') === 'titleBar') as Phaser.GameObjects.Rectangle | undefined;
+    if (overlay) {
+      overlay.setPosition(cx, cy);
+      overlay.setSize(screenW, screenH);
+    }
+
+    this.bg.setPosition(cx, cy);
+    this.bg.setSize(boxW, boxH);
+    if (titleBar) {
+      titleBar.setPosition(cx, boxY + 28);
+      titleBar.setSize(boxW, 48);
+    }
+
+    this.npcNameText.setPosition(cx, boxY + 28);
+    this.timerBarBg.setPosition(cx, boxY + 62);
+    this.timerBarBg.setSize(boxW - 30, 14);
+    this.timerBar.setPosition(cx, boxY + 62);
+    this.timerBar.setSize(boxW - 30, 14);
+    this.timerText.setPosition(cx, boxY + 62);
+
+    this.questionText.setPosition(cx, cy - Math.min(56, boxH * 0.2));
+    this.questionText.setStyle({ fontSize: screenW < 600 ? '28px' : '36px' });
+    this.resultText.setPosition(cx, cy + 12);
+
+    const btnW = Math.min(240, Math.floor((boxW - 64) / 2));
+    const btnH = screenH < 520 ? 52 : 60;
+    const rowGap = screenH < 520 ? 62 : 74;
+    const row1Y = cy + Math.min(84, boxH * 0.22);
+    const row2Y = row1Y + rowGap;
+    const leftX = cx - (btnW / 2) - 12;
+    const rightX = cx + (btnW / 2) + 12;
+    const pos = [
+      { x: leftX, y: row1Y },
+      { x: rightX, y: row1Y },
+      { x: leftX, y: row2Y },
+      { x: rightX, y: row2Y },
+    ];
+
+    this.choiceButtons.forEach((btn, i) => {
+      btn.setPosition(pos[i].x, pos[i].y);
+      const bg = btn.getData('bg') as Phaser.GameObjects.Rectangle;
+      const text = btn.getData('text') as Phaser.GameObjects.Text;
+      bg.setSize(btnW, btnH);
+      text.setStyle({ fontSize: screenW < 600 ? '22px' : '28px' });
+    });
   }
 
   /**
@@ -455,7 +505,7 @@ export class MathGameSystem {
     
     // Update timer bar
     const progress = this.timeRemaining / this.currentQuestion.timeLimit;
-    const maxWidth = 560; // boxW - 40
+    const maxWidth = this.currentBoxWidth - 30;
     if (this.timerBar) {
       this.timerBar.setDisplaySize(maxWidth * progress, 16);
       
