@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { toRenderDepth } from '../systems/LayeredTileSystem';
 
 /**
  * Player character with animated sprite and smooth 8-direction movement
@@ -20,7 +21,7 @@ export class Player {
     this.sprite.setOrigin(0.5, 0.5);
     this.sprite.setSize(28, 28); // Collision box (28px = PLAYER_HALF*2 = 14*2)
     this.sprite.setOffset(10, 10);
-    this.sprite.setDepth(500); // High depth so player is above tiles
+    this.sprite.setDepth(toRenderDepth(y / this.TILE_SIZE, 4));
 
     this.createAnimations();
     this.sprite.play('player_idle');
@@ -108,6 +109,7 @@ export class Player {
     }
 
     this.sprite.setVelocity(vx * this.speed, vy * this.speed);
+    this.sprite.setDepth(toRenderDepth(this.sprite.y / this.TILE_SIZE, 4));
     this.updateAnimation(vx, vy);
   }
 
@@ -142,6 +144,7 @@ export class Player {
 
   setPosition(x: number, y: number): void {
     this.sprite.setPosition(x, y);
+    this.sprite.setDepth(toRenderDepth(y / this.TILE_SIZE, 4));
   }
 
   toggleLantern(): void {
