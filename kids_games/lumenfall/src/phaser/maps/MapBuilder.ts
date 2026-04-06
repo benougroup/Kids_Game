@@ -19,6 +19,7 @@ import Phaser from 'phaser';
 import { TileGrid, TileData, EntityMovementFlags, DEFAULT_FLAGS } from '../systems/TileSystem';
 import { Entity } from '../entities/Entity';
 import { NPC_DEFINITIONS, MONSTER_DEFINITIONS, EntityDefinition } from '../systems/EntityRegistry';
+import { toRenderDepth } from '../systems/LayeredTileSystem';
 
 export interface MapExit {
   direction: 'north' | 'south' | 'east' | 'west';
@@ -145,7 +146,7 @@ export class MapBuilder {
       const displayW = entry.pixelWidth ?? w;
       const displayH = entry.pixelHeight ?? h;
       sprite.setDisplaySize(displayW, displayH);
-      sprite.setDepth(baseDepth + entry.y);
+      sprite.setDepth(toRenderDepth(entry.y, baseDepth / 100, entry.height));
       this.allSprites.push(sprite);
       
       // Update tile grid for collision
