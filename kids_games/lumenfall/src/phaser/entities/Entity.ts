@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { EntityDefinition, EntityState, MONSTER_TINTS, MONSTER_ALPHA } from '../systems/EntityRegistry';
 import { EntityMovementFlags, DEFAULT_FLAGS } from '../systems/TileSystem';
+import { toRenderDepth } from '../systems/LayeredTileSystem';
 
 /**
  * Unified Entity class for NPCs and Monsters
@@ -32,6 +33,7 @@ export class Entity {
   
   // Collision callback
   private isBlockedFn?: (x: number, y: number, flags: EntityMovementFlags) => boolean;
+  private tileSize: number;
 
   constructor(
     scene: Phaser.Scene,
@@ -41,6 +43,7 @@ export class Entity {
     tileSize: number = 64
   ) {
     this.scene = scene;
+    this.tileSize = tileSize;
     this.def = def;
     this.hp = def.hp;
     this.maxHp = def.hp;
@@ -60,7 +63,7 @@ export class Entity {
     const displaySize = def.displaySize ?? 48;
     this.sprite.setDisplaySize(displaySize, displaySize);
     this.sprite.setOrigin(0.5, 0.5);
-    this.sprite.setDepth(y);
+    this.sprite.setDepth(toRenderDepth(y / tileSize, 4));
 
     // Apply monster tint/alpha
     if (MONSTER_TINTS[def.id] !== undefined) {
@@ -155,7 +158,7 @@ export class Entity {
     if (this.currentState === 'dead' || this.currentState === 'frozen') return;
 
     // Update depth for Y-sorting
-    this.sprite.setDepth(this.sprite.y);
+    this.sprite.setDepth(toRenderDepth(this.sprite.y / this.tileSize, 4));
 
     // NPC wandering
     if (this.def.canWander && !this.isHostile) {

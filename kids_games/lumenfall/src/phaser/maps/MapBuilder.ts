@@ -36,6 +36,7 @@ export interface MapTileEntry {
   y: number;
   frame: string;
   atlas: string;
+  label?: string;         // Optional debug label rendered above sprite
   height: number;
   isWater?: boolean;
   damage?: number;
@@ -85,6 +86,7 @@ export class MapBuilder {
   private entities: Entity[] = [];
   private exits: MapExit[] = [];
   private allSprites: Phaser.GameObjects.Sprite[] = [];
+  private allLabels: Phaser.GameObjects.Text[] = [];
 
   constructor(scene: Phaser.Scene, cols: number, rows: number, tileSize: number = 64) {
     this.scene = scene;
@@ -139,15 +141,45 @@ export class MapBuilder {
       const h = (entry.heightTiles ?? 1) * tileSize;
       
       const yOff = entry.yOffset ?? 0;
-      const sprite = this.scene.add.sprite(x, y + yOff, entry.atlas, entry.frame);
+      const sprite = this.scene.add.sprite(x, y, entry.atlas, entry.frame);
       sprite.setOrigin(0, 0);
-      // Use pixelWidth/pixelHeight if specified (for aspect-ratio-correct rendering)
-      // Otherwise fall back to tile-based sizing
-      const displayW = entry.pixelWidth ?? w;
-      const displayH = entry.pixelHeight ?? h;
+
+      // Terrain defaults to grid-tile sizing.
+      // Objects/structures default to native atlas frame sizing unless tile/pixel dimensions are explicitly provided.
+      const nativeW = sprite.frame.realWidth;
+      const nativeH = sprite.frame.realHeight;
+      const hasExplicitTileSizing = entry.widthTiles !== undefined || entry.heightTiles !== undefined;
+      const displayW = entry.pixelWidth
+        ?? (hasExplicitTileSizing ? w : (baseDepth === 0 ? w : nativeW));
+      const displayH = entry.pixelHeight
+        ?? (hasExplicitTileSizing ? h : (baseDepth === 0 ? h : nativeH));
       sprite.setDisplaySize(displayW, displayH);
+
+      // For non-ground layers, anchor the object/structure to the tile base so tall sprites rise upward.
+      if (baseDepth > 0) {
+        sprite.y = y + yOff + tileSize - displayH;
+      } else {
+        sprite.y = y + yOff;
+      }
       sprite.setDepth(toRenderDepth(entry.y, baseDepth / 100, entry.height));
       this.allSprites.push(sprite);
+
+      if (entry.label) {
+        const label = this.scene.add.text(
+          x,
+          sprite.y - 14,
+          entry.label,
+          {
+            fontFamily: 'monospace',
+            fontSize: '11px',
+            color: '#ffffff',
+            backgroundColor: '#000000',
+            padding: { left: 3, right: 3, top: 1, bottom: 1 },
+          }
+        );
+        label.setDepth(sprite.depth + 1);
+        this.allLabels.push(label);
+      }
       
       // Update tile grid for collision
       const tileData: TileData = {
@@ -271,8 +303,10 @@ export class MapBuilder {
 
   public destroy(): void {
     for (const sprite of this.allSprites) sprite.destroy();
+    for (const label of this.allLabels) label.destroy();
     for (const entity of this.entities) entity.destroy();
     this.allSprites = [];
+    this.allLabels = [];
     this.entities = [];
   }
 }

@@ -4,7 +4,7 @@ import { DialogueBox } from '../ui/DialogueBox';
 import { StorySystem } from '../systems/StorySystem';
 import { MathGameSystem } from '../systems/MathGameSystem';
 import { MapBuilder } from '../maps/MapBuilder';
-import { createTestTownData, createTestForestData, createTestDungeonData } from '../maps/TestMaps';
+import { createTestTownData, createTestForestData, createTestDungeonData, createTestObjectAuditData } from '../maps/TestMaps';
 import { Entity } from '../entities/Entity';
 import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
@@ -96,6 +96,7 @@ export class GameScene extends Phaser.Scene {
       },
       isWalkable: (tx: number, ty: number) => this.currentMapBuilder?.isWalkable(tx*64+32, ty*64+32),
       teleport: (tx: number, ty: number) => this.player?.setPosition(tx*64+32, ty*64+32),
+      loadMap: (id: string, tx = 14, ty = 12) => this.loadMap(id, tx, ty),
     };
 
     // Set up keyboard input
@@ -162,6 +163,7 @@ export class GameScene extends Phaser.Scene {
       case 'test_town': mapData = createTestTownData(); break;
       case 'test_forest': mapData = createTestForestData(); break;
       case 'test_dungeon': mapData = createTestDungeonData(); break;
+      case 'test_objects': mapData = createTestObjectAuditData(); break;
       default: mapData = createTestTownData(); break;
     }
     
@@ -184,7 +186,7 @@ export class GameScene extends Phaser.Scene {
     
     // Camera setup
     this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
-    this.cameras.main.setZoom(2.0);
+    this.cameras.main.setZoom(1.5);
     // Add top padding (64px = 1 tile) so buildings near the top edge are not hidden behind the HUD
     this.cameras.main.setBounds(-64, -64, mapW + 128, mapH + 128);
     this.physics.world.setBounds(0, 0, mapW, mapH);

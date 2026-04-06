@@ -259,6 +259,94 @@ export function createTestTownData(): MapData {
 }
 
 // ============================================================
+// MAP DEBUG: OBJECT AUDIT BOARD
+// ============================================================
+export function createTestObjectAuditData(): MapData {
+  const COLS = 42;
+  const ROWS = 28;
+  const groundLayer: MapTileEntry[] = [];
+  const objectLayer: MapTileEntry[] = [];
+  const structureLayer: MapTileEntry[] = [];
+  const npcs: MapEntityEntry[] = [];
+  const monsters: MapEntityEntry[] = [];
+
+  fillRect(groundLayer, 0, 0, COLS, ROWS, 'stone_plain', 'terrain_grassland', 0);
+
+  const objectFramesV2 = [
+    'tree_oak_large', 'tree_pine_tall', 'tree_dead', 'log_pile', 'rock_large',
+    'barrel_pair', 'hay_bale', 'fence_short', 'lamp_post', 'well_large',
+    'market_stall_food', 'market_stall_goods', 'campfire', 'crate_small',
+    'sign_village', 'sign_forest', 'bush_small', 'gravestone_cross'
+  ];
+  const objectFramesV3 = [
+    'ruin_arch_stone', 'statue_knight', 'fountain_round', 'statue_robed', 'tent_plain_01',
+    'bridge_stone_arch', 'crate_pile', 'table_market'
+  ];
+  const buildingFrames = [
+    'house_thatch_small', 'tavern_blue_roof', 'blacksmith_forge_large',
+    'market_food_building', 'magic_shop_crystal', 'chapel_large', 'watchtower_small'
+  ];
+
+  const placeGrid = (
+    frames: string[],
+    atlas: string,
+    startX: number,
+    startY: number,
+    cols: number,
+    stepX: number,
+    stepY: number
+  ): void => {
+    frames.forEach((frame, idx) => {
+      const gx = idx % cols;
+      const gy = Math.floor(idx / cols);
+      objectLayer.push({
+        x: startX + gx * stepX,
+        y: startY + gy * stepY,
+        frame,
+        atlas,
+        height: 2,
+        collisionW: 1,
+        collisionH: 1,
+        label: `${atlas}:${frame}`,
+      });
+    });
+  };
+
+  placeGrid(objectFramesV2, 'objects_props_v002', 2, 5, 6, 6, 5);
+  placeGrid(objectFramesV3, 'objects_props_v003', 2, 16, 4, 9, 7);
+  placeGrid(buildingFrames, 'buildings_v003', 26, 8, 2, 7, 8);
+
+  npcs.push({ x: 36, y: 24, entityId: 'guard', name: 'Audit Guide' });
+
+  const exits: MapExit[] = [
+    {
+      direction: 'south',
+      tileX: 20,
+      tileY: ROWS - 1,
+      width: 2,
+      targetMap: 'test_town',
+      targetTileX: 14,
+      targetTileY: 3,
+    }
+  ];
+
+  return {
+    id: 'test_objects',
+    name: 'Object Audit Board',
+    cols: COLS,
+    rows: ROWS,
+    tileSize: TILE,
+    ambientLight: 0.9,
+    groundLayer,
+    objectLayer,
+    structureLayer,
+    npcs,
+    monsters,
+    exits,
+  };
+}
+
+// ============================================================
 // MAP 2: WHISPERING FOREST
 // ============================================================
 export function createTestForestData(): MapData {
