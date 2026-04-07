@@ -6,6 +6,7 @@ export class DialogueBox {
   private scene: Phaser.Scene;
   private container: Phaser.GameObjects.Container;
   private background: Phaser.GameObjects.Graphics;
+  private overlay: Phaser.GameObjects.Rectangle;
   private portrait: Phaser.GameObjects.Sprite | null = null;
   private nameText: Phaser.GameObjects.Text;
   private dialogueText: Phaser.GameObjects.Text;
@@ -27,7 +28,13 @@ export class DialogueBox {
     this.container.setVisible(false);
     this.container.setScrollFactor(0); // Fixed to camera, not world
 
-    // Background box (bottom of screen)
+    // Dim overlay so the popup is always page-based, independent from map/background size
+    this.overlay = scene.add.rectangle(0, 0, scene.scale.width, scene.scale.height, 0x000000, 0.42);
+    this.overlay.setOrigin(0, 0);
+    this.overlay.setScrollFactor(0);
+    this.container.add(this.overlay);
+
+    // Background box
     this.background = scene.add.graphics();
     this.container.add(this.background);
 
@@ -98,10 +105,9 @@ export class DialogueBox {
     const viewportW = this.scene.scale.width;
     const viewportH = this.scene.scale.height;
     const boxWidth = Math.min(760, viewportW - 24);
-    const boxHeight = Math.min(190, Math.max(140, Math.round(viewportH * 0.3)));
-    const margin = 14;
+    const boxHeight = Math.min(260, Math.max(170, Math.round(viewportH * 0.36)));
     const x = Math.round((viewportW - boxWidth) / 2);
-    const y = Math.round(viewportH - boxHeight - margin);
+    const y = Math.round((viewportH - boxHeight) / 2);
     const portraitSize = Math.min(96, Math.max(64, Math.round(boxHeight * 0.58)));
     const innerPad = 18;
     const portraitX = x + innerPad + portraitSize / 2 + 8;
@@ -110,6 +116,7 @@ export class DialogueBox {
     const textTop = y + innerPad + 18;
     const textWrap = boxWidth - portraitSize - 72;
 
+    this.overlay.setSize(viewportW, viewportH);
     this.drawBackground(x, y, boxWidth, boxHeight, portraitSize);
 
     this.nameBg.clear();

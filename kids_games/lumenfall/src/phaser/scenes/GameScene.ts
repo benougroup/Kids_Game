@@ -130,6 +130,9 @@ export class GameScene extends Phaser.Scene {
 
     // Listen for action button from UI
     this.events.on('playerAction', () => this.handleAction());
+    this.events.on('loadMapRequest', ({ mapId, tileX, tileY }: { mapId: string; tileX: number; tileY: number }) => {
+      this.loadMap(mapId, tileX, tileY);
+    });
     
     // Click-to-move
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
