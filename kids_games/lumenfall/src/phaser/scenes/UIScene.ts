@@ -12,11 +12,20 @@ export class UIScene extends Phaser.Scene {
   private timeText!: Phaser.GameObjects.Text;
   
   private inventoryPanel!: Phaser.GameObjects.Container;
+  private inventoryOverlay!: Phaser.GameObjects.Rectangle;
+  private inventoryBox!: Phaser.GameObjects.Rectangle;
+  private inventoryTitle!: Phaser.GameObjects.Text;
+  private inventoryCloseBtn!: Phaser.GameObjects.Text;
   private inventoryVisible: boolean = false;
   private inventoryItemsText!: Phaser.GameObjects.Text;
   private inventoryItems: string[] = [];
 
   private mapPanel!: Phaser.GameObjects.Container;
+  private mapOverlay!: Phaser.GameObjects.Rectangle;
+  private mapBox!: Phaser.GameObjects.Rectangle;
+  private mapTitle!: Phaser.GameObjects.Text;
+  private mapCloseBtn!: Phaser.GameObjects.Text;
+  private mapAuditBtn!: Phaser.GameObjects.Text;
   private mapVisible: boolean = false;
   
   private actionButton!: Phaser.GameObjects.Container;
@@ -200,58 +209,49 @@ export class UIScene extends Phaser.Scene {
   }
 
   private createInventoryPanel(): void {
-    const width = this.scale.width;
-    const height = this.scale.height;
-
     this.inventoryPanel = this.add.container(0, 0);
     this.inventoryPanel.setScrollFactor(0);
     this.inventoryPanel.setDepth(3000);
     this.inventoryPanel.setVisible(false);
 
-    // Full-screen overlay
-    const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.8);
-    overlay.setOrigin(0, 0);
-    overlay.setInteractive();
-    overlay.on('pointerdown', () => this.toggleInventory());
+    this.inventoryOverlay = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.8);
+    this.inventoryOverlay.setOrigin(0, 0);
+    this.inventoryOverlay.setInteractive();
+    this.inventoryOverlay.on('pointerdown', () => this.toggleInventory());
 
-    // Inventory box
-    const boxWidth = Math.min(500, width - 40);
-    const boxHeight = Math.min(400, height - 100);
-    const boxX = width / 2;
-    const boxY = height / 2;
+    this.inventoryBox = this.add.rectangle(0, 0, 10, 10, 0x2c3e50, 1);
+    this.inventoryBox.setStrokeStyle(4, 0xecf0f1);
 
-    const box = this.add.rectangle(boxX, boxY, boxWidth, boxHeight, 0x2c3e50, 1);
-    box.setStrokeStyle(4, 0xecf0f1);
-
-    const title = this.add.text(boxX, boxY - boxHeight / 2 + 30, 'Inventory', {
+    this.inventoryTitle = this.add.text(0, 0, 'Inventory', {
       fontSize: '28px',
       color: '#ffffff',
       fontFamily: 'Arial',
       fontStyle: 'bold',
     });
-    title.setOrigin(0.5);
+    this.inventoryTitle.setOrigin(0.5);
 
-    this.inventoryItemsText = this.add.text(boxX, boxY, 'No items yet', {
+    this.inventoryItemsText = this.add.text(0, 0, 'No items yet', {
       fontSize: '18px',
       color: '#ecf0f1',
       fontFamily: 'Arial',
       align: 'center',
-      wordWrap: { width: boxWidth - 60 },
+      wordWrap: { width: 420 },
     });
     this.inventoryItemsText.setOrigin(0.5);
 
-    const closeBtn = this.add.text(boxX, boxY + boxHeight / 2 - 40, 'Close', {
+    this.inventoryCloseBtn = this.add.text(0, 0, 'Close', {
       fontSize: '20px',
       color: '#ffffff',
       fontFamily: 'Arial',
       backgroundColor: '#e74c3c',
       padding: { x: 20, y: 10 },
     });
-    closeBtn.setOrigin(0.5);
-    closeBtn.setInteractive();
-    closeBtn.on('pointerdown', () => this.toggleInventory());
+    this.inventoryCloseBtn.setOrigin(0.5);
+    this.inventoryCloseBtn.setInteractive();
+    this.inventoryCloseBtn.on('pointerdown', () => this.toggleInventory());
 
-    this.inventoryPanel.add([overlay, box, title, this.inventoryItemsText, closeBtn]);
+    this.inventoryPanel.add([this.inventoryOverlay, this.inventoryBox, this.inventoryTitle, this.inventoryItemsText, this.inventoryCloseBtn]);
+    this.layoutInventoryPanel(this.scale.width, this.scale.height);
   }
 
   private createMapPanel(): void {
@@ -263,11 +263,10 @@ export class UIScene extends Phaser.Scene {
     this.mapPanel.setDepth(3000);
     this.mapPanel.setVisible(false);
 
-    // Full-screen overlay
-    const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.85);
-    overlay.setOrigin(0, 0);
-    overlay.setInteractive();
-    overlay.on('pointerdown', () => this.toggleMap());
+    this.mapOverlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.85);
+    this.mapOverlay.setOrigin(0, 0);
+    this.mapOverlay.setInteractive();
+    this.mapOverlay.on('pointerdown', () => this.toggleMap());
 
     // Map panel box
     const boxWidth = Math.min(560, width - 40);
@@ -275,16 +274,16 @@ export class UIScene extends Phaser.Scene {
     const boxX = width / 2;
     const boxY = height / 2;
 
-    const box = this.add.rectangle(boxX, boxY, boxWidth, boxHeight, 0x1a2a3a, 1);
-    box.setStrokeStyle(4, 0x4a90e2);
+    this.mapBox = this.add.rectangle(boxX, boxY, boxWidth, boxHeight, 0x1a2a3a, 1);
+    this.mapBox.setStrokeStyle(4, 0x4a90e2);
 
-    const title = this.add.text(boxX, boxY - boxHeight / 2 + 30, 'World Map', {
+    this.mapTitle = this.add.text(boxX, boxY - boxHeight / 2 + 30, 'World Map', {
       fontSize: '26px',
       color: '#4a90e2',
       fontFamily: 'Arial',
       fontStyle: 'bold',
     });
-    title.setOrigin(0.5);
+    this.mapTitle.setOrigin(0.5);
 
     // Draw a simple schematic map
     const mapGraphics = this.add.graphics();
@@ -363,18 +362,51 @@ export class UIScene extends Phaser.Scene {
     );
 
     // Close button
-    const closeBtn = this.add.text(boxX, boxY + boxHeight / 2 - 30, 'Close Map', {
+    this.mapAuditBtn = this.add.text(boxX - 86, boxY + boxHeight / 2 - 30, 'Object Audit', {
+      fontSize: '18px',
+      color: '#ffffff',
+      fontFamily: 'Arial',
+      backgroundColor: '#8e44ad',
+      padding: { x: 18, y: 8 },
+    });
+    this.mapAuditBtn.setOrigin(0.5);
+    this.mapAuditBtn.setInteractive();
+    this.mapAuditBtn.on('pointerdown', () => {
+      const gameScene = this.scene.get('GameScene');
+      gameScene.events.emit('loadMapRequest', { mapId: 'test_objects', tileX: 20, tileY: 24 });
+      if (this.mapVisible) {
+        this.toggleMap();
+      }
+    });
+
+    this.mapCloseBtn = this.add.text(boxX + 90, boxY + boxHeight / 2 - 30, 'Close Map', {
       fontSize: '18px',
       color: '#ffffff',
       fontFamily: 'Arial',
       backgroundColor: '#27ae60',
       padding: { x: 20, y: 8 },
     });
-    closeBtn.setOrigin(0.5);
-    closeBtn.setInteractive();
-    closeBtn.on('pointerdown', () => this.toggleMap());
+    this.mapCloseBtn.setOrigin(0.5);
+    this.mapCloseBtn.setInteractive();
+    this.mapCloseBtn.on('pointerdown', () => this.toggleMap());
 
-    this.mapPanel.add([overlay, box, title, mapGraphics, townLabel, forestLabel, dungeonLabel, youLabel, cropAuditTitle, cropAuditText, closeBtn]);
+    this.mapPanel.add([this.mapOverlay, this.mapBox, this.mapTitle, mapGraphics, townLabel, forestLabel, dungeonLabel, youLabel, cropAuditTitle, cropAuditText, this.mapAuditBtn, this.mapCloseBtn]);
+  }
+
+  private layoutInventoryPanel(width: number, height: number): void {
+    if (!this.inventoryPanel) return;
+    const boxWidth = Math.min(500, width - 40);
+    const boxHeight = Math.min(400, height - 100);
+    const boxX = width / 2;
+    const boxY = height / 2;
+
+    this.inventoryOverlay.setSize(width, height);
+    this.inventoryBox.setPosition(boxX, boxY);
+    this.inventoryBox.setSize(boxWidth, boxHeight);
+    this.inventoryTitle.setPosition(boxX, boxY - boxHeight / 2 + 30);
+    this.inventoryItemsText.setPosition(boxX, boxY);
+    this.inventoryItemsText.setWordWrapWidth(boxWidth - 60, true);
+    this.inventoryCloseBtn.setPosition(boxX, boxY + boxHeight / 2 - 40);
   }
 
   private toggleInventory(): void {
@@ -450,6 +482,10 @@ export class UIScene extends Phaser.Scene {
     // Reposition time text
     if (this.timeText) {
       this.timeText.setPosition(width - 20, 35);
+    }
+    this.layoutInventoryPanel(width, height);
+    if (this.mapOverlay) {
+      this.mapOverlay.setSize(width, height);
     }
   }
 
