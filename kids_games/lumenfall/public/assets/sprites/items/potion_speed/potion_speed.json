@@ -1,0 +1,14 @@
+{
+  "id": "potion_speed",
+  "type": "item",
+  "subType": "consumable",
+  "name": "Potion Speed",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "speed": 30,
+    "duration": 10
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "crate",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Crate",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": true,
+  "interactType": "container"
+}

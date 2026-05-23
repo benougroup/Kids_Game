@@ -1,0 +1,13 @@
+{
+  "id": "chest_open",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Chest Open",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": false
+}

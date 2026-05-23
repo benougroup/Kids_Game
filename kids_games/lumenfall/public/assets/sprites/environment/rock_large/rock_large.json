@@ -1,0 +1,12 @@
+{
+  "id": "rock_large",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Rock Large",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64
+}

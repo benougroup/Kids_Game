@@ -1,0 +1,15 @@
+{
+  "id": "bow_wood",
+  "type": "equipment",
+  "subType": "weapon",
+  "name": "Bow Wood",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_right",
+  "stats": {
+    "attack": 12,
+    "range": 3
+  }
+}

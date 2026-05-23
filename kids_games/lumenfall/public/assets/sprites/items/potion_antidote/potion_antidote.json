@@ -1,0 +1,13 @@
+{
+  "id": "potion_antidote",
+  "type": "item",
+  "subType": "consumable",
+  "name": "Potion Antidote",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "cure_poison": true
+  }
+}

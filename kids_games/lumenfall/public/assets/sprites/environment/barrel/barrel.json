@@ -1,0 +1,14 @@
+{
+  "id": "barrel",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Barrel",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": true,
+  "interactType": "container"
+}

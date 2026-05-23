@@ -1,0 +1,13 @@
+{
+  "id": "hedge",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Hedge",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "hedge"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "coin_gold",
+  "type": "item",
+  "subType": "currency",
+  "name": "Coin Gold",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 10
+}

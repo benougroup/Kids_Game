@@ -1,0 +1,11 @@
+{
+  "id": "gem_red",
+  "type": "item",
+  "subType": "gem",
+  "name": "Gem Red",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 100
+}

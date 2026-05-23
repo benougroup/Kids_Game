@@ -1,0 +1,15 @@
+{
+  "id": "gate_iron",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Gate Iron",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "gate",
+  "interactive": true,
+  "interactType": "gate"
+}

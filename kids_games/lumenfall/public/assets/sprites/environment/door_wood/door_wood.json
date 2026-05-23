@@ -1,0 +1,15 @@
+{
+  "id": "door_wood",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Door Wood",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "door",
+  "interactive": true,
+  "interactType": "door"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "key_iron",
+  "type": "item",
+  "subType": "key",
+  "name": "Key Iron",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "opensLock": "iron"
+}

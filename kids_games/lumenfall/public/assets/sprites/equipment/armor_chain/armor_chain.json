@@ -1,0 +1,14 @@
+{
+  "id": "armor_chain",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Armor Chain",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "body",
+  "stats": {
+    "defense": 16
+  }
+}

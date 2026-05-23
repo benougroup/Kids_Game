@@ -1,0 +1,11 @@
+{
+  "id": "scroll_magic",
+  "type": "item",
+  "subType": "scroll",
+  "name": "Scroll Magic",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "spell": "fireball"
+}

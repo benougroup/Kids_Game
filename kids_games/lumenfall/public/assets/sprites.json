@@ -1,0 +1,126 @@
+{
+  "version": "1.0.0",
+  "game": "Lumenfall",
+  "description": "Complete sprite system \u2014 separate PNG files with JSON metadata",
+  "categories": {
+    "characters": {
+      "path": "sprites/characters/",
+      "entries": [
+        "hero",
+        "npc_villager_child",
+        "npc_villager_adult",
+        "npc_villager_elder",
+        "npc_villager_sick",
+        "npc_guard",
+        "npc_merchant",
+        "npc_seller",
+        "npc_magician"
+      ]
+    },
+    "equipment": {
+      "path": "sprites/equipment/",
+      "entries": [
+        "sword_iron",
+        "sword_steel",
+        "sword_magic",
+        "shield_wood",
+        "shield_iron",
+        "wand_magic",
+        "staff_wizard",
+        "bow_wood",
+        "helmet_iron",
+        "helmet_knight",
+        "armor_leather",
+        "armor_chain",
+        "armor_plate",
+        "robe_magic",
+        "boots_iron",
+        "ring_magic"
+      ]
+    },
+    "items": {
+      "path": "sprites/items/",
+      "entries": [
+        "coin_gold",
+        "coin_silver",
+        "coin_pouch",
+        "gem_red",
+        "gem_blue",
+        "gem_green",
+        "potion_health",
+        "potion_mana",
+        "potion_speed",
+        "potion_antidote",
+        "key_iron",
+        "key_golden",
+        "scroll_magic",
+        "stone",
+        "stone_magic",
+        "arrow",
+        "bread",
+        "apple",
+        "fish",
+        "mushroom"
+      ]
+    },
+    "environment": {
+      "path": "sprites/environment/",
+      "subCategories": {
+        "ground": [
+          "tile_grass",
+          "tile_grass_dark",
+          "tile_dirt",
+          "tile_sand",
+          "tile_stone_floor",
+          "tile_stone_road",
+          "tile_wood_floor",
+          "tile_water_shallow",
+          "tile_water_deep",
+          "tile_ice",
+          "tile_lava",
+          "tile_snow",
+          "tile_cave_floor",
+          "tile_forest_floor",
+          "tile_swamp",
+          "tile_magic_floor"
+        ],
+        "obstacles": [
+          "wall_stone",
+          "wall_brick",
+          "wall_wood",
+          "cliff",
+          "fence_wood",
+          "fence_iron",
+          "hedge",
+          "water_edge",
+          "tree_oak",
+          "tree_pine",
+          "rock_small",
+          "rock_large",
+          "chest_closed",
+          "chest_open",
+          "barrel",
+          "crate",
+          "door_wood",
+          "door_open",
+          "gate_iron",
+          "sign_post"
+        ],
+        "buildings": [
+          "building_house_small",
+          "building_house_large",
+          "building_inn",
+          "building_shop",
+          "building_blacksmith",
+          "building_church",
+          "building_watchtower",
+          "building_castle_gate",
+          "building_fountain",
+          "building_well",
+          "building_market_stall",
+          "building_campfire"
+        ]
+      }
+    }
+  }
+}

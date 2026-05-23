@@ -1,0 +1,13 @@
+{
+  "id": "water_edge",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Water Edge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isTransition": true
+}

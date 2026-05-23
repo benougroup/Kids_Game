@@ -1,0 +1,11 @@
+{
+  "id": "coin_silver",
+  "type": "item",
+  "subType": "currency",
+  "name": "Coin Silver",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 1
+}

@@ -1,0 +1,14 @@
+{
+  "id": "sword_steel",
+  "type": "equipment",
+  "subType": "weapon",
+  "name": "Sword Steel",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_right",
+  "stats": {
+    "attack": 18
+  }
+}

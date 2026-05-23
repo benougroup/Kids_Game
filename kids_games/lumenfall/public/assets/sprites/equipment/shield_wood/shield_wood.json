@@ -1,0 +1,14 @@
+{
+  "id": "shield_wood",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Shield Wood",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_left",
+  "stats": {
+    "defense": 5
+  }
+}

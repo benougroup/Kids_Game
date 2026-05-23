@@ -1,0 +1,13 @@
+{
+  "id": "apple",
+  "type": "item",
+  "subType": "food",
+  "name": "Apple",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 5
+  }
+}

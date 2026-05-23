@@ -1,0 +1,13 @@
+{
+  "id": "potion_health",
+  "type": "item",
+  "subType": "consumable",
+  "name": "Potion Health",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 50
+  }
+}

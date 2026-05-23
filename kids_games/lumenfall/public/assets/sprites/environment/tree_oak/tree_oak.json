@@ -1,0 +1,13 @@
+{
+  "id": "tree_oak",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Tree Oak",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isTree": true
+}

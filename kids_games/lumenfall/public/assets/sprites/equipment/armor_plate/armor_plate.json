@@ -1,0 +1,14 @@
+{
+  "id": "armor_plate",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Armor Plate",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "body",
+  "stats": {
+    "defense": 24
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "tile_dirt",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Dirt",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

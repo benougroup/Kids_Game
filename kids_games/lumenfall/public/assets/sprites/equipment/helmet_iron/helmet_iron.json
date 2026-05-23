@@ -1,0 +1,14 @@
+{
+  "id": "helmet_iron",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Helmet Iron",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "head",
+  "stats": {
+    "defense": 6
+  }
+}

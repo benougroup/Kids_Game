@@ -1,0 +1,13 @@
+{
+  "id": "potion_mana",
+  "type": "item",
+  "subType": "consumable",
+  "name": "Potion Mana",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "mana": 50
+  }
+}

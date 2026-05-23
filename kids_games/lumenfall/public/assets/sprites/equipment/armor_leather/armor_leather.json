@@ -1,0 +1,14 @@
+{
+  "id": "armor_leather",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Armor Leather",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "body",
+  "stats": {
+    "defense": 8
+  }
+}

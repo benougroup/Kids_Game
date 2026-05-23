@@ -1,0 +1,13 @@
+{
+  "id": "tree_pine",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Tree Pine",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isTree": true
+}

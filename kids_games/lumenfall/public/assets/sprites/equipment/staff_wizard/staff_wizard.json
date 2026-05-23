@@ -1,0 +1,15 @@
+{
+  "id": "staff_wizard",
+  "type": "equipment",
+  "subType": "weapon",
+  "name": "Staff Wizard",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_right",
+  "stats": {
+    "magic": 22,
+    "attack": 5
+  }
+}

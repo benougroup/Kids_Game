@@ -1,0 +1,14 @@
+{
+  "id": "sword_iron",
+  "type": "equipment",
+  "subType": "weapon",
+  "name": "Sword Iron",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_right",
+  "stats": {
+    "attack": 10
+  }
+}

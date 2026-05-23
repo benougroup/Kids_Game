@@ -1,0 +1,13 @@
+{
+  "id": "mushroom",
+  "type": "item",
+  "subType": "food",
+  "name": "Mushroom",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 8
+  }
+}

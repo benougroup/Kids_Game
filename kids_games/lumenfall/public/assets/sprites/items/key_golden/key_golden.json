@@ -1,0 +1,11 @@
+{
+  "id": "key_golden",
+  "type": "item",
+  "subType": "key",
+  "name": "Key Golden",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "opensLock": "golden"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "ring_magic",
+  "type": "equipment",
+  "subType": "accessory",
+  "name": "Ring Magic",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "finger",
+  "stats": {
+    "magic": 10,
+    "speed": 2
+  }
+}

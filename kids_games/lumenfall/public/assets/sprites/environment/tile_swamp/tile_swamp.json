@@ -1,0 +1,14 @@
+{
+  "id": "tile_swamp",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Swamp",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "slowsMovement": true
+}

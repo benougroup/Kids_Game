@@ -1,0 +1,11 @@
+{
+  "id": "stone_magic",
+  "type": "item",
+  "subType": "material",
+  "name": "Stone Magic",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 30
+}

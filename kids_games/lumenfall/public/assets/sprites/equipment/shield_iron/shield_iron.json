@@ -1,0 +1,14 @@
+{
+  "id": "shield_iron",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Shield Iron",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_left",
+  "stats": {
+    "defense": 12
+  }
+}

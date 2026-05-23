@@ -1,0 +1,11 @@
+{
+  "id": "stone",
+  "type": "item",
+  "subType": "material",
+  "name": "Stone",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 2
+}

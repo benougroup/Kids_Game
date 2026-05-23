@@ -1,0 +1,13 @@
+{
+  "id": "fence_iron",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Fence Iron",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "fence"
+}

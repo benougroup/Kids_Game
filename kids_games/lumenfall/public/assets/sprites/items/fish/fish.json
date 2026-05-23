@@ -1,0 +1,13 @@
+{
+  "id": "fish",
+  "type": "item",
+  "subType": "food",
+  "name": "Fish",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 15
+  }
+}

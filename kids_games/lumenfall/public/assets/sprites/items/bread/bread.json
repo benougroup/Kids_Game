@@ -1,0 +1,13 @@
+{
+  "id": "bread",
+  "type": "item",
+  "subType": "food",
+  "name": "Bread",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 10
+  }
+}

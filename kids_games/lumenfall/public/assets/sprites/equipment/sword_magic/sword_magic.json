@@ -1,0 +1,15 @@
+{
+  "id": "sword_magic",
+  "type": "equipment",
+  "subType": "weapon",
+  "name": "Sword Magic",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_right",
+  "stats": {
+    "attack": 25,
+    "magic": 5
+  }
+}

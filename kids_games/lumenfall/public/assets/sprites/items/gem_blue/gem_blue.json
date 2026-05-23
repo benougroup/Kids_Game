@@ -1,0 +1,11 @@
+{
+  "id": "gem_blue",
+  "type": "item",
+  "subType": "gem",
+  "name": "Gem Blue",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 120
+}

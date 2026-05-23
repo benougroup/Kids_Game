@@ -1,0 +1,11 @@
+{
+  "id": "coin_pouch",
+  "type": "item",
+  "subType": "currency",
+  "name": "Coin Pouch",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 50
+}

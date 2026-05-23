@@ -1,0 +1,18 @@
+{
+  "id": "building_campfire",
+  "type": "environment",
+  "subType": "building",
+  "name": "Campfire",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "rest"
+}

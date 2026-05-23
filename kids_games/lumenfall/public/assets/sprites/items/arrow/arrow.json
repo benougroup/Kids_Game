@@ -1,0 +1,11 @@
+{
+  "id": "arrow",
+  "type": "item",
+  "subType": "ammo",
+  "name": "Arrow",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "damage": 8
+}
