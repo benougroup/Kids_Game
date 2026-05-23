@@ -1,0 +1,31 @@
+{
+  "id": "portal_ice",
+  "type": "portal",
+  "subType": "idle",
+  "name": "Portal Ice",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "isPortal": true,
+  "portalAllowed": true,
+  "interactive": true,
+  "interactType": "portal_travel",
+  "targetMap": null,
+  "targetSpawn": null,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "animation": {
+    "files": [
+      "f01.png",
+      "f02.png",
+      "f03.png",
+      "f04.png",
+      "f05.png",
+      "f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": true
+  }
+}

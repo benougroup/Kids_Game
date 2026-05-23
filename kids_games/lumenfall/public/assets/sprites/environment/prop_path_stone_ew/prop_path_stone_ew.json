@@ -1,0 +1,13 @@
+{
+  "id": "prop_path_stone_ew",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Path Stone Ew",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isPath": true
+}

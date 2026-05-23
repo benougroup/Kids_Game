@@ -1,0 +1,14 @@
+{
+  "id": "prop_tall_grass",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Tall Grass",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true,
+  "conceals": true
+}

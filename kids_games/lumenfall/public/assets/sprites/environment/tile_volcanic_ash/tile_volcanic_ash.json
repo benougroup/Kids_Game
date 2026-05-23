@@ -1,0 +1,15 @@
+{
+  "id": "tile_volcanic_ash",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Volcanic Ash",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "volcano",
+  "damagesOverTime": true
+}

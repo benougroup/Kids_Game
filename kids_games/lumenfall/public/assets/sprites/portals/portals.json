@@ -1,0 +1,18 @@
+{
+  "description": "Portal sprites \u2014 the ONLY way to travel between maps. Place at map edges. Borders are impassable; portals override passability.",
+  "rule": "Players cannot leave a map except through a portal. All map edges must be bordered with impassable border tiles. Portals are placed ON TOP of border tiles at designated crossing points.",
+  "portalTypes": [
+    "portal_magic_idle",
+    "portal_magic_active",
+    "portal_enter",
+    "portal_fire",
+    "portal_ice",
+    "portal_marker"
+  ],
+  "usage": {
+    "idle": "portal_magic_idle or portal_fire or portal_ice \u2014 looping idle animation",
+    "active": "portal_magic_active \u2014 when player is near the portal",
+    "enter": "portal_enter \u2014 plays once when player steps into portal",
+    "marker": "portal_marker \u2014 floating arrow above portal to hint location"
+  }
+}

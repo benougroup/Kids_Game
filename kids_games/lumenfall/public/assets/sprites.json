@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "game": "Lumenfall",
   "description": "Complete sprite system \u2014 separate PNG files with JSON metadata",
   "categories": {
@@ -14,7 +14,15 @@
         "npc_guard",
         "npc_merchant",
         "npc_seller",
-        "npc_magician"
+        "npc_magician",
+        "npc_female_guard",
+        "npc_knight",
+        "npc_thief",
+        "npc_healer",
+        "npc_farmer",
+        "npc_blacksmith",
+        "npc_wizard_elder",
+        "npc_child_girl"
       ]
     },
     "equipment": {
@@ -82,7 +90,23 @@
           "tile_cave_floor",
           "tile_forest_floor",
           "tile_swamp",
-          "tile_magic_floor"
+          "tile_magic_floor",
+          "tile_dungeon_floor",
+          "tile_dungeon_wet",
+          "tile_castle_floor",
+          "tile_castle_royal",
+          "tile_beach_sand",
+          "tile_beach_wet",
+          "tile_mountain_rock",
+          "tile_mountain_snow",
+          "tile_jungle_floor",
+          "tile_desert_floor",
+          "tile_graveyard",
+          "tile_volcanic_ash",
+          "tile_cloud_floor",
+          "tile_crystal_floor",
+          "tile_ancient_ruins",
+          "tile_rainbow_floor"
         ],
         "obstacles": [
           "wall_stone",
@@ -119,8 +143,98 @@
           "building_well",
           "building_market_stall",
           "building_campfire"
+        ],
+        "borders": [
+          "border_grass_n",
+          "border_grass_s",
+          "border_grass_e",
+          "border_grass_w",
+          "border_grass_ne",
+          "border_grass_nw",
+          "border_grass_se",
+          "border_grass_sw",
+          "border_grass_inner_n",
+          "border_grass_inner_s",
+          "border_grass_inner_e",
+          "border_grass_inner_w",
+          "border_stone_n",
+          "border_stone_s",
+          "border_stone_e",
+          "border_stone_w",
+          "border_stone_ne",
+          "border_stone_nw",
+          "border_stone_se",
+          "border_stone_sw",
+          "border_cliff_n",
+          "border_cliff_s",
+          "border_cliff_e",
+          "border_cliff_w",
+          "border_ocean_n",
+          "border_ocean_s",
+          "border_ocean_e",
+          "border_ocean_w",
+          "border_ocean_ne",
+          "border_ocean_nw",
+          "border_ocean_se",
+          "border_ocean_sw",
+          "border_lava_n",
+          "border_lava_s",
+          "border_lava_e",
+          "border_lava_w"
+        ],
+        "props": [
+          "prop_flower_red",
+          "prop_flower_yellow",
+          "prop_flower_blue",
+          "prop_mushroom_cluster",
+          "prop_lantern_post",
+          "prop_torch_wall",
+          "prop_campfire_small",
+          "prop_brazier",
+          "prop_statue_hero",
+          "prop_statue_lion",
+          "prop_gravestone",
+          "prop_gravestone_fancy",
+          "prop_bridge_plank_h",
+          "prop_bridge_plank_v",
+          "prop_bridge_stone_h",
+          "prop_bridge_stone_v",
+          "prop_path_stone_ns",
+          "prop_path_stone_ew",
+          "prop_path_stone_cross",
+          "prop_path_dirt_ns",
+          "prop_pond_small",
+          "prop_bush_green",
+          "prop_bush_flower",
+          "prop_tall_grass"
         ]
       }
+    },
+    "portals": {
+      "path": "sprites/portals/",
+      "description": "Portal sprites \u2014 the ONLY way to travel between maps",
+      "rule": "All map edges must use impassable border tiles. Portals are the sole crossing points.",
+      "entries": [
+        "portal_magic_idle",
+        "portal_magic_active",
+        "portal_enter",
+        "portal_fire",
+        "portal_ice",
+        "portal_marker"
+      ]
     }
+  },
+  "borderSystem": {
+    "description": "Map borders are ALWAYS impassable. Players must use portals to travel between maps.",
+    "borderTiles": "All border_* tiles have passable=false and isBorder=true",
+    "portalTiles": "Portal tiles have passable=true, isPortal=true, portalAllowed=true",
+    "placement": "Place border tiles around all map edges. Place portal tiles at designated crossing points ON TOP of border tiles.",
+    "biomes": [
+      "grass",
+      "stone",
+      "cliff",
+      "ocean",
+      "lava"
+    ]
   }
 }

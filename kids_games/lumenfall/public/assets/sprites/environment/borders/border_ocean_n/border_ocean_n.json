@@ -1,0 +1,17 @@
+{
+  "id": "border_ocean_n",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Ocean N",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "water",
+  "direction": "N",
+  "isCorner": false,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

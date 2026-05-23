@@ -1,0 +1,15 @@
+{
+  "id": "tile_mountain_snow",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Mountain Snow",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "mountain",
+  "slowsMovement": true
+}

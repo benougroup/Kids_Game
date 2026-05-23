@@ -1,0 +1,17 @@
+{
+  "id": "border_grass_sw",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Grass Sw",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "forest",
+  "direction": "SW",
+  "isCorner": true,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

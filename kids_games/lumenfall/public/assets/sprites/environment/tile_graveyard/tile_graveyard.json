@@ -1,0 +1,15 @@
+{
+  "id": "tile_graveyard",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Graveyard",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "graveyard",
+  "eerie": true
+}

@@ -1,0 +1,15 @@
+{
+  "id": "tile_rainbow_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Rainbow Floor",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "magic",
+  "magical": true
+}

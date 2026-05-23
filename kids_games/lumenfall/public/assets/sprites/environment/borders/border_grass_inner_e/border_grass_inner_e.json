@@ -1,0 +1,17 @@
+{
+  "id": "border_grass_inner_e",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Grass Inner E",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "forest",
+  "direction": "E",
+  "isCorner": false,
+  "isInnerEdge": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

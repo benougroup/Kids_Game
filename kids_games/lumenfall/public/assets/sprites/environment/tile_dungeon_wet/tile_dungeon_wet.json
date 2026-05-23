@@ -1,0 +1,15 @@
+{
+  "id": "tile_dungeon_wet",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Dungeon Wet",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "dungeon",
+  "slowsMovement": true
+}

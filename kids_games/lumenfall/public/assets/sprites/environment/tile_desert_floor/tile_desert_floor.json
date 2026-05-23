@@ -1,0 +1,15 @@
+{
+  "id": "tile_desert_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Desert Floor",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "desert",
+  "slowsMovement": true
+}

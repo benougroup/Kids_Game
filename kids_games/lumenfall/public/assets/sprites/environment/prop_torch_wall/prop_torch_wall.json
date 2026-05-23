@@ -1,0 +1,13 @@
+{
+  "id": "prop_torch_wall",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Torch Wall",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "emitsLight": true
+}

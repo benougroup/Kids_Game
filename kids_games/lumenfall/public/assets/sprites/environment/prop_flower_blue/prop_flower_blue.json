@@ -1,0 +1,13 @@
+{
+  "id": "prop_flower_blue",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Flower Blue",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true
+}
