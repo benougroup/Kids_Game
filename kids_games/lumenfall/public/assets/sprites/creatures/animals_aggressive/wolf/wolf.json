@@ -1,0 +1,122 @@
+{
+  "id": "wolf",
+  "type": "creature",
+  "category": "animals_aggressive",
+  "name": "Wolf",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sprint": {
+      "files": [
+        "sprint_f01.png",
+        "sprint_f02.png",
+        "sprint_f03.png",
+        "sprint_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "bite": {
+      "files": [
+        "bite_f01.png",
+        "bite_f02.png",
+        "bite_f03.png",
+        "bite_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sleep": {
+      "files": [
+        "sleep_f01.png",
+        "sleep_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "howl": {
+      "files": [
+        "howl_f01.png",
+        "howl_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "pack_hunter",
+    "speed": 70,
+    "sprintSpeed": 140,
+    "health": 40,
+    "hostile": true,
+    "dayNight": {
+      "day": "sleep_light",
+      "night": "highly_active"
+    },
+    "movement": "patrol",
+    "aggroRange": 250,
+    "attackDamage": 10
+  }
+}

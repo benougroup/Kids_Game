@@ -1,0 +1,124 @@
+{
+  "id": "zombie",
+  "type": "creature",
+  "category": "undead",
+  "name": "Zombie",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle_day": {
+      "files": [
+        "idle_day_f01.png",
+        "idle_day_f02.png",
+        "idle_day_f03.png",
+        "idle_day_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "idle_night": {
+      "files": [
+        "idle_night_f01.png",
+        "idle_night_f02.png",
+        "idle_night_f03.png",
+        "idle_night_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "grab": {
+      "files": [
+        "grab_f01.png",
+        "grab_f02.png",
+        "grab_f03.png",
+        "grab_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "bite": {
+      "files": [
+        "bite_f01.png",
+        "bite_f02.png",
+        "bite_f03.png",
+        "bite_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "fall": {
+      "files": [
+        "fall_f01.png",
+        "fall_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": false
+    }
+  },
+  "stats": {
+    "behavior": "swarm",
+    "speed": 25,
+    "health": 60,
+    "hostile": true,
+    "dayNight": {
+      "day": "very_slow",
+      "night": "normal_speed"
+    },
+    "movement": "shamble",
+    "aggroRange": 150,
+    "attackDamage": 12,
+    "inflictsDisease": true
+  }
+}

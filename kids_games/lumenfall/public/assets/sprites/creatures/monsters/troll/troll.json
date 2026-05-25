@@ -1,0 +1,122 @@
+{
+  "id": "troll",
+  "type": "creature",
+  "category": "monsters",
+  "name": "Troll",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "club_smash": {
+      "files": [
+        "club_smash_f01.png",
+        "club_smash_f02.png",
+        "club_smash_f03.png",
+        "club_smash_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "throw_rock": {
+      "files": [
+        "throw_rock_f01.png",
+        "throw_rock_f02.png",
+        "throw_rock_f03.png",
+        "throw_rock_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sleep": {
+      "files": [
+        "sleep_f01.png",
+        "sleep_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "regenerate": {
+      "files": [
+        "regenerate_f01.png",
+        "regenerate_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "territorial",
+    "speed": 45,
+    "health": 250,
+    "hostile": true,
+    "dayNight": {
+      "day": "sleep",
+      "night": "active"
+    },
+    "movement": "slow_patrol",
+    "aggroRange": 200,
+    "attackDamage": 30,
+    "regeneratesHealth": true
+  }
+}

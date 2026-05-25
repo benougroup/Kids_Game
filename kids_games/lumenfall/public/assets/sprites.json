@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "game": "Lumenfall",
   "description": "Complete sprite system \u2014 separate PNG files with JSON metadata",
   "categories": {
@@ -222,6 +222,48 @@
         "portal_ice",
         "portal_marker"
       ]
+    },
+    "creatures": {
+      "path": "sprites/creatures/",
+      "description": "Animals, monsters, and dark entities with behavioral metadata",
+      "subCategories": {
+        "animals_peaceful": [
+          "chicken",
+          "sheep",
+          "cow",
+          "rabbit",
+          "deer",
+          "bird"
+        ],
+        "animals_aggressive": [
+          "bear",
+          "wolf",
+          "boar",
+          "snake"
+        ],
+        "monsters": [
+          "giant_snake",
+          "giant_bug",
+          "spider",
+          "slime",
+          "troll",
+          "golem"
+        ],
+        "dark_entities": [
+          "shadow_wraith",
+          "dark_knight",
+          "void_creature",
+          "banshee",
+          "demon"
+        ],
+        "undead": [
+          "zombie",
+          "skeleton",
+          "ghost",
+          "lich",
+          "mummy"
+        ]
+      }
     }
   },
   "borderSystem": {

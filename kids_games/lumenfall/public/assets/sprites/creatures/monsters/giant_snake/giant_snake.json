@@ -1,0 +1,114 @@
+{
+  "id": "giant_snake",
+  "type": "creature",
+  "category": "monsters",
+  "name": "Giant Snake",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_down": {
+      "files": [
+        "slither_down_f01.png",
+        "slither_down_f02.png",
+        "slither_down_f03.png",
+        "slither_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_up": {
+      "files": [
+        "slither_up_f01.png",
+        "slither_up_f02.png",
+        "slither_up_f03.png",
+        "slither_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_left": {
+      "files": [
+        "slither_left_f01.png",
+        "slither_left_f02.png",
+        "slither_left_f03.png",
+        "slither_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_right": {
+      "files": [
+        "slither_right_f01.png",
+        "slither_right_f02.png",
+        "slither_right_f03.png",
+        "slither_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "strike": {
+      "files": [
+        "strike_f01.png",
+        "strike_f02.png",
+        "strike_f03.png",
+        "strike_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "constrict": {
+      "files": [
+        "constrict_f01.png",
+        "constrict_f02.png",
+        "constrict_f03.png",
+        "constrict_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "hiss": {
+      "files": [
+        "hiss_f01.png",
+        "hiss_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "boss",
+    "speed": 60,
+    "health": 300,
+    "hostile": true,
+    "isBoss": true,
+    "dayNight": {
+      "day": "active",
+      "night": "active"
+    },
+    "movement": "pursue",
+    "aggroRange": 300,
+    "attackDamage": 25,
+    "inflictsPoison": true
+  }
+}

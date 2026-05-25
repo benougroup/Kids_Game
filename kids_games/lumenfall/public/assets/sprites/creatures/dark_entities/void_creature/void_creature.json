@@ -1,0 +1,113 @@
+{
+  "id": "void_creature",
+  "type": "creature",
+  "category": "dark_entities",
+  "name": "Void Creature",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_down": {
+      "files": [
+        "move_down_f01.png",
+        "move_down_f02.png",
+        "move_down_f03.png",
+        "move_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_up": {
+      "files": [
+        "move_up_f01.png",
+        "move_up_f02.png",
+        "move_up_f03.png",
+        "move_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_left": {
+      "files": [
+        "move_left_f01.png",
+        "move_left_f02.png",
+        "move_left_f03.png",
+        "move_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_right": {
+      "files": [
+        "move_right_f01.png",
+        "move_right_f02.png",
+        "move_right_f03.png",
+        "move_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "void_blast": {
+      "files": [
+        "void_blast_f01.png",
+        "void_blast_f02.png",
+        "void_blast_f03.png",
+        "void_blast_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "consume": {
+      "files": [
+        "consume_f01.png",
+        "consume_f02.png",
+        "consume_f03.png",
+        "consume_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "dormant_day": {
+      "files": [
+        "dormant_day_f01.png",
+        "dormant_day_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "chaotic",
+    "speed": 65,
+    "health": 200,
+    "hostile": true,
+    "dayNight": {
+      "day": "dormant",
+      "night": "highly_active"
+    },
+    "movement": "teleport",
+    "aggroRange": 200,
+    "attackDamage": 25,
+    "ignoresArmor": true
+  }
+}

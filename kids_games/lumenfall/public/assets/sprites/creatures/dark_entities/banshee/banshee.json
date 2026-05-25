@@ -1,0 +1,113 @@
+{
+  "id": "banshee",
+  "type": "creature",
+  "category": "dark_entities",
+  "name": "Banshee",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_down": {
+      "files": [
+        "float_down_f01.png",
+        "float_down_f02.png",
+        "float_down_f03.png",
+        "float_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_up": {
+      "files": [
+        "float_up_f01.png",
+        "float_up_f02.png",
+        "float_up_f03.png",
+        "float_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_left": {
+      "files": [
+        "float_left_f01.png",
+        "float_left_f02.png",
+        "float_left_f03.png",
+        "float_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_right": {
+      "files": [
+        "float_right_f01.png",
+        "float_right_f02.png",
+        "float_right_f03.png",
+        "float_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "wail": {
+      "files": [
+        "wail_f01.png",
+        "wail_f02.png",
+        "wail_f03.png",
+        "wail_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "curse": {
+      "files": [
+        "curse_f01.png",
+        "curse_f02.png",
+        "curse_f03.png",
+        "curse_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "silent_day": {
+      "files": [
+        "silent_day_f01.png",
+        "silent_day_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "wander_hostile",
+    "speed": 75,
+    "health": 90,
+    "hostile": true,
+    "dayNight": {
+      "day": "silent_hidden",
+      "night": "active"
+    },
+    "movement": "float",
+    "aggroRange": 350,
+    "attackDamage": 15,
+    "rangedAttack": true
+  }
+}

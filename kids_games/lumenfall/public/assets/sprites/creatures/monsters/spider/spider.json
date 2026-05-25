@@ -1,0 +1,113 @@
+{
+  "id": "spider",
+  "type": "creature",
+  "category": "monsters",
+  "name": "Spider",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "web_shoot": {
+      "files": [
+        "web_shoot_f01.png",
+        "web_shoot_f02.png",
+        "web_shoot_f03.png",
+        "web_shoot_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "bite": {
+      "files": [
+        "bite_f01.png",
+        "bite_f02.png",
+        "bite_f03.png",
+        "bite_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "hang": {
+      "files": [
+        "hang_f01.png",
+        "hang_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "ambush",
+    "speed": 75,
+    "health": 80,
+    "hostile": true,
+    "dayNight": {
+      "day": "hidden",
+      "night": "active"
+    },
+    "movement": "ceiling_drop",
+    "aggroRange": 250,
+    "attackDamage": 15,
+    "inflictsSlow": true
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "id": "dark_knight",
+  "type": "creature",
+  "category": "dark_entities",
+  "name": "Dark Knight",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sword_slash": {
+      "files": [
+        "sword_slash_f01.png",
+        "sword_slash_f02.png",
+        "sword_slash_f03.png",
+        "sword_slash_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "shield_bash": {
+      "files": [
+        "shield_bash_f01.png",
+        "shield_bash_f02.png",
+        "shield_bash_f03.png",
+        "shield_bash_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "night_power": {
+      "files": [
+        "night_power_f01.png",
+        "night_power_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "summon": {
+      "files": [
+        "summon_f01.png",
+        "summon_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "elite_guard",
+    "speed": 55,
+    "health": 350,
+    "hostile": true,
+    "dayNight": {
+      "day": "active",
+      "night": "buffed_stats"
+    },
+    "movement": "patrol",
+    "aggroRange": 250,
+    "attackDamage": 35,
+    "armor": 20
+  }
+}
