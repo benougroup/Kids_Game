@@ -202,41 +202,42 @@ export function createLumenfallVillageData(): MapData {
     { x: 5,  y: 11 }, { x: 5,  y: 14 },  // West road flanks
     { x: 26, y: 11 }, { x: 26, y: 14 },  // East road flanks
   ];
+  // Lamp posts: 192x170 native → display at 64x114 (1 tile wide, 1.75 tiles tall)
   lampPosts.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 2, pixelWidth: 64, pixelHeight: 114, collisionW: 1, collisionH: 1 })
   );
 
-  // Barrels near blacksmith
-  objectLayer.push({ x: 9, y: 7, frame: 'barrel_pair', atlas: 'objects_props_v002', height: 1 });
-  objectLayer.push({ x: 10, y: 7, frame: 'barrel_triple', atlas: 'objects_props_v002', height: 1 });
+  // Barrels near blacksmith (192x170 native → display at 96x85 = 1.5 tiles)
+  objectLayer.push({ x: 9, y: 7, frame: 'barrel_pair', atlas: 'objects_props_v002', height: 1, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 85, collisionW: 1, collisionH: 1 });
+  objectLayer.push({ x: 11, y: 7, frame: 'barrel_triple', atlas: 'objects_props_v002', height: 1, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 85, collisionW: 1, collisionH: 1 });
 
-  // Market stalls (east side of plaza)
-  objectLayer.push({ x: 20, y: 10, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
-  objectLayer.push({ x: 20, y: 14, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 2, collisionH: 1 });
+  // Market stalls: 192x170 native → display at 128x114 (2 tiles wide)
+  objectLayer.push({ x: 20, y: 10, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 128, pixelHeight: 114, collisionW: 2, collisionH: 1 });
+  objectLayer.push({ x: 20, y: 14, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 128, pixelHeight: 114, collisionW: 2, collisionH: 1 });
 
-  // Bushes
+  // Bushes (192x170 native → display at 64x57 = 1 tile)
   const bushes = [
     { x: 11, y: 9 }, { x: 20, y: 9 }, { x: 11, y: 16 }, { x: 20, y: 16 },
     { x: 7, y: 14 }, { x: 24, y: 14 },
   ];
   bushes.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'bush_small', atlas: 'objects_props_v002', height: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'bush_small', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 })
   );
 
-  // Campfire near inn
-  objectLayer.push({ x: 9, y: 5, frame: 'campfire', atlas: 'objects_props_v002', height: 1 });
+  // Campfire near inn (192x170 native → display at 64x57 = 1 tile, no collision)
+  objectLayer.push({ x: 9, y: 5, frame: 'campfire', atlas: 'objects_props_v002', height: 0, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57, collisionW: 0, collisionH: 0 });
 
-  // Graveyard (bottom-left corner)
-  objectLayer.push({ x: 4, y: 20, frame: 'gravestone_cross', atlas: 'objects_props_v002', height: 1 });
-  objectLayer.push({ x: 6, y: 20, frame: 'gravestone_plain', atlas: 'objects_props_v002', height: 1 });
-  objectLayer.push({ x: 5, y: 22, frame: 'gravestone_rounded', atlas: 'objects_props_v002', height: 1 });
+  // Graveyard (bottom-left corner) — 192x170 → 64x57 per stone
+  objectLayer.push({ x: 4, y: 20, frame: 'gravestone_cross', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 6, y: 20, frame: 'gravestone_plain', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 5, y: 22, frame: 'gravestone_rounded', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
   // Ruins arch (bottom-right corner)
   objectLayer.push({ x: 26, y: 20, frame: 'ruin_arch_stone', atlas: 'objects_props_v003', height: 2, widthTiles: 2, heightTiles: 2 });
 
-  // Signs at road junctions
-  objectLayer.push({ x: 14, y: 9, frame: 'sign_forest', atlas: 'objects_props_v002', height: 1 });
-  objectLayer.push({ x: 17, y: 9, frame: 'sign_village', atlas: 'objects_props_v002', height: 1 });
+  // Signs at road junctions (192x170 → 64x57)
+  objectLayer.push({ x: 14, y: 9, frame: 'sign_forest', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  objectLayer.push({ x: 17, y: 9, frame: 'sign_village', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
 
   // Fence posts flanking north gate (cols 13 and 18, rows 7–8)
   [7, 8].forEach(row => {
@@ -248,27 +249,32 @@ export function createLumenfallVillageData(): MapData {
   objectLayer.push({ x: 17, y: 11, frame: 'statue_knight', atlas: 'objects_props_v003', height: 2, widthTiles: 1, heightTiles: 2, pixelWidth: 64, pixelHeight: 128 });
 
   // ── 8. BUILDINGS ─────────────────────────────────────────────────────────
+  // All buildings are 384x256px in the atlas.
+  // Display at pixelWidth:192, pixelHeight:128 (3:2 ratio preserved, 3x2 tiles).
+  // collisionW:3, collisionH:2 blocks the full footprint.
+  const BLDG = { widthTiles: 3, heightTiles: 2, pixelWidth: 192, pixelHeight: 128, collisionW: 3, collisionH: 2 };
+
   // NW quadrant: Inn (top-left)
-  structureLayer.push({ x: 4, y: 3, frame: 'tavern_blue_roof', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 4, y: 3, frame: 'tavern_blue_roof', atlas: 'buildings_v003', height: 3, ...BLDG });
 
   // NE quadrant: Blacksmith (top-right)
-  structureLayer.push({ x: 23, y: 3, frame: 'blacksmith_forge_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 23, y: 3, frame: 'blacksmith_forge_large', atlas: 'buildings_v003', height: 3, ...BLDG });
 
   // SW quadrant: Chapel (bottom-left)
-  structureLayer.push({ x: 4, y: 18, frame: 'chapel_large', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 4, y: 18, frame: 'chapel_large', atlas: 'buildings_v003', height: 3, ...BLDG });
 
   // SE quadrant: Alchemy Shop (bottom-right)
-  structureLayer.push({ x: 23, y: 18, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 23, y: 18, frame: 'alchemy_shop', atlas: 'buildings_v003', height: 3, ...BLDG });
 
   // W side: Market building
-  structureLayer.push({ x: 4, y: 12, frame: 'market_food_building', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 4, y: 12, frame: 'market_food_building', atlas: 'buildings_v003', height: 3, ...BLDG });
 
   // E side: Magic shop
-  structureLayer.push({ x: 24, y: 12, frame: 'magic_shop_crystal', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2 });
+  structureLayer.push({ x: 24, y: 12, frame: 'magic_shop_crystal', atlas: 'buildings_v003', height: 3, ...BLDG });
 
-  // Watchtowers flanking north gate
-  structureLayer.push({ x: 11, y: 8, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -64 });
-  structureLayer.push({ x: 18, y: 8, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, widthTiles: 3, heightTiles: 2, yOffset: -64 });
+  // Watchtowers flanking north gate (yOffset shifts sprite up so full tower is visible)
+  structureLayer.push({ x: 11, y: 8, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, ...BLDG, yOffset: -64 });
+  structureLayer.push({ x: 18, y: 8, frame: 'watchtower_small', atlas: 'buildings_v003', height: 3, ...BLDG, yOffset: -64 });
 
   // ── 9. NPCs ───────────────────────────────────────────────────────────────
   npcs.push({ x: 13, y: 6,  entityId: 'guard'      });  // Guard at north gate (left)
@@ -297,7 +303,7 @@ export function createLumenfallVillageData(): MapData {
       tileX: 15, tileY: ROWS - 1,
       width: 2,
       targetMap: 'test_dungeon',
-      targetTileX: 15, targetTileY: 1,
+      targetTileX: 12, targetTileY: 3,  // Spawn at row 3, safely away from north border+exit
     },
     {
       direction: 'west',

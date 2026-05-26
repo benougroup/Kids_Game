@@ -543,8 +543,8 @@ export function createTestDungeonData(): MapData {
       direction: 'north',
       tileX: 11, tileY: 0,
       width: 3,
-      targetMap: 'test_town',
-      targetTileX: 14, targetTileY: ROWS - 2,
+      targetMap: 'lumenfall_village',   // Return to village, not test_town
+      targetTileX: 15, targetTileY: ROWS - 4,  // Spawn 4 rows up from south border
     },
   ];
 

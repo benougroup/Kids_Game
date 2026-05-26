@@ -208,6 +208,10 @@ export class GameScene extends Phaser.Scene {
     const ambientLight = mapData.ambientLight ?? 0.8;
     this.events.emit('ambientLightUpdate', ambientLight);
     this.spawnDemoPickups(mapData.tileSize);
+
+    // Reset transition cooldown so the player can't immediately re-trigger the
+    // exit they just came through (prevents bounce-back stuck bug)
+    this.lastTransitionTime = Date.now();
   }
 
   update(_time: number, delta: number): void {
