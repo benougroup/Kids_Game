@@ -1,0 +1,28 @@
+{
+  "id": "merchant_cart",
+  "name": "Merchant Cart",
+  "type": "prop",
+  "subCategory": "market",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 1,
+    "pixelW": 128,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false,
+        false
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "open_shop",
+  "hasAnimation": false
+}

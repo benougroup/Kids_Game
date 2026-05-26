@@ -1,0 +1,35 @@
+{
+  "id": "stable",
+  "name": "Stable",
+  "type": "building",
+  "subCategory": "civic",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 3,
+    "tileH": 2,
+    "pixelW": 192,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_stable",
+  "hasAnimation": false
+}

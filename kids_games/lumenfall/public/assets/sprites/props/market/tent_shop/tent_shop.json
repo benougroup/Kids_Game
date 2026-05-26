@@ -1,0 +1,34 @@
+{
+  "id": "tent_shop",
+  "name": "Tent Shop",
+  "type": "prop",
+  "subCategory": "market",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 3,
+    "tileH": 2,
+    "pixelW": 192,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "enter_shop",
+  "hasAnimation": false
+}

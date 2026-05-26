@@ -1,0 +1,26 @@
+{
+  "id": "stone_bridge_mid_v",
+  "name": "Stone Bridge Mid V",
+  "type": "terrain_tile",
+  "subCategory": "stone_bridge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

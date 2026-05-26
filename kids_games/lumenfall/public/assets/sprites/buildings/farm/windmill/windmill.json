@@ -1,0 +1,50 @@
+{
+  "id": "windmill",
+  "name": "Windmill",
+  "type": "building",
+  "subCategory": "farm",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 4,
+    "pixelW": 128,
+    "pixelH": 256,
+    "anchorTile": [
+      0,
+      3
+    ],
+    "footprint": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_building",
+  "hasAnimation": true,
+  "animation": {
+    "frames": 8,
+    "frameRate": 6,
+    "loop": true,
+    "tags": [
+      "spinning",
+      "ambient"
+    ]
+  }
+}

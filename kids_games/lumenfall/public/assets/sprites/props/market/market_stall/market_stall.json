@@ -1,0 +1,32 @@
+{
+  "id": "market_stall",
+  "name": "Market Stall",
+  "type": "prop",
+  "subCategory": "market",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 2,
+    "pixelW": 128,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "open_shop",
+  "hasAnimation": false
+}

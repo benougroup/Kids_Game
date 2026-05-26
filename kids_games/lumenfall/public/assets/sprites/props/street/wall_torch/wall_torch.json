@@ -1,0 +1,37 @@
+{
+  "id": "wall_torch",
+  "name": "Wall Torch",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "interactType": null,
+  "hasAnimation": true,
+  "animation": {
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true,
+    "tags": [
+      "light_source",
+      "fire",
+      "ambient"
+    ]
+  }
+}

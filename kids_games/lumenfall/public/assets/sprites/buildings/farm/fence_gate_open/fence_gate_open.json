@@ -1,0 +1,28 @@
+{
+  "id": "fence_gate_open",
+  "name": "Fence Gate Open",
+  "type": "building",
+  "subCategory": "farm",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        true
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "toggle_gate",
+  "hasAnimation": false
+}

@@ -1,0 +1,40 @@
+{
+  "id": "mausoleum",
+  "name": "Mausoleum",
+  "type": "building",
+  "subCategory": "graveyard",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 3,
+    "tileH": 3,
+    "pixelW": 192,
+    "pixelH": 192,
+    "anchorTile": [
+      0,
+      2
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_building",
+  "hasAnimation": false
+}

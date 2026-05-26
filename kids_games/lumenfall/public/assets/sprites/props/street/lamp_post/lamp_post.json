@@ -1,0 +1,40 @@
+{
+  "id": "lamp_post",
+  "name": "Lamp Post",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 2,
+    "pixelW": 64,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false
+      ],
+      [
+        true
+      ]
+    ]
+  },
+  "interactive": false,
+  "interactType": null,
+  "hasAnimation": true,
+  "animation": {
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true,
+    "tags": [
+      "light_source",
+      "ambient",
+      "flicker"
+    ]
+  }
+}
