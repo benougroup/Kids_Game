@@ -157,8 +157,9 @@ export function createLumenfallVillageData(): MapData {
     { x: 3, y: 3 }, { x: 9, y: 3 }, { x: 3, y: 9 }, { x: 9, y: 9 },
     { x: 6, y: 3 }, { x: 3, y: 6 },
   ];
+  // Trees: display at 96x128 (1.5 wide × 2 tall tiles) — classic RPG tree proportions
   treesNW.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
   );
 
   // Top-right quadrant trees
@@ -167,7 +168,7 @@ export function createLumenfallVillageData(): MapData {
     { x: 22, y: 7 }, { x: 28, y: 7 }, { x: 25, y: 8 },
   ];
   treesNE.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
   );
 
   // Bottom-left quadrant trees
@@ -176,7 +177,7 @@ export function createLumenfallVillageData(): MapData {
     { x: 3, y: 21 }, { x: 8, y: 22 },
   ];
   treesSW.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
   );
 
   // Bottom-right quadrant trees
@@ -185,15 +186,15 @@ export function createLumenfallVillageData(): MapData {
     { x: 22, y: 21 }, { x: 27, y: 22 },
   ];
   treesSE.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
   );
 
   // ── 7. OBJECTS & PROPS ───────────────────────────────────────────────────
-  // Fountain at plaza centre
-  objectLayer.push({ x: 14, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 160, yOffset: -64 });
+  // Fountain at plaza centre: 2x2 tiles (128x128)
+  objectLayer.push({ x: 14, y: 11, frame: 'fountain_round', atlas: 'objects_props_v003', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 128, pixelHeight: 128, collisionW: 2, collisionH: 2 });
 
-  // Well (west of plaza)
-  objectLayer.push({ x: 10, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2, widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 170, collisionW: 1, collisionH: 1 });
+  // Well: 1x1 tile (64x64)
+  objectLayer.push({ x: 10, y: 12, frame: 'well_large', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 64, collisionW: 1, collisionH: 1 });
 
   // Lamp posts along main roads
   const lampPosts = [
@@ -202,47 +203,47 @@ export function createLumenfallVillageData(): MapData {
     { x: 5,  y: 11 }, { x: 5,  y: 14 },  // West road flanks
     { x: 26, y: 11 }, { x: 26, y: 14 },  // East road flanks
   ];
-  // Lamp posts: 192x170 native → display at 64x114 (1 tile wide, 1.75 tiles tall)
+  // Lamp posts: 32x96 (half tile wide, 1.5 tiles tall — slim pole)
   lampPosts.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 2, pixelWidth: 64, pixelHeight: 114, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'lamp_post', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 2, pixelWidth: 32, pixelHeight: 96, collisionW: 1, collisionH: 1 })
   );
 
-  // Barrels near blacksmith (192x170 native → display at 96x85 = 1.5 tiles)
-  objectLayer.push({ x: 9, y: 7, frame: 'barrel_pair', atlas: 'objects_props_v002', height: 1, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 85, collisionW: 1, collisionH: 1 });
-  objectLayer.push({ x: 11, y: 7, frame: 'barrel_triple', atlas: 'objects_props_v002', height: 1, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 85, collisionW: 1, collisionH: 1 });
+  // Barrels: 48x48 (same height as hero, 1 tile)
+  objectLayer.push({ x: 9, y: 7, frame: 'barrel_pair', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 48, pixelHeight: 48, collisionW: 1, collisionH: 1 });
+  objectLayer.push({ x: 10, y: 7, frame: 'barrel_triple', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 48, pixelHeight: 48, collisionW: 1, collisionH: 1 });
 
-  // Market stalls: 192x170 native → display at 128x114 (2 tiles wide)
-  objectLayer.push({ x: 20, y: 10, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 128, pixelHeight: 114, collisionW: 2, collisionH: 1 });
-  objectLayer.push({ x: 20, y: 14, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 128, pixelHeight: 114, collisionW: 2, collisionH: 1 });
+  // Market stalls: 96x80 (1.5 tiles wide, slightly taller than hero)
+  objectLayer.push({ x: 20, y: 10, frame: 'market_stall_food', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 80, collisionW: 2, collisionH: 1 });
+  objectLayer.push({ x: 20, y: 14, frame: 'market_stall_goods', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 80, collisionW: 2, collisionH: 1 });
 
-  // Bushes (192x170 native → display at 64x57 = 1 tile)
+  // Bushes: 40x32 (smaller than hero — knee-height shrubs)
   const bushes = [
     { x: 11, y: 9 }, { x: 20, y: 9 }, { x: 11, y: 16 }, { x: 20, y: 16 },
     { x: 7, y: 14 }, { x: 24, y: 14 },
   ];
   bushes.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'bush_small', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'bush_small', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 40, pixelHeight: 32 })
   );
 
-  // Campfire near inn (192x170 native → display at 64x57 = 1 tile, no collision)
-  objectLayer.push({ x: 9, y: 5, frame: 'campfire', atlas: 'objects_props_v002', height: 0, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57, collisionW: 0, collisionH: 0 });
+  // Campfire: 32x32 (small ground fire, walkable)
+  objectLayer.push({ x: 9, y: 5, frame: 'campfire', atlas: 'objects_props_v002', height: 0, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 32, collisionW: 0, collisionH: 0 });
 
-  // Graveyard (bottom-left corner) — 192x170 → 64x57 per stone
-  objectLayer.push({ x: 4, y: 20, frame: 'gravestone_cross', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-  objectLayer.push({ x: 6, y: 20, frame: 'gravestone_plain', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-  objectLayer.push({ x: 5, y: 22, frame: 'gravestone_rounded', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  // Gravestones: 32x48 (narrower than hero, slightly shorter — realistic headstone proportions)
+  objectLayer.push({ x: 4, y: 20, frame: 'gravestone_cross', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
+  objectLayer.push({ x: 6, y: 20, frame: 'gravestone_plain', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
+  objectLayer.push({ x: 5, y: 22, frame: 'gravestone_rounded', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
 
   // Ruins arch (bottom-right corner)
   objectLayer.push({ x: 26, y: 20, frame: 'ruin_arch_stone', atlas: 'objects_props_v003', height: 2, widthTiles: 2, heightTiles: 2 });
 
-  // Signs at road junctions (192x170 → 64x57)
-  objectLayer.push({ x: 14, y: 9, frame: 'sign_forest', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-  objectLayer.push({ x: 17, y: 9, frame: 'sign_village', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+  // Signs: 32x48 (slim post, slightly shorter than hero)
+  objectLayer.push({ x: 14, y: 9, frame: 'sign_forest', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
+  objectLayer.push({ x: 17, y: 9, frame: 'sign_village', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
 
-  // Fence posts flanking north gate (cols 13 and 18, rows 7–8)
+  // Fence posts: 64x40 (full tile wide, knee-height fence)
   [7, 8].forEach(row => {
-    objectLayer.push({ x: 13, y: row, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
-    objectLayer.push({ x: 18, y: row, frame: 'fence_short', atlas: 'objects_props_v002', height: 2, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 57 });
+    objectLayer.push({ x: 13, y: row, frame: 'fence_short', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 40 });
+    objectLayer.push({ x: 18, y: row, frame: 'fence_short', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 64, pixelHeight: 40 });
   });
 
   // Statue in plaza
