@@ -1,0 +1,31 @@
+{
+  "id": "status_stun",
+  "type": "action_sprite",
+  "category": "status",
+  "name": "Status Stun",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "status_stun_f01.png",
+      "status_stun_f02.png",
+      "status_stun_f03.png",
+      "status_stun_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "status",
+    "stun",
+    "overhead"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "character",
+    "zIndex": 10,
+    "blendMode": "normal"
+  }
+}

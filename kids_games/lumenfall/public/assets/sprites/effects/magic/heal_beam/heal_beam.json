@@ -1,0 +1,33 @@
+{
+  "id": "heal_beam",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Heal Beam",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "heal_beam_f01.png",
+      "heal_beam_f02.png",
+      "heal_beam_f03.png",
+      "heal_beam_f04.png",
+      "heal_beam_f05.png",
+      "heal_beam_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "heal",
+    "magic",
+    "aoe"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

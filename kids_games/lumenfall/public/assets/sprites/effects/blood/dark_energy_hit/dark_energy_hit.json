@@ -1,0 +1,33 @@
+{
+  "id": "dark_energy_hit",
+  "type": "action_sprite",
+  "category": "blood",
+  "name": "Dark Energy Hit",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "dark_energy_hit_f01.png",
+      "dark_energy_hit_f02.png",
+      "dark_energy_hit_f03.png",
+      "dark_energy_hit_f04.png",
+      "dark_energy_hit_f05.png",
+      "dark_energy_hit_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "dark",
+    "magic",
+    "impact"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

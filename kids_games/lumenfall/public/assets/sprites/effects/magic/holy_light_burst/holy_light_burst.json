@@ -1,0 +1,31 @@
+{
+  "id": "holy_light_burst",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Holy Light Burst",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "holy_light_burst_f01.png",
+      "holy_light_burst_f02.png",
+      "holy_light_burst_f03.png",
+      "holy_light_burst_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "explosion",
+    "holy",
+    "aoe"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

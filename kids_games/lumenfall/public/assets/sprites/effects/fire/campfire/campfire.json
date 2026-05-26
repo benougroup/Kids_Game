@@ -1,0 +1,33 @@
+{
+  "id": "campfire",
+  "type": "action_sprite",
+  "category": "fire",
+  "name": "Campfire",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "campfire_f01.png",
+      "campfire_f02.png",
+      "campfire_f03.png",
+      "campfire_f04.png",
+      "campfire_f05.png",
+      "campfire_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "ambient",
+    "light_source",
+    "fire"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

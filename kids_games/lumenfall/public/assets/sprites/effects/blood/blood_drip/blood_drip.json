@@ -1,0 +1,33 @@
+{
+  "id": "blood_drip",
+  "type": "action_sprite",
+  "category": "blood",
+  "name": "Blood Drip",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "blood_drip_f01.png",
+      "blood_drip_f02.png",
+      "blood_drip_f03.png",
+      "blood_drip_f04.png",
+      "blood_drip_f05.png",
+      "blood_drip_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "blood",
+    "damage",
+    "ground"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

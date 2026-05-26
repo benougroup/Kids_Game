@@ -1,0 +1,31 @@
+{
+  "id": "leaf_burst",
+  "type": "action_sprite",
+  "category": "environment",
+  "name": "Leaf Burst",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "leaf_burst_f01.png",
+      "leaf_burst_f02.png",
+      "leaf_burst_f03.png",
+      "leaf_burst_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "nature",
+    "leaf",
+    "particle"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

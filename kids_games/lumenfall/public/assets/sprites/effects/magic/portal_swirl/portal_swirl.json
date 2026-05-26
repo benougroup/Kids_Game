@@ -1,0 +1,31 @@
+{
+  "id": "portal_swirl",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Portal Swirl",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "portal_swirl_f01.png",
+      "portal_swirl_f02.png",
+      "portal_swirl_f03.png",
+      "portal_swirl_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "portal",
+    "magic",
+    "ambient"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

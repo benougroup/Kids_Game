@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "4.0.0",
   "game": "Lumenfall",
   "description": "Complete sprite system \u2014 separate PNG files with JSON metadata",
   "categories": {
@@ -262,6 +262,68 @@
           "ghost",
           "lich",
           "mummy"
+        ]
+      }
+    },
+    "effects": {
+      "path": "sprites/effects/",
+      "description": "Action sprites \u2014 fire, magic, impact, damage, environment, status effects. All tagged type: action_sprite.",
+      "subCategories": {
+        "fire": [
+          "torch_flame",
+          "campfire",
+          "fireball",
+          "fire_explosion",
+          "fire_trail",
+          "ember_sparks"
+        ],
+        "magic": [
+          "light_staff_glow",
+          "heal_beam",
+          "magic_bolt",
+          "arcane_burst",
+          "shield_shimmer",
+          "portal_swirl",
+          "dark_magic_bolt",
+          "ice_shard",
+          "lightning_bolt",
+          "earth_spike",
+          "wind_slash",
+          "holy_light_burst"
+        ],
+        "impact": [
+          "sword_slash",
+          "blunt_hit",
+          "arrow_pierce",
+          "critical_hit",
+          "block_parry",
+          "stagger"
+        ],
+        "blood": [
+          "hit_splat",
+          "blood_drip",
+          "poison_cloud",
+          "dark_energy_hit",
+          "soul_drain",
+          "monster_death_burst"
+        ],
+        "environment": [
+          "rain_drops",
+          "snowfall",
+          "lightning_strike",
+          "smoke_puff",
+          "dust_cloud",
+          "water_splash",
+          "leaf_burst"
+        ],
+        "status": [
+          "status_poison",
+          "status_freeze",
+          "status_burn",
+          "status_curse",
+          "status_stun",
+          "status_sleep",
+          "status_confused"
         ]
       }
     }

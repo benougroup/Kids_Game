@@ -1,0 +1,33 @@
+{
+  "id": "critical_hit",
+  "type": "action_sprite",
+  "category": "impact",
+  "name": "Critical Hit",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "critical_hit_f01.png",
+      "critical_hit_f02.png",
+      "critical_hit_f03.png",
+      "critical_hit_f04.png",
+      "critical_hit_f05.png",
+      "critical_hit_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 12,
+    "loop": false
+  },
+  "tags": [
+    "critical",
+    "impact",
+    "special"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

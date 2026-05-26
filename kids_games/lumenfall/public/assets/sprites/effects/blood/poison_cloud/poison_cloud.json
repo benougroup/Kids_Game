@@ -1,0 +1,33 @@
+{
+  "id": "poison_cloud",
+  "type": "action_sprite",
+  "category": "blood",
+  "name": "Poison Cloud",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "poison_cloud_f01.png",
+      "poison_cloud_f02.png",
+      "poison_cloud_f03.png",
+      "poison_cloud_f04.png",
+      "poison_cloud_f05.png",
+      "poison_cloud_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "poison",
+    "aoe",
+    "cloud"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "light_staff_glow",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Light Staff Glow",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "light_staff_glow_f01.png",
+      "light_staff_glow_f02.png",
+      "light_staff_glow_f03.png",
+      "light_staff_glow_f04.png",
+      "light_staff_glow_f05.png",
+      "light_staff_glow_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "ambient",
+    "light_source",
+    "holy",
+    "staff"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

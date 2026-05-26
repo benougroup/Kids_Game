@@ -1,0 +1,31 @@
+{
+  "id": "ember_sparks",
+  "type": "action_sprite",
+  "category": "fire",
+  "name": "Ember Sparks",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "ember_sparks_f01.png",
+      "ember_sparks_f02.png",
+      "ember_sparks_f03.png",
+      "ember_sparks_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true
+  },
+  "tags": [
+    "ambient",
+    "fire",
+    "particle"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

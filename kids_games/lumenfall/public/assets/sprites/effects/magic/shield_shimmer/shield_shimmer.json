@@ -1,0 +1,31 @@
+{
+  "id": "shield_shimmer",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Shield Shimmer",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "shield_shimmer_f01.png",
+      "shield_shimmer_f02.png",
+      "shield_shimmer_f03.png",
+      "shield_shimmer_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true
+  },
+  "tags": [
+    "buff",
+    "magic",
+    "shield"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

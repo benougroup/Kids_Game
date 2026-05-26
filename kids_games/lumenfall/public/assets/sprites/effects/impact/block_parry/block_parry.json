@@ -1,0 +1,31 @@
+{
+  "id": "block_parry",
+  "type": "action_sprite",
+  "category": "impact",
+  "name": "Block Parry",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "block_parry_f01.png",
+      "block_parry_f02.png",
+      "block_parry_f03.png",
+      "block_parry_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "defense",
+    "block",
+    "impact"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

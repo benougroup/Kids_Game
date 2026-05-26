@@ -1,0 +1,31 @@
+{
+  "id": "water_splash",
+  "type": "action_sprite",
+  "category": "environment",
+  "name": "Water Splash",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "water_splash_f01.png",
+      "water_splash_f02.png",
+      "water_splash_f03.png",
+      "water_splash_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "water",
+    "splash",
+    "particle"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

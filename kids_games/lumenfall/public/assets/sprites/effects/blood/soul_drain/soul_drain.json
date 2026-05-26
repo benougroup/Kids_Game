@@ -1,0 +1,31 @@
+{
+  "id": "soul_drain",
+  "type": "action_sprite",
+  "category": "blood",
+  "name": "Soul Drain",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "soul_drain_f01.png",
+      "soul_drain_f02.png",
+      "soul_drain_f03.png",
+      "soul_drain_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "dark",
+    "soul",
+    "drain"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "arcane_burst",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Arcane Burst",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "arcane_burst_f01.png",
+      "arcane_burst_f02.png",
+      "arcane_burst_f03.png",
+      "arcane_burst_f04.png",
+      "arcane_burst_f05.png",
+      "arcane_burst_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "explosion",
+    "magic",
+    "aoe"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "status_freeze",
+  "type": "action_sprite",
+  "category": "status",
+  "name": "Status Freeze",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "status_freeze_f01.png",
+      "status_freeze_f02.png",
+      "status_freeze_f03.png",
+      "status_freeze_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true
+  },
+  "tags": [
+    "status",
+    "freeze",
+    "overhead"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "character",
+    "zIndex": 10,
+    "blendMode": "normal"
+  }
+}

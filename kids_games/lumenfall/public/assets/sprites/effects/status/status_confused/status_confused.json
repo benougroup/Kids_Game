@@ -1,0 +1,31 @@
+{
+  "id": "status_confused",
+  "type": "action_sprite",
+  "category": "status",
+  "name": "Status Confused",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "status_confused_f01.png",
+      "status_confused_f02.png",
+      "status_confused_f03.png",
+      "status_confused_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "status",
+    "confused",
+    "overhead"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "character",
+    "zIndex": 10,
+    "blendMode": "normal"
+  }
+}

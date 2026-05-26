@@ -1,0 +1,31 @@
+{
+  "id": "wind_slash",
+  "type": "action_sprite",
+  "category": "magic",
+  "name": "Wind Slash",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "wind_slash_f01.png",
+      "wind_slash_f02.png",
+      "wind_slash_f03.png",
+      "wind_slash_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "projectile",
+    "wind",
+    "spell"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

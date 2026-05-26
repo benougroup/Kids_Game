@@ -1,0 +1,31 @@
+{
+  "id": "status_burn",
+  "type": "action_sprite",
+  "category": "status",
+  "name": "Status Burn",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "status_burn_f01.png",
+      "status_burn_f02.png",
+      "status_burn_f03.png",
+      "status_burn_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "status",
+    "burn",
+    "overhead"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "character",
+    "zIndex": 10,
+    "blendMode": "normal"
+  }
+}
