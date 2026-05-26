@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "building",
   "name": "Fountain",
+  "description": "A stone fountain in the village square. Interact to drink and restore health.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

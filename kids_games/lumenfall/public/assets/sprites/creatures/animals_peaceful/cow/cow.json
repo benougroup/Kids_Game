@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_peaceful",
   "name": "Cow",
+  "description": "A large brown-and-white cow with a brass bell around its neck. Grazes peacefully in the meadow. Provides milk for the village dairy. Will moo loudly if disturbed.",
   "passable": false,
   "collisionBox": {
     "w": 40,

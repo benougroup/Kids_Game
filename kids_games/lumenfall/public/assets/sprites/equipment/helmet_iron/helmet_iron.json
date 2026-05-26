@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "armor",
   "name": "Helmet Iron",
+  "description": "An iron helmet with a nose guard and cheek plates. Protects the head from blows. Standard issue for Lumenfall's town guard.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

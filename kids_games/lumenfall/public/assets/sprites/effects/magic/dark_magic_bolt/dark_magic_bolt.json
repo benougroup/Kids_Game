@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Dark Magic Bolt",
+  "description": "A bolt of dark purple energy crackling with shadow magic. Fired by dark entities and dark mages. Can inflict a curse on the target.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

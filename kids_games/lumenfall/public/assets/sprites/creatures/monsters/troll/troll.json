@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "monsters",
   "name": "Troll",
+  "description": "A massive, lumpy troll with grey-green skin and a club the size of a tree trunk. Slow and dim-witted, but enormously strong. Sleeps during the day and regenerates health at night.",
   "passable": false,
   "collisionBox": {
     "w": 40,

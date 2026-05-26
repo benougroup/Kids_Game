@@ -1,6 +1,7 @@
 {
   "id": "fence_h",
   "name": "Fence H",
+  "description": "A sturdy horizontal wooden fence rail. Used to mark property boundaries and keep livestock from wandering. Cannot be passed without going through a gate.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

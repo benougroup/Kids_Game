@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_peaceful",
   "name": "Rabbit",
+  "description": "A small brown rabbit with long ears and a white tail. Hops through the fields and forest edges, nibbling on grass and clover. Bolts into the undergrowth at the first sign of danger.",
   "passable": false,
   "collisionBox": {
     "w": 40,

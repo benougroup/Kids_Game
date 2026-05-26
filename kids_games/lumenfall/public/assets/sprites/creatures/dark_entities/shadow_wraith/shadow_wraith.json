@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "dark_entities",
   "name": "Shadow Wraith",
+  "description": "A creature of pure shadow with no solid form, drifting through the air like smoke. Nearly invisible in darkness. Weak and passive in daylight, but at night it becomes a terrifying predator that can pass through walls.",
   "passable": false,
   "collisionBox": {
     "w": 40,

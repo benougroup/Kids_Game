@@ -111,6 +111,7 @@
     }
   },
   "name": "Traveling Merchant",
+  "description": "A travelling merchant in a brown hat and red coat, with a large backpack stuffed with goods. Arrives in Lumenfall periodically with rare items not found in local shops. Always has a deal \u2014 for the right price.",
   "dialogue": true,
   "hasShop": true
 }

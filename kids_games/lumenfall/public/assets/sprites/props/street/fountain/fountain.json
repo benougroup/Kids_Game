@@ -1,6 +1,7 @@
 {
   "id": "fountain",
   "name": "Fountain",
+  "description": "A grand stone fountain in the village square, with water jets arcing from a central basin. Coins glint at the bottom \u2014 tossed in by villagers making wishes. Interact to drink and restore health.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

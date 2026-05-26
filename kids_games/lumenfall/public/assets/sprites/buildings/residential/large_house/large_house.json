@@ -1,6 +1,7 @@
 {
   "id": "large_house",
   "name": "Large House",
+  "description": "A two-storey family home with a blue slate roof and a welcoming front porch. Prosperous residents of Lumenfall live here, often with a small garden out front.",
   "type": "building",
   "subCategory": "residential",
   "passable": false,

@@ -3,6 +3,7 @@
   "type": "portal",
   "subType": "idle",
   "name": "Portal Magic Idle",
+  "description": "A shimmering magical portal swirling with purple and blue energy. In its dormant state it pulses gently, waiting for a traveller to approach. This is the only way to travel between maps.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

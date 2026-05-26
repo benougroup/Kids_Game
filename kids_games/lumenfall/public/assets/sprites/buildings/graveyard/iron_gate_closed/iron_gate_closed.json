@@ -1,6 +1,7 @@
 {
   "id": "iron_gate_closed",
   "name": "Iron Gate Closed",
+  "description": "A tall ornate iron cemetery gate, firmly shut. The lock is rusted but holds. Interact to open it if you dare.",
   "type": "building",
   "subCategory": "graveyard",
   "passable": false,

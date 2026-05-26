@@ -111,5 +111,6 @@
     }
   },
   "name": "Hero",
+  "description": "The young hero of Lumenfall \u2014 a brave and curious child with brown hair and a blue vest. Chosen by the Eternal Flame to restore light to a world falling into shadow. Wields a sword and carries a satchel of supplies. The player character.",
   "isPlayer": true
 }

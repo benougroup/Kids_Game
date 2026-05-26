@@ -1,6 +1,7 @@
 {
   "id": "dirt_h",
   "name": "Dirt H",
+  "description": "A horizontal dirt road worn into the earth by repeated passage. Dusty in summer, muddy in rain. Passable.",
   "type": "terrain_tile",
   "subCategory": "dirt_road",
   "passable": true,

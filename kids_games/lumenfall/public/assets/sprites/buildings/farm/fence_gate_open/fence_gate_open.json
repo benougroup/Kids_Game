@@ -1,6 +1,7 @@
 {
   "id": "fence_gate_open",
   "name": "Fence Gate Open",
+  "description": "A wooden farm gate, currently swung open. Animals and people can pass through freely. Interact to close it.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

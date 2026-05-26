@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Gate Iron",
+  "description": "A heavy iron gate. Impassable when closed. Requires a key or lever to open.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": true,

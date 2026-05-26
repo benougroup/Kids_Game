@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Light Staff Glow",
+  "description": "A soft golden glow emanating from the tip of a light staff or wand. Illuminates the area around the caster and can reveal hidden objects.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

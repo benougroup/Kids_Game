@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Desert Floor",
+  "description": "Cracked, sun-baked desert earth. Scorching hot and barren.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

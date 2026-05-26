@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Volcanic Ash",
+  "description": "Grey volcanic ash covering the ground near active volcanoes. Still warm to the touch.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

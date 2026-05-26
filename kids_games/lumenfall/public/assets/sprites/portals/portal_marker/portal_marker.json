@@ -3,6 +3,7 @@
   "type": "portal",
   "subType": "marker",
   "name": "Portal Marker",
+  "description": "A glowing floating arrow that hovers above a portal, pointing downward. Helps players spot portal locations from a distance.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

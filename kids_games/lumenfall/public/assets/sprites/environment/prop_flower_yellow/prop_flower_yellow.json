@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Flower Yellow",
+  "description": "A cluster of cheerful yellow flowers. Purely decorative.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

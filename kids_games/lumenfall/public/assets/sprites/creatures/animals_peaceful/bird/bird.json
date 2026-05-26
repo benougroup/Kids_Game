@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_peaceful",
   "name": "Bird",
+  "description": "A small colourful songbird that flutters between tree branches and fence posts. Sings cheerfully in the morning. Completely harmless and adds life to the world of Lumenfall.",
   "passable": false,
   "collisionBox": {
     "w": 40,

@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_aggressive",
   "name": "Boar",
+  "description": "A wild boar with curved tusks and a bad temper. Charges at anything that disturbs it in the undergrowth. Fast and aggressive \u2014 best avoided unless the hero is well-armed.",
   "passable": false,
   "collisionBox": {
     "w": 40,

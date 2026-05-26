@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Portal Swirl",
+  "description": "The swirling vortex of energy at the centre of an active portal. Blue and purple light spirals inward as the gateway between worlds pulses.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

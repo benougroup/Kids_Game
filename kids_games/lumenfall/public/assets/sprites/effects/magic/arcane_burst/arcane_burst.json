@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Arcane Burst",
+  "description": "A burst of swirling arcane energy that explodes outward from a point. The visual effect of a powerful area-of-effect magic spell.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

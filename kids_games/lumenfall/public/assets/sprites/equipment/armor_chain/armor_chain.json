@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "armor",
   "name": "Armor Chain",
+  "description": "A coat of chainmail made from interlocking iron rings. Heavier than leather but provides much better protection against slashing attacks.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

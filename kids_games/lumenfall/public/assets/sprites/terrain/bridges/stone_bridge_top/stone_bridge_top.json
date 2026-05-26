@@ -1,6 +1,7 @@
 {
   "id": "stone_bridge_top",
   "name": "Stone Bridge Top",
+  "description": "The top end of a vertical stone bridge.",
   "type": "terrain_tile",
   "subCategory": "stone_bridge",
   "passable": true,

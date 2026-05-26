@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Door Open",
+  "description": "A wooden door, currently open. The doorway is passable. Interact to close it.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

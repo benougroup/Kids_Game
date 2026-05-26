@@ -111,6 +111,7 @@
     }
   },
   "name": "Knight",
+  "description": "A fully armoured knight in gold and silver plate, with a blue plume on the helmet and a sword and shield at the ready. A champion of the realm, sent to investigate the darkness threatening Lumenfall.",
   "dialogue": true,
   "hasQuests": true
 }

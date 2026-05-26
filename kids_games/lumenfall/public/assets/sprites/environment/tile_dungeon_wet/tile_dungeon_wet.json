@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Dungeon Wet",
+  "description": "Waterlogged dungeon floor with puddles reflecting the torchlight above.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

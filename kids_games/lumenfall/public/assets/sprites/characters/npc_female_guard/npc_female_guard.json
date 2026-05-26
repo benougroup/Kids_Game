@@ -111,6 +111,7 @@
     }
   },
   "name": "Female Guard",
+  "description": "A female town guard in silver armour with a blue trim and a ponytail, armed with a spear. Stationed at the village entrance. More approachable than her colleague, and sharper-eyed too.",
   "dialogue": true,
   "hostile": false
 }

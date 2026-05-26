@@ -1,6 +1,7 @@
 {
   "id": "notice_board",
   "name": "Notice Board",
+  "description": "A wooden notice board covered in pinned papers \u2014 quest notices, wanted posters, lost pet announcements, and village news. Interact to read the latest postings.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

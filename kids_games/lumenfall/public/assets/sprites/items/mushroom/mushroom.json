@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "food",
   "name": "Mushroom",
+  "description": "A plump forest mushroom with a spotted cap. Restores a small amount of health. Some varieties have special magical effects \u2014 be careful which ones you eat.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

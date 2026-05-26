@@ -1,6 +1,7 @@
 {
   "id": "rope_bridge_right",
   "name": "Rope Bridge Right",
+  "description": "The right end of a rope bridge, tied to a sturdy post on the far bank.",
   "type": "terrain_tile",
   "subCategory": "rope_bridge",
   "passable": true,

@@ -1,6 +1,7 @@
 {
   "id": "crypt_entrance",
   "name": "Crypt Entrance",
+  "description": "A dark stone archway leading down into an underground crypt. Cobwebs hang across the iron gate and the steps below vanish into blackness. Only the brave descend.",
   "type": "building",
   "subCategory": "graveyard",
   "passable": false,

@@ -111,6 +111,7 @@
     }
   },
   "name": "Magician",
+  "description": "A travelling magician in a purple robe and pointed wizard hat, carrying a glowing staff. Performs tricks in the village square by day, but by night studies the magical anomalies spreading across Lumenfall.",
   "dialogue": true,
   "hasQuests": true,
   "hasShop": true

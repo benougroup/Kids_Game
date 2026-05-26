@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "border",
   "name": "Border Ocean Sw",
+  "description": "The south-west ocean corner.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": true,

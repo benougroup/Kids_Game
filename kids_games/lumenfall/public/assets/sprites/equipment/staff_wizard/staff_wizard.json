@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "weapon",
   "name": "Staff Wizard",
+  "description": "A tall wooden staff topped with a glowing crystal orb. Channels powerful spells and can be used as a melee weapon in close quarters. The mark of a true wizard.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

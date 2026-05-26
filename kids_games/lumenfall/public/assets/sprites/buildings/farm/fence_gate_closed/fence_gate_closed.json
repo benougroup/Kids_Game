@@ -1,6 +1,7 @@
 {
   "id": "fence_gate_closed",
   "name": "Fence Gate Closed",
+  "description": "A wooden farm gate, latched shut. Blocks passage. Interact to open it.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

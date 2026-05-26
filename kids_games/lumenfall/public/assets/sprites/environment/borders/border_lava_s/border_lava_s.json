@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "border",
   "name": "Border Lava S",
+  "description": "Lava along the southern boundary. Impassable.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": true,

@@ -1,6 +1,7 @@
 {
   "id": "rope_bridge_top",
   "name": "Rope Bridge Top",
+  "description": "The top end of a vertical rope bridge.",
   "type": "terrain_tile",
   "subCategory": "rope_bridge",
   "passable": true,

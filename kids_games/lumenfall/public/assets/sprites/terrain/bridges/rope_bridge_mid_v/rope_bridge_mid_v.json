@@ -1,6 +1,7 @@
 {
   "id": "rope_bridge_mid_v",
   "name": "Rope Bridge Mid V",
+  "description": "The middle of a vertical rope bridge. The planks shift underfoot.",
   "type": "terrain_tile",
   "subCategory": "rope_bridge",
   "passable": true,

@@ -1,6 +1,7 @@
 {
   "id": "lamp_post",
   "name": "Lamp Post",
+  "description": "A tall ornate iron lamp post with a glowing lantern at the top. Casts warm yellow light on the cobblestones below. Lights automatically at dusk and dims at dawn.",
   "type": "prop",
   "subCategory": "street",
   "passable": true,

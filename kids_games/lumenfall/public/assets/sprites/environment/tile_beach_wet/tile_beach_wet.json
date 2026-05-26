@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Beach Wet",
+  "description": "Wet sand at the shoreline, darkened by the retreating tide. Footprints are left behind.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

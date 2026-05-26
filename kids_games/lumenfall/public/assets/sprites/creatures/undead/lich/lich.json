@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "undead",
   "name": "Lich",
+  "description": "An ancient sorcerer who cheated death through dark magic. Wears tattered robes and floats above the ground. Commands armies of undead and casts powerful curses. At maximum power at midnight.",
   "passable": false,
   "collisionBox": {
     "w": 40,

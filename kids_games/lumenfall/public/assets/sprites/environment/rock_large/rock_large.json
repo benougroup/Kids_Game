@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Rock Large",
+  "description": "A large grey boulder. Impassable. May be pushed with enough strength or destroyed with the right tool.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

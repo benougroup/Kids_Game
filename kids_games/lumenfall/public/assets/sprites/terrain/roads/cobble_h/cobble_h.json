@@ -1,6 +1,7 @@
 {
   "id": "cobble_h",
   "name": "Cobble H",
+  "description": "A horizontal stretch of grey cobblestone road, worn smooth by years of cart wheels and foot traffic. Passable.",
   "type": "terrain_tile",
   "subCategory": "cobblestone",
   "passable": true,

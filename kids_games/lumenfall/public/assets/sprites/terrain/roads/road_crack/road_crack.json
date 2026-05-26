@@ -1,6 +1,7 @@
 {
   "id": "road_crack",
   "name": "Road Crack",
+  "description": "A section of cobblestone road cracked and buckled by tree roots or old age. Still passable but uneven.",
   "type": "terrain_tile",
   "subCategory": "road_edge",
   "passable": true,

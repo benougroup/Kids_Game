@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "monsters",
   "name": "Slime",
+  "description": "A gelatinous blob of green slime that oozes across dungeon floors. Splits into two smaller slimes when struck. Slow but relentless, and its acidic body damages anything it touches.",
   "passable": false,
   "collisionBox": {
     "w": 40,

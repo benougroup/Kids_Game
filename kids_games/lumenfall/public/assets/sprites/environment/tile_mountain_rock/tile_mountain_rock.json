@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Mountain Rock",
+  "description": "Bare grey rock on a mountain path. Rough and uneven, but passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

@@ -1,6 +1,7 @@
 {
   "id": "stable",
   "name": "Stable",
+  "description": "A large wooden stable that houses the village horses and travelling mounts. The smell of hay and leather fills the air. Horses can be rented here for faster travel between towns.",
   "type": "building",
   "subCategory": "civic",
   "passable": false,

@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Chest Open",
+  "description": "A treasure chest that has already been opened. Its contents have been claimed. Empty now, but worth checking.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

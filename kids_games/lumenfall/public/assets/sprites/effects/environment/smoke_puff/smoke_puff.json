@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Smoke Puff",
+  "description": "A small puff of grey smoke. Used for campfires, chimneys, forge exhausts, and explosion aftermath.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

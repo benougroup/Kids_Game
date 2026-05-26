@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Water Splash",
+  "description": "A splash of blue water droplets. Plays when a character enters water or a projectile hits a water surface.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

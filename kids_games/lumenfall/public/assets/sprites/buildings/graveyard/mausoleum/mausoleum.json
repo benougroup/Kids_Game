@@ -1,6 +1,7 @@
 {
   "id": "mausoleum",
   "name": "Mausoleum",
+  "description": "The Mausoleum of the Forgotten \u2014 a crumbling stone tomb surrounded by iron fencing. The inscription above the door reads 'Memento Mori'. Strange lights have been seen flickering inside at midnight.",
   "type": "building",
   "subCategory": "graveyard",
   "passable": false,

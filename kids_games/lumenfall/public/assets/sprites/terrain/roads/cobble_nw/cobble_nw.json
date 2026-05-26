@@ -1,6 +1,7 @@
 {
   "id": "cobble_nw",
   "name": "Cobble Nw",
+  "description": "A cobblestone road corner turning from north to west. The stones are neatly fitted at the curve.",
   "type": "terrain_tile",
   "subCategory": "cobblestone",
   "passable": true,

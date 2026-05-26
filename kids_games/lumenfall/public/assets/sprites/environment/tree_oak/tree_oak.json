@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Tree Oak",
+  "description": "A large oak tree with a broad canopy of green leaves. Impassable. Provides shade and may hide items in its roots.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

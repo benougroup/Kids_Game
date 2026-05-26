@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Lightning Bolt",
+  "description": "A jagged bolt of yellow-white lightning striking downward from above. Deals heavy damage and can stun the target.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

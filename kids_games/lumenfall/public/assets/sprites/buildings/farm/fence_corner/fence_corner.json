@@ -1,6 +1,7 @@
 {
   "id": "fence_corner",
   "name": "Fence Corner",
+  "description": "A corner fence post where two fence lines meet at a right angle. Solid and well-planted in the earth.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

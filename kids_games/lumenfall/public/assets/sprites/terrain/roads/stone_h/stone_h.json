@@ -1,6 +1,7 @@
 {
   "id": "stone_h",
   "name": "Stone H",
+  "description": "A horizontal stone-paved path, often found in gardens and courtyards. Passable.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_aggressive",
   "name": "Wolf",
+  "description": "A grey wolf with amber eyes and sharp teeth. Hunts in packs at night, making the forest paths dangerous after dark. During the day it rests, but at night it becomes a highly aggressive pack hunter.",
   "passable": false,
   "collisionBox": {
     "w": 40,

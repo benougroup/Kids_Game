@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "border",
   "name": "Border Grass Ne",
+  "description": "The north-east corner of the forest border where two tree walls meet.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": true,

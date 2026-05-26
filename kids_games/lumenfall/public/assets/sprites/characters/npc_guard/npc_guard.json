@@ -111,6 +111,7 @@
     }
   },
   "name": "Town Guard",
+  "description": "A town guard in silver armour with a blue tabard, carrying a spear. Patrols the village gates and main roads. Gruff but fair \u2014 he takes his duty to protect Lumenfall very seriously.",
   "dialogue": true,
   "hostile": false
 }

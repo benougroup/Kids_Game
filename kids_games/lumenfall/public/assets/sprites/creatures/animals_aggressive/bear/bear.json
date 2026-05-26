@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_aggressive",
   "name": "Bear",
+  "description": "A large brown bear with powerful claws and a territorial temperament. Patrols the forest in search of food. Will charge if the hero comes too close to its territory. Sleeps heavily at night.",
   "passable": false,
   "collisionBox": {
     "w": 40,

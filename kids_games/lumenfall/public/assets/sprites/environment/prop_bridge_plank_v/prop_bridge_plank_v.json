@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Bridge Plank V",
+  "description": "A vertical wooden plank bridge section. Passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

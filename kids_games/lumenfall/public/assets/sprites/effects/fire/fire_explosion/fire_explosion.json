@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "fire",
   "name": "Fire Explosion",
+  "description": "A burst of fire and smoke that erupts on impact. The result of a fireball hitting its target or a bomb detonating. Deals heavy area damage.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

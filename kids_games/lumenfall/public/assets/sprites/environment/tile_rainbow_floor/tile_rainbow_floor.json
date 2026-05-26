@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Rainbow Floor",
+  "description": "A shimmering rainbow-coloured tile found in magical realms. Dazzling and otherworldly.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

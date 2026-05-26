@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "impact",
   "name": "Sword Slash",
+  "description": "The visual flash of a sword strike \u2014 a white arc of light cutting through the air. Plays when the hero or an NPC attacks with a sword.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

@@ -1,6 +1,7 @@
 {
   "id": "dead_tree",
   "name": "Dead Tree",
+  "description": "A gnarled, leafless tree with twisted branches reaching skyward. A crow perches silently at the top, watching. Roots break through the earth around the base.",
   "type": "building",
   "subCategory": "graveyard",
   "passable": false,

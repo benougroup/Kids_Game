@@ -1,6 +1,7 @@
 {
   "id": "cobble_t",
   "name": "Cobble T",
+  "description": "A T-junction in the cobblestone road where three paths meet.",
   "type": "terrain_tile",
   "subCategory": "cobblestone",
   "passable": true,

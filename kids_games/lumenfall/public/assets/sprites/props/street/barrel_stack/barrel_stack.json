@@ -1,6 +1,7 @@
 {
   "id": "barrel_stack",
   "name": "Barrel Stack",
+  "description": "Three barrels stacked in a pyramid outside a warehouse or shop. Impassable. May contain useful items.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

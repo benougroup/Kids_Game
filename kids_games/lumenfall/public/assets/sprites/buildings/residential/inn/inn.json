@@ -1,6 +1,7 @@
 {
   "id": "inn",
   "name": "Inn",
+  "description": "The Wanderer's Rest \u2014 a warm and lively tavern-inn where travellers share tales over mugs of cider. Rooms are available upstairs, and the smell of roasting meat drifts from the kitchen at all hours.",
   "type": "building",
   "subCategory": "residential",
   "passable": false,

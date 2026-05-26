@@ -3,6 +3,7 @@
   "type": "portal",
   "subType": "idle",
   "name": "Portal Ice",
+  "description": "A crystalline ice portal framed in frost and pale blue light. Leads to snow-covered mountain zones and frozen caverns. Cold mist drifts from the gateway.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

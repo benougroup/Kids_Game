@@ -1,6 +1,7 @@
 {
   "id": "stone_bridge_left",
   "name": "Stone Bridge Left",
+  "description": "The left end of a solid stone arch bridge. Grey stone railings and carved keystones mark its craftsmanship.",
   "type": "terrain_tile",
   "subCategory": "stone_bridge",
   "passable": true,

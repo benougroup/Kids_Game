@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "undead",
   "name": "Skeleton",
+  "description": "The animated skeleton of a long-dead warrior, still clutching a rusted sword. Rattles as it walks. Immune to poison and disease. Patrols ancient ruins and graveyards.",
   "passable": false,
   "collisionBox": {
     "w": 40,

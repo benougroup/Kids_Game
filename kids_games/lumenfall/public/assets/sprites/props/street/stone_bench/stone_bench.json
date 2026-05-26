@@ -1,6 +1,7 @@
 {
   "id": "stone_bench",
   "name": "Stone Bench",
+  "description": "A simple stone bench with carved legs, placed along the village path for weary travellers to rest. Interact to sit and restore a small amount of stamina.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "food",
   "name": "Apple",
+  "description": "A crisp red apple, sweet and refreshing. Restores a small amount of health. Found on trees and sold at market stalls.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

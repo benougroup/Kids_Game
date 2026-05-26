@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "gem",
   "name": "Gem Red",
+  "description": "A deep red ruby, warm to the touch and faintly glowing. Used in crafting fire-enchanted equipment and sold to gem merchants for a high price.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

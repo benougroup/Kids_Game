@@ -1,6 +1,7 @@
 {
   "id": "street_sign",
   "name": "Street Sign",
+  "description": "A weathered wooden signpost with two carved directional arrows. Points the way to the market, town hall, and other landmarks. Interact to read the directions.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

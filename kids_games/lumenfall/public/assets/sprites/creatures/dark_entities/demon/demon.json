@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "dark_entities",
   "name": "Demon",
+  "description": "A powerful demon from the dark realm, with red skin, black wings, and eyes like burning coals. Surrounded by fire at all times. Enrages at night, summoning smaller demons and hurling fireballs.",
   "passable": false,
   "collisionBox": {
     "w": 40,

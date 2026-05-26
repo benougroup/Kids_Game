@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "blood",
   "name": "Hit Splat",
+  "description": "A cartoon-style red splash effect \u2014 the kid-friendly version of a blood splat. Appears when a character takes damage.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

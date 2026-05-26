@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "blood",
   "name": "Soul Drain",
+  "description": "A stream of glowing white wisps being pulled from a target toward the attacker. The visual effect of a life-drain or soul-steal ability.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

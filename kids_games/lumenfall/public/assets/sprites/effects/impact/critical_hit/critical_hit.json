@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "impact",
   "name": "Critical Hit",
+  "description": "A dramatic burst of yellow and orange light with impact stars \u2014 the visual effect of a critical hit dealing double damage.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

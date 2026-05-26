@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_aggressive",
   "name": "Snake",
+  "description": "A large forest snake with patterned scales. Coils in the grass and strikes without warning. Its bite inflicts poison that drains health over time.",
   "passable": false,
   "collisionBox": {
     "w": 40,

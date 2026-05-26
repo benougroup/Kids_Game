@@ -1,6 +1,7 @@
 {
   "id": "potion_shop_stall",
   "name": "Potion Shop Stall",
+  "description": "An alchemist's market stall draped in purple cloth and hung with glowing potion bottles. A bubbling cauldron sits behind the counter. Interact to buy potions, antidotes, and magical brews.",
   "type": "prop",
   "subCategory": "market",
   "passable": true,

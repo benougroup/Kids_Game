@@ -1,6 +1,7 @@
 {
   "id": "wood_bridge_mid_v",
   "name": "Wood Bridge Mid V",
+  "description": "The middle section of a vertical wooden bridge spanning a river from north to south.",
   "type": "terrain_tile",
   "subCategory": "wooden_bridge",
   "passable": true,

@@ -1,6 +1,7 @@
 {
   "id": "edge_w",
   "name": "Edge W",
+  "description": "The western edge of a cobblestone road.",
   "type": "terrain_tile",
   "subCategory": "road_edge",
   "passable": true,

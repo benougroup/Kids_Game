@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "dark_entities",
   "name": "Void Creature",
+  "description": "An entity from the void between worlds \u2014 a shifting mass of darkness with no fixed shape. Dormant by day, it appears as a tiny dark dot. At night it expands and teleports unpredictably, attacking from impossible angles.",
   "passable": false,
   "collisionBox": {
     "w": 40,

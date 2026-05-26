@@ -1,6 +1,7 @@
 {
   "id": "well",
   "name": "Well",
+  "description": "A mossy stone well at the heart of the village square. Cool, clear water is drawn up by rope and bucket. Villagers gather here to chat and collect water each morning.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

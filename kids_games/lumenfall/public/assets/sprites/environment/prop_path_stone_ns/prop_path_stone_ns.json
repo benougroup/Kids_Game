@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Path Stone Ns",
+  "description": "A north-south stone path tile. Passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "consumable",
   "name": "Potion Health",
+  "description": "A bright red potion in a round glass bottle. Restores a significant amount of the hero's health when consumed. The most essential item in any adventurer's pack.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

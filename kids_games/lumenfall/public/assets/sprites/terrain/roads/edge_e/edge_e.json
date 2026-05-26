@@ -1,6 +1,7 @@
 {
   "id": "edge_e",
   "name": "Edge E",
+  "description": "The eastern edge of a cobblestone road, grass beginning just beyond.",
   "type": "terrain_tile",
   "subCategory": "road_edge",
   "passable": true,

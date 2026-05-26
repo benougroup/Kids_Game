@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Beach Sand",
+  "description": "Soft beach sand at the water's edge, dotted with shells and sea glass.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

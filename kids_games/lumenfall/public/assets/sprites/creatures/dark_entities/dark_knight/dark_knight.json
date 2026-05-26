@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "dark_entities",
   "name": "Dark Knight",
+  "description": "A fallen knight consumed by dark magic, clad in black armour that absorbs light. Once a protector of the realm, now a servant of the void. Fights with brutal efficiency and ignores fear.",
   "passable": false,
   "collisionBox": {
     "w": 40,

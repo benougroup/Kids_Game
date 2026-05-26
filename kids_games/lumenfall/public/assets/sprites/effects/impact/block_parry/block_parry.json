@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "impact",
   "name": "Block Parry",
+  "description": "A shower of sparks and a ringing clash when a shield or weapon successfully blocks an attack.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "armor",
   "name": "Boots Iron",
+  "description": "Iron-toed boots reinforced with metal plates. Protects the feet and lower legs. Useful for kicking open doors and stomping on small enemies.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

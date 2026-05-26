@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_peaceful",
   "name": "Deer",
+  "description": "A graceful deer with large brown eyes and a white-spotted coat. Wanders the forest clearings at dawn and dusk. Timid and easily startled \u2014 it will bound away in an instant.",
   "passable": false,
   "collisionBox": {
     "w": 40,

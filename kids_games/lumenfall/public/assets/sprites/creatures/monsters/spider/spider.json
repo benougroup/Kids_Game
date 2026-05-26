@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "monsters",
   "name": "Spider",
+  "description": "A giant spider that hides in dark corners and drops from the ceiling without warning. Spins webs that slow the hero's movement. Highly aggressive at night.",
   "passable": false,
   "collisionBox": {
     "w": 40,

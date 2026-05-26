@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_peaceful",
   "name": "Sheep",
+  "description": "A woolly white sheep grazing in the fields outside Lumenfall. Docile and easily frightened. Follows the flock and bleats softly. Sheared once a season for wool used in crafting.",
   "passable": false,
   "collisionBox": {
     "w": 40,

@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "border",
   "name": "Border Grass E",
+  "description": "The eastern forest boundary. Ancient trees block all passage. Find a portal to continue.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": true,

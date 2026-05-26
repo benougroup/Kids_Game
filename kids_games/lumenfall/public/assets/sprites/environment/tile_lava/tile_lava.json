@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Lava",
+  "description": "Molten lava. Impassable and deals continuous fire damage if touched.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

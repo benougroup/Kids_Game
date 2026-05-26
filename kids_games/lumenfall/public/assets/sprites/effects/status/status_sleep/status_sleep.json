@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "status",
   "name": "Status Sleep",
+  "description": "Blue 'Z' letters floating upward above a sleeping character. The character is unconscious and cannot act.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

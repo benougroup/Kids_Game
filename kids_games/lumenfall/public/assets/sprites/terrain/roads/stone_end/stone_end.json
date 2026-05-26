@@ -1,6 +1,7 @@
 {
   "id": "stone_end",
   "name": "Stone End",
+  "description": "The end of a stone path, with a small flower growing in the gap between stones.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

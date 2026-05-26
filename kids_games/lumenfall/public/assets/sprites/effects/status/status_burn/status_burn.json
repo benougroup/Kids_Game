@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "status",
   "name": "Status Burn",
+  "description": "Orange and red flame wisps circling a burning character. Indicates fire damage over time.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

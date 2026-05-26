@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Snowfall",
+  "description": "Gently drifting white snowflakes. An ambient weather effect for cold mountain zones.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Flower Blue",
+  "description": "A cluster of small blue wildflowers growing in the grass. Purely decorative.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

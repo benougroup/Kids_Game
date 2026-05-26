@@ -111,6 +111,7 @@
     }
   },
   "name": "Blacksmith",
+  "description": "A broad-shouldered blacksmith in a leather apron with a thick beard, wielding a large hammer. Runs the Forge of Ironhold. Can upgrade the hero's weapons and armour if given the right materials.",
   "dialogue": true,
   "hasShop": true,
   "interactType": "craft"

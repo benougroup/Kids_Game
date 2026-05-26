@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "armor",
   "name": "Shield Wood",
+  "description": "A round wooden shield reinforced with iron bands. Basic protection against physical attacks. Light enough not to slow the hero down.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

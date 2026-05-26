@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "undead",
   "name": "Mummy",
+  "description": "A bandage-wrapped undead creature from a desert tomb, reanimated by a curse. Slow but tough, with a grip that inflicts a weakening curse. Immune to fire damage.",
   "passable": false,
   "collisionBox": {
     "w": 40,

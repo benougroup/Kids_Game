@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "impact",
   "name": "Arrow Pierce",
+  "description": "A small impact burst when an arrow strikes a target. A brief flash of white with a few sparks.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

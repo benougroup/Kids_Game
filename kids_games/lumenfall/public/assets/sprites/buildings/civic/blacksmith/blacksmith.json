@@ -1,6 +1,7 @@
 {
   "id": "blacksmith",
   "name": "Blacksmith",
+  "description": "The Forge of Ironhold \u2014 a rustic workshop where the ring of hammer on anvil never stops. The blacksmith crafts weapons, armour, and tools. A chimney belches sparks and smoke into the sky day and night.",
   "type": "building",
   "subCategory": "civic",
   "passable": false,

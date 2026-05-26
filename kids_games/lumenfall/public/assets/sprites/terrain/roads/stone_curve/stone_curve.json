@@ -1,6 +1,7 @@
 {
   "id": "stone_curve",
   "name": "Stone Curve",
+  "description": "A gently curved stone path, ideal for winding garden walkways.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

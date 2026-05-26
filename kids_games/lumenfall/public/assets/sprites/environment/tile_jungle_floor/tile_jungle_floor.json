@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Jungle Floor",
+  "description": "Dense jungle floor covered in roots, fallen leaves, and undergrowth.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

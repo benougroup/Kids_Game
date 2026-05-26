@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "monsters",
   "name": "Giant Snake",
+  "description": "A monstrous serpent many times the size of a normal snake, with glowing yellow eyes and scales as hard as armour. Lurks in swamps and dungeons. Its venomous bite can incapacitate even a strong warrior.",
   "passable": false,
   "collisionBox": {
     "w": 40,

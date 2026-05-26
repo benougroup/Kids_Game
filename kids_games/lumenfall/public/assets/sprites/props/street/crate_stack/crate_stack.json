@@ -1,6 +1,7 @@
 {
   "id": "crate_stack",
   "name": "Crate Stack",
+  "description": "Two wooden crates stacked on top of each other. Blocks passage. Interact to search for items.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

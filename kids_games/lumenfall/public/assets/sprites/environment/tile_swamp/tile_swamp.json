@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Swamp",
+  "description": "Murky, waterlogged swamp ground. Passable but slows movement. May inflict poison.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

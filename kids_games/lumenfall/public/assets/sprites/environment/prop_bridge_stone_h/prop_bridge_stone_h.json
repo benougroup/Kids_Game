@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Bridge Stone H",
+  "description": "A horizontal stone bridge section. Sturdy and permanent. Passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

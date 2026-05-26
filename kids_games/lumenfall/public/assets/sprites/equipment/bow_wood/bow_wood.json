@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "weapon",
   "name": "Bow Wood",
+  "description": "A graceful wooden bow strung with enchanted cord. Fires arrows with great accuracy at long range. Requires arrows as ammunition.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

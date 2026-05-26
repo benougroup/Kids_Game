@@ -1,6 +1,7 @@
 {
   "id": "rope_bridge_bottom",
   "name": "Rope Bridge Bottom",
+  "description": "The bottom end of a rope bridge, anchored to the southern bank.",
   "type": "terrain_tile",
   "subCategory": "rope_bridge",
   "passable": true,

@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "blood",
   "name": "Monster Death Burst",
+  "description": "A dramatic explosion of particles and light when a monster is defeated. The size and colour vary by creature type.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "armor",
   "name": "Helmet Knight",
+  "description": "A full knight's helmet with a visor and a blue plume. Offers excellent head protection and an imposing appearance. Worn by the realm's finest warriors.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

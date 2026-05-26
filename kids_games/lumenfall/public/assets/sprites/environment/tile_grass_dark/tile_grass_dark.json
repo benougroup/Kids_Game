@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Grass Dark",
+  "description": "Darker, thicker grass found in shaded areas beneath trees or near swamps.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

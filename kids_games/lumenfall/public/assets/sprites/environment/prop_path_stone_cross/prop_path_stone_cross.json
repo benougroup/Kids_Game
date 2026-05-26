@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Path Stone Cross",
+  "description": "A stone path crossroads tile. Passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

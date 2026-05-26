@@ -1,6 +1,7 @@
 {
   "id": "dirt_t",
   "name": "Dirt T",
+  "description": "A T-junction in the dirt road where three worn paths converge.",
   "type": "terrain_tile",
   "subCategory": "dirt_road",
   "passable": true,

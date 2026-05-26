@@ -1,6 +1,7 @@
 {
   "id": "statue",
   "name": "Statue",
+  "description": "A stone statue of a legendary hero, sword raised to the sky and shield at their side. The plaque at the base reads: 'In honour of those who kept the Flame alive.'",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

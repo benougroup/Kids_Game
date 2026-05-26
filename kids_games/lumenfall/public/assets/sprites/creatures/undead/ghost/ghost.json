@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "undead",
   "name": "Ghost",
+  "description": "The translucent spirit of a person who died with unfinished business. Faint and barely visible during the day. At night it becomes fully visible and aggressive, passing through walls and ignoring physical attacks.",
   "passable": false,
   "collisionBox": {
     "w": 40,

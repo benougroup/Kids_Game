@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "fire",
   "name": "Ember Sparks",
+  "description": "A shower of glowing orange sparks, like those thrown off by a forge or a campfire. Purely decorative ambient effect.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

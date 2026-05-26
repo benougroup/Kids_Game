@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "building",
   "name": "Shop",
+  "description": "A general merchant's shop. Sells everyday supplies, tools, and basic potions.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": false,

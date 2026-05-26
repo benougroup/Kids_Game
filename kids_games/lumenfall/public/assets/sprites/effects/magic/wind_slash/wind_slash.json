@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Wind Slash",
+  "description": "A crescent-shaped blade of compressed air slicing through the air. Fast and difficult to dodge. Deals moderate damage.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

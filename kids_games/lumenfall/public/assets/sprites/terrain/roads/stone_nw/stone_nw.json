@@ -1,6 +1,7 @@
 {
   "id": "stone_nw",
   "name": "Stone Nw",
+  "description": "A stone path corner turning north-west.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

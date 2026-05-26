@@ -1,6 +1,7 @@
 {
   "id": "shop",
   "name": "Shop",
+  "description": "A general merchant's shop with a green striped awning and a display window full of goods. The shopkeeper sells everything from rope and torches to maps and basic potions.",
   "type": "building",
   "subCategory": "residential",
   "passable": false,

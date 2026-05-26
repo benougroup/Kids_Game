@@ -1,6 +1,7 @@
 {
   "id": "edge_n",
   "name": "Edge N",
+  "description": "The northern edge of a cobblestone road transitioning to grass. The stones end cleanly here.",
   "type": "terrain_tile",
   "subCategory": "road_edge",
   "passable": true,

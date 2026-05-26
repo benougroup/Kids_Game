@@ -111,6 +111,7 @@
     }
   },
   "name": "Sick Villager",
+  "description": "A pale, frail villager wrapped in a white robe with bandages on their arms. Weakened by a mysterious illness spreading through the village \u2014 possibly connected to the encroaching darkness. Needs medicine or a cure from the hero.",
   "dialogue": true,
   "hasQuests": true
 }

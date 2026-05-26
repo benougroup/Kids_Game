@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Ice",
+  "description": "A slippery sheet of ice. The player slides when walking on it \u2014 control is reduced.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

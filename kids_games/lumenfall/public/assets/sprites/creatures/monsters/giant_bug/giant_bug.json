@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "monsters",
   "name": "Giant Bug",
+  "description": "A massive insect creature \u2014 part beetle, part centipede \u2014 that burrows underground during the day and emerges at night to hunt. Its chitinous shell deflects most physical attacks.",
   "passable": false,
   "collisionBox": {
     "w": 40,

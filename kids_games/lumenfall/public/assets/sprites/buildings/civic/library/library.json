@@ -1,6 +1,7 @@
 {
   "id": "library",
   "name": "Library",
+  "description": "The Archive of Echoes \u2014 an ivy-covered stone library filled with ancient scrolls and leather-bound tomes. Scholars and adventurers alike come here seeking knowledge of the world's forgotten history.",
   "type": "building",
   "subCategory": "civic",
   "passable": false,

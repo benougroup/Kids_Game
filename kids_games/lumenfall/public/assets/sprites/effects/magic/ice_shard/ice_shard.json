@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Ice Shard",
+  "description": "A sharp shard of magical ice launched as a projectile. Deals cold damage and may slow or freeze the target on impact.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

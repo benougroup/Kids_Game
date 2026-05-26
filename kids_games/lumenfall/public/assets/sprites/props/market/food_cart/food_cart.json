@@ -1,6 +1,7 @@
 {
   "id": "food_cart",
   "name": "Food Cart",
+  "description": "A cheerful food cart with a striped awning, selling hot meals and snacks. A steaming pot sits on top and fresh bread and apples are displayed. Interact to buy food that restores health.",
   "type": "prop",
   "subCategory": "market",
   "passable": false,

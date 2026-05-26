@@ -1,6 +1,7 @@
 {
   "id": "lamp_base",
   "name": "Lamp Base",
+  "description": "The stone base of a street lamp, set into the cobblestones. The lamp post rises above.",
   "type": "terrain_tile",
   "subCategory": "road_edge",
   "passable": true,

@@ -1,6 +1,7 @@
 {
   "id": "stone_bridge_mid_v",
   "name": "Stone Bridge Mid V",
+  "description": "The central span of a vertical stone bridge crossing a deep river.",
   "type": "terrain_tile",
   "subCategory": "stone_bridge",
   "passable": true,

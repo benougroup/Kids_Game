@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "currency",
   "name": "Coin Gold",
+  "description": "A shiny gold coin stamped with the crest of Lumenfall. The standard currency of the realm. Worth 10 silver coins. Dropped by defeated enemies and found in treasure chests.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

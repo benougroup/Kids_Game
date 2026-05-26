@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Holy Light Burst",
+  "description": "A brilliant burst of white and gold holy light radiating outward. Deals heavy damage to undead and dark entities. Heals living allies caught in the blast.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

@@ -1,6 +1,7 @@
 {
   "id": "wooden_crate",
   "name": "Wooden Crate",
+  "description": "A wooden shipping crate with rope handles. Could contain supplies, treasure, or nothing at all. Interact to open.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

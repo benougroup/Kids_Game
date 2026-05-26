@@ -3,6 +3,7 @@
   "type": "portal",
   "subType": "idle",
   "name": "Portal Fire",
+  "description": "A volcanic fire portal wreathed in orange and red flames. Used to travel to dungeon zones and volcanic regions. Intense heat radiates from the opening.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

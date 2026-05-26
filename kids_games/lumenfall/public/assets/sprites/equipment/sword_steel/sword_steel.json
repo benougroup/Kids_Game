@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "weapon",
   "name": "Sword Steel",
+  "description": "A finely crafted steel sword with a polished blade and a crossguard engraved with the crest of Lumenfall. Significantly stronger than iron, and holds a sharper edge.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

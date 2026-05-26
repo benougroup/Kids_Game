@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Shield Shimmer",
+  "description": "A shimmering translucent barrier of magical energy surrounding a character. Indicates an active magical shield or protection spell.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

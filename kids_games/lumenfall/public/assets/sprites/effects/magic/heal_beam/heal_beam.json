@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Heal Beam",
+  "description": "A beam of warm white and gold light directed at a target. The visual effect of a healing spell \u2014 restores health to whoever it touches.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

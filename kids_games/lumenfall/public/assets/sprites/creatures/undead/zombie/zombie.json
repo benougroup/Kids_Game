@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "undead",
   "name": "Zombie",
+  "description": "A shambling undead villager, risen by dark magic. Slow and clumsy, but relentless \u2014 it never tires and never retreats. Inflicts disease with its bite. More active at night.",
   "passable": false,
   "collisionBox": {
     "w": 40,

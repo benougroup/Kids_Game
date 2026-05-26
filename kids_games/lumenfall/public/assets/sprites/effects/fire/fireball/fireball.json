@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "fire",
   "name": "Fireball",
+  "description": "A blazing ball of fire launched as a projectile spell. Travels in a straight line and explodes on impact, dealing area fire damage.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

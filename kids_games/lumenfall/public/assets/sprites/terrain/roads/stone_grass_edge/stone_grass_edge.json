@@ -1,6 +1,7 @@
 {
   "id": "stone_grass_edge",
   "name": "Stone Grass Edge",
+  "description": "A stone path tile with grass growing along one edge \u2014 a natural transition between path and lawn.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

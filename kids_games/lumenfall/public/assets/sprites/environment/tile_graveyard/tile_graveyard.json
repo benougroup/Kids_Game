@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Graveyard",
+  "description": "Dark, overgrown graveyard ground. The earth is soft and disturbed in places.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

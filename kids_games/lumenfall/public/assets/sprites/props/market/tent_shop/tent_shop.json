@@ -1,6 +1,7 @@
 {
   "id": "tent_shop",
   "name": "Tent Shop",
+  "description": "A large colourful merchant's tent with bunting flags and an open front showing shelves of goods inside. A travelling shop that appears in different locations. Interact to enter and browse.",
   "type": "prop",
   "subCategory": "market",
   "passable": true,

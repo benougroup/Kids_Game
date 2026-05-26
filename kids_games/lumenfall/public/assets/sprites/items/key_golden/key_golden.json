@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "key",
   "name": "Key Golden",
+  "description": "A gleaming golden key with an ornate bow. Opens special golden locks on treasure vaults and important doors. Rare and valuable.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

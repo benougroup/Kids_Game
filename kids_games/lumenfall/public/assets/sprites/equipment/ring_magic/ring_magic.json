@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "accessory",
   "name": "Ring Magic",
+  "description": "A golden ring set with a glowing gemstone. Enchanted to provide a passive magical bonus \u2014 increased mana, faster spell casting, or resistance to a specific element.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

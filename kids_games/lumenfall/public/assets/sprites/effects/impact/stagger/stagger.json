@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "impact",
   "name": "Stagger",
+  "description": "A brief flash of white light and impact lines when a character is staggered by a powerful blow.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

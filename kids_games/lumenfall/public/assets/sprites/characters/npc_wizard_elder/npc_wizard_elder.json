@@ -111,6 +111,7 @@
     }
   },
   "name": "Wizard Elder",
+  "description": "An ancient wizard in a dark blue robe covered in stars, with a long white beard and a crystal-tipped staff. One of the last of the old order of mages. Knows the truth about the Eternal Flame and the darkness \u2014 but speaks only in riddles.",
   "dialogue": true,
   "hasQuests": true,
   "hasShop": true

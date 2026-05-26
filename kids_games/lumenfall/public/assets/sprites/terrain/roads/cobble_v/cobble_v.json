@@ -1,6 +1,7 @@
 {
   "id": "cobble_v",
   "name": "Cobble V",
+  "description": "A vertical stretch of cobblestone road running north to south through the village. Passable.",
   "type": "terrain_tile",
   "subCategory": "cobblestone",
   "passable": true,

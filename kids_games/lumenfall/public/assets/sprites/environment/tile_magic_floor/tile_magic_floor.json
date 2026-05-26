@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Magic Floor",
+  "description": "A floor tile pulsing with magical energy \u2014 glowing runes are etched into the stone.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

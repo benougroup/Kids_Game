@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "blood",
   "name": "Blood Drip",
+  "description": "Small red droplets falling downward. A subtle damage indicator used for ongoing damage effects like poison or bleeding.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

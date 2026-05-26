@@ -1,6 +1,7 @@
 {
   "id": "chicken_coop",
   "name": "Chicken Coop",
+  "description": "A small wooden coop where the village chickens roost. Wire fencing keeps them safe from foxes at night. Fresh eggs can be collected here each morning.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

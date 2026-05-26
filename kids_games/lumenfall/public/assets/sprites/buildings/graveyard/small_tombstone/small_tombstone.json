@@ -1,6 +1,7 @@
 {
   "id": "small_tombstone",
   "name": "Small Tombstone",
+  "description": "A simple rounded gravestone with 'R.I.P.' carved into the face. A small flower has been placed at its foot by someone who still remembers.",
   "type": "building",
   "subCategory": "graveyard",
   "passable": false,

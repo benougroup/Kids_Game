@@ -1,6 +1,7 @@
 {
   "id": "cobble_sw",
   "name": "Cobble Sw",
+  "description": "A cobblestone road corner turning from south to west.",
   "type": "terrain_tile",
   "subCategory": "cobblestone",
   "passable": true,

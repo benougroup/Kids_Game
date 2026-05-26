@@ -1,6 +1,7 @@
 {
   "id": "dirt_nw",
   "name": "Dirt Nw",
+  "description": "A dirt road corner curving from north to west, edged with patchy grass.",
   "type": "terrain_tile",
   "subCategory": "dirt_road",
   "passable": true,

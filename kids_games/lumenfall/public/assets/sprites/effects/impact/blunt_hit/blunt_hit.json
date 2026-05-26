@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "impact",
   "name": "Blunt Hit",
+  "description": "A burst of impact stars and dust when a blunt weapon connects. Indicates a successful hit with a club, hammer, or fist.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

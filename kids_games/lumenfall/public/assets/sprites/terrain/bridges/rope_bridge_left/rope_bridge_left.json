@@ -1,6 +1,7 @@
 {
   "id": "rope_bridge_left",
   "name": "Rope Bridge Left",
+  "description": "The left end of a rickety rope bridge. The planks are weathered and the ropes creak in the wind.",
   "type": "terrain_tile",
   "subCategory": "rope_bridge",
   "passable": true,

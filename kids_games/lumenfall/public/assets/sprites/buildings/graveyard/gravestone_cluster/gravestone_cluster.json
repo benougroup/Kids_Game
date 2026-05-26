@@ -1,6 +1,7 @@
 {
   "id": "gravestone_cluster",
   "name": "Gravestone Cluster",
+  "description": "Three weathered gravestones of different heights, clustered together. The inscriptions are worn smooth by rain and time. Wilted flowers lie scattered between them.",
   "type": "building",
   "subCategory": "graveyard",
   "passable": false,

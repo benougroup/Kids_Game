@@ -111,5 +111,6 @@
     }
   },
   "name": "Farmer",
+  "description": "A sturdy farmer in a straw hat and blue overalls, carrying a pitchfork. Works the fields outside the village from dawn to dusk. Knows the land better than anyone and has noticed strange things happening in the soil.",
   "dialogue": true
 }

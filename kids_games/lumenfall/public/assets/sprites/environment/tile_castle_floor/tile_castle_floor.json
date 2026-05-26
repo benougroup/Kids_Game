@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Castle Floor",
+  "description": "Smooth stone castle flooring with subtle carved patterns. Found in castle interiors.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

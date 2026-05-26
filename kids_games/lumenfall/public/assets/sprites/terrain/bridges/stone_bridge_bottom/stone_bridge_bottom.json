@@ -1,6 +1,7 @@
 {
   "id": "stone_bridge_bottom",
   "name": "Stone Bridge Bottom",
+  "description": "The bottom end of a stone bridge, connecting to the southern riverbank.",
   "type": "terrain_tile",
   "subCategory": "stone_bridge",
   "passable": true,

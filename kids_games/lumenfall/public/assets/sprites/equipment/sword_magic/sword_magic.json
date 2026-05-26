@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "weapon",
   "name": "Sword Magic",
+  "description": "A magical sword that glows with a faint blue light. Enchanted by the wizards of the old order. Deals additional magical damage and can harm creatures immune to physical attacks.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

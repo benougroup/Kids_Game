@@ -1,6 +1,7 @@
 {
   "id": "merchant_cart",
   "name": "Merchant Cart",
+  "description": "A wooden merchant's cart loaded with goods \u2014 potions, bags of spices, and mysterious boxes. The horse is hitched to a post nearby. Interact to browse the travelling merchant's wares.",
   "type": "prop",
   "subCategory": "market",
   "passable": false,

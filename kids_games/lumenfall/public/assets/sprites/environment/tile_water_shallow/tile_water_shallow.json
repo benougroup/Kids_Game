@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Water Shallow",
+  "description": "Shallow water at the edge of a river or lake. The player can wade through slowly.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

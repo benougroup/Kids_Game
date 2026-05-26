@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Mountain Snow",
+  "description": "Snow-covered mountain rock at high altitude. Cold and treacherous.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

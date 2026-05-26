@@ -1,6 +1,7 @@
 {
   "id": "cobble_x",
   "name": "Cobble X",
+  "description": "A cobblestone crossroads where four roads intersect. A common meeting point for travellers.",
   "type": "terrain_tile",
   "subCategory": "cobblestone",
   "passable": true,

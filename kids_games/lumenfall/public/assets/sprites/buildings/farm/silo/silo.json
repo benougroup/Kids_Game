@@ -1,6 +1,7 @@
 {
   "id": "silo",
   "name": "Silo",
+  "description": "A tall cylindrical grain silo with a conical roof and a ladder on the side. It stores the harvest through the long winter months, keeping the village fed when crops are scarce.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

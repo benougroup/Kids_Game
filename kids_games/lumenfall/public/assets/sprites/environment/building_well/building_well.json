@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "building",
   "name": "Well",
+  "description": "A mossy stone well. Interact to draw water and restore a small amount of health.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

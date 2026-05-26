@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Dust Cloud",
+  "description": "A swirling cloud of brown dust kicked up by fast movement, impacts, or dry wind.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

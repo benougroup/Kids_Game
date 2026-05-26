@@ -1,6 +1,7 @@
 {
   "id": "stepping_stones",
   "name": "Stepping Stones",
+  "description": "A series of flat stepping stones set into the grass, forming a casual walkway.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

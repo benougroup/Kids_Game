@@ -3,6 +3,7 @@
   "type": "portal",
   "subType": "transition",
   "name": "Portal Enter",
+  "description": "The opening animation of a magic portal \u2014 light bursts outward as the gateway tears open between worlds.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

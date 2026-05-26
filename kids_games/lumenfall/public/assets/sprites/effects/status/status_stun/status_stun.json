@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "status",
   "name": "Status Stun",
+  "description": "Yellow stars circling above a stunned character's head. The character cannot act until the stun wears off.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

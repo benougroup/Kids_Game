@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "dark_entities",
   "name": "Banshee",
+  "description": "The wailing spirit of a woman who died in grief. Silent and invisible during the day. At night her piercing scream can stun the hero and all nearby characters. Floats through walls and is immune to physical attacks.",
   "passable": false,
   "collisionBox": {
     "w": 40,

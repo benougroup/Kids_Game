@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Rain Drops",
+  "description": "Animated rain droplets falling vertically. An ambient weather effect for rainy areas and storms.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

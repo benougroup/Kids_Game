@@ -1,6 +1,7 @@
 {
   "id": "fence_v",
   "name": "Fence V",
+  "description": "A vertical wooden fence post and rail. Marks the edge of a farm or garden. Impassable without a gate.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

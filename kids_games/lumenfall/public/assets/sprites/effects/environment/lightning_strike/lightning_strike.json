@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Lightning Strike",
+  "description": "A dramatic bolt of lightning striking the ground with a flash and a crack. A weather effect and also used as a spell.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

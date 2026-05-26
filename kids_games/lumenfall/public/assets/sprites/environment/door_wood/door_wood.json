@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Door Wood",
+  "description": "A solid wooden door set into a building wall. Interact to open or close. Impassable when closed.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": true,

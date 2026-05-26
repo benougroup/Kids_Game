@@ -111,6 +111,7 @@
     }
   },
   "name": "Village Elder",
+  "description": "A white-bearded elder in a brown robe, leaning on a carved wooden cane. One of the oldest residents of Lumenfall, he remembers the last time the Eternal Flame flickered. His wisdom is invaluable \u2014 if you can get him to stop telling long stories.",
   "dialogue": true,
   "hasQuests": true
 }

@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Bridge Stone V",
+  "description": "A vertical stone bridge section. Passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

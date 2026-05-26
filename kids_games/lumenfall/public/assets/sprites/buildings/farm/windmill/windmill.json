@@ -1,6 +1,7 @@
 {
   "id": "windmill",
   "name": "Windmill",
+  "description": "A tall stone windmill whose four great sails turn slowly in the breeze. It grinds grain into flour for the village bakeries. The miller lives in the small room at the base.",
   "type": "building",
   "subCategory": "farm",
   "passable": false,

@@ -1,6 +1,7 @@
 {
   "id": "vendor_table",
   "name": "Street Vendor Table",
+  "description": "A simple folding table covered with a cloth, set up by a street vendor. Goods are laid out for browsing. A handwritten sign advertises today's prices.",
   "type": "prop",
   "subCategory": "market",
   "passable": false,

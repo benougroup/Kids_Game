@@ -1,6 +1,7 @@
 {
   "id": "stone_v",
   "name": "Stone V",
+  "description": "A vertical stone path leading through a garden or up to a building entrance.",
   "type": "terrain_tile",
   "subCategory": "stone_path",
   "passable": true,

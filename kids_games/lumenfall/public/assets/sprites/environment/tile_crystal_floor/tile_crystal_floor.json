@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Crystal Floor",
+  "description": "A glittering crystal floor found in magical caverns. Refracts light in rainbow patterns.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

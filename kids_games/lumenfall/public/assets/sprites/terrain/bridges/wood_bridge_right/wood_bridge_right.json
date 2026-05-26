@@ -1,6 +1,7 @@
 {
   "id": "wood_bridge_right",
   "name": "Wood Bridge Right",
+  "description": "The right end of a wooden bridge, connecting back to solid ground.",
   "type": "terrain_tile",
   "subCategory": "wooden_bridge",
   "passable": true,

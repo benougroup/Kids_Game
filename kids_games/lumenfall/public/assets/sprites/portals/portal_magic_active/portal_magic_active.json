@@ -3,6 +3,7 @@
   "type": "portal",
   "subType": "idle",
   "name": "Portal Magic Active",
+  "description": "A fully awakened magic portal blazing with golden light. Step through to travel to the connected map. The air crackles with energy and the ground vibrates beneath your feet.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

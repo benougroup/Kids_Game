@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Statue Lion",
+  "description": "A stone lion statue on a pedestal, placed at the entrance to important buildings.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

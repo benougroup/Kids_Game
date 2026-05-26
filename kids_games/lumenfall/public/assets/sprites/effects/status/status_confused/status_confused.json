@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "status",
   "name": "Status Confused",
+  "description": "Swirling question marks and stars above a confused character's head. Movement and actions are randomised.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

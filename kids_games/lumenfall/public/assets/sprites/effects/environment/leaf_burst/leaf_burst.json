@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "environment",
   "name": "Leaf Burst",
+  "description": "A burst of green and yellow leaves scattered by wind or impact. An ambient nature effect.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

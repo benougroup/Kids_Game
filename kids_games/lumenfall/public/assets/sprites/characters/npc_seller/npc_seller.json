@@ -111,6 +111,7 @@
     }
   },
   "name": "Market Seller",
+  "description": "A market stall seller in a yellow apron, standing behind a basket overflowing with produce and goods. Cheerful and loud, calling out prices to passers-by. Sells food, basic supplies, and the occasional curiosity.",
   "dialogue": true,
   "hasShop": true
 }

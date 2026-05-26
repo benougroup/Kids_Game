@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "border",
   "name": "Border Grass Sw",
+  "description": "The south-west corner of the forest border.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": true,

@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "blood",
   "name": "Dark Energy Hit",
+  "description": "A burst of dark purple energy crackling with void magic. The impact effect of attacks from dark entities.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

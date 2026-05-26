@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "gem",
   "name": "Gem Green",
+  "description": "An emerald green gem with a faint inner glow. Used in crafting nature and healing enchantments. Found in forest dungeons.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

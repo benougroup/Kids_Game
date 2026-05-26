@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Cloud Floor",
+  "description": "A fluffy white cloud platform found in sky zones. Surprisingly solid underfoot.",
   "passable": true,
   "heightLevel": 3,
   "isBorder": false,

@@ -3,6 +3,7 @@
   "type": "item",
   "subType": "consumable",
   "name": "Potion Antidote",
+  "description": "A murky green potion that cures poison and disease. Vital when fighting venomous creatures like snakes and giant bugs.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

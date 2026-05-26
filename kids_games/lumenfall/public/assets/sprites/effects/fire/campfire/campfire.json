@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "fire",
   "name": "Campfire",
+  "description": "A crackling campfire with dancing orange and yellow flames. Provides warmth and light. Characters resting near a campfire recover health faster.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

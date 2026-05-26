@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "fire",
   "name": "Torch Flame",
+  "description": "The flickering orange flame of a wall torch or handheld torch. Casts warm light in a small radius. Loops continuously as an ambient light source.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

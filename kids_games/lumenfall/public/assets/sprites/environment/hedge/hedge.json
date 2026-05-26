@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Hedge",
+  "description": "A neatly trimmed hedge forming a natural wall. Impassable. Used in gardens and maze areas.",
   "passable": false,
   "heightLevel": 1,
   "isBorder": true,

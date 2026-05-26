@@ -1,6 +1,7 @@
 {
   "id": "stone_bridge_right",
   "name": "Stone Bridge Right",
+  "description": "The right end of a stone bridge, firmly anchored to the eastern bank.",
   "type": "terrain_tile",
   "subCategory": "stone_bridge",
   "passable": true,

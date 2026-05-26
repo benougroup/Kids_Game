@@ -111,6 +111,7 @@
     }
   },
   "name": "Thief",
+  "description": "A nimble figure in a dark green hooded cloak with a mask covering the lower face and twin daggers at the belt. Lurks in shadowy corners of the village. Not necessarily evil \u2014 may be working against a greater threat, or just after your coin purse.",
   "dialogue": true,
   "hasQuests": true
 }

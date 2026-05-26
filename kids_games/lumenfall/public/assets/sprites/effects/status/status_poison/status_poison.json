@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "status",
   "name": "Status Poison",
+  "description": "A ring of green bubbles floating above a poisoned character's head. Indicates active poison damage over time.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

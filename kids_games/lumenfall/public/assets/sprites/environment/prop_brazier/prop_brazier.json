@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Brazier",
+  "description": "A large iron brazier on a stand, filled with burning coals. Casts warm light and can be used to light torches.",
   "passable": false,
   "heightLevel": 1,
   "isBorder": false,

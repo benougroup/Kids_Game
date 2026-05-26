@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Path Dirt Ns",
+  "description": "A north-south dirt path worn into the earth. Passable.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

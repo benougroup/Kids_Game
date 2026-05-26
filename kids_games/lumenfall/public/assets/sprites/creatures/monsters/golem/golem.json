@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "monsters",
   "name": "Golem",
+  "description": "A towering stone golem animated by ancient magic. Immune to most physical attacks \u2014 only magic can damage it effectively. Patrols ancient ruins and temples, guarding whatever lies within.",
   "passable": false,
   "collisionBox": {
     "w": 40,

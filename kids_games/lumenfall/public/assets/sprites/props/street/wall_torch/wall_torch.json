@@ -1,6 +1,7 @@
 {
   "id": "wall_torch",
   "name": "Wall Torch",
+  "description": "An iron wall bracket holding a burning torch. Mounted on stone walls throughout the village to light dark corners. The flame flickers in the breeze.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

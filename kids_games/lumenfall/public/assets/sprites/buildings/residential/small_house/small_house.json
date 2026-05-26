@@ -1,6 +1,7 @@
 {
   "id": "small_house",
   "name": "Small House",
+  "description": "A cozy stone-and-timber cottage with a red tiled roof and flower boxes beneath the windows. Home to a single family in the village of Lumenfall. Smoke curls from the chimney on cold evenings.",
   "type": "building",
   "subCategory": "residential",
   "passable": false,

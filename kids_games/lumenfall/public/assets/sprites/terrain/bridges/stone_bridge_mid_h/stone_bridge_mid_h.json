@@ -1,6 +1,7 @@
 {
   "id": "stone_bridge_mid_h",
   "name": "Stone Bridge Mid H",
+  "description": "The middle span of a horizontal stone bridge. Built to last centuries.",
   "type": "terrain_tile",
   "subCategory": "stone_bridge",
   "passable": true,

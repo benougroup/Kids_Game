@@ -3,6 +3,7 @@
   "type": "creature",
   "category": "animals_peaceful",
   "name": "Chicken",
+  "description": "A plump white chicken that pecks at the ground and clucks contentedly. Found near farms and coops. Completely harmless \u2014 it will scatter and flee if startled. A source of eggs for the village.",
   "passable": false,
   "collisionBox": {
     "w": 40,

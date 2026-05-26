@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "border",
   "name": "Border Cliff W",
+  "description": "The western cliff boundary. Impassable.",
   "passable": false,
   "heightLevel": 3,
   "isBorder": true,

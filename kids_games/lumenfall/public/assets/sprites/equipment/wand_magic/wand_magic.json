@@ -3,6 +3,7 @@
   "type": "equipment",
   "subType": "weapon",
   "name": "Wand Magic",
+  "description": "A slender wooden wand tipped with a glowing crystal. Channels magical energy into focused bolts of light. The preferred weapon of apprentice mages.",
   "passable": true,
   "heightLevel": 0,
   "file": "icon.png",

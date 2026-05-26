@@ -1,6 +1,7 @@
 {
   "id": "market_stall",
   "name": "Market Stall",
+  "description": "An open-air market stall with a red-and-white striped awning. The counter is piled with fruits, scrolls, and potion bottles. A hanging lantern sways above. Interact to shop.",
   "type": "prop",
   "subCategory": "market",
   "passable": true,

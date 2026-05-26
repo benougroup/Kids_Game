@@ -1,6 +1,7 @@
 {
   "id": "dirt_x",
   "name": "Dirt X",
+  "description": "A dirt crossroads where four paths meet. A signpost might stand here.",
   "type": "terrain_tile",
   "subCategory": "dirt_road",
   "passable": true,

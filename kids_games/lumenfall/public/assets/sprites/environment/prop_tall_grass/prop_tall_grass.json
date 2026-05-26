@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Tall Grass",
+  "description": "Tall grass swaying in the breeze. Passable but may hide small creatures or items.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

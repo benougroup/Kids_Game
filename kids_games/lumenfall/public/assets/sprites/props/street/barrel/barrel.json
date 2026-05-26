@@ -1,6 +1,7 @@
 {
   "id": "barrel",
   "name": "Barrel",
+  "description": "A sturdy oak barrel with iron bands. May contain water, ale, or supplies. Interact to inspect its contents.",
   "type": "prop",
   "subCategory": "street",
   "passable": false,

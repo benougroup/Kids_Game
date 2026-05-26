@@ -1,6 +1,7 @@
 {
   "id": "dirt_v",
   "name": "Dirt V",
+  "description": "A vertical dirt road running between fields and forests. Passable.",
   "type": "terrain_tile",
   "subCategory": "dirt_road",
   "passable": true,

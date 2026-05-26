@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "building",
   "name": "Campfire",
+  "description": "A crackling campfire set up as a rest point. Characters resting here recover health and save their progress.",
   "passable": false,
   "heightLevel": 1,
   "isBorder": false,

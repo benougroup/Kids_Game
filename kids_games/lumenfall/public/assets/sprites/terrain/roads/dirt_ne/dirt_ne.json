@@ -1,6 +1,7 @@
 {
   "id": "dirt_ne",
   "name": "Dirt Ne",
+  "description": "A dirt road corner curving from north to east.",
   "type": "terrain_tile",
   "subCategory": "dirt_road",
   "passable": true,

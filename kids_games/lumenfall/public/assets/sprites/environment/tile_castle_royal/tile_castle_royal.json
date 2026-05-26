@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Castle Royal",
+  "description": "Polished marble flooring with gold inlay, found in throne rooms and grand castle halls.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

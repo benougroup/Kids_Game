@@ -1,6 +1,7 @@
 {
   "id": "church",
   "name": "Church",
+  "description": "The Church of the Eternal Flame \u2014 a medieval stone church with a tall steeple and stained glass windows depicting the legend of Lumenfall. The bell rings at dawn and dusk, and the doors are always open to those in need.",
   "type": "building",
   "subCategory": "civic",
   "passable": false,

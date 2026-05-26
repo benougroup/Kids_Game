@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "blood",
   "name": "Poison Cloud",
+  "description": "A puff of sickly green gas that lingers briefly. Appears when a poison attack lands or a poison trap is triggered.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

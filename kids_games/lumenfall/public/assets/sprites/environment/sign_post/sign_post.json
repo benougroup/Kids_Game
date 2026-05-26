@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Sign Post",
+  "description": "A wooden signpost with carved directional arrows. Interact to read the directions to nearby locations.",
   "passable": false,
   "heightLevel": 1,
   "isBorder": false,

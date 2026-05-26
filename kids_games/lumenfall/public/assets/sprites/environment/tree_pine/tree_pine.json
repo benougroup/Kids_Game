@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Tree Pine",
+  "description": "A tall pine tree with a pointed top. Impassable. Common in forest and mountain zones.",
   "passable": false,
   "heightLevel": 2,
   "isBorder": false,

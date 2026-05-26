@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Magic Bolt",
+  "description": "A crackling bolt of purple magical energy fired as a projectile. The basic attack of mages and magical creatures.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

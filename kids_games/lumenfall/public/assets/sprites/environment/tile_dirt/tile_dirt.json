@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "ground",
   "name": "Dirt",
+  "description": "Bare earth, worn clear of grass by heavy foot traffic or farming. Common around buildings and paths.",
   "passable": true,
   "heightLevel": 0,
   "isBorder": false,

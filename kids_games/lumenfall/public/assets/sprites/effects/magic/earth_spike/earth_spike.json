@@ -3,6 +3,7 @@
   "type": "action_sprite",
   "category": "magic",
   "name": "Earth Spike",
+  "description": "A spike of rock and earth erupting from the ground beneath a target. Deals physical damage and can knock the target back.",
   "passable": true,
   "heightLevel": 2,
   "isBorder": false,

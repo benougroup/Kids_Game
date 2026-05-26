@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "obstacle",
   "name": "Fence Wood",
+  "description": "A simple wooden fence marking property boundaries. Impassable without a gate.",
   "passable": false,
   "heightLevel": 1,
   "isBorder": true,

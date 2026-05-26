@@ -1,6 +1,7 @@
 {
   "id": "wood_bridge_left",
   "name": "Wood Bridge Left",
+  "description": "The left end of a wooden bridge, where the planks meet the riverbank. Rope railings line the sides.",
   "type": "terrain_tile",
   "subCategory": "wooden_bridge",
   "passable": true,

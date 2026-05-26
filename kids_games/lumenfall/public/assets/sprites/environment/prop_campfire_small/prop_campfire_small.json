@@ -3,6 +3,7 @@
   "type": "environment",
   "subType": "prop",
   "name": "Campfire Small",
+  "description": "A small campfire of crackling logs. Provides warmth and light. Interact to rest and restore health.",
   "passable": false,
   "heightLevel": 1,
   "isBorder": false,
