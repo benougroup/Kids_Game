@@ -16,5 +16,11 @@
   },
   "dependencies": {
     "phaser": "^3.80.1"
+  },
+  "pnpm": {
+    "allowedDeprecatedVersions": {},
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

@@ -5,6 +5,7 @@ import { StorySystem } from '../systems/StorySystem';
 import { MathGameSystem } from '../systems/MathGameSystem';
 import { MapBuilder } from '../maps/MapBuilder';
 import { createTestTownData, createTestForestData, createTestDungeonData, createTestObjectAuditData } from '../maps/TestMaps';
+import { createLumenfallVillageData } from '../maps/LumenfallVillageMap';
 import { Entity } from '../entities/Entity';
 import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
@@ -58,6 +59,11 @@ export class GameScene extends Phaser.Scene {
   private lastTransitionTime: number = 0;
   private isTransitioning: boolean = false;
 
+  // Portal visual sprites (animated glowing portals at map exits)
+  private portalSprites: Phaser.GameObjects.Graphics[] = [];
+  private portalParticles: Phaser.GameObjects.Graphics[] = [];
+  private portalTick: number = 0;
+
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -84,8 +90,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
-    // Load initial map
-    this.loadMap('test_town', 15, 14);
+    // Load initial map — Lumenfall Village (new starting map)
+    this.loadMap('lumenfall_village', 15, 14);
     
     // Expose debug API globally
     (window as any).lumenfall = {
@@ -163,11 +169,12 @@ export class GameScene extends Phaser.Scene {
     // Get map data
     let mapData;
     switch (mapId) {
+      case 'lumenfall_village': mapData = createLumenfallVillageData(); break;
       case 'test_town': mapData = createTestTownData(); break;
       case 'test_forest': mapData = createTestForestData(); break;
       case 'test_dungeon': mapData = createTestDungeonData(); break;
       case 'test_objects': mapData = createTestObjectAuditData(); break;
-      default: mapData = createTestTownData(); break;
+      default: mapData = createLumenfallVillageData(); break;
     }
     
     // Build map
@@ -189,6 +196,9 @@ export class GameScene extends Phaser.Scene {
     
     // Camera setup
     this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
+
+    // Spawn animated portal visuals at each exit
+    this.spawnPortalVisuals(mapData);
     this.cameras.main.setZoom(1.5);
     // Add top padding (64px = 1 tile) so buildings near the top edge are not hidden behind the HUD
     this.cameras.main.setBounds(-64, -64, mapW + 128, mapH + 128);
@@ -291,6 +301,10 @@ export class GameScene extends Phaser.Scene {
 
     // Emit time to UI
     this.events.emit('timeUpdate', this.timeOfDay);
+
+    // Animate portal visuals
+    this.portalTick += delta;
+    this.updatePortalVisuals();
   }
 
   /**
@@ -588,6 +602,127 @@ export class GameScene extends Phaser.Scene {
       // Penalty
       this.events.emit('playerDamaged', Math.abs(result.reward?.hp ?? 1));
       this.events.emit('showMessage', `${npcName}: "That's wrong! ${result.reward?.message ?? 'Try again!'}"`);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // PORTAL VISUAL SYSTEM
+  // ─────────────────────────────────────────────────────────────────────────
+
+  private spawnPortalVisuals(mapData: any): void {
+    // Destroy old portal graphics
+    for (const g of this.portalSprites) g.destroy();
+    for (const g of this.portalParticles) g.destroy();
+    this.portalSprites = [];
+    this.portalParticles = [];
+
+    const TILE = mapData.tileSize;
+    const exits: any[] = mapData.exits ?? [];
+
+    for (const exit of exits) {
+      // Determine world centre of the portal opening
+      let cx: number, cy: number;
+      if (exit.direction === 'north') {
+        cx = (exit.tileX + exit.width / 2) * TILE;
+        cy = 0;
+      } else if (exit.direction === 'south') {
+        cx = (exit.tileX + exit.width / 2) * TILE;
+        cy = (exit.tileY + 1) * TILE;
+      } else if (exit.direction === 'west') {
+        cx = 0;
+        cy = (exit.tileY + exit.width / 2) * TILE;
+      } else { // east
+        cx = (exit.tileX + 1) * TILE;
+        cy = (exit.tileY + exit.width / 2) * TILE;
+      }
+
+      // Outer glow ring
+      const ring = this.add.graphics();
+      ring.setDepth(4990);
+      ring.setData('cx', cx);
+      ring.setData('cy', cy);
+      ring.setData('phase', Math.random() * Math.PI * 2);
+      ring.setData('dir', exit.direction);
+      this.portalSprites.push(ring);
+
+      // Floating arrow indicator above portal
+      const arrow = this.add.graphics();
+      arrow.setDepth(4991);
+      arrow.setData('cx', cx);
+      arrow.setData('cy', cy);
+      arrow.setData('phase', Math.random() * Math.PI * 2);
+      arrow.setData('dir', exit.direction);
+      this.portalParticles.push(arrow);
+    }
+  }
+
+  private updatePortalVisuals(): void {
+    const t = this.portalTick / 1000; // seconds
+
+    for (const ring of this.portalSprites) {
+      const cx: number = ring.getData('cx');
+      const cy: number = ring.getData('cy');
+      const phase: number = ring.getData('phase');
+      const pulse = 0.6 + 0.4 * Math.sin(t * 2.5 + phase);
+
+      ring.clear();
+      // Outer glow (large, semi-transparent)
+      ring.lineStyle(4, 0x9933ff, 0.3 * pulse);
+      ring.strokeCircle(cx, cy, 36);
+      // Mid ring
+      ring.lineStyle(3, 0xcc66ff, 0.6 * pulse);
+      ring.strokeCircle(cx, cy, 26);
+      // Inner bright core
+      ring.lineStyle(2, 0xffffff, 0.9 * pulse);
+      ring.strokeCircle(cx, cy, 16);
+      // Filled centre
+      ring.fillStyle(0xaa44ff, 0.4 * pulse);
+      ring.fillCircle(cx, cy, 14);
+      // Rotating cross lines
+      const angle = t * 1.5 + phase;
+      const r = 20;
+      ring.lineStyle(2, 0xdd88ff, 0.7 * pulse);
+      ring.beginPath();
+      ring.moveTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+      ring.lineTo(cx - Math.cos(angle) * r, cy - Math.sin(angle) * r);
+      ring.strokePath();
+      ring.beginPath();
+      ring.moveTo(cx + Math.cos(angle + Math.PI / 2) * r, cy + Math.sin(angle + Math.PI / 2) * r);
+      ring.lineTo(cx - Math.cos(angle + Math.PI / 2) * r, cy - Math.sin(angle + Math.PI / 2) * r);
+      ring.strokePath();
+    }
+
+    for (const arrow of this.portalParticles) {
+      const cx: number = arrow.getData('cx');
+      const cy: number = arrow.getData('cy');
+      const phase: number = arrow.getData('phase');
+      const dir: string = arrow.getData('dir');
+      const bob = Math.sin(t * 3 + phase) * 6;
+
+      arrow.clear();
+      arrow.fillStyle(0xffee44, 0.9);
+      arrow.lineStyle(2, 0xffffff, 0.8);
+
+      // Draw a small directional arrow pointing INTO the portal
+      let ax = cx, ay = cy;
+      const arrowSize = 10;
+      if (dir === 'north') {
+        ay = cy - 50 + bob;
+        // Down-pointing arrow (into north portal)
+        arrow.fillTriangle(ax, ay + arrowSize, ax - arrowSize, ay - arrowSize, ax + arrowSize, ay - arrowSize);
+      } else if (dir === 'south') {
+        ay = cy + 50 - bob;
+        // Up-pointing arrow
+        arrow.fillTriangle(ax, ay - arrowSize, ax - arrowSize, ay + arrowSize, ax + arrowSize, ay + arrowSize);
+      } else if (dir === 'west') {
+        ax = cx - 50 + bob;
+        // Right-pointing arrow
+        arrow.fillTriangle(ax + arrowSize, ay, ax - arrowSize, ay - arrowSize, ax - arrowSize, ay + arrowSize);
+      } else { // east
+        ax = cx + 50 - bob;
+        // Left-pointing arrow
+        arrow.fillTriangle(ax - arrowSize, ay, ax + arrowSize, ay - arrowSize, ax + arrowSize, ay + arrowSize);
+      }
     }
   }
 
