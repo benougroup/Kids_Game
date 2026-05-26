@@ -157,9 +157,9 @@ export function createLumenfallVillageData(): MapData {
     { x: 3, y: 3 }, { x: 9, y: 3 }, { x: 3, y: 9 }, { x: 9, y: 9 },
     { x: 6, y: 3 }, { x: 3, y: 6 },
   ];
-  // Trees: display at 96x128 (1.5 wide × 2 tall tiles) — classic RPG tree proportions
+  // Trees: display at 64x80 — 1 tile wide, slightly taller than hero (48px)
   treesNW.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, pixelWidth: 64, pixelHeight: 80, collisionW: 1, collisionH: 1 })
   );
 
   // Top-right quadrant trees
@@ -168,7 +168,7 @@ export function createLumenfallVillageData(): MapData {
     { x: 22, y: 7 }, { x: 28, y: 7 }, { x: 25, y: 8 },
   ];
   treesNE.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, pixelWidth: 56, pixelHeight: 88, collisionW: 1, collisionH: 1 })
   );
 
   // Bottom-left quadrant trees
@@ -177,7 +177,7 @@ export function createLumenfallVillageData(): MapData {
     { x: 3, y: 21 }, { x: 8, y: 22 },
   ];
   treesSW.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_oak_large', atlas: 'objects_props_v002', height: 2, pixelWidth: 64, pixelHeight: 80, collisionW: 1, collisionH: 1 })
   );
 
   // Bottom-right quadrant trees
@@ -186,7 +186,7 @@ export function createLumenfallVillageData(): MapData {
     { x: 22, y: 21 }, { x: 27, y: 22 },
   ];
   treesSE.forEach(p =>
-    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, widthTiles: 2, heightTiles: 2, pixelWidth: 96, pixelHeight: 128, collisionW: 1, collisionH: 1 })
+    objectLayer.push({ x: p.x, y: p.y, frame: 'tree_pine_tall', atlas: 'objects_props_v002', height: 2, pixelWidth: 56, pixelHeight: 88, collisionW: 1, collisionH: 1 })
   );
 
   // ── 7. OBJECTS & PROPS ───────────────────────────────────────────────────
@@ -225,13 +225,13 @@ export function createLumenfallVillageData(): MapData {
     objectLayer.push({ x: p.x, y: p.y, frame: 'bush_small', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 40, pixelHeight: 32 })
   );
 
-  // Campfire: 32x32 (small ground fire, walkable)
-  objectLayer.push({ x: 9, y: 5, frame: 'campfire', atlas: 'objects_props_v002', height: 0, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 32, collisionW: 0, collisionH: 0 });
+  // Campfire: 24x20 (tiny ground fire, walkable)
+  objectLayer.push({ x: 9, y: 5, frame: 'campfire', atlas: 'objects_props_v002', height: 0, pixelWidth: 24, pixelHeight: 20, collisionW: 0, collisionH: 0 });
 
-  // Gravestones: 32x48 (narrower than hero, slightly shorter — realistic headstone proportions)
-  objectLayer.push({ x: 4, y: 20, frame: 'gravestone_cross', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
-  objectLayer.push({ x: 6, y: 20, frame: 'gravestone_plain', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
-  objectLayer.push({ x: 5, y: 22, frame: 'gravestone_rounded', atlas: 'objects_props_v002', height: 1, widthTiles: 1, heightTiles: 1, pixelWidth: 32, pixelHeight: 48 });
+  // Gravestones: 20x28 (small headstones, shorter than hero)
+  objectLayer.push({ x: 4, y: 20, frame: 'gravestone_cross', atlas: 'objects_props_v002', height: 1, pixelWidth: 20, pixelHeight: 28 });
+  objectLayer.push({ x: 6, y: 20, frame: 'gravestone_plain', atlas: 'objects_props_v002', height: 1, pixelWidth: 18, pixelHeight: 26 });
+  objectLayer.push({ x: 5, y: 22, frame: 'gravestone_rounded', atlas: 'objects_props_v002', height: 1, pixelWidth: 20, pixelHeight: 26 });
 
   // Ruins arch (bottom-right corner)
   objectLayer.push({ x: 26, y: 20, frame: 'ruin_arch_stone', atlas: 'objects_props_v003', height: 2, widthTiles: 2, heightTiles: 2 });

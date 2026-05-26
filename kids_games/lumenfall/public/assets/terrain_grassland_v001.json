@@ -4,128 +4,128 @@
       "frame": {
         "x": 0,
         "y": 0,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "grass_flowers_yellow": {
       "frame": {
         "x": 128,
         "y": 0,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "grass_flowers_blue": {
       "frame": {
         "x": 256,
         "y": 0,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "grass_flowers_red": {
       "frame": {
         "x": 384,
         "y": 0,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "grass_muddy_patch": {
       "frame": {
         "x": 512,
         "y": 0,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "dirt_light": {
       "frame": {
         "x": 0,
         "y": 128,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "dirt_rocky": {
       "frame": {
         "x": 128,
         "y": 128,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "dirt_weeds": {
       "frame": {
         "x": 256,
         "y": 128,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "dirt_dark": {
       "frame": {
         "x": 384,
         "y": 128,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "dirt_sandy": {
       "frame": {
         "x": 512,
         "y": 128,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "stone_cobble_01": {
       "frame": {
         "x": 0,
         "y": 256,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "stone_cobble_02": {
       "frame": {
         "x": 128,
         "y": 256,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "stone_cobble_moss": {
       "frame": {
         "x": 256,
         "y": 256,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "stone_large_blocks": {
       "frame": {
         "x": 384,
         "y": 256,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "cracked_dry_ground": {
       "frame": {
         "x": 512,
         "y": 256,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "water_deep": {
       "frame": {
         "x": 0,
         "y": 384,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -135,8 +135,8 @@
       "frame": {
         "x": 128,
         "y": 384,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -146,8 +146,8 @@
       "frame": {
         "x": 256,
         "y": 384,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -157,40 +157,40 @@
       "frame": {
         "x": 384,
         "y": 384,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "beach_wet_sand": {
       "frame": {
         "x": 512,
         "y": 384,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "snow_light": {
       "frame": {
         "x": 0,
         "y": 512,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "snow_footprints": {
       "frame": {
         "x": 128,
         "y": 512,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "ice_sheet": {
       "frame": {
         "x": 256,
         "y": 512,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -200,8 +200,8 @@
       "frame": {
         "x": 384,
         "y": 512,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -211,32 +211,32 @@
       "frame": {
         "x": 512,
         "y": 512,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "sand_rocky": {
       "frame": {
         "x": 0,
         "y": 640,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "sand_dune": {
       "frame": {
         "x": 128,
         "y": 640,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       }
     },
     "shallow_water": {
       "frame": {
         "x": 256,
         "y": 640,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -246,8 +246,8 @@
       "frame": {
         "x": 384,
         "y": 640,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0
@@ -257,8 +257,8 @@
       "frame": {
         "x": 512,
         "y": 640,
-        "w": 128,
-        "h": 128
+        "w": 123,
+        "h": 123
       },
       "movement": {
         "minWalkableElevation": 0

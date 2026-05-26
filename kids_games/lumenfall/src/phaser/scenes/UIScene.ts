@@ -1,505 +1,527 @@
 import Phaser from 'phaser';
 
+// ─── Colour palette ────────────────────────────────────────────────────────────
+const C = {
+  // Gold / bronze
+  GOLD:       0xffd700,
+  GOLD_DARK:  0xb8860b,
+  GOLD_LIGHT: 0xffe066,
+  BRONZE:     0xcd7f32,
+
+  // Panel / HUD
+  HUD_BG:     0x1a0e00,
+  PANEL_BG:   0x1a0e00,
+  PANEL_EDGE: 0x4a3000,
+
+  // HP
+  HP_BG:      0x3d0000,
+  HP_FILL:    0xdd2222,
+  HP_SHINE:   0xff6666,
+
+  // SP
+  SP_BG:      0x00003d,
+  SP_FILL:    0x2266dd,
+  SP_SHINE:   0x66aaff,
+
+  // Buttons
+  BTN_MAP_BG:  0x1a3300,
+  BTN_ACT_BG:  0x3d0000,
+  BTN_BAG_BG:  0x001a3d,
+  BTN_BORDER:  0xffd700,
+  BTN_CORNER:  0xb8860b,
+  BTN_TEXT:    0xfff0a0,
+
+  // Text
+  WHITE:      0xffffff,
+  CREAM:      0xfff0d0,
+};
+
+// ─── Helper: draw a pixel-art style bordered rectangle ─────────────────────────
+function drawPixelPanel(
+  g: Phaser.GameObjects.Graphics,
+  x: number, y: number, w: number, h: number,
+  bgColor: number, borderColor: number, cornerColor: number,
+  borderThick = 3
+): void {
+  // Fill
+  g.fillStyle(bgColor, 0.92);
+  g.fillRect(x + borderThick, y + borderThick, w - borderThick * 2, h - borderThick * 2);
+
+  // Top & bottom border
+  g.fillStyle(borderColor, 1);
+  g.fillRect(x + borderThick, y, w - borderThick * 2, borderThick);
+  g.fillRect(x + borderThick, y + h - borderThick, w - borderThick * 2, borderThick);
+
+  // Left & right border
+  g.fillRect(x, y + borderThick, borderThick, h - borderThick * 2);
+  g.fillRect(x + w - borderThick, y + borderThick, borderThick, h - borderThick * 2);
+
+  // Corner squares (darker)
+  g.fillStyle(cornerColor, 1);
+  g.fillRect(x, y, borderThick + 2, borderThick + 2);
+  g.fillRect(x + w - borderThick - 2, y, borderThick + 2, borderThick + 2);
+  g.fillRect(x, y + h - borderThick - 2, borderThick + 2, borderThick + 2);
+  g.fillRect(x + w - borderThick - 2, y + h - borderThick - 2, borderThick + 2, borderThick + 2);
+
+  // Inner highlight (top-left shine)
+  g.fillStyle(0xffffff, 0.06);
+  g.fillRect(x + borderThick, y + borderThick, w - borderThick * 2, 2);
+  g.fillRect(x + borderThick, y + borderThick, 2, h - borderThick * 2);
+}
+
+// ─── Helper: draw a stat bar (HP / SP) ────────────────────────────────────────
+function drawStatBar(
+  g: Phaser.GameObjects.Graphics,
+  x: number, y: number, w: number, h: number,
+  bgColor: number, fillColor: number, shineColor: number,
+  ratio: number   // 0–1
+): void {
+  const bord = 2;
+  // Background
+  g.fillStyle(bgColor, 1);
+  g.fillRect(x + bord, y + bord, w - bord * 2, h - bord * 2);
+
+  // Fill
+  const fillW = Math.max(0, Math.round((w - bord * 2) * ratio));
+  if (fillW > 0) {
+    g.fillStyle(fillColor, 1);
+    g.fillRect(x + bord, y + bord, fillW, h - bord * 2);
+
+    // Shine strip
+    g.fillStyle(shineColor, 0.4);
+    g.fillRect(x + bord, y + bord, fillW, Math.max(2, Math.round((h - bord * 2) * 0.35)));
+  }
+
+  // Border
+  g.fillStyle(C.GOLD_DARK, 1);
+  g.fillRect(x, y, w, bord);
+  g.fillRect(x, y + h - bord, w, bord);
+  g.fillRect(x, y, bord, h);
+  g.fillRect(x + w - bord, y, bord, h);
+}
+
 /**
- * UI Scene - Handles HUD, inventory, dialogue boxes
- * Runs parallel to GameScene
+ * UIScene — Fantasy RPG HUD
+ * Runs parallel to GameScene (always on top)
  */
 export class UIScene extends Phaser.Scene {
-  private hpBar!: Phaser.GameObjects.Rectangle;
-  private spBar!: Phaser.GameObjects.Rectangle;
+  // HUD graphics (redrawn on stat change)
+  private hudGraphics!: Phaser.GameObjects.Graphics;
   private hpText!: Phaser.GameObjects.Text;
   private spText!: Phaser.GameObjects.Text;
   private timeText!: Phaser.GameObjects.Text;
-  
+  private timeBadge!: Phaser.GameObjects.Graphics;
+
+  // Buttons
+  private bagButton!: Phaser.GameObjects.Container;
+  private actionButton!: Phaser.GameObjects.Container;
+  private mapButton!: Phaser.GameObjects.Container;
+
+  // Panels
   private inventoryPanel!: Phaser.GameObjects.Container;
-  private inventoryOverlay!: Phaser.GameObjects.Rectangle;
-  private inventoryBox!: Phaser.GameObjects.Rectangle;
-  private inventoryTitle!: Phaser.GameObjects.Text;
-  private inventoryCloseBtn!: Phaser.GameObjects.Text;
-  private inventoryVisible: boolean = false;
+  private inventoryVisible = false;
   private inventoryItemsText!: Phaser.GameObjects.Text;
   private inventoryItems: string[] = [];
 
   private mapPanel!: Phaser.GameObjects.Container;
-  private mapOverlay!: Phaser.GameObjects.Rectangle;
-  private mapBox!: Phaser.GameObjects.Rectangle;
-  private mapTitle!: Phaser.GameObjects.Text;
-  private mapCloseBtn!: Phaser.GameObjects.Text;
-  private mapAuditBtn!: Phaser.GameObjects.Text;
-  private mapVisible: boolean = false;
-  
-  private actionButton!: Phaser.GameObjects.Container;
-  private bagButton!: Phaser.GameObjects.Container;
-  private mapButton!: Phaser.GameObjects.Container;
+  private mapVisible = false;
 
-  // Player stats
-  private hp: number = 6;
-  private maxHp: number = 6;
-  private sp: number = 4;
-  private maxSp: number = 4;
+  // Stats
+  private hp = 6;
+  private maxHp = 6;
+  private sp = 4;
+  private maxSp = 4;
 
   constructor() {
     super({ key: 'UIScene', active: true });
   }
 
   create(): void {
-    const width = this.scale.width;
+    const W = this.scale.width;
+    const H = this.scale.height;
 
-    // Create HUD background (top bar)
-    const hudBg = this.add.rectangle(0, 0, width, 80, 0x000000, 0.8);
-    hudBg.setOrigin(0, 0);
-    hudBg.setScrollFactor(0);
-    hudBg.setDepth(2000);
+    // ── HUD graphics layer (redrawn on stat change) ──────────────────────────
+    this.hudGraphics = this.add.graphics();
+    this.hudGraphics.setScrollFactor(0).setDepth(2000);
+    this.drawHUD(W);
 
-    // HP Bar (top-left)
-    const hpBarBg = this.add.rectangle(20, 15, 250, 20, 0x330000);
-    hpBarBg.setOrigin(0, 0);
-    hpBarBg.setScrollFactor(0);
-    hpBarBg.setDepth(2001);
-
-    this.hpBar = this.add.rectangle(20, 15, 250, 20, 0xff0000);
-    this.hpBar.setOrigin(0, 0);
-    this.hpBar.setScrollFactor(0);
-    this.hpBar.setDepth(2002);
-
-    this.hpText = this.add.text(25, 18, `HP: ${this.hp}/${this.maxHp}`, {
-      fontSize: '16px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
+    // ── HP text ──────────────────────────────────────────────────────────────
+    this.hpText = this.add.text(60, 14, `${this.hp}/${this.maxHp}`, {
+      fontSize: '13px', color: '#fff0d0', fontFamily: 'monospace', fontStyle: 'bold',
     });
-    this.hpText.setScrollFactor(0);
-    this.hpText.setDepth(2003);
+    this.hpText.setScrollFactor(0).setDepth(2005);
 
-    // SP Bar (below HP)
-    const spBarBg = this.add.rectangle(20, 45, 250, 20, 0x000033);
-    spBarBg.setOrigin(0, 0);
-    spBarBg.setScrollFactor(0);
-    spBarBg.setDepth(2001);
-
-    this.spBar = this.add.rectangle(20, 45, 250, 20, 0x0088ff);
-    this.spBar.setOrigin(0, 0);
-    this.spBar.setScrollFactor(0);
-    this.spBar.setDepth(2002);
-
-    this.spText = this.add.text(25, 48, `SP: ${this.sp}/${this.maxSp}`, {
-      fontSize: '16px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
+    // ── SP text ──────────────────────────────────────────────────────────────
+    this.spText = this.add.text(60, 42, `${this.sp}/${this.maxSp}`, {
+      fontSize: '13px', color: '#d0e8ff', fontFamily: 'monospace', fontStyle: 'bold',
     });
-    this.spText.setScrollFactor(0);
-    this.spText.setDepth(2003);
+    this.spText.setScrollFactor(0).setDepth(2005);
 
-    // Time display (top-right)
-    this.timeText = this.add.text(width - 20, 35, 'DAY', {
-      fontSize: '24px',
-      color: '#ffff00',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
+    // ── Time badge ───────────────────────────────────────────────────────────
+    this.timeBadge = this.add.graphics();
+    this.timeBadge.setScrollFactor(0).setDepth(2005);
+
+    this.timeText = this.add.text(W - 10, 10, 'DAY', {
+      fontSize: '15px', color: '#fff0a0', fontFamily: 'monospace', fontStyle: 'bold',
     });
-    this.timeText.setOrigin(1, 0.5);
-    this.timeText.setScrollFactor(0);
-    this.timeText.setDepth(2003);
+    this.timeText.setOrigin(1, 0).setScrollFactor(0).setDepth(2006);
+    this.drawTimeBadge(W, 'DAY', 0xcc6600);
 
-    // Create buttons (bottom-right: MAP, ACT, BAG)
-    this.createButtons();
+    // ── Buttons ──────────────────────────────────────────────────────────────
+    this.createButtons(W, H);
 
-    // Create inventory panel (hidden by default)
-    this.createInventoryPanel();
+    // ── Panels ───────────────────────────────────────────────────────────────
+    this.createInventoryPanel(W, H);
+    this.createMapPanel(W, H);
 
-    // Create map panel (hidden by default)
-    this.createMapPanel();
+    // ── Event listeners ──────────────────────────────────────────────────────
+    const game = this.scene.get('GameScene');
+    game.events.on('timeUpdate',      (t: number)    => this.onTimeUpdate(t));
+    game.events.on('hpUpdate',        (d: { hp: number; maxHp: number }) => this.updateHP(d.hp, d.maxHp));
+    game.events.on('showDialogue',    (n: string)    => this.showDialogue(n));
+    game.events.on('inventoryChanged',(items: string[]) => { this.inventoryItems = [...items]; this.refreshInventoryText(); });
+    game.events.on('inventoryAddItem',(item: string) => { this.inventoryItems.push(item); this.refreshInventoryText(); });
+    game.events.on('playerAction',    ()             => this.handleAction());
 
-    // Listen for time updates from GameScene
-    const gameScene = this.scene.get('GameScene');
-    gameScene.events.on('timeUpdate', (timeOfDay: number) => {
-      this.updateTimeDisplay(timeOfDay);
-    });
-
-    // Listen for dialogue events
-    gameScene.events.on('showDialogue', (npcName: string) => {
-      this.showDialogue(npcName);
-    });
-    gameScene.events.on('inventoryChanged', (items: string[]) => {
-      this.inventoryItems = [...items];
-      this.refreshInventoryText();
-    });
-    gameScene.events.on('inventoryAddItem', (itemName: string) => {
-      this.inventoryItems.push(itemName);
-      this.refreshInventoryText();
-    });
-
-    // Handle resize
-    this.scale.on('resize', this.handleResize, this);
+    this.scale.on('resize', (sz: Phaser.Structs.Size) => this.handleResize(sz.width, sz.height));
   }
 
-  private createButtons(): void {
-    const width = this.scale.width;
-    const height = this.scale.height;
+  // ── Draw HUD panel + bars ──────────────────────────────────────────────────
+  private drawHUD(W: number): void {
+    const g = this.hudGraphics;
+    g.clear();
 
-    // BAG button (bottom-right)
-    const bagX = width - 60;
-    const bagY = height - 90;
+    const HUD_H = 70;
 
-    this.bagButton = this.add.container(bagX, bagY);
-    this.bagButton.setScrollFactor(0);
-    this.bagButton.setDepth(2010);
+    // Background panel
+    drawPixelPanel(g, 0, 0, W, HUD_H, C.HUD_BG, C.GOLD_DARK, C.BRONZE, 3);
 
-    const bagBg = this.add.rectangle(0, 0, 70, 70, 0x4a90e2, 1);
-    bagBg.setStrokeStyle(3, 0xffffff);
-    const bagText = this.add.text(0, 0, 'BAG', {
-      fontSize: '16px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
-    });
-    bagText.setOrigin(0.5);
+    // HP icon (heart ♥ drawn as pixel art)
+    const hx = 14, hy = 12;
+    g.fillStyle(C.HP_FILL, 1);
+    // Heart shape: two bumps + triangle
+    g.fillRect(hx + 2, hy,     4, 2);
+    g.fillRect(hx + 7, hy,     4, 2);
+    g.fillRect(hx,     hy + 2, 13, 4);
+    g.fillRect(hx + 1, hy + 6, 11, 2);
+    g.fillRect(hx + 2, hy + 8, 9,  2);
+    g.fillRect(hx + 3, hy + 10, 7, 2);
+    g.fillRect(hx + 4, hy + 12, 5, 2);
+    g.fillRect(hx + 5, hy + 14, 3, 2);
+    g.fillRect(hx + 6, hy + 16, 1, 2);
+    // Shine
+    g.fillStyle(C.HP_SHINE, 0.6);
+    g.fillRect(hx + 3, hy + 1, 2, 2);
 
-    this.bagButton.add([bagBg, bagText]);
-    this.bagButton.setSize(70, 70);
-    this.bagButton.setInteractive();
+    // HP bar
+    drawStatBar(g, 32, 12, W * 0.28, 22, C.HP_BG, C.HP_FILL, C.HP_SHINE, this.hp / this.maxHp);
+
+    // SP icon (star ★ pixel art)
+    const sx = 14, sy = 42;
+    g.fillStyle(C.SP_FILL, 1);
+    g.fillRect(sx + 5, sy,     3, 4);
+    g.fillRect(sx + 3, sy + 4, 7, 3);
+    g.fillRect(sx,     sy + 5, 13, 3);
+    g.fillRect(sx + 2, sy + 8, 9,  3);
+    g.fillRect(sx,     sy + 11, 4, 3);
+    g.fillRect(sx + 9, sy + 11, 4, 3);
+    g.fillRect(sx + 1, sy + 14, 3, 3);
+    g.fillRect(sx + 9, sy + 14, 3, 3);
+    // Shine
+    g.fillStyle(C.SP_SHINE, 0.6);
+    g.fillRect(sx + 5, sy + 1, 2, 2);
+
+    // SP bar
+    drawStatBar(g, 32, 42, W * 0.28, 22, C.SP_BG, C.SP_FILL, C.SP_SHINE, this.sp / this.maxSp);
+
+    // Divider line
+    g.fillStyle(C.GOLD_DARK, 0.5);
+    g.fillRect(W * 0.32, 8, 2, HUD_H - 16);
+  }
+
+  private drawTimeBadge(W: number, _label: string, color: number): void {
+    const g = this.timeBadge;
+    g.clear();
+    const tw = 72, th = 28;
+    const tx = W - tw - 6, ty = 22;
+    drawPixelPanel(g, tx, ty, tw, th, color, C.GOLD, C.GOLD_DARK, 3);
+  }
+
+  // ── Buttons ────────────────────────────────────────────────────────────────
+  private createButtons(W: number, H: number): void {
+    const BTN = 72;
+    const y = H - BTN / 2 - 10;
+
+    // BAG
+    this.bagButton = this.makeButton(W - BTN / 2 - 8, y, BTN, 'BAG', '🎒', C.BTN_BAG_BG, 0x4488cc);
+    this.bagButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
     this.bagButton.on('pointerdown', () => this.toggleInventory());
 
-    // ACT button (left of BAG)
-    const actX = width - 150;
-    const actY = height - 90;
-
-    this.actionButton = this.add.container(actX, actY);
-    this.actionButton.setScrollFactor(0);
-    this.actionButton.setDepth(2010);
-
-    const actBg = this.add.rectangle(0, 0, 70, 70, 0xe74c3c, 1);
-    actBg.setStrokeStyle(3, 0xffffff);
-    const actText = this.add.text(0, 0, 'ACT', {
-      fontSize: '16px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
-    });
-    actText.setOrigin(0.5);
-
-    this.actionButton.add([actBg, actText]);
-    this.actionButton.setSize(70, 70);
-    this.actionButton.setInteractive();
+    // ACT
+    this.actionButton = this.makeButton(W - BTN * 1.5 - 16, y, BTN, 'ACT', '⚔️', C.BTN_ACT_BG, 0xcc3333);
+    this.actionButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
     this.actionButton.on('pointerdown', () => this.handleAction());
 
-    // MAP button (left of ACT)
-    const mapX = width - 240;
-    const mapY = height - 90;
-
-    this.mapButton = this.add.container(mapX, mapY);
-    this.mapButton.setScrollFactor(0);
-    this.mapButton.setDepth(2010);
-
-    const mapBg = this.add.rectangle(0, 0, 70, 70, 0x27ae60, 1);
-    mapBg.setStrokeStyle(3, 0xffffff);
-    const mapText = this.add.text(0, 0, 'MAP', {
-      fontSize: '16px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
-    });
-    mapText.setOrigin(0.5);
-
-    this.mapButton.add([mapBg, mapText]);
-    this.mapButton.setSize(70, 70);
-    this.mapButton.setInteractive();
+    // MAP
+    this.mapButton = this.makeButton(W - BTN * 2.5 - 24, y, BTN, 'MAP', '🗺️', C.BTN_MAP_BG, 0x336633);
+    this.mapButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
     this.mapButton.on('pointerdown', () => this.toggleMap());
   }
 
-  private createInventoryPanel(): void {
-    this.inventoryPanel = this.add.container(0, 0);
-    this.inventoryPanel.setScrollFactor(0);
-    this.inventoryPanel.setDepth(3000);
-    this.inventoryPanel.setVisible(false);
+  private makeButton(
+    cx: number, cy: number, size: number,
+    label: string, _icon: string,
+    bgColor: number, accentColor: number
+  ): Phaser.GameObjects.Container {
+    const c = this.add.container(cx, cy);
+    c.setScrollFactor(0).setDepth(2010);
 
-    this.inventoryOverlay = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.8);
-    this.inventoryOverlay.setOrigin(0, 0);
-    this.inventoryOverlay.setInteractive();
-    this.inventoryOverlay.on('pointerdown', () => this.toggleInventory());
+    const g = this.add.graphics();
+    const half = size / 2;
 
-    this.inventoryBox = this.add.rectangle(0, 0, 10, 10, 0x2c3e50, 1);
-    this.inventoryBox.setStrokeStyle(4, 0xecf0f1);
+    // Shadow
+    g.fillStyle(0x000000, 0.4);
+    g.fillRect(-half + 3, -half + 3, size, size);
 
-    this.inventoryTitle = this.add.text(0, 0, 'Inventory', {
-      fontSize: '28px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
+    // Main panel
+    drawPixelPanel(g, -half, -half, size, size, bgColor, C.GOLD, C.GOLD_DARK, 4);
+
+    // Accent strip at top
+    g.fillStyle(accentColor, 0.5);
+    g.fillRect(-half + 4, -half + 4, size - 8, 6);
+
+    // Label text
+    const txt = this.add.text(0, half * 0.35, label, {
+      fontSize: '13px',
+      color: '#fff0a0',
+      fontFamily: 'monospace',
       fontStyle: 'bold',
     });
-    this.inventoryTitle.setOrigin(0.5);
+    txt.setOrigin(0.5, 0.5);
 
-    this.inventoryItemsText = this.add.text(0, 0, 'No items yet', {
-      fontSize: '18px',
-      color: '#ecf0f1',
-      fontFamily: 'Arial',
-      align: 'center',
-      wordWrap: { width: 420 },
+    // Icon text (emoji rendered as text)
+    const icon = this.add.text(0, -half * 0.2, _icon, {
+      fontSize: '22px',
     });
-    this.inventoryItemsText.setOrigin(0.5);
+    icon.setOrigin(0.5, 0.5);
 
-    this.inventoryCloseBtn = this.add.text(0, 0, 'Close', {
-      fontSize: '20px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      backgroundColor: '#e74c3c',
-      padding: { x: 20, y: 10 },
+    c.add([g, icon, txt]);
+    c.setSize(size, size);
+
+    // Hover effect
+    c.on('pointerover', () => {
+      g.clear();
+      g.fillStyle(0x000000, 0.4);
+      g.fillRect(-half + 3, -half + 3, size, size);
+      drawPixelPanel(g, -half, -half, size, size, bgColor, C.GOLD_LIGHT, C.GOLD, 4);
+      g.fillStyle(accentColor, 0.7);
+      g.fillRect(-half + 4, -half + 4, size - 8, 6);
     });
-    this.inventoryCloseBtn.setOrigin(0.5);
-    this.inventoryCloseBtn.setInteractive();
-    this.inventoryCloseBtn.on('pointerdown', () => this.toggleInventory());
+    c.on('pointerout', () => {
+      g.clear();
+      g.fillStyle(0x000000, 0.4);
+      g.fillRect(-half + 3, -half + 3, size, size);
+      drawPixelPanel(g, -half, -half, size, size, bgColor, C.GOLD, C.GOLD_DARK, 4);
+      g.fillStyle(accentColor, 0.5);
+      g.fillRect(-half + 4, -half + 4, size - 8, 6);
+    });
 
-    this.inventoryPanel.add([this.inventoryOverlay, this.inventoryBox, this.inventoryTitle, this.inventoryItemsText, this.inventoryCloseBtn]);
-    this.layoutInventoryPanel(this.scale.width, this.scale.height);
+    return c;
   }
 
-  private createMapPanel(): void {
-    const width = this.scale.width;
-    const height = this.scale.height;
+  // ── Inventory panel ────────────────────────────────────────────────────────
+  private createInventoryPanel(W: number, H: number): void {
+    this.inventoryPanel = this.add.container(0, 0);
+    this.inventoryPanel.setScrollFactor(0).setDepth(3000).setVisible(false);
 
-    this.mapPanel = this.add.container(0, 0);
-    this.mapPanel.setScrollFactor(0);
-    this.mapPanel.setDepth(3000);
-    this.mapPanel.setVisible(false);
+    const overlay = this.add.rectangle(0, 0, W, H, 0x000000, 0.75);
+    overlay.setOrigin(0, 0).setInteractive();
+    overlay.on('pointerdown', () => this.toggleInventory());
 
-    this.mapOverlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.85);
-    this.mapOverlay.setOrigin(0, 0);
-    this.mapOverlay.setInteractive();
-    this.mapOverlay.on('pointerdown', () => this.toggleMap());
+    const bw = Math.min(480, W - 40), bh = Math.min(380, H - 100);
+    const bx = W / 2, by = H / 2;
 
-    // Map panel box
-    const boxWidth = Math.min(560, width - 40);
-    const boxHeight = Math.min(460, height - 80);
-    const boxX = width / 2;
-    const boxY = height / 2;
+    const panelG = this.add.graphics();
+    drawPixelPanel(panelG, bx - bw / 2, by - bh / 2, bw, bh, C.PANEL_BG, C.GOLD, C.GOLD_DARK, 5);
 
-    this.mapBox = this.add.rectangle(boxX, boxY, boxWidth, boxHeight, 0x1a2a3a, 1);
-    this.mapBox.setStrokeStyle(4, 0x4a90e2);
-
-    this.mapTitle = this.add.text(boxX, boxY - boxHeight / 2 + 30, 'World Map', {
-      fontSize: '26px',
-      color: '#4a90e2',
-      fontFamily: 'Arial',
-      fontStyle: 'bold',
+    const title = this.add.text(bx, by - bh / 2 + 24, '⚔  Inventory  ⚔', {
+      fontSize: '20px', color: '#ffd700', fontFamily: 'monospace', fontStyle: 'bold',
     });
-    this.mapTitle.setOrigin(0.5);
+    title.setOrigin(0.5, 0.5);
 
-    // Draw a simple schematic map
-    const mapGraphics = this.add.graphics();
-    const mapLeft = boxX - boxWidth / 2 + 30;
-    const mapTop = boxY - boxHeight / 2 + 60;
-    const mapW = boxWidth - 60;
-    const mapH = boxHeight - 120;
+    // Divider
+    const divG = this.add.graphics();
+    divG.fillStyle(C.GOLD_DARK, 0.8);
+    divG.fillRect(bx - bw / 2 + 20, by - bh / 2 + 44, bw - 40, 2);
 
-    // Background
-    mapGraphics.fillStyle(0x2d5a27, 1);
-    mapGraphics.fillRect(mapLeft, mapTop, mapW, mapH);
-
-    // Town (center)
-    const townX = mapLeft + mapW * 0.5;
-    const townY = mapTop + mapH * 0.55;
-    mapGraphics.fillStyle(0x8b7355, 1);
-    mapGraphics.fillRect(townX - 30, townY - 20, 60, 40);
-    mapGraphics.lineStyle(2, 0xffd700, 1);
-    mapGraphics.strokeRect(townX - 30, townY - 20, 60, 40);
-
-    // Forest (north)
-    const forestX = mapLeft + mapW * 0.5;
-    const forestY = mapTop + mapH * 0.2;
-    mapGraphics.fillStyle(0x1a5c1a, 1);
-    mapGraphics.fillRect(forestX - 25, forestY - 15, 50, 30);
-    mapGraphics.lineStyle(2, 0x44aa44, 1);
-    mapGraphics.strokeRect(forestX - 25, forestY - 15, 50, 30);
-
-    // Dungeon (south)
-    const dungeonX = mapLeft + mapW * 0.5;
-    const dungeonY = mapTop + mapH * 0.85;
-    mapGraphics.fillStyle(0x3a1a1a, 1);
-    mapGraphics.fillRect(dungeonX - 25, dungeonY - 15, 50, 30);
-    mapGraphics.lineStyle(2, 0xaa4444, 1);
-    mapGraphics.strokeRect(dungeonX - 25, dungeonY - 15, 50, 30);
-
-    // Roads connecting areas
-    mapGraphics.lineStyle(2, 0xc8a96e, 0.8);
-    mapGraphics.lineBetween(townX, townY - 20, forestX, forestY + 15);
-    mapGraphics.lineBetween(townX, townY + 20, dungeonX, dungeonY - 15);
-
-    // Map labels
-    const townLabel = this.add.text(townX, townY, 'Bright\nHollow', {
-      fontSize: '10px', color: '#ffffff', fontFamily: 'Arial', fontStyle: 'bold', align: 'center',
+    this.inventoryItemsText = this.add.text(bx, by - 10, 'No items yet', {
+      fontSize: '15px', color: '#fff0d0', fontFamily: 'monospace',
+      align: 'center', wordWrap: { width: bw - 60 },
     });
-    townLabel.setOrigin(0.5);
-
-    const forestLabel = this.add.text(forestX, forestY, 'Whispering\nForest', {
-      fontSize: '10px', color: '#aaffaa', fontFamily: 'Arial', align: 'center',
-    });
-    forestLabel.setOrigin(0.5);
-
-    const dungeonLabel = this.add.text(dungeonX, dungeonY, 'Shadow\nCaverns', {
-      fontSize: '10px', color: '#ffaaaa', fontFamily: 'Arial', align: 'center',
-    });
-    dungeonLabel.setOrigin(0.5);
-
-    // Player position indicator (YOU ARE HERE)
-    mapGraphics.fillStyle(0xffff00, 1);
-    mapGraphics.fillCircle(townX + 5, townY - 5, 5);
-
-    const youLabel = this.add.text(townX + 14, townY - 5, '← You', {
-      fontSize: '10px', color: '#ffff00', fontFamily: 'Arial', fontStyle: 'bold',
-    });
-    youLabel.setOrigin(0, 0.5);
-
-    const cropAuditTitle = this.add.text(mapLeft + 6, mapTop + mapH - 86, 'Sprite crop review (current map sizing):', {
-      fontSize: '12px', color: '#ffffff', fontFamily: 'Arial', fontStyle: 'bold',
-    });
-    const cropAuditText = this.add.text(mapLeft + 6, mapTop + mapH - 68,
-      '• buildings 384x256 → 192x128 (ratio OK)\n' +
-      '• large props 192x170 → 192x170 (ratio OK)\n' +
-      '• fountain 307x256 → 192x160 (ratio adjusted)\n' +
-      '• fence 64x57 → 64x57 (ratio OK)',
-      { fontSize: '11px', color: '#d6e6ff', fontFamily: 'Arial' },
-    );
+    this.inventoryItemsText.setOrigin(0.5, 0.5);
 
     // Close button
-    this.mapAuditBtn = this.add.text(boxX - 86, boxY + boxHeight / 2 - 30, 'Object Audit', {
-      fontSize: '18px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      backgroundColor: '#8e44ad',
-      padding: { x: 18, y: 8 },
+    const closeBtnG = this.add.graphics();
+    const cbx = bx, cby = by + bh / 2 - 30;
+    drawPixelPanel(closeBtnG, cbx - 60, cby - 16, 120, 32, 0x3d0000, C.GOLD, C.GOLD_DARK, 3);
+    const closeText = this.add.text(cbx, cby, 'Close', {
+      fontSize: '15px', color: '#fff0a0', fontFamily: 'monospace', fontStyle: 'bold',
     });
-    this.mapAuditBtn.setOrigin(0.5);
-    this.mapAuditBtn.setInteractive();
-    this.mapAuditBtn.on('pointerdown', () => {
-      const gameScene = this.scene.get('GameScene');
-      gameScene.events.emit('loadMapRequest', { mapId: 'test_objects', tileX: 20, tileY: 24 });
-      if (this.mapVisible) {
-        this.toggleMap();
-      }
-    });
+    closeText.setOrigin(0.5, 0.5).setInteractive();
+    closeText.on('pointerdown', () => this.toggleInventory());
 
-    this.mapCloseBtn = this.add.text(boxX + 90, boxY + boxHeight / 2 - 30, 'Close Map', {
-      fontSize: '18px',
-      color: '#ffffff',
-      fontFamily: 'Arial',
-      backgroundColor: '#27ae60',
-      padding: { x: 20, y: 8 },
-    });
-    this.mapCloseBtn.setOrigin(0.5);
-    this.mapCloseBtn.setInteractive();
-    this.mapCloseBtn.on('pointerdown', () => this.toggleMap());
-
-    this.mapPanel.add([this.mapOverlay, this.mapBox, this.mapTitle, mapGraphics, townLabel, forestLabel, dungeonLabel, youLabel, cropAuditTitle, cropAuditText, this.mapAuditBtn, this.mapCloseBtn]);
+    this.inventoryPanel.add([overlay, panelG, title, divG, this.inventoryItemsText, closeBtnG, closeText]);
   }
 
-  private layoutInventoryPanel(width: number, height: number): void {
-    if (!this.inventoryPanel) return;
-    const boxWidth = Math.min(500, width - 40);
-    const boxHeight = Math.min(400, height - 100);
-    const boxX = width / 2;
-    const boxY = height / 2;
+  // ── Map panel ──────────────────────────────────────────────────────────────
+  private createMapPanel(W: number, H: number): void {
+    this.mapPanel = this.add.container(0, 0);
+    this.mapPanel.setScrollFactor(0).setDepth(3000).setVisible(false);
 
-    this.inventoryOverlay.setSize(width, height);
-    this.inventoryBox.setPosition(boxX, boxY);
-    this.inventoryBox.setSize(boxWidth, boxHeight);
-    this.inventoryTitle.setPosition(boxX, boxY - boxHeight / 2 + 30);
-    this.inventoryItemsText.setPosition(boxX, boxY);
-    this.inventoryItemsText.setWordWrapWidth(boxWidth - 60, true);
-    this.inventoryCloseBtn.setPosition(boxX, boxY + boxHeight / 2 - 40);
+    const overlay = this.add.rectangle(0, 0, W, H, 0x000000, 0.8);
+    overlay.setOrigin(0, 0).setInteractive();
+    overlay.on('pointerdown', () => this.toggleMap());
+
+    const bw = Math.min(540, W - 40), bh = Math.min(440, H - 80);
+    const bx = W / 2, by = H / 2;
+
+    const panelG = this.add.graphics();
+    drawPixelPanel(panelG, bx - bw / 2, by - bh / 2, bw, bh, C.PANEL_BG, C.GOLD, C.GOLD_DARK, 5);
+
+    const title = this.add.text(bx, by - bh / 2 + 24, '🗺  World Map  🗺', {
+      fontSize: '20px', color: '#ffd700', fontFamily: 'monospace', fontStyle: 'bold',
+    });
+    title.setOrigin(0.5, 0.5);
+
+    // Map drawing
+    const mapG = this.add.graphics();
+    const ml = bx - bw / 2 + 20, mt = by - bh / 2 + 52;
+    const mw = bw - 40, mh = bh - 110;
+
+    // Map background (parchment)
+    mapG.fillStyle(0x2d5a27, 1);
+    mapG.fillRect(ml, mt, mw, mh);
+    mapG.fillStyle(0x1a3d1a, 0.5);
+    mapG.fillRect(ml, mt, mw, 4);
+
+    // Roads
+    const cx2 = ml + mw * 0.5, cy2 = mt + mh * 0.5;
+    mapG.fillStyle(0xc8a96e, 0.7);
+    mapG.fillRect(cx2 - 3, mt, 6, mh);
+    mapG.fillRect(ml, cy2 - 3, mw, 6);
+
+    // Town (centre)
+    mapG.fillStyle(0x8b7355, 1);
+    mapG.fillRect(cx2 - 25, cy2 - 15, 50, 30);
+    mapG.fillStyle(C.GOLD, 1);
+    mapG.strokeRect(cx2 - 25, cy2 - 15, 50, 30);
+
+    // Forest (north)
+    mapG.fillStyle(0x1a5c1a, 1);
+    mapG.fillRect(cx2 - 20, mt + mh * 0.12, 40, 24);
+    mapG.fillStyle(0x44aa44, 1);
+    mapG.strokeRect(cx2 - 20, mt + mh * 0.12, 40, 24);
+
+    // Dungeon (south)
+    mapG.fillStyle(0x3a1a1a, 1);
+    mapG.fillRect(cx2 - 20, mt + mh * 0.82, 40, 24);
+    mapG.fillStyle(0xaa4444, 1);
+    mapG.strokeRect(cx2 - 20, mt + mh * 0.82, 40, 24);
+
+    // Player dot
+    mapG.fillStyle(0xffff00, 1);
+    mapG.fillCircle(cx2 + 4, cy2 - 4, 5);
+
+    const townLbl = this.add.text(cx2, cy2, 'Village', { fontSize: '9px', color: '#fff', fontFamily: 'monospace', fontStyle: 'bold', align: 'center' });
+    townLbl.setOrigin(0.5);
+    const forestLbl = this.add.text(cx2, mt + mh * 0.12 + 12, 'Forest', { fontSize: '9px', color: '#aaffaa', fontFamily: 'monospace', align: 'center' });
+    forestLbl.setOrigin(0.5);
+    const dungeonLbl = this.add.text(cx2, mt + mh * 0.82 + 12, 'Dungeon', { fontSize: '9px', color: '#ffaaaa', fontFamily: 'monospace', align: 'center' });
+    dungeonLbl.setOrigin(0.5);
+    const youLbl = this.add.text(cx2 + 12, cy2 - 4, '← You', { fontSize: '9px', color: '#ffff00', fontFamily: 'monospace', fontStyle: 'bold' });
+    youLbl.setOrigin(0, 0.5);
+
+    // Close button
+    const closeBtnG = this.add.graphics();
+    const cbx = bx, cby = by + bh / 2 - 28;
+    drawPixelPanel(closeBtnG, cbx - 70, cby - 16, 140, 32, 0x1a3300, C.GOLD, C.GOLD_DARK, 3);
+    const closeText = this.add.text(cbx, cby, 'Close Map', {
+      fontSize: '14px', color: '#fff0a0', fontFamily: 'monospace', fontStyle: 'bold',
+    });
+    closeText.setOrigin(0.5, 0.5).setInteractive();
+    closeText.on('pointerdown', () => this.toggleMap());
+
+    this.mapPanel.add([overlay, panelG, title, mapG, townLbl, forestLbl, dungeonLbl, youLbl, closeBtnG, closeText]);
   }
 
+  // ── Time update ────────────────────────────────────────────────────────────
+  private onTimeUpdate(t: number): void {
+    let label: string;
+    let color: number;
+    let textColor: string;
+    if (t < 0.25)      { label = 'DAWN';  color = 0x994400; textColor = '#ffcc88'; }
+    else if (t < 0.5)  { label = 'DAY';   color = 0xcc6600; textColor = '#fff0a0'; }
+    else if (t < 0.75) { label = 'DUSK';  color = 0x882200; textColor = '#ff9966'; }
+    else               { label = 'NIGHT'; color = 0x111144; textColor = '#aaaaff'; }
+
+    this.timeText.setText(label).setColor(textColor);
+    this.drawTimeBadge(this.scale.width, label, color);
+  }
+
+  // ── Stat updates ───────────────────────────────────────────────────────────
+  public updateHP(hp: number, maxHp: number): void {
+    this.hp = hp; this.maxHp = maxHp;
+    this.hpText.setText(`${hp}/${maxHp}`);
+    this.drawHUD(this.scale.width);
+  }
+
+  public updateSP(sp: number, maxSp: number): void {
+    this.sp = sp; this.maxSp = maxSp;
+    this.spText.setText(`${sp}/${maxSp}`);
+    this.drawHUD(this.scale.width);
+  }
+
+  // ── Panel toggles ──────────────────────────────────────────────────────────
   private toggleInventory(): void {
     this.inventoryVisible = !this.inventoryVisible;
     this.inventoryPanel.setVisible(this.inventoryVisible);
-    if (this.inventoryVisible && this.mapVisible) {
-      this.mapVisible = false;
-      this.mapPanel.setVisible(false);
-    }
+    if (this.inventoryVisible && this.mapVisible) { this.mapVisible = false; this.mapPanel.setVisible(false); }
   }
 
   private toggleMap(): void {
     this.mapVisible = !this.mapVisible;
     this.mapPanel.setVisible(this.mapVisible);
-    if (this.mapVisible && this.inventoryVisible) {
-      this.inventoryVisible = false;
-      this.inventoryPanel.setVisible(false);
-    }
+    if (this.mapVisible && this.inventoryVisible) { this.inventoryVisible = false; this.inventoryPanel.setVisible(false); }
   }
 
   private handleAction(): void {
-    // Emit action event to GameScene
-    const gameScene = this.scene.get('GameScene');
-    gameScene.events.emit('playerAction');
+    const game = this.scene.get('GameScene');
+    game.events.emit('playerAction');
   }
 
   private showDialogue(npcName: string): void {
-    // TODO: Implement dialogue system
     console.log('Show dialogue for:', npcName);
     alert(`Talking to ${npcName}\n\n(Dialogue system coming next!)`);
   }
 
   private refreshInventoryText(): void {
     if (!this.inventoryItemsText) return;
-    if (this.inventoryItems.length === 0) {
-      this.inventoryItemsText.setText('No items yet');
-      return;
-    }
-    this.inventoryItemsText.setText(this.inventoryItems.map((item, index) => `${index + 1}. ${item}`).join('\n'));
+    this.inventoryItemsText.setText(
+      this.inventoryItems.length === 0
+        ? 'No items yet'
+        : this.inventoryItems.map((item, i) => `${i + 1}. ${item}`).join('\n')
+    );
   }
 
-  private updateTimeDisplay(timeOfDay: number): void {
-    if (timeOfDay < 0.25) {
-      this.timeText.setText('DAWN');
-      this.timeText.setColor('#ff9966');
-    } else if (timeOfDay < 0.5) {
-      this.timeText.setText('DAY');
-      this.timeText.setColor('#ffff00');
-    } else if (timeOfDay < 0.75) {
-      this.timeText.setText('DUSK');
-      this.timeText.setColor('#ff6633');
-    } else {
-      this.timeText.setText('NIGHT');
-      this.timeText.setColor('#6666ff');
-    }
-  }
-
-  private handleResize(gameSize: Phaser.Structs.Size): void {
-    const width = gameSize.width;
-    const height = gameSize.height;
-
-    // Reposition buttons
-    if (this.bagButton) {
-      this.bagButton.setPosition(width - 60, height - 90);
-    }
-    if (this.actionButton) {
-      this.actionButton.setPosition(width - 150, height - 90);
-    }
-    if (this.mapButton) {
-      this.mapButton.setPosition(width - 240, height - 90);
-    }
-
-    // Reposition time text
-    if (this.timeText) {
-      this.timeText.setPosition(width - 20, 35);
-    }
-    this.layoutInventoryPanel(width, height);
-    if (this.mapOverlay) {
-      this.mapOverlay.setSize(width, height);
-    }
-  }
-
-  public updateHP(hp: number, maxHp: number): void {
-    this.hp = hp;
-    this.maxHp = maxHp;
-    this.hpText.setText(`HP: ${hp}/${maxHp}`);
-    this.hpBar.width = 250 * (hp / maxHp);
-  }
-
-  public updateSP(sp: number, maxSp: number): void {
-    this.sp = sp;
-    this.maxSp = maxSp;
-    this.spText.setText(`SP: ${sp}/${maxSp}`);
-    this.spBar.width = 250 * (sp / maxSp);
+  // ── Resize ─────────────────────────────────────────────────────────────────
+  private handleResize(W: number, H: number): void {
+    const BTN = 72;
+    const y = H - BTN / 2 - 10;
+    this.bagButton?.setPosition(W - BTN / 2 - 8, y);
+    this.actionButton?.setPosition(W - BTN * 1.5 - 16, y);
+    this.mapButton?.setPosition(W - BTN * 2.5 - 24, y);
+    this.timeText?.setPosition(W - 10, 10);
+    this.drawHUD(W);
+    this.drawTimeBadge(W, this.timeText?.text ?? 'DAY', 0xcc6600);
   }
 }
