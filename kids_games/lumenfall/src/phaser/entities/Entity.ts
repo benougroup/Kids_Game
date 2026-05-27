@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { EntityDefinition, EntityState, MONSTER_TINTS, MONSTER_ALPHA } from '../systems/EntityRegistry';
 import { EntityMovementFlags, DEFAULT_FLAGS } from '../systems/TileSystem';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
+import { NPCBubble, BubbleType } from '../ui/NPCBubble';
 
 /**
  * Unified Entity class for NPCs and Monsters
@@ -34,6 +35,10 @@ export class Entity {
   // Collision callback
   private isBlockedFn?: (x: number, y: number, flags: EntityMovementFlags) => boolean;
   private tileSize: number;
+
+  // Speech bubble
+  private bubble: NPCBubble | null = null;
+  private lastBubbleType: BubbleType = 'silent';
 
   constructor(
     scene: Phaser.Scene,
@@ -83,6 +88,12 @@ export class Entity {
     // Create animations
     this.createAnimations();
     this.playState('idle');
+
+    // Create speech bubble for NPCs only
+    if (def.type === 'npc') {
+      this.bubble = new NPCBubble(scene, x, y);
+      this.updateBubbleType();
+    }
   }
 
   private getFrame(state: EntityState): string {
@@ -155,10 +166,30 @@ export class Entity {
   }
 
   public update(delta: number, playerX: number, playerY: number, lightSources: Array<{x: number; y: number; radius: number}>): void {
-    if (this.currentState === 'dead' || this.currentState === 'frozen') return;
-
-    // Update depth for Y-sorting
+    // Update depth for Y-sorting (even when dead so corpse sorts correctly)
     this.sprite.setDepth(toRenderDepth(this.sprite.y / this.tileSize, 4));
+
+    // Update speech bubble
+    if (this.bubble) {
+      const displaySize = this.def.displaySize ?? 48;
+      this.bubble.update(this.sprite.x, this.sprite.y, displaySize, delta);
+
+      // Pulse bubble when player is nearby (within 90px)
+      const dist = Phaser.Math.Distance.Between(this.sprite.x, this.sprite.y, playerX, playerY);
+      if (dist < 90 && this.lastBubbleType === 'talking') {
+        // Only pulse once per second
+        if (Math.floor(delta) % 60 === 0) this.bubble.pulse();
+      }
+
+      // Re-evaluate bubble type when state changes
+      const newType = this.resolveBubbleType();
+      if (newType !== this.lastBubbleType) {
+        this.lastBubbleType = newType;
+        this.bubble.show(newType);
+      }
+    }
+
+    if (this.currentState === 'dead' || this.currentState === 'frozen') return;
 
     // NPC wandering
     if (this.def.canWander && !this.isHostile) {
@@ -361,8 +392,37 @@ export class Entity {
   public getDefinition(): EntityDefinition { return this.def; }
   public getPosition(): { x: number; y: number } { return { x: this.sprite.x, y: this.sprite.y }; }
   
+  /** Resolve which bubble type to show based on current entity state */
+  private resolveBubbleType(): BubbleType {
+    if (this.currentState === 'dead') return 'dead';
+    if (this.currentState === 'fainted') return 'dead';
+    if (this.currentState === 'frozen') return 'confused';
+
+    // Check NPC-specific flags from definition
+    const id = this.def.id;
+    if (id.includes('sick') || id.includes('ill') || id.includes('plague')) return 'sick';
+    if (id.includes('sleep')) return 'sleeping';
+
+    // NPCs with a dialogueKey get the talking bubble
+    if (this.def.dialogueKey) return 'talking';
+
+    // NPCs without dialogue show a question mark
+    if (this.def.type === 'npc') return 'question';
+
+    return 'silent';
+  }
+
+  /** Initial bubble setup after construction */
+  private updateBubbleType(): void {
+    if (!this.bubble) return;
+    const type = this.resolveBubbleType();
+    this.lastBubbleType = type;
+    this.bubble.show(type);
+  }
+
   public destroy(): void {
     this.moveTween?.stop();
+    this.bubble?.destroy();
     this.sprite.destroy();
   }
 }

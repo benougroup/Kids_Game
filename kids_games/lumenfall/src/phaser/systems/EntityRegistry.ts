@@ -314,6 +314,52 @@ export const NPC_DEFINITIONS: Record<string, EntityDefinition> = {
     dialogueKey: 'hermit',
     canWander: false,
   },
+
+  // Sick villager — shows 🤒 bubble, no dialogue
+  sick_villager: {
+    id: 'sick_villager',
+    name: 'Sick Villager',
+    type: 'npc',
+    atlas: 'characters',
+    frames: {
+      idle: 'child_idle',
+      walk: ['child_walk_1', 'child_walk_2'],
+      run: ['child_walk_1', 'child_walk_2'],
+      attack: 'child_idle',
+      dead: 'child_idle',
+      fainted: 'child_idle',
+      frozen: 'child_idle',
+      alert: 'child_side_1',
+    },
+    movementFlags: DEFAULT_FLAGS,
+    hp: 10,
+    speed: 30,
+    canWander: false,
+    // No dialogueKey — shows 🤒 bubble automatically (id contains 'sick')
+  },
+
+  // Sleeping elder — shows 💤 bubble, no dialogue
+  sleeping_elder: {
+    id: 'sleeping_elder',
+    name: 'Sleeping Elder',
+    type: 'npc',
+    atlas: 'characters',
+    frames: {
+      idle: 'elder_idle',
+      walk: ['elder_walk_1', 'elder_walk_2'],
+      run: ['elder_walk_1', 'elder_walk_2'],
+      attack: 'elder_idle',
+      dead: 'elder_idle',
+      fainted: 'elder_idle',
+      frozen: 'elder_idle',
+      alert: 'elder_side_1',
+    },
+    movementFlags: DEFAULT_FLAGS,
+    hp: 20,
+    speed: 25,
+    canWander: false,
+    // No dialogueKey — shows 💤 bubble automatically (id contains 'sleep')
+  },
 };
 
 // ===================== MONSTER DEFINITIONS =====================

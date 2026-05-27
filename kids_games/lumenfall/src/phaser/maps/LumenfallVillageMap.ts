@@ -286,7 +286,9 @@ export function createLumenfallVillageData(): MapData {
   npcs.push({ x: 24, y: 4,  entityId: 'blacksmith' });  // Blacksmith at forge
   npcs.push({ x: 4,  y: 13, entityId: 'innkeeper'  });  // Innkeeper
   npcs.push({ x: 24, y: 13, entityId: 'scholar'    });  // Scholar at magic shop
-  npcs.push({ x: 11, y: 13, entityId: 'child'      });  // Child wandering
+  npcs.push({ x: 11, y: 13, entityId: 'child'         });  // Child wandering
+  npcs.push({ x: 8,  y: 17, entityId: 'sick_villager'  });  // Sick villager near graveyard
+  npcs.push({ x: 6,  y: 16, entityId: 'sleeping_elder' });  // Sleeping elder on bench
 
   // ── 10. EXITS (portal-only travel) ───────────────────────────────────────
   // The exit tiles are at the portal openings in the border.
