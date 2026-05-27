@@ -153,7 +153,10 @@ export class MapBuilder {
         ?? (hasExplicitTileSizing ? w : (baseDepth === 0 ? w : nativeW));
       const displayH = entry.pixelHeight
         ?? (hasExplicitTileSizing ? h : (baseDepth === 0 ? h : nativeH));
-      sprite.setDisplaySize(displayW, displayH);
+      // Ground tiles: add 1px overlap to prevent sub-pixel gap bleeding between tiles
+      const overlapW = (baseDepth === 0 && !entry.pixelWidth && !hasExplicitTileSizing) ? displayW + 1 : displayW;
+      const overlapH = (baseDepth === 0 && !entry.pixelHeight && !hasExplicitTileSizing) ? displayH + 1 : displayH;
+      sprite.setDisplaySize(overlapW, overlapH);
 
       // For non-ground layers, anchor the object/structure to the tile base so tall sprites rise upward.
       if (baseDepth > 0) {
