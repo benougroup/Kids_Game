@@ -274,9 +274,9 @@ export class GameScene extends Phaser.Scene {
 
     // Spawn animated portal visuals at each exit
     this.spawnPortalVisuals(mapData);
-    // Zoom 1.5 — 64px tiles render at 96px (integer multiple, no sub-pixel gaps)
-    // 720x480 canvas at 1.5x zoom shows 480x320 world pixels = 7.5x5 tiles visible
-    this.cameras.main.setZoom(1.5);
+    // Zoom 2.0 — 64px tiles render at 128px (integer multiple, no sub-pixel gaps)
+    // 720x480 canvas at 2.0x zoom shows 360x240 world pixels = 5.6x3.75 tiles visible
+    this.cameras.main.setZoom(2.0);
     // Add top padding (64px = 1 tile) so buildings near the top edge are not hidden behind the HUD
     this.cameras.main.setBounds(-64, -64, mapW + 128, mapH + 128);
     this.physics.world.setBounds(0, 0, mapW, mapH);

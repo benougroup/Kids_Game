@@ -34,7 +34,8 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
   scene: [GameScene, UIScene],
-  backgroundColor: '#1a1a2e',
+  // Grass green background — any sub-pixel gaps between ground tiles blend in
+  backgroundColor: '#4a7a2a',
 };
 
 // Create game instance
