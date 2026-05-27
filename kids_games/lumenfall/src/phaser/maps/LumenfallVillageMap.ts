@@ -127,13 +127,13 @@ export function createLumenfallVillageData(): MapData {
 
   // Cobble road widening near plaza (1 tile each side of the 2-tile road)
   // North approach
-  fill(groundLayer, 14, 2, 4, 8, 'stone_cobble_02', 'terrain_grassland', 0);
+  fill(groundLayer, 14, 2, 4, 8, 'stone_light', 'terrain_grassland', 0);
   // South approach
-  fill(groundLayer, 14, 16, 4, 8, 'stone_cobble_02', 'terrain_grassland', 0);
+  fill(groundLayer, 14, 16, 4, 8, 'stone_light', 'terrain_grassland', 0);
   // West approach
-  fill(groundLayer, 2, 11, 10, 4, 'stone_cobble_02', 'terrain_grassland', 0);
+  fill(groundLayer, 2, 11, 10, 4, 'stone_light', 'terrain_grassland', 0);
   // East approach
-  fill(groundLayer, 20, 11, 10, 4, 'stone_cobble_02', 'terrain_grassland', 0);
+  fill(groundLayer, 20, 11, 10, 4, 'stone_light', 'terrain_grassland', 0);
 
   // ── 3. SMALL POND (top-left quadrant) ────────────────────────────────────
   fill(groundLayer, 4, 5, 3, 3, 'water_mid', 'terrain_grassland', -2, { isWater: true, damage: 0, slowFactor: 0.5 });

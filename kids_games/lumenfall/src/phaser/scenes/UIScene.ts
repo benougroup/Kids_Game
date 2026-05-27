@@ -146,13 +146,13 @@ export class UIScene extends Phaser.Scene {
     this.drawHUD(W);
 
     // ── HP text ──────────────────────────────────────────────────────────────
-    this.hpText = this.add.text(60, 14, `${this.hp}/${this.maxHp}`, {
+    this.hpText = this.add.text(60, 8, `${this.hp}/${this.maxHp}`, {
       fontSize: '13px', color: '#fff0d0', fontFamily: 'monospace', fontStyle: 'bold',
     });
     this.hpText.setScrollFactor(0).setDepth(2005);
 
     // ── SP text ──────────────────────────────────────────────────────────────
-    this.spText = this.add.text(60, 42, `${this.sp}/${this.maxSp}`, {
+    this.spText = this.add.text(60, 30, `${this.sp}/${this.maxSp}`, {
       fontSize: '13px', color: '#d0e8ff', fontFamily: 'monospace', fontStyle: 'bold',
     });
     this.spText.setScrollFactor(0).setDepth(2005);
@@ -191,13 +191,13 @@ export class UIScene extends Phaser.Scene {
     const g = this.hudGraphics;
     g.clear();
 
-    const HUD_H = 70;
+    const HUD_H = 52;
 
     // Background panel
     drawPixelPanel(g, 0, 0, W, HUD_H, C.HUD_BG, C.GOLD_DARK, C.BRONZE, 3);
 
     // HP icon (heart ♥ drawn as pixel art)
-    const hx = 14, hy = 12;
+    const hx = 14, hy = 6;
     g.fillStyle(C.HP_FILL, 1);
     // Heart shape: two bumps + triangle
     g.fillRect(hx + 2, hy,     4, 2);
@@ -214,10 +214,10 @@ export class UIScene extends Phaser.Scene {
     g.fillRect(hx + 3, hy + 1, 2, 2);
 
     // HP bar
-    drawStatBar(g, 32, 12, W * 0.28, 22, C.HP_BG, C.HP_FILL, C.HP_SHINE, this.hp / this.maxHp);
+    drawStatBar(g, 32, 6, W * 0.28, 18, C.HP_BG, C.HP_FILL, C.HP_SHINE, this.hp / this.maxHp);
 
     // SP icon (star ★ pixel art)
-    const sx = 14, sy = 42;
+    const sx = 14, sy = 28;
     g.fillStyle(C.SP_FILL, 1);
     g.fillRect(sx + 5, sy,     3, 4);
     g.fillRect(sx + 3, sy + 4, 7, 3);
@@ -232,18 +232,18 @@ export class UIScene extends Phaser.Scene {
     g.fillRect(sx + 5, sy + 1, 2, 2);
 
     // SP bar
-    drawStatBar(g, 32, 42, W * 0.28, 22, C.SP_BG, C.SP_FILL, C.SP_SHINE, this.sp / this.maxSp);
+    drawStatBar(g, 32, 28, W * 0.28, 18, C.SP_BG, C.SP_FILL, C.SP_SHINE, this.sp / this.maxSp);
 
     // Divider line
     g.fillStyle(C.GOLD_DARK, 0.5);
-    g.fillRect(W * 0.32, 8, 2, HUD_H - 16);
+    g.fillRect(W * 0.32, 6, 2, HUD_H - 12);
   }
 
   private drawTimeBadge(W: number, _label: string, color: number): void {
     const g = this.timeBadge;
     g.clear();
-    const tw = 72, th = 28;
-    const tx = W - tw - 6, ty = 22;
+    const tw = 72, th = 24;
+    const tx = W - tw - 6, ty = 14;
     drawPixelPanel(g, tx, ty, tw, th, color, C.GOLD, C.GOLD_DARK, 3);
   }
 
