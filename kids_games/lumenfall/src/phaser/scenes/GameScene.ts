@@ -93,7 +93,7 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     // Load initial map — Lumenfall Village (new starting map)
-    this.loadMap('lumenfall_village', 15, 14);
+    this.loadMap('lumenfall_village', 15, 17);
     
     // Expose debug API globally
     (window as any).lumenfall = {
