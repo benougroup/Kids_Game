@@ -24,6 +24,9 @@ export interface NPCDialogue {
   lines: DialogueLine[];
 }
 
+// Re-export dialog types for use in StorySystem
+export type { QuizData, RiddleData, FillData, PuzzleData, ChoiceData } from '../ui/DialogManager';
+
 // Story stages:
 // 0 = Game start (no story chosen)
 // 1 = Story chosen, beginning
@@ -296,4 +299,129 @@ export class StorySystem {
       text: bestLine?.text || 'Hello there!'
     };
   }
+
+  public getQuizData(key: string): import('../ui/DialogManager').QuizData | null {
+    return QUIZ_DATA[key] ?? null;
+  }
+
+  public getRiddleData(key: string): import('../ui/DialogManager').RiddleData | null {
+    return RIDDLE_DATA[key] ?? null;
+  }
+
+  public getFillData(key: string): import('../ui/DialogManager').FillData | null {
+    return FILL_DATA[key] ?? null;
+  }
+
+  public getPuzzleData(key: string): import('../ui/DialogManager').PuzzleData | null {
+    return PUZZLE_DATA[key] ?? null;
+  }
+
+  public getChoiceData(key: string): import('../ui/DialogManager').ChoiceData | null {
+    return CHOICE_DATA[key] ?? null;
+  }
 }
+
+// ─── Learning Dialog Data ─────────────────────────────────────────────────────
+
+const QUIZ_DATA: Record<string, import('../ui/DialogManager').QuizData> = {
+  apprentice_quiz: {
+    speaker: 'Mira the Apprentice',
+    portrait: 'apprentice',
+    question: 'What is 3 + 4?',
+    options: ['5', '6', '7', '8'],
+    correct: 2,
+    hint: 'Count on your fingers!',
+  },
+  blacksmith_quiz: {
+    speaker: 'Aldric the Blacksmith',
+    portrait: 'blacksmith',
+    question: 'Which material is the strongest for a sword?',
+    options: ['Wood', 'Copper', 'Iron', 'Steel'],
+    correct: 3,
+    hint: 'It\'s made by mixing iron with carbon.',
+  },
+  scholar_quiz: {
+    speaker: 'Scholar Tobias',
+    portrait: 'scholar',
+    question: 'How many sides does a hexagon have?',
+    options: ['4', '5', '6', '8'],
+    correct: 2,
+    hint: 'Hex means six in Greek!',
+  },
+  child_quiz: {
+    speaker: 'Pip the Child',
+    portrait: 'child',
+    question: 'What colour do you get when you mix blue and yellow?',
+    options: ['Red', 'Green', 'Purple', 'Orange'],
+    correct: 1,
+  },
+};
+
+const RIDDLE_DATA: Record<string, import('../ui/DialogManager').RiddleData> = {
+  elder_riddle: {
+    speaker: 'Elder Bramwell',
+    portrait: 'elder',
+    riddle: 'I have hands but cannot clap. I have a face but no eyes. What am I?',
+    answer: 'clock',
+    hint: 'You check me to know the time.',
+  },
+  innkeeper_riddle: {
+    speaker: 'Innkeeper Rosie',
+    portrait: 'innkeeper',
+    riddle: 'The more you take, the more you leave behind. What am I?',
+    answer: 'footsteps',
+    hint: 'Think about walking...',
+  },
+};
+
+const FILL_DATA: Record<string, import('../ui/DialogManager').FillData> = {
+  guard_fill: {
+    speaker: 'Guard Aldric',
+    portrait: 'guard',
+    sentence: 'The sun rises in the ___',
+    words: ['east', 'west', 'north', 'south'],
+    correct: 0,
+    hint: 'Think about the morning sky.',
+  },
+  merchant_fill: {
+    speaker: 'Merchant Gilda',
+    portrait: 'merchant',
+    sentence: 'Water boils at ___ degrees Celsius',
+    words: ['100', '50', '200', '75'],
+    correct: 0,
+    hint: 'It\'s the same as a century!',
+  },
+};
+
+const PUZZLE_DATA: Record<string, import('../ui/DialogManager').PuzzleData> = {
+  magician_puzzle: {
+    speaker: 'Magician Zephyrus',
+    portrait: 'magician',
+    instruction: 'Put these words in the right order to make a sentence:',
+    words: ['cat', 'the', 'sat', 'on', 'mat', 'the'],
+    answer: 'the cat sat on the mat',
+    hint: 'It\'s a classic rhyme!',
+  },
+  healer_puzzle: {
+    speaker: 'Healer Lyra',
+    portrait: 'healer',
+    instruction: 'Order the seasons from spring to winter:',
+    words: ['Autumn', 'Winter', 'Spring', 'Summer'],
+    answer: 'Spring Summer Autumn Winter',
+  },
+};
+
+const CHOICE_DATA: Record<string, import('../ui/DialogManager').ChoiceData> = {
+  guard_choice: {
+    speaker: 'Guard Aldric',
+    portrait: 'guard',
+    text: 'The forest path is dangerous at night. Which way will you go?',
+    options: ['Take the forest path', 'Wait until morning', 'Ask the Elder for advice', 'Turn back to the inn'],
+  },
+  elder_choice: {
+    speaker: 'Elder Bramwell',
+    portrait: 'elder',
+    text: 'The ancient prophecy speaks of two paths. Which do you choose?',
+    options: ['Become a Light Keeper', 'Walk the Shadow Path'],
+  },
+};

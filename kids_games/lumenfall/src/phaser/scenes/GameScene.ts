@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { DialogueBox } from '../ui/DialogueBox';
+import { DialogManager } from '../ui/DialogManager';
 import { StorySystem } from '../systems/StorySystem';
 import { MathGameSystem } from '../systems/MathGameSystem';
 import { MapBuilder } from '../maps/MapBuilder';
@@ -42,6 +43,7 @@ export class GameScene extends Phaser.Scene {
   
   // UI
   private dialogueBox!: DialogueBox;
+  private dialogManager!: DialogManager;
   private mathGame!: MathGameSystem;
   
   // Story system
@@ -128,8 +130,11 @@ export class GameScene extends Phaser.Scene {
     this.clickMarker = this.add.graphics();
     this.clickMarker.setDepth(4999);
 
-    // Dialogue box
+    // Dialogue box (legacy — kept for math game)
     this.dialogueBox = new DialogueBox(this);
+
+    // New dialog manager — centered, multi-type
+    this.dialogManager = new DialogManager(this);
 
     // Math game system
     this.mathGame = new MathGameSystem(this);
@@ -506,6 +511,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handleAction(): void {
+    if (this.dialogManager.isOpen()) {
+      this.dialogManager.close();
+      return;
+    }
     if (this.dialogueBox.getIsVisible()) {
       this.dialogueBox.hide();
       return;
@@ -526,28 +535,76 @@ export class GameScene extends Phaser.Scene {
     
     if (nearbyEntity) {
       const def = nearbyEntity.getDefinition();
-      
-      // Check if this NPC triggers a math challenge
-      if (def.mathDifficulty && def.mathDifficulty > 0) {
-        const dialogue = this.storySystem.getDialogue(def.dialogueKey ?? 'default', this.timeOfDay);
-        this.dialogueBox.show(def.name, dialogue.text + '\n\n"Let me test your knowledge!"', dialogue.portrait);
-        
-        // Start math challenge after dialogue
-        this.time.delayedCall(2000, () => {
-          this.dialogueBox.hide();
-          this.mathGame.startChallenge(def.name, def.mathDifficulty!, (result) => {
-            this.handleMathResult(result, def.name);
-          });
-        });
-      } else {
-        // Regular dialogue
-        const dialogue = this.storySystem.getDialogue(def.dialogueKey ?? 'default', this.timeOfDay);
-        this.dialogueBox.show(def.name, dialogue.text, dialogue.portrait);
-      }
+      this.triggerNPCDialog(def);
     } else {
       // Toggle lantern
       this.player.toggleLantern();
     }
+  }
+
+  /**
+   * Route NPC interaction to the correct DialogManager type based on dialogueKey.
+   * Keys ending in _quiz, _riddle, _fill, _puzzle, _choice use the new system.
+   * Everything else falls back to the story dialog.
+   */
+  private triggerNPCDialog(def: { name: string; dialogueKey?: string; mathDifficulty?: number; portrait?: string }): void {
+    const key = def.dialogueKey ?? 'default';
+
+    // Math challenge NPCs (legacy path)
+    if (def.mathDifficulty && def.mathDifficulty > 0) {
+      const dialogue = this.storySystem.getDialogue(key, this.timeOfDay);
+      this.dialogManager.story(
+        { speaker: def.name, text: dialogue.text + '\n\n"Let me test your knowledge!"', portrait: dialogue.portrait },
+        () => {
+          this.mathGame.startChallenge(def.name, def.mathDifficulty!, (result) => {
+            this.handleMathResult(result, def.name);
+          });
+        }
+      );
+      return;
+    }
+
+    // Route by key suffix
+    if (key.endsWith('_quiz')) {
+      const q = this.storySystem.getQuizData(key);
+      if (q) { this.dialogManager.quiz(q, (ok) => this.handleLearningResult(ok, def.name, 'quiz')); return; }
+    }
+    if (key.endsWith('_riddle')) {
+      const r = this.storySystem.getRiddleData(key);
+      if (r) { this.dialogManager.riddle(r, (ok) => this.handleLearningResult(ok, def.name, 'riddle')); return; }
+    }
+    if (key.endsWith('_fill')) {
+      const f = this.storySystem.getFillData(key);
+      if (f) { this.dialogManager.fill(f, (ok) => this.handleLearningResult(ok, def.name, 'fill')); return; }
+    }
+    if (key.endsWith('_puzzle')) {
+      const p = this.storySystem.getPuzzleData(key);
+      if (p) { this.dialogManager.puzzle(p, (ok) => this.handleLearningResult(ok, def.name, 'puzzle')); return; }
+    }
+    if (key.endsWith('_choice')) {
+      const c = this.storySystem.getChoiceData(key);
+      if (c) { this.dialogManager.choice(c, (i) => this.handleChoiceResult(i, def.name, c.options)); return; }
+    }
+
+    // Default: story dialog
+    const dialogue = this.storySystem.getDialogue(key, this.timeOfDay);
+    this.dialogManager.story(
+      { speaker: def.name, text: dialogue.text, portrait: dialogue.portrait },
+    );
+  }
+
+  private handleLearningResult(correct: boolean, npcName: string, type: string): void {
+    if (correct) {
+      this.events.emit('showMessage', `${npcName}: "Well done! +10 XP"`);
+      this.events.emit('playerHealed', 1);
+    } else {
+      this.events.emit('showMessage', `${npcName}: "Keep trying! You'll get it!"`);
+    }
+    void type;
+  }
+
+  private handleChoiceResult(index: number, npcName: string, options: string[]): void {
+    this.events.emit('showMessage', `${npcName}: "You chose: ${options[index]}"`);
   }
 
   private spawnDemoPickups(tileSize: number): void {
