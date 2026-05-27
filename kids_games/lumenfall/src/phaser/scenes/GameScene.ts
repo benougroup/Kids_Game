@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import VirtualJoyStick from 'phaser3-rex-plugins/plugins/virtualjoystick.js';
 import { Player } from '../entities/Player';
 import { DialogueBox } from '../ui/DialogueBox';
 import { DialogManager } from '../ui/DialogManager';
@@ -66,6 +67,14 @@ export class GameScene extends Phaser.Scene {
   private portalParticles: Phaser.GameObjects.Graphics[] = [];
   private portalTick: number = 0;
 
+  // Virtual joystick for touch/iPad controls
+  private joyStick: any = null;
+  private joyStickCursors: any = null;
+
+  // UI zone heights (pixels) — taps in these zones don't trigger click-to-move
+  private readonly HUD_HEIGHT = 52;    // top HUD bar
+  private readonly BTN_HEIGHT = 90;    // bottom button row
+
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -120,6 +129,57 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-E', () => this.handleAction());
     this.input.keyboard!.on('keydown-SPACE', () => this.handleAction());
 
+    // Virtual joystick for touch/iPad — bottom-left corner
+    // Only create on touch devices
+    const H = this.scale.height;
+    const joyX = 70;
+    const joyY = H - 70;
+    const joyRadius = 52;
+
+    // Base circle (background)
+    const joyBase = this.add.graphics();
+    joyBase.fillStyle(0x000000, 0.35);
+    joyBase.fillCircle(0, 0, joyRadius);
+    joyBase.lineStyle(3, 0xffd700, 0.6);
+    joyBase.strokeCircle(0, 0, joyRadius);
+    joyBase.setScrollFactor(0).setDepth(2010);
+    joyBase.setPosition(joyX, joyY);
+
+    // Thumb circle
+    const joyThumb = this.add.graphics();
+    joyThumb.fillStyle(0xffd700, 0.7);
+    joyThumb.fillCircle(0, 0, 22);
+    joyThumb.lineStyle(2, 0xffffff, 0.5);
+    joyThumb.strokeCircle(0, 0, 22);
+    joyThumb.setScrollFactor(0).setDepth(2011);
+    joyThumb.setPosition(joyX, joyY);
+
+    // Direction arrows on base
+    const arrows = this.add.graphics();
+    arrows.fillStyle(0xffffff, 0.4);
+    // Up arrow
+    arrows.fillTriangle(0, -joyRadius + 10, -7, -joyRadius + 22, 7, -joyRadius + 22);
+    // Down arrow
+    arrows.fillTriangle(0, joyRadius - 10, -7, joyRadius - 22, 7, joyRadius - 22);
+    // Left arrow
+    arrows.fillTriangle(-joyRadius + 10, 0, -joyRadius + 22, -7, -joyRadius + 22, 7);
+    // Right arrow
+    arrows.fillTriangle(joyRadius - 10, 0, joyRadius - 22, -7, joyRadius - 22, 7);
+    arrows.setScrollFactor(0).setDepth(2010);
+    arrows.setPosition(joyX, joyY);
+
+    this.joyStick = new VirtualJoyStick(this, {
+      x: joyX,
+      y: joyY,
+      radius: joyRadius,
+      base: joyBase,
+      thumb: joyThumb,
+      dir: '8dir',
+      fixed: true,
+      enable: true,
+    });
+    this.joyStickCursors = this.joyStick.createCursorKeys();
+
     // Day/night overlay
     this.dayNightOverlay = this.add.rectangle(0, 0, 4000, 4000, 0x000033, 0);
     this.dayNightOverlay.setOrigin(0, 0);
@@ -145,8 +205,16 @@ export class GameScene extends Phaser.Scene {
       this.loadMap(mapId, tileX, tileY);
     });
     
-    // Click-to-move
+    // Click-to-move (tap anywhere on the game world — not on UI zones)
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      // Ignore taps in HUD zone (top) and button zone (bottom)
+      const sy = pointer.y; // screen Y (not world Y)
+      const sh = this.scale.height;
+      if (sy < this.HUD_HEIGHT) return;           // top HUD bar
+      if (sy > sh - this.BTN_HEIGHT) return;      // bottom buttons
+      // Ignore taps in joystick zone (bottom-left)
+      const sx = pointer.x;
+      if (sx < 140 && sy > sh - 140) return;      // joystick area
       this.handleClick(pointer);
     });
 
@@ -204,7 +272,8 @@ export class GameScene extends Phaser.Scene {
 
     // Spawn animated portal visuals at each exit
     this.spawnPortalVisuals(mapData);
-    this.cameras.main.setZoom(1.5);
+    // Zoom 1.2 — shows more of the map on iPad (was 1.5 which was too zoomed in)
+    this.cameras.main.setZoom(1.2);
     // Add top padding (64px = 1 tile) so buildings near the top edge are not hidden behind the HUD
     this.cameras.main.setBounds(-64, -64, mapW + 128, mapH + 128);
     this.physics.world.setBounds(0, 0, mapW, mapH);
@@ -226,17 +295,27 @@ export class GameScene extends Phaser.Scene {
     this.mathGame.update(delta);
     if (this.mathGame.isShowing()) return; // Pause game during math challenge
     
-    // Handle movement
+    // Handle movement — keyboard OR virtual joystick
+    const joy = this.joyStickCursors;
     const hasKeyboardInput = this.cursors.left.isDown || this.cursors.right.isDown ||
                              this.cursors.up.isDown || this.cursors.down.isDown ||
                              this.wasd.W.isDown || this.wasd.A.isDown ||
-                             this.wasd.S.isDown || this.wasd.D.isDown;
-    
+                             this.wasd.S.isDown || this.wasd.D.isDown ||
+                             (joy && (joy.left.isDown || joy.right.isDown ||
+                                      joy.up.isDown || joy.down.isDown));
+
     if (hasKeyboardInput) {
       this.clickTarget = null;
       this.clearClickMarker();
+      // Merge joystick cursors into keyboard cursors for player.update()
+      const mergedCursors = {
+        left:  { isDown: this.cursors.left.isDown  || (joy?.left?.isDown  ?? false) },
+        right: { isDown: this.cursors.right.isDown || (joy?.right?.isDown ?? false) },
+        up:    { isDown: this.cursors.up.isDown    || (joy?.up?.isDown    ?? false) },
+        down:  { isDown: this.cursors.down.isDown  || (joy?.down?.isDown  ?? false) },
+      } as Phaser.Types.Input.Keyboard.CursorKeys;
       this.player.update(
-        this.cursors,
+        mergedCursors,
         this.wasd,
         (x, y) => !this.isPositionWalkable(x, y)
       );

@@ -161,8 +161,9 @@ export class UIScene extends Phaser.Scene {
     this.timeBadge = this.add.graphics();
     this.timeBadge.setScrollFactor(0).setDepth(2005);
 
-    this.timeText = this.add.text(W - 10, 10, 'DAY', {
-      fontSize: '15px', color: '#fff0a0', fontFamily: 'monospace', fontStyle: 'bold',
+    // Time badge text — positioned inside the HUD bar (y=14 centres it in 52px HUD)
+    this.timeText = this.add.text(W - 10, 14, 'DAY', {
+      fontSize: '14px', color: '#fff0a0', fontFamily: 'monospace', fontStyle: 'bold',
     });
     this.timeText.setOrigin(1, 0).setScrollFactor(0).setDepth(2006);
     this.drawTimeBadge(W, 'DAY', 0xcc6600);
@@ -242,15 +243,17 @@ export class UIScene extends Phaser.Scene {
   private drawTimeBadge(W: number, _label: string, color: number): void {
     const g = this.timeBadge;
     g.clear();
+    // Badge sits inside the 52px HUD bar, vertically centred
     const tw = 72, th = 24;
-    const tx = W - tw - 6, ty = 14;
+    const tx = W - tw - 6, ty = 14;  // y=14 centres a 24px badge in 52px HUD
     drawPixelPanel(g, tx, ty, tw, th, color, C.GOLD, C.GOLD_DARK, 3);
   }
 
   // ── Buttons ────────────────────────────────────────────────────────────────
   private createButtons(W: number, H: number): void {
-    const BTN = 72;
-    const y = H - BTN / 2 - 10;
+    // Slightly smaller buttons (64px) to fit the 720×480 canvas
+    const BTN = 64;
+    const y = H - BTN / 2 - 8;
 
     // BAG
     this.bagButton = this.makeButton(W - BTN / 2 - 8, y, BTN, 'BAG', '🎒', C.BTN_BAG_BG, 0x4488cc);
@@ -258,12 +261,12 @@ export class UIScene extends Phaser.Scene {
     this.bagButton.on('pointerdown', () => this.toggleInventory());
 
     // ACT
-    this.actionButton = this.makeButton(W - BTN * 1.5 - 16, y, BTN, 'ACT', '⚔️', C.BTN_ACT_BG, 0xcc3333);
+    this.actionButton = this.makeButton(W - BTN * 1.5 - 14, y, BTN, 'ACT', '⚔️', C.BTN_ACT_BG, 0xcc3333);
     this.actionButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
     this.actionButton.on('pointerdown', () => this.handleAction());
 
     // MAP
-    this.mapButton = this.makeButton(W - BTN * 2.5 - 24, y, BTN, 'MAP', '🗺️', C.BTN_MAP_BG, 0x336633);
+    this.mapButton = this.makeButton(W - BTN * 2.5 - 20, y, BTN, 'MAP', '🗺️', C.BTN_MAP_BG, 0x336633);
     this.mapButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
     this.mapButton.on('pointerdown', () => this.toggleMap());
   }
@@ -515,12 +518,12 @@ export class UIScene extends Phaser.Scene {
 
   // ── Resize ─────────────────────────────────────────────────────────────────
   private handleResize(W: number, H: number): void {
-    const BTN = 72;
-    const y = H - BTN / 2 - 10;
+    const BTN = 64;
+    const y = H - BTN / 2 - 8;
     this.bagButton?.setPosition(W - BTN / 2 - 8, y);
-    this.actionButton?.setPosition(W - BTN * 1.5 - 16, y);
-    this.mapButton?.setPosition(W - BTN * 2.5 - 24, y);
-    this.timeText?.setPosition(W - 10, 10);
+    this.actionButton?.setPosition(W - BTN * 1.5 - 14, y);
+    this.mapButton?.setPosition(W - BTN * 2.5 - 20, y);
+    this.timeText?.setPosition(W - 10, 14);
     this.drawHUD(W);
     this.drawTimeBadge(W, this.timeText?.text ?? 'DAY', 0xcc6600);
   }

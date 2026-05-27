@@ -12,8 +12,11 @@ import { UIScene } from './phaser/scenes/UIScene';
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'game-container',
-  width: 800,
-  height: 550, // Smaller vertical size so buttons aren't cut off
+  // iPad-friendly canvas: 720×480 (3:2 ratio)
+  // On iPad Air (820×1180 portrait / 1180×820 landscape) this fits perfectly
+  // FIT mode scales up/down to fill the screen while preserving ratio
+  width: 720,
+  height: 480,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -36,7 +39,5 @@ const config: Phaser.Types.Core.GameConfig = {
 
 // Create game instance
 const game = new Phaser.Game(config);
-
-// No resize handler needed - using FIT mode with fixed size
 
 export default game;
