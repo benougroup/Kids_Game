@@ -58,6 +58,43 @@ export function createLumenfallVillageData(): MapData {
   const npcs: MapEntityEntry[] = [];
   const monsters: MapEntityEntry[] = [];
 
+  // ── Peaceful animals scattered around the village ──────────────────────────────
+  // Rabbits — hop around the grassy NW and NE quadrants
+  monsters.push({ x: 3,  y: 8,  entityId: 'rabbit' });
+  monsters.push({ x: 6,  y: 9,  entityId: 'rabbit' });
+  monsters.push({ x: 26, y: 8,  entityId: 'rabbit' });
+  monsters.push({ x: 28, y: 11, entityId: 'rabbit' });
+
+  // Squirrels — near the trees
+  monsters.push({ x: 4,  y: 5,  entityId: 'squirrel' });
+  monsters.push({ x: 27, y: 5,  entityId: 'squirrel' });
+  monsters.push({ x: 5,  y: 20, entityId: 'squirrel' });
+
+  // Frogs — near the pond (NW quadrant)
+  monsters.push({ x: 4,  y: 14, entityId: 'frog' });
+  monsters.push({ x: 5,  y: 15, entityId: 'frog' });
+  monsters.push({ x: 3,  y: 16, entityId: 'frog' });
+
+  // Butterflies — flutter around the flower areas
+  monsters.push({ x: 14, y: 4,  entityId: 'butterfly' });
+  monsters.push({ x: 17, y: 4,  entityId: 'butterfly' });
+  monsters.push({ x: 22, y: 18, entityId: 'butterfly' });
+  monsters.push({ x: 10, y: 19, entityId: 'butterfly' });
+
+  // Hedgehogs — near bushes and the graveyard
+  monsters.push({ x: 9,  y: 18, entityId: 'hedgehog' });
+  monsters.push({ x: 26, y: 19, entityId: 'hedgehog' });
+  monsters.push({ x: 7,  y: 22, entityId: 'hedgehog' });
+
+  // ── Slimes — a few wandering near the graveyard and ruins ──────────────────
+  monsters.push({ x: 10, y: 21, entityId: 'slime_green' });
+  monsters.push({ x: 12, y: 22, entityId: 'slime_green' });
+  monsters.push({ x: 8,  y: 23, entityId: 'slime_blue'  });  // sleepy blue near graveyard
+  monsters.push({ x: 22, y: 20, entityId: 'slime_blue'  });  // sleepy blue near ruins
+  monsters.push({ x: 25, y: 22, entityId: 'slime_red'   });  // aggressive red near ruins
+  // King Slime — lurking in the SE ruins corner (mini-boss encounter)
+  monsters.push({ x: 27, y: 23, entityId: 'slime_king'  });
+
   // ── 1. BASE GROUND: full grass ──────────────────────────────────────────
   fill(groundLayer, 0, 0, COLS, ROWS, 'grass_plain', 'terrain_grassland', 0);
 

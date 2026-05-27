@@ -38,6 +38,7 @@ export interface EntityDefinition {
   tileWidth?: number;        // How many tiles wide (default 1)
   tileHeight?: number;       // How many tiles tall (default 1)
   mathDifficulty?: number;   // If set, triggers math challenge (1-5)
+  fleeRange?: number;         // Distance in pixels at which peaceful animals flee from player
 }
 
 // ===================== VISUAL TINTS =====================
@@ -558,5 +559,246 @@ export const MONSTER_DEFINITIONS: Record<string, EntityDefinition> = {
     isHostile: false,
     sightRange: 3,
     displaySize: 32,
+  },
+
+  // ── Small peaceful animals ─────────────────────────────────────────────
+  rabbit: {
+    id: 'rabbit',
+    name: 'Rabbit',
+    type: 'monster',  // uses monster system but isHostile:false = peaceful animal
+    atlas: 'creatures',
+    frames: {
+      idle: 'rabbit_idle',
+      walk: ['rabbit_hop_1', 'rabbit_hop_2'],
+      run:  ['rabbit_hop_1', 'rabbit_hop_2'],
+      attack: 'rabbit_scared',
+      dead: 'rabbit_idle',
+      fainted: 'rabbit_idle',
+      frozen: 'rabbit_idle',
+      alert: 'rabbit_scared',
+    },
+    movementFlags: DEFAULT_FLAGS,
+    hp: 8,
+    speed: 100,          // fast little hopper
+    damage: 0,
+    isHostile: false,
+    sightRange: 3,
+    canWander: true,
+    wanderRadius: 3,
+    displaySize: 24,     // tiny! about half the hero height
+    fleeRange: 128,      // flees when player gets within 2 tiles
+  },
+
+  squirrel: {
+    id: 'squirrel',
+    name: 'Squirrel',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'squirrel_idle',
+      walk: ['squirrel_run_1', 'squirrel_run_2'],
+      run:  ['squirrel_run_1', 'squirrel_run_2'],
+      attack: 'squirrel_eating',
+      dead: 'squirrel_idle',
+      fainted: 'squirrel_idle',
+      frozen: 'squirrel_idle',
+      alert: 'squirrel_run_1',
+    },
+    movementFlags: DEFAULT_FLAGS,
+    hp: 6,
+    speed: 120,
+    damage: 0,
+    isHostile: false,
+    sightRange: 3,
+    canWander: true,
+    wanderRadius: 2,
+    displaySize: 22,
+    fleeRange: 96,
+  },
+
+  frog: {
+    id: 'frog',
+    name: 'Frog',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'frog_idle',
+      walk: ['frog_jump_1', 'frog_jump_2'],
+      run:  ['frog_jump_1', 'frog_jump_2'],
+      attack: 'frog_croak',
+      dead: 'frog_idle',
+      fainted: 'frog_idle',
+      frozen: 'frog_idle',
+      alert: 'frog_croak',
+    },
+    movementFlags: { ...DEFAULT_FLAGS, canSwim: true },
+    hp: 10,
+    speed: 80,
+    damage: 0,
+    isHostile: false,
+    sightRange: 2,
+    canWander: true,
+    wanderRadius: 2,
+    displaySize: 20,
+    fleeRange: 80,
+  },
+
+  butterfly: {
+    id: 'butterfly',
+    name: 'Butterfly',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'butterfly_land',
+      walk: ['butterfly_fly_1', 'butterfly_fly_2'],
+      run:  ['butterfly_fly_1', 'butterfly_fly_2'],
+      attack: 'butterfly_flutter',
+      dead: 'butterfly_land',
+      fainted: 'butterfly_land',
+      frozen: 'butterfly_land',
+      alert: 'butterfly_fly_1',
+    },
+    movementFlags: { ...DEFAULT_FLAGS, canFly: true },
+    hp: 4,
+    speed: 70,
+    damage: 0,
+    isHostile: false,
+    sightRange: 2,
+    canWander: true,
+    wanderRadius: 4,     // flutters around a wider area
+    displaySize: 20,
+    fleeRange: 64,
+  },
+
+  hedgehog: {
+    id: 'hedgehog',
+    name: 'Hedgehog',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'hedgehog_idle',
+      walk: ['hedgehog_walk_1', 'hedgehog_walk_2'],
+      run:  ['hedgehog_roll'],
+      attack: 'hedgehog_roll',
+      dead: 'hedgehog_idle',
+      fainted: 'hedgehog_idle',
+      frozen: 'hedgehog_idle',
+      alert: 'hedgehog_sniff',
+    },
+    movementFlags: DEFAULT_FLAGS,
+    hp: 15,
+    speed: 50,           // slow but sturdy
+    damage: 0,
+    isHostile: false,
+    sightRange: 2,
+    canWander: true,
+    wanderRadius: 2,
+    displaySize: 22,
+    fleeRange: 48,       // barely flees — curls up instead
+  },
+
+  // ── Slime monster variants ─────────────────────────────────────────────
+  slime_green: {
+    id: 'slime_green',
+    name: 'Green Slime',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'slime_green_idle',
+      walk: ['slime_green_move_l', 'slime_green_move_r'],
+      run:  ['slime_green_move_l', 'slime_green_move_r'],
+      attack: 'slime_green_attack',
+      dead: 'slime_green_idle',
+      fainted: 'slime_green_idle',
+      frozen: 'slime_green_idle',
+      alert: 'slime_green_attack',
+    },
+    movementFlags: { ...DEFAULT_FLAGS, canSwim: true },
+    hp: 20,
+    speed: 45,
+    damage: 1,
+    isHostile: false,    // wanders peacefully unless provoked
+    sightRange: 3,
+    canWander: true,
+    wanderRadius: 3,
+    displaySize: 28,
+  },
+
+  slime_blue: {
+    id: 'slime_blue',
+    name: 'Blue Slime',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'slime_blue_idle',
+      walk: ['slime_blue_move_l', 'slime_blue_move_r'],
+      run:  ['slime_blue_move_l', 'slime_blue_move_r'],
+      attack: 'slime_blue_sleep',
+      dead: 'slime_blue_idle',
+      fainted: 'slime_blue_sleep',
+      frozen: 'slime_blue_idle',
+      alert: 'slime_blue_idle',
+    },
+    movementFlags: { ...DEFAULT_FLAGS, canSwim: true },
+    hp: 15,
+    speed: 25,           // very slow, sleepy
+    damage: 0,
+    isHostile: false,
+    sightRange: 2,
+    canWander: true,
+    wanderRadius: 2,
+    displaySize: 28,
+  },
+
+  slime_red: {
+    id: 'slime_red',
+    name: 'Red Slime',
+    type: 'monster',
+    atlas: 'creatures',
+    frames: {
+      idle: 'slime_red_idle',
+      walk: ['slime_red_move_l', 'slime_red_move_r'],
+      run:  ['slime_red_move_l', 'slime_red_move_r'],
+      attack: 'slime_red_attack',
+      dead: 'slime_red_idle',
+      fainted: 'slime_red_idle',
+      frozen: 'slime_red_idle',
+      alert: 'slime_red_attack',
+    },
+    movementFlags: { ...DEFAULT_FLAGS, canSwim: true },
+    hp: 30,
+    speed: 75,           // fast and aggressive
+    damage: 2,
+    isHostile: true,     // actively chases player!
+    sightRange: 5,
+    canWander: true,
+    wanderRadius: 4,
+    displaySize: 32,
+  },
+
+  slime_king: {
+    id: 'slime_king',
+    name: 'King Slime',
+    type: 'boss',
+    atlas: 'creatures',
+    frames: {
+      idle: 'slime_king_idle',
+      walk: ['slime_king_move_l', 'slime_king_move_r'],
+      run:  ['slime_king_move_l', 'slime_king_move_r'],
+      attack: 'slime_king_roar',
+      dead: 'slime_king_idle',
+      fainted: 'slime_king_idle',
+      frozen: 'slime_king_idle',
+      alert: 'slime_king_roar',
+    },
+    movementFlags: { ...DEFAULT_FLAGS, canSwim: true },
+    hp: 150,
+    speed: 55,
+    damage: 4,
+    isHostile: true,
+    sightRange: 7,
+    canWander: true,
+    wanderRadius: 5,
+    displaySize: 48,     // large boss slime
   },
 };

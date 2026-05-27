@@ -1,37 +1,56 @@
 /**
- * NPCBubble — floating emoji speech bubble above NPCs
+ * NPCBubble — floating emoji speech bubble above NPCs and monsters
  *
- * Bubble types:
- *   talking   → white bubble with animated "…" dots (only for NPCs with dialogueKey)
+ * NPC bubble types:
+ *   talking   → white bubble with animated "…" dots (NPCs with dialogueKey)
  *   question  → yellow bubble with "?"
  *   sick      → green bubble with "🤒"
  *   sleeping  → blue bubble with "💤"
  *   confused  → purple bubble with "😵"
  *   dead      → dark bubble with "💀"
- *   silent    → no bubble (NPCs with no dialogueKey and normal state)
+ *
+ * Monster/animal bubble types:
+ *   sleepy    → soft blue bubble with "😴" (monster dormant / day-time)
+ *   awake     → yellow bubble with "👀" (monster just spotted something)
+ *   aggressive → red bubble with "⚠️" (monster in pursuit / attacking)
+ *   alert     → orange bubble with "!" (monster heard a sound, not yet targeting)
+ *
+ *   silent    → no bubble
  *
  * The bubble floats above the sprite, gently bobbing up and down.
- * When the player is within interact range, the talking bubble pulses.
+ * Aggressive bubbles shake rapidly to signal danger.
  */
 
 import Phaser from 'phaser';
 
-export type BubbleType = 'talking' | 'question' | 'sick' | 'sleeping' | 'confused' | 'dead' | 'silent';
+export type BubbleType =
+  | 'talking' | 'question' | 'sick' | 'sleeping' | 'confused' | 'dead'
+  | 'sleepy' | 'awake' | 'aggressive' | 'alert'
+  | 'silent';
 
 interface BubbleConfig {
   emoji: string;
   bgColor: number;
   borderColor: number;
   textColor: string;
+  shake?: boolean;   // aggressive bubbles shake
+  pulse?: boolean;   // awake/alert bubbles pulse
 }
 
 const BUBBLE_CONFIGS: Record<Exclude<BubbleType, 'silent'>, BubbleConfig> = {
-  talking:  { emoji: '…',  bgColor: 0xffffff, borderColor: 0xcccccc, textColor: '#333333' },
-  question: { emoji: '?',  bgColor: 0xffe066, borderColor: 0xcc9900, textColor: '#664400' },
-  sick:     { emoji: '🤒', bgColor: 0xd4f5c0, borderColor: 0x55aa33, textColor: '#226611' },
-  sleeping: { emoji: '💤', bgColor: 0xd0e8ff, borderColor: 0x4488cc, textColor: '#224466' },
-  confused: { emoji: '😵', bgColor: 0xeeddff, borderColor: 0x9944cc, textColor: '#441166' },
-  dead:     { emoji: '💀', bgColor: 0x222222, borderColor: 0x555555, textColor: '#aaaaaa' },
+  // ── NPC types ────────────────────────────────────────────────────────────
+  talking:    { emoji: '…',  bgColor: 0xffffff, borderColor: 0xcccccc, textColor: '#333333' },
+  question:   { emoji: '?',  bgColor: 0xffe066, borderColor: 0xcc9900, textColor: '#664400' },
+  sick:       { emoji: '🤒', bgColor: 0xd4f5c0, borderColor: 0x55aa33, textColor: '#226611' },
+  sleeping:   { emoji: '💤', bgColor: 0xd0e8ff, borderColor: 0x4488cc, textColor: '#224466' },
+  confused:   { emoji: '😵', bgColor: 0xeeddff, borderColor: 0x9944cc, textColor: '#441166' },
+  dead:       { emoji: '💀', bgColor: 0x222222, borderColor: 0x555555, textColor: '#aaaaaa' },
+
+  // ── Monster / animal types ────────────────────────────────────────────────
+  sleepy:     { emoji: '😴', bgColor: 0xd0e8ff, borderColor: 0x6699bb, textColor: '#224466' },
+  awake:      { emoji: '👀', bgColor: 0xfffde0, borderColor: 0xddbb00, textColor: '#554400', pulse: true },
+  aggressive: { emoji: '⚠️', bgColor: 0xff3322, borderColor: 0xcc1100, textColor: '#ffffff', shake: true },
+  alert:      { emoji: '!',  bgColor: 0xff9900, borderColor: 0xcc6600, textColor: '#ffffff', pulse: true },
 };
 
 export class NPCBubble {
@@ -42,18 +61,19 @@ export class NPCBubble {
   private tail: Phaser.GameObjects.Graphics;
   private currentType: BubbleType = 'silent';
   private bobTween: Phaser.Tweens.Tween | null = null;
+  private shakeTween: Phaser.Tweens.Tween | null = null;
   private dotTimer = 0;
   private dotState = 0;
   private readonly W = 36;
   private readonly H = 28;
-  private readonly R = 7;   // corner radius
-  private readonly TAIL = 7; // tail height
+  private readonly R = 7;
+  private readonly TAIL = 7;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
 
-    this.tail = scene.add.graphics();
-    this.bg   = scene.add.graphics();
+    this.tail  = scene.add.graphics();
+    this.bg    = scene.add.graphics();
     this.label = scene.add.text(0, 0, '', {
       fontSize: '14px',
       fontFamily: 'Arial, sans-serif',
@@ -75,7 +95,7 @@ export class NPCBubble {
     this.currentType = type;
     this.container.setVisible(true);
     this.redraw(type);
-    this.startBob();
+    this.startAnimation(type);
   }
 
   public hide(): void {
@@ -83,6 +103,8 @@ export class NPCBubble {
     this.container.setVisible(false);
     this.bobTween?.stop();
     this.bobTween = null;
+    this.shakeTween?.stop();
+    this.shakeTween = null;
   }
 
   /** Call every frame from Entity.update() — handles dot animation and position sync */
@@ -100,9 +122,18 @@ export class NPCBubble {
         this.label.setText(dots);
       }
     }
+
+    // Animate "!" for alert bubble — blink
+    if (this.currentType === 'alert') {
+      this.dotTimer += delta;
+      if (this.dotTimer > 300) {
+        this.dotTimer = 0;
+        this.label.setVisible(!this.label.visible);
+      }
+    }
   }
 
-  /** Pulse the bubble when player is nearby (called by GameScene) */
+  /** Pulse the bubble when player is nearby */
   public pulse(): void {
     if (!this.container.visible) return;
     this.scene.tweens.add({
@@ -121,6 +152,7 @@ export class NPCBubble {
 
   public destroy(): void {
     this.bobTween?.stop();
+    this.shakeTween?.stop();
     this.container.destroy();
   }
 
@@ -147,29 +179,62 @@ export class NPCBubble {
 
     // Label
     this.label.setColor(cfg.textColor);
+    this.label.setVisible(true);
 
     if (type === 'talking') {
       this.label.setFontSize(12);
       this.label.setText('·');
       this.dotTimer = 0;
       this.dotState = 0;
+    } else if (type === 'aggressive') {
+      // Larger warning symbol
+      this.label.setFontSize(16);
+      this.label.setText(cfg.emoji);
     } else {
-      // Use emoji for all other types
       this.label.setFontSize(14);
       this.label.setText(cfg.emoji);
     }
   }
 
-  private startBob(): void {
+  private startAnimation(type: BubbleType): void {
     this.bobTween?.stop();
-    // Gentle bob: move up 4px and back, looping
-    this.bobTween = this.scene.tweens.add({
-      targets: this.container,
-      y: this.container.y - 4,
-      duration: 900,
-      ease: 'Sine.easeInOut',
-      yoyo: true,
-      repeat: -1,
-    });
+    this.shakeTween?.stop();
+    this.bobTween = null;
+    this.shakeTween = null;
+
+    const cfg = type !== 'silent' ? BUBBLE_CONFIGS[type as Exclude<BubbleType, 'silent'>] : null;
+
+    if (cfg?.shake) {
+      // Aggressive: rapid left-right shake
+      this.shakeTween = this.scene.tweens.add({
+        targets: this.container,
+        x: { from: this.container.x - 3, to: this.container.x + 3 },
+        duration: 60,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    } else if (cfg?.pulse) {
+      // Awake/alert: scale pulse
+      this.bobTween = this.scene.tweens.add({
+        targets: this.container,
+        scaleX: 1.15,
+        scaleY: 1.15,
+        duration: 400,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    } else {
+      // Default gentle bob
+      this.bobTween = this.scene.tweens.add({
+        targets: this.container,
+        y: this.container.y - 4,
+        duration: 900,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    }
   }
 }

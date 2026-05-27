@@ -40,6 +40,10 @@ export class Entity {
   private bubble: NPCBubble | null = null;
   private lastBubbleType: BubbleType = 'silent';
 
+  // Monster AI bubble state
+  private monsterAIState: 'sleepy' | 'awake' | 'alert' | 'aggressive' = 'sleepy';
+  private alertTimer: number = 0; // ms since last alert (resets to awake after 3s)
+
   constructor(
     scene: Phaser.Scene,
     tileX: number,
@@ -89,8 +93,8 @@ export class Entity {
     this.createAnimations();
     this.playState('idle');
 
-    // Create speech bubble for NPCs only
-    if (def.type === 'npc') {
+    // Create speech bubble for NPCs and monsters/animals
+    if (def.type === 'npc' || def.type === 'monster') {
       this.bubble = new NPCBubble(scene, x, y);
       this.updateBubbleType();
     }
@@ -244,8 +248,8 @@ export class Entity {
       for (const light of lightSources) {
         const lightDist = Phaser.Math.Distance.Between(this.sprite.x, this.sprite.y, light.x, light.y);
         if (lightDist < light.radius) {
-          // Flee from light
           this.fleeFrom(light.x, light.y);
+          this.monsterAIState = 'aggressive'; // fleeing = aggressive bubble
           return;
         }
       }
@@ -253,11 +257,33 @@ export class Entity {
 
     // Chase player if in sight range
     if (dist < this.sightRange) {
+      // Alert zone: outer half of sight range
+      if (dist < this.sightRange && dist > this.sightRange * 0.5) {
+        if (this.monsterAIState === 'sleepy') {
+          this.monsterAIState = 'awake'; // just noticed something
+          this.alertTimer = 0;
+        }
+      }
+      // Aggressive zone: inner half — actively chasing
+      if (dist < this.sightRange * 0.5) {
+        this.monsterAIState = 'aggressive';
+        this.alertTimer = 0;
+      }
       if (!this.isMoving) {
         this.moveTo(playerX, playerY, this.def.speed);
       }
     } else {
-      // Wander randomly
+      // Player out of range — cool down from aggressive → awake → sleepy
+      if (this.monsterAIState === 'aggressive') {
+        this.monsterAIState = 'alert';
+        this.alertTimer = 0;
+      } else if (this.monsterAIState === 'alert' || this.monsterAIState === 'awake') {
+        this.alertTimer += delta;
+        if (this.alertTimer > 3000) {
+          this.monsterAIState = 'sleepy';
+          this.alertTimer = 0;
+        }
+      }
       this.updateWander(delta);
     }
   }
@@ -398,7 +424,18 @@ export class Entity {
     if (this.currentState === 'fainted') return 'dead';
     if (this.currentState === 'frozen') return 'confused';
 
-    // Check NPC-specific flags from definition
+    // ── Monster / animal bubbles ────────────────────────────────────────────
+    if (this.def.type === 'monster') {
+      // Peaceful animals (non-hostile monsters) use simplified states
+      if (!this.isHostile) {
+        // Animals just wander — show awake bubble when moving, sleepy when still
+        return this.isMoving ? 'awake' : 'sleepy';
+      }
+      // Hostile monsters use full AI state
+      return this.monsterAIState;
+    }
+
+    // ── NPC bubbles ─────────────────────────────────────────────────────────
     const id = this.def.id;
     if (id.includes('sick') || id.includes('ill') || id.includes('plague')) return 'sick';
     if (id.includes('sleep')) return 'sleeping';
