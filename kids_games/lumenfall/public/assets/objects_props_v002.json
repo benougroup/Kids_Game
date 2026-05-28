@@ -2,140 +2,56 @@
   "frames": {
     "tree_oak_large": {
       "frame": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "x": 55,
+        "y": 19,
+        "w": 249,
+        "h": 321
       }
     },
     "tree_pine_tall": {
       "frame": {
-        "x": 192,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "x": 307,
+        "y": 19,
+        "w": 268,
+        "h": 321
       }
     },
     "tree_dead": {
       "frame": {
-        "x": 384,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "x": 469,
+        "y": 19,
+        "w": 299,
+        "h": 321
       }
     },
     "log_pile": {
       "frame": {
-        "x": 576,
+        "x": 768,
         "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "rock_large": {
       "frame": {
-        "x": 768,
+        "x": 960,
         "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "barrel_pair": {
       "frame": {
-        "x": 960,
+        "x": 1152,
         "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "barrel_triple": {
       "frame": {
-        "x": 1152,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "x": 576,
+        "y": 170,
         "w": 192,
         "h": 170
       }
@@ -146,296 +62,116 @@
         "y": 0,
         "w": 192,
         "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
       }
     },
     "crate_small": {
       "frame": {
         "x": 0,
-        "y": 170,
+        "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "barrel_single": {
       "frame": {
         "x": 192,
-        "y": 170,
+        "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "sack_pair": {
       "frame": {
         "x": 384,
-        "y": 170,
+        "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "sack_single": {
       "frame": {
         "x": 576,
-        "y": 170,
+        "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "fence_short": {
       "frame": {
         "x": 768,
-        "y": 170,
+        "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "lamp_post": {
       "frame": {
-        "x": 960,
+        "x": 1152,
         "y": 170,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "well_small": {
       "frame": {
-        "x": 1152,
-        "y": 170,
+        "x": 1344,
+        "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "cart_empty": {
       "frame": {
         "x": 1344,
-        "y": 170,
+        "y": 425,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "sign_village": {
       "frame": {
-        "x": 0,
-        "y": 340,
+        "x": 384,
+        "y": 425,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "sign_forest": {
       "frame": {
-        "x": 192,
-        "y": 340,
+        "x": 768,
+        "y": 425,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "sign_market": {
       "frame": {
-        "x": 384,
-        "y": 340,
+        "x": 960,
+        "y": 425,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "sign_double": {
       "frame": {
         "x": 576,
-        "y": 340,
+        "y": 425,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "pillory": {
       "frame": {
-        "x": 768,
+        "x": 960,
         "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "well_large": {
       "frame": {
         "x": 960,
-        "y": 340,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "y": 510,
         "w": 192,
         "h": 170
       }
@@ -445,57 +181,21 @@
         "x": 1152,
         "y": 340,
         "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "fence_long": {
       "frame": {
-        "x": 1344,
-        "y": 340,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
         "x": 0,
-        "y": 0,
+        "y": 425,
         "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
+        "h": 85
       }
     },
     "gravestone_plain": {
       "frame": {
         "x": 0,
         "y": 510,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
@@ -506,36 +206,12 @@
         "y": 510,
         "w": 192,
         "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
       }
     },
     "gravestone_rounded": {
       "frame": {
         "x": 384,
         "y": 510,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
@@ -546,18 +222,6 @@
         "y": 510,
         "w": 192,
         "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
       }
     },
     "chest_closed": {
@@ -566,57 +230,21 @@
         "y": 510,
         "w": 192,
         "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
       }
     },
     "cauldron_small": {
       "frame": {
-        "x": 960,
+        "x": 1152,
         "y": 510,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "table_small": {
       "frame": {
-        "x": 1152,
-        "y": 510,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
+        "x": 192,
+        "y": 680,
+        "w": 384,
         "h": 170
       }
     },
@@ -624,18 +252,6 @@
       "frame": {
         "x": 1344,
         "y": 510,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
@@ -646,196 +262,76 @@
         "y": 680,
         "w": 192,
         "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
-        "h": 170
       }
     },
     "market_stall_food": {
       "frame": {
-        "x": 192,
-        "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "x": 960,
+        "y": 850,
         "w": 192,
         "h": 170
       }
     },
     "table_large": {
       "frame": {
-        "x": 384,
-        "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
+        "x": 1152,
+        "y": 850,
+        "w": 384,
         "h": 170
       }
     },
     "chest_open": {
       "frame": {
-        "x": 576,
+        "x": 768,
         "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "market_stall_large": {
       "frame": {
-        "x": 768,
+        "x": 960,
         "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
         "w": 192,
         "h": 170
       }
     },
     "bucket_pair": {
       "frame": {
-        "x": 960,
-        "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
         "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "y": 850,
         "w": 192,
         "h": 170
       }
     },
     "mushroom_pile": {
       "frame": {
-        "x": 1152,
-        "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "x": 576,
+        "y": 850,
         "w": 192,
         "h": 170
       }
     },
     "market_stall_covered": {
       "frame": {
-        "x": 1344,
+        "x": 1152,
         "y": 680,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
-        "w": 192,
+        "w": 384,
         "h": 170
       }
     },
     "campfire": {
       "frame": {
-        "x": 0,
-        "y": 850,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "x": 768,
+        "y": 170,
         "w": 192,
         "h": 170
       }
     },
     "bush_small": {
       "frame": {
-        "x": 192,
-        "y": 850,
-        "w": 192,
-        "h": 170
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 192,
-        "h": 170
-      },
-      "sourceSize": {
+        "x": 960,
+        "y": 170,
         "w": 192,
         "h": 170
       }
