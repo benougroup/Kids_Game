@@ -53,6 +53,8 @@ export class GameScene extends Phaser.Scene {
   // Click-to-move
   private clickTarget: { x: number; y: number } | null = null;
   private clickMarker: Phaser.GameObjects.Graphics | null = null;
+  private clickStallMs: number = 0;
+  private lastClickMovePos: { x: number; y: number } | null = null;
   private pickups: Array<{ id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number }> = [];
   
   // Player collision half-size (must match Player.ts setSize)
@@ -238,6 +240,7 @@ export class GameScene extends Phaser.Scene {
     this.pickups = [];
     
     this.currentMapId = mapId;
+    this.cancelClickMovement(false);
     
     // Get map data
     let mapData;
@@ -310,8 +313,7 @@ export class GameScene extends Phaser.Scene {
                                       joy.up.isDown || joy.down.isDown));
 
     if (hasKeyboardInput) {
-      this.clickTarget = null;
-      this.clearClickMarker();
+      this.cancelClickMovement(false);
       // Merge joystick cursors into keyboard cursors for player.update()
       const mergedCursors = {
         left:  { isDown: this.cursors.left.isDown  || (joy?.left?.isDown  ?? false) },
@@ -481,10 +483,7 @@ export class GameScene extends Phaser.Scene {
     const dist = Math.sqrt(dx * dx + dy * dy);
     
     if (dist < 8) {
-      this.clickTarget = null;
-      this.clearClickMarker();
-      this.player.sprite.setVelocity(0, 0);
-      this.player.playIdleAnimation();
+      this.cancelClickMovement();
       return;
     }
     
@@ -500,8 +499,7 @@ export class GameScene extends Phaser.Scene {
     
     // Full movement check using multi-point collision
     if (this.isPositionWalkable(nextX, nextY)) {
-      this.player.sprite.setVelocity(vx, vy);
-      this.player.playWalkAnimation(vx, vy);
+      this.applyClickVelocity(vx, vy, delta, playerPos);
       return;
     }
     
@@ -513,14 +511,12 @@ export class GameScene extends Phaser.Scene {
                      this.isPositionWalkable(playerPos.x, nextY);
     
     if (canMoveX && Math.abs(vx) > 1) {
-      this.player.sprite.setVelocity(vx, 0);
-      this.player.playWalkAnimation(vx, 0);
+      this.applyClickVelocity(vx, 0, delta, playerPos);
       return;
     }
     
     if (canMoveY && Math.abs(vy) > 1) {
-      this.player.sprite.setVelocity(0, vy);
-      this.player.playWalkAnimation(0, vy);
+      this.applyClickVelocity(0, vy, delta, playerPos);
       return;
     }
     
@@ -534,47 +530,25 @@ export class GameScene extends Phaser.Scene {
     // Pick the perpendicular direction that gets us closer to the target
     if (Math.abs(dy) >= Math.abs(dx)) {
       // Primarily moving vertically — try horizontal escape
-      if (canSlideRight && dx >= 0) {
-        this.player.sprite.setVelocity(speed, 0);
-        this.player.playWalkAnimation(speed, 0);
-      } else if (canSlideLeft && dx <= 0) {
-        this.player.sprite.setVelocity(-speed, 0);
-        this.player.playWalkAnimation(-speed, 0);
-      } else if (canSlideRight) {
-        this.player.sprite.setVelocity(speed, 0);
-        this.player.playWalkAnimation(speed, 0);
-      } else if (canSlideLeft) {
-        this.player.sprite.setVelocity(-speed, 0);
-        this.player.playWalkAnimation(-speed, 0);
-      } else {
-        // Truly stuck — cancel movement
-        this.clickTarget = null;
-        this.clearClickMarker();
-        this.player.sprite.setVelocity(0, 0);
-        this.player.playIdleAnimation();
-      }
+      if (canSlideRight && dx >= 0) this.applyClickVelocity(speed, 0, delta, playerPos);
+      else if (canSlideLeft && dx <= 0) this.applyClickVelocity(-speed, 0, delta, playerPos);
+      else if (canSlideRight) this.applyClickVelocity(speed, 0, delta, playerPos);
+      else if (canSlideLeft) this.applyClickVelocity(-speed, 0, delta, playerPos);
+      else this.cancelClickMovement();
     } else {
       // Primarily moving horizontally — try vertical escape
-      if (canSlideDown && dy >= 0) {
-        this.player.sprite.setVelocity(0, speed);
-        this.player.playWalkAnimation(0, speed);
-      } else if (canSlideUp && dy <= 0) {
-        this.player.sprite.setVelocity(0, -speed);
-        this.player.playWalkAnimation(0, -speed);
-      } else if (canSlideDown) {
-        this.player.sprite.setVelocity(0, speed);
-        this.player.playWalkAnimation(0, speed);
-      } else if (canSlideUp) {
-        this.player.sprite.setVelocity(0, -speed);
-        this.player.playWalkAnimation(0, -speed);
-      } else {
-        // Truly stuck — cancel movement
-        this.clickTarget = null;
-        this.clearClickMarker();
-        this.player.sprite.setVelocity(0, 0);
-        this.player.playIdleAnimation();
-      }
+      if (canSlideDown && dy >= 0) this.applyClickVelocity(0, speed, delta, playerPos);
+      else if (canSlideUp && dy <= 0) this.applyClickVelocity(0, -speed, delta, playerPos);
+      else if (canSlideDown) this.applyClickVelocity(0, speed, delta, playerPos);
+      else if (canSlideUp) this.applyClickVelocity(0, -speed, delta, playerPos);
+      else this.cancelClickMovement();
     }
+  }
+
+  private applyClickVelocity(vx: number, vy: number, delta: number, playerPos: { x: number; y: number }): void {
+    this.player.sprite.setVelocity(vx, vy);
+    this.player.playWalkAnimation(vx, vy);
+    this.cancelIfClickMovementStalled(delta, playerPos);
   }
 
   private handleClick(pointer: Phaser.Input.Pointer): void {
@@ -592,8 +566,81 @@ export class GameScene extends Phaser.Scene {
     const clampedX = Math.max(0, Math.min(mapW - 1, worldX));
     const clampedY = Math.max(0, Math.min(mapH - 1, worldY));
 
-    this.clickTarget = { x: clampedX, y: clampedY };
-    this.drawClickMarker(clampedX, clampedY);
+    const target = this.findNearestWalkableClickTarget(clampedX, clampedY);
+    this.clickTarget = target;
+    this.clickStallMs = 0;
+    this.lastClickMovePos = null;
+    this.drawClickMarker(target.x, target.y);
+  }
+
+
+  private findNearestWalkableClickTarget(worldX: number, worldY: number): { x: number; y: number } {
+    if (this.isPositionWalkable(worldX, worldY)) return { x: worldX, y: worldY };
+    if (!this.currentMapBuilder) return { x: worldX, y: worldY };
+
+    const tileSize = this.currentMapBuilder.getTileSize();
+    const startTileX = Math.floor(worldX / tileSize);
+    const startTileY = Math.floor(worldY / tileSize);
+    let bestX = worldX;
+    let bestY = worldY;
+    let bestDistSq = Number.POSITIVE_INFINITY;
+    let hasBest = false;
+
+    for (let radius = 1; radius <= 4; radius++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        for (let dx = -radius; dx <= radius; dx++) {
+          if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;
+          const candidateX = (startTileX + dx) * tileSize + tileSize / 2;
+          const candidateY = (startTileY + dy) * tileSize + tileSize / 2;
+          if (!this.isPositionWalkable(candidateX, candidateY)) continue;
+
+          const distSq = (candidateX - worldX) ** 2 + (candidateY - worldY) ** 2;
+          if (distSq < bestDistSq) {
+            bestX = candidateX;
+            bestY = candidateY;
+            bestDistSq = distSq;
+            hasBest = true;
+          }
+        }
+      }
+      if (hasBest) return { x: bestX, y: bestY };
+    }
+
+    return { x: worldX, y: worldY };
+  }
+
+  private cancelIfClickMovementStalled(delta: number, playerPos: { x: number; y: number }): boolean {
+    if (!this.clickTarget) return false;
+
+    if (!this.lastClickMovePos) {
+      this.lastClickMovePos = { ...playerPos };
+      this.clickStallMs = 0;
+      return false;
+    }
+
+    const moved = Phaser.Math.Distance.Between(playerPos.x, playerPos.y, this.lastClickMovePos.x, this.lastClickMovePos.y);
+    if (moved < 0.5) {
+      this.clickStallMs += delta;
+    } else {
+      this.clickStallMs = 0;
+      this.lastClickMovePos = { ...playerPos };
+    }
+
+    if (this.clickStallMs < 450) return false;
+
+    this.cancelClickMovement();
+    return true;
+  }
+
+  private cancelClickMovement(stopPlayer: boolean = true): void {
+    this.clickTarget = null;
+    this.clickStallMs = 0;
+    this.lastClickMovePos = null;
+    this.clearClickMarker();
+    if (stopPlayer && this.player) {
+      this.player.sprite.setVelocity(0, 0);
+      this.player.playIdleAnimation();
+    }
   }
 
   private drawClickMarker(x: number, y: number): void {
