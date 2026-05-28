@@ -18,6 +18,13 @@ export class Input {
     interactPressed: false,
   };
   private readonly commands: Command[] = [];
+  private readonly heldDirections = {
+    up: false,
+    down: false,
+    left: false,
+    right: false,
+  };
+  private nextKeyboardMoveMs = 0;
   private touchTarget: { x: number; y: number } | null = null;
   private readonly isDevMode = typeof window !== 'undefined' && window.location.hostname === 'localhost';
   private latestState: Readonly<GameState> | null = null;
@@ -25,6 +32,8 @@ export class Input {
 
   constructor(private readonly canvas: HTMLCanvasElement, private readonly camera: Camera) {
     window.addEventListener('keydown', this.onKeyDown);
+    window.addEventListener('keyup', this.onKeyUp);
+    window.addEventListener('blur', this.onWindowBlur);
     canvas.addEventListener('pointerdown', this.onPointerDown, { passive: false });
     canvas.addEventListener('touchstart', this.onTouchStart, { passive: false });
     canvas.addEventListener('touchmove', this.onTouchMove, { passive: false });
@@ -41,6 +50,10 @@ export class Input {
       this.state.interactPressed = false;
       return { moveDx: 0, moveDy: 0, interactPressed: false, commands: frameCommands };
     }
+
+    const keyboardMove = this.getKeyboardMoveIntent();
+    this.state.moveDx = keyboardMove.moveDx;
+    this.state.moveDy = keyboardMove.moveDy;
 
     if (this.touchTarget) {
       const dx = this.touchTarget.x - playerTileX;
@@ -61,10 +74,30 @@ export class Input {
       interactPressed: this.state.interactPressed,
       commands: frameCommands,
     };
-    this.state.moveDx = 0;
-    this.state.moveDy = 0;
     this.state.interactPressed = false;
     return frame;
+  }
+
+  private getKeyboardMoveIntent(): { moveDx: number; moveDy: number } {
+    let moveDx = 0;
+    let moveDy = 0;
+
+    if (this.heldDirections.left && !this.heldDirections.right) moveDx = -1;
+    else if (this.heldDirections.right && !this.heldDirections.left) moveDx = 1;
+
+    if (this.heldDirections.up && !this.heldDirections.down) moveDy = -1;
+    else if (this.heldDirections.down && !this.heldDirections.up) moveDy = 1;
+
+    if (moveDx === 0 && moveDy === 0) {
+      this.nextKeyboardMoveMs = 0;
+      return { moveDx: 0, moveDy: 0 };
+    }
+
+    const now = performance.now();
+    if (now < this.nextKeyboardMoveMs) return { moveDx: 0, moveDy: 0 };
+
+    this.nextKeyboardMoveMs = now + 150;
+    return { moveDx, moveDy };
   }
 
   private readonly onKeyDown = (event: KeyboardEvent): void => {
@@ -156,11 +189,35 @@ export class Input {
       return;
     }
 
-    if (key === 'arrowup' || key === 'w') this.state.moveDy = -1;
-    else if (key === 'arrowdown' || key === 's') this.state.moveDy = 1;
-    else if (key === 'arrowleft' || key === 'a') this.state.moveDx = -1;
-    else if (key === 'arrowright' || key === 'd') this.state.moveDx = 1;
+    if (this.setHeldDirection(key, true)) {
+      if (!event.repeat) this.nextKeyboardMoveMs = 0;
+      event.preventDefault();
+    }
   };
+
+  private readonly onKeyUp = (event: KeyboardEvent): void => {
+    const key = event.key.toLowerCase();
+    if (this.setHeldDirection(key, false)) {
+      event.preventDefault();
+    }
+  };
+
+  private readonly onWindowBlur = (): void => {
+    this.heldDirections.up = false;
+    this.heldDirections.down = false;
+    this.heldDirections.left = false;
+    this.heldDirections.right = false;
+    this.nextKeyboardMoveMs = 0;
+  };
+
+  private setHeldDirection(key: string, isDown: boolean): boolean {
+    if (key === 'arrowup' || key === 'w') this.heldDirections.up = isDown;
+    else if (key === 'arrowdown' || key === 's') this.heldDirections.down = isDown;
+    else if (key === 'arrowleft' || key === 'a') this.heldDirections.left = isDown;
+    else if (key === 'arrowright' || key === 'd') this.heldDirections.right = isDown;
+    else return false;
+    return true;
+  }
 
   private readonly onPointerDown = (event: PointerEvent): void => {
     event.preventDefault();
