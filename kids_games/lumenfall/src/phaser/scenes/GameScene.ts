@@ -56,7 +56,7 @@ export class GameScene extends Phaser.Scene {
   private pickups: Array<{ id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number }> = [];
   
   // Player collision half-size (must match Player.ts setSize)
-  private readonly PLAYER_HALF: number = 12; // 24px collision box / 2 (reduced for better navigation)
+  private readonly PLAYER_HALF: number = 10; // 20px collision box / 2 (improves navigation through tight passages)
   
   // Transition cooldown
   private lastTransitionTime: number = 0;
