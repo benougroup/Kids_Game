@@ -257,14 +257,16 @@ export class GameScene extends Phaser.Scene {
     const mapW = mapData.cols * mapData.tileSize;
     const mapH = mapData.rows * mapData.tileSize;
     
-    // Create or move player
-    const spawnX = spawnTileX * mapData.tileSize + mapData.tileSize / 2;
-    const spawnY = spawnTileY * mapData.tileSize + mapData.tileSize / 2;
-    
+    // Create or move player. If a map transition or saved spawn points at an
+    // obstacle, nudge to the nearest walkable tile instead of trapping the hero.
+    const requestedSpawnX = spawnTileX * mapData.tileSize + mapData.tileSize / 2;
+    const requestedSpawnY = spawnTileY * mapData.tileSize + mapData.tileSize / 2;
+    const spawn = this.findNearestWalkablePosition(requestedSpawnX, requestedSpawnY, mapData.tileSize);
+
     if (!this.player) {
-      this.player = new Player(this, spawnX, spawnY);
+      this.player = new Player(this, spawn.x, spawn.y);
     } else {
-      this.player.setPosition(spawnX, spawnY);
+      this.player.setPosition(spawn.x, spawn.y);
     }
     
     // Camera setup
@@ -320,7 +322,8 @@ export class GameScene extends Phaser.Scene {
       this.player.update(
         mergedCursors,
         this.wasd,
-        (x, y) => !this.isPositionWalkable(x, y)
+        (x, y) => !this.isPositionWalkable(x, y),
+        delta / 1000
       );
     } else if (this.clickTarget) {
       this.moveTowardsClick(delta);
@@ -396,6 +399,36 @@ export class GameScene extends Phaser.Scene {
     // Animate portal visuals
     this.portalTick += delta;
     this.updatePortalVisuals();
+  }
+
+  /**
+   * Find the closest safe player center for a requested spawn. This protects
+   * movement from being disabled by a bad transition/save coordinate or by map
+   * art later being placed on top of an old spawn tile.
+   */
+  private findNearestWalkablePosition(worldX: number, worldY: number, tileSize: number): { x: number; y: number } {
+    if (this.isPositionWalkable(worldX, worldY)) return { x: worldX, y: worldY };
+
+    const startTileX = Math.floor(worldX / tileSize);
+    const startTileY = Math.floor(worldY / tileSize);
+
+    for (let radius = 1; radius <= 6; radius++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        for (let dx = -radius; dx <= radius; dx++) {
+          if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;
+
+          const candidateX = (startTileX + dx) * tileSize + tileSize / 2;
+          const candidateY = (startTileY + dy) * tileSize + tileSize / 2;
+          if (this.isPositionWalkable(candidateX, candidateY)) {
+            console.warn(`Spawn (${startTileX}, ${startTileY}) was blocked; moved player to (${startTileX + dx}, ${startTileY + dy}).`);
+            return { x: candidateX, y: candidateY };
+          }
+        }
+      }
+    }
+
+    console.warn(`Spawn (${startTileX}, ${startTileY}) was blocked and no nearby walkable tile was found.`);
+    return { x: worldX, y: worldY };
   }
 
   /**

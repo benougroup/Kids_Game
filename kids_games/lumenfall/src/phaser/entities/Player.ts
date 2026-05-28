@@ -66,7 +66,8 @@ export class Player {
   update(
     cursors: Phaser.Types.Input.Keyboard.CursorKeys,
     wasd: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key },
-    isBlocked?: (x: number, y: number) => boolean
+    isBlocked?: (x: number, y: number) => boolean,
+    deltaSeconds: number = 1 / 60
   ): void {
     let vx = 0;
     let vy = 0;
@@ -82,30 +83,27 @@ export class Player {
       vy *= 0.707;
     }
 
-    // Collision check
-    if (isBlocked && (vx !== 0 || vy !== 0)) {
-      const margin = 20;
-      const futureX = this.sprite.x + vx * this.speed * 0.016;
-      const futureY = this.sprite.y + vy * this.speed * 0.016;
-      
-      // Check corners of player hitbox
-      const checkPoints = [
-        { x: futureX - margin, y: futureY - margin },
-        { x: futureX + margin, y: futureY - margin },
-        { x: futureX - margin, y: futureY + margin },
-        { x: futureX + margin, y: futureY + margin },
-      ];
-      
-      let blockedX = false;
-      let blockedY = false;
-      
-      for (const pt of checkPoints) {
-        if (isBlocked(pt.x, this.sprite.y)) blockedX = true;
-        if (isBlocked(this.sprite.x, pt.y)) blockedY = true;
-      }
-      
-      if (blockedX) vx = 0;
-      if (blockedY) vy = 0;
+    // Collision check. Use the actual frame delta so a slow frame cannot
+    // tunnel into walls, and do not let collision checks freeze a player who
+    // somehow spawned inside a blocked tile; in that case the nearest-safe
+    // spawn recovery in GameScene gets first chance to free them.
+    if (isBlocked && (vx !== 0 || vy !== 0) && !isBlocked(this.sprite.x, this.sprite.y)) {
+      const body = this.sprite.body as Phaser.Physics.Arcade.Body | null;
+      const margin = Math.max(body?.halfWidth ?? 14, body?.halfHeight ?? 14);
+      const stepSeconds = Phaser.Math.Clamp(deltaSeconds, 1 / 120, 1 / 20);
+      const futureX = this.sprite.x + vx * this.speed * stepSeconds;
+      const futureY = this.sprite.y + vy * this.speed * stepSeconds;
+
+      const axisWouldBlock = (cx: number, cy: number): boolean => (
+        isBlocked(cx, cy) ||
+        isBlocked(cx - margin, cy - margin) ||
+        isBlocked(cx + margin, cy - margin) ||
+        isBlocked(cx - margin, cy + margin) ||
+        isBlocked(cx + margin, cy + margin)
+      );
+
+      if (axisWouldBlock(futureX, this.sprite.y)) vx = 0;
+      if (axisWouldBlock(this.sprite.x, futureY)) vy = 0;
     }
 
     this.sprite.setVelocity(vx * this.speed, vy * this.speed);
