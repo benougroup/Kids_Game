@@ -1,0 +1,342 @@
+{
+  "frames": {
+    "stone_castle_wall": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "brick_wall_clean": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "brick_wall_cracked": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wooden_palisade": {
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "iron_fence": {
+      "frame": {
+        "x": 512,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stone_wall_mossy": {
+      "frame": {
+        "x": 0,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "brick_wall_mossy": {
+      "frame": {
+        "x": 128,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stone_tower_wall": {
+      "frame": {
+        "x": 256,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wooden_fence_simple": {
+      "frame": {
+        "x": 384,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "hedge_wall": {
+      "frame": {
+        "x": 512,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gate_stone": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gate_iron": {
+      "frame": {
+        "x": 128,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gate_wooden": {
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gate_hedge": {
+      "frame": {
+        "x": 384,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gate_bars": {
+      "frame": {
+        "x": 512,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wall_with_torch": {
+      "frame": {
+        "x": 0,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wall_with_banner": {
+      "frame": {
+        "x": 128,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wall_with_window": {
+      "frame": {
+        "x": 256,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wall_with_door": {
+      "frame": {
+        "x": 384,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "wall_ruined": {
+      "frame": {
+        "x": 512,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fortress_buttress": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "city_wall": {
+      "frame": {
+        "x": 128,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "marble_wall": {
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "gothic_wall": {
+      "frame": {
+        "x": 384,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "tile_roof_edge": {
+      "frame": {
+        "x": 512,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fence_stone": {
+      "frame": {
+        "x": 0,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fence_wood": {
+      "frame": {
+        "x": 128,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "fence_iron": {
+      "frame": {
+        "x": 256,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "barrier_spiked": {
+      "frame": {
+        "x": 384,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "barricade_sandbag": {
+      "frame": {
+        "x": 512,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    }
+  },
+  "meta": {
+    "image": "terrain_walls_manmade_v001.PNG",
+    "size": {
+      "w": 640,
+      "h": 768
+    },
+    "scale": "1"
+  }
+}
