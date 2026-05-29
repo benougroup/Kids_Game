@@ -69,13 +69,19 @@ export class GameScene extends Phaser.Scene {
   private portalParticles: Phaser.GameObjects.Graphics[] = [];
   private portalTick: number = 0;
 
-  // Virtual joystick for touch/iPad controls
+  // Virtual joystick for touch/iPad/iPhone controls
   private joyStick: any = null;
   private joyStickCursors: any = null;
+  private joyBase: Phaser.GameObjects.Graphics | null = null;
+  private joyThumb: Phaser.GameObjects.Graphics | null = null;
+  private joyArrows: Phaser.GameObjects.Graphics | null = null;
+  private joyCenter = { x: 76, y: 410 };
+  private joyRadius = 56;
 
   // UI zone heights (pixels) — taps in these zones don't trigger click-to-move
   private readonly HUD_HEIGHT = 52;    // top HUD bar
   private readonly BTN_HEIGHT = 90;    // bottom button row
+  private readonly SAFE_MARGIN = 12;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -131,56 +137,10 @@ export class GameScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-E', () => this.handleAction());
     this.input.keyboard!.on('keydown-SPACE', () => this.handleAction());
 
-    // Virtual joystick for touch/iPad — bottom-left corner
-    // Only create on touch devices
-    const H = this.scale.height;
-    const joyX = 70;
-    const joyY = H - 70;
-    const joyRadius = 52;
-
-    // Base circle (background)
-    const joyBase = this.add.graphics();
-    joyBase.fillStyle(0x000000, 0.35);
-    joyBase.fillCircle(0, 0, joyRadius);
-    joyBase.lineStyle(3, 0xffd700, 0.6);
-    joyBase.strokeCircle(0, 0, joyRadius);
-    joyBase.setScrollFactor(0).setDepth(2010);
-    joyBase.setPosition(joyX, joyY);
-
-    // Thumb circle
-    const joyThumb = this.add.graphics();
-    joyThumb.fillStyle(0xffd700, 0.7);
-    joyThumb.fillCircle(0, 0, 22);
-    joyThumb.lineStyle(2, 0xffffff, 0.5);
-    joyThumb.strokeCircle(0, 0, 22);
-    joyThumb.setScrollFactor(0).setDepth(2011);
-    joyThumb.setPosition(joyX, joyY);
-
-    // Direction arrows on base
-    const arrows = this.add.graphics();
-    arrows.fillStyle(0xffffff, 0.4);
-    // Up arrow
-    arrows.fillTriangle(0, -joyRadius + 10, -7, -joyRadius + 22, 7, -joyRadius + 22);
-    // Down arrow
-    arrows.fillTriangle(0, joyRadius - 10, -7, joyRadius - 22, 7, joyRadius - 22);
-    // Left arrow
-    arrows.fillTriangle(-joyRadius + 10, 0, -joyRadius + 22, -7, -joyRadius + 22, 7);
-    // Right arrow
-    arrows.fillTriangle(joyRadius - 10, 0, joyRadius - 22, -7, joyRadius - 22, 7);
-    arrows.setScrollFactor(0).setDepth(2010);
-    arrows.setPosition(joyX, joyY);
-
-    this.joyStick = new VirtualJoyStick(this, {
-      x: joyX,
-      y: joyY,
-      radius: joyRadius,
-      base: joyBase,
-      thumb: joyThumb,
-      dir: '8dir',
-      fixed: true,
-      enable: true,
-    });
-    this.joyStickCursors = this.joyStick.createCursorKeys();
+    // Virtual joystick for touch/iPad/iPhone — bottom-left safe zone.
+    // Kept visible on desktop too so browser device emulation matches tablets.
+    this.createTouchControls();
+    this.scale.on('resize', (size: Phaser.Structs.Size) => this.layoutTouchControls(size.width, size.height));
 
     // Day/night overlay
     this.dayNightOverlay = this.add.rectangle(0, 0, 4000, 4000, 0x000033, 0);
@@ -214,9 +174,8 @@ export class GameScene extends Phaser.Scene {
       const sh = this.scale.height;
       if (sy < this.HUD_HEIGHT) return;           // top HUD bar
       if (sy > sh - this.BTN_HEIGHT) return;      // bottom buttons
-      // Ignore taps in joystick zone (bottom-left)
-      const sx = pointer.x;
-      if (sx < 140 && sy > sh - 140) return;      // joystick area
+      // Ignore taps in joystick and mobile button safe zones.
+      if (this.isInMobileControlZone(pointer.x, pointer.y)) return;
       this.handleClick(pointer);
     });
 
@@ -393,16 +352,98 @@ export class GameScene extends Phaser.Scene {
 
   private getMovementInput(): MovementInput {
     const joy = this.joyStickCursors;
+    const analog = this.getJoystickAxes();
     return {
       left: this.cursors.left.isDown || this.wasd.A.isDown || (joy?.left?.isDown ?? false),
       right: this.cursors.right.isDown || this.wasd.D.isDown || (joy?.right?.isDown ?? false),
       up: this.cursors.up.isDown || this.wasd.W.isDown || (joy?.up?.isDown ?? false),
       down: this.cursors.down.isDown || this.wasd.S.isDown || (joy?.down?.isDown ?? false),
+      xAxis: analog.x,
+      yAxis: analog.y,
     };
   }
 
+  private createTouchControls(): void {
+    this.joyRadius = this.scale.width < 600 ? 50 : 56;
+    this.joyBase = this.add.graphics();
+    this.joyBase.setScrollFactor(0).setDepth(2010);
+
+    this.joyThumb = this.add.graphics();
+    this.joyThumb.setScrollFactor(0).setDepth(2011);
+
+    this.joyArrows = this.add.graphics();
+    this.joyArrows.setScrollFactor(0).setDepth(2010);
+
+    this.layoutTouchControls(this.scale.width, this.scale.height);
+
+    this.joyStick = new VirtualJoyStick(this, {
+      x: this.joyCenter.x,
+      y: this.joyCenter.y,
+      radius: this.joyRadius,
+      base: this.joyBase,
+      thumb: this.joyThumb,
+      dir: '8dir',
+      fixed: true,
+      enable: true,
+    });
+    this.joyStickCursors = this.joyStick.createCursorKeys();
+  }
+
+  private layoutTouchControls(width: number, height: number): void {
+    this.joyRadius = width < 600 ? 50 : 56;
+    this.joyCenter = {
+      x: this.SAFE_MARGIN + this.joyRadius + 8,
+      y: height - this.SAFE_MARGIN - this.joyRadius - 8,
+    };
+
+    this.joyBase?.clear();
+    this.joyBase?.fillStyle(0x000000, 0.38);
+    this.joyBase?.fillCircle(0, 0, this.joyRadius);
+    this.joyBase?.lineStyle(3, 0xffd700, 0.7);
+    this.joyBase?.strokeCircle(0, 0, this.joyRadius);
+    this.joyBase?.setPosition(this.joyCenter.x, this.joyCenter.y);
+
+    this.joyThumb?.clear();
+    this.joyThumb?.fillStyle(0xffd700, 0.78);
+    this.joyThumb?.fillCircle(0, 0, Math.max(18, this.joyRadius * 0.4));
+    this.joyThumb?.lineStyle(2, 0xffffff, 0.55);
+    this.joyThumb?.strokeCircle(0, 0, Math.max(18, this.joyRadius * 0.4));
+    this.joyThumb?.setPosition(this.joyCenter.x, this.joyCenter.y);
+
+    this.joyArrows?.clear();
+    this.joyArrows?.fillStyle(0xffffff, 0.42);
+    this.joyArrows?.fillTriangle(0, -this.joyRadius + 10, -7, -this.joyRadius + 23, 7, -this.joyRadius + 23);
+    this.joyArrows?.fillTriangle(0, this.joyRadius - 10, -7, this.joyRadius - 23, 7, this.joyRadius - 23);
+    this.joyArrows?.fillTriangle(-this.joyRadius + 10, 0, -this.joyRadius + 23, -7, -this.joyRadius + 23, 7);
+    this.joyArrows?.fillTriangle(this.joyRadius - 10, 0, this.joyRadius - 23, -7, this.joyRadius - 23, 7);
+    this.joyArrows?.setPosition(this.joyCenter.x, this.joyCenter.y);
+
+    this.joyStick?.setPosition?.(this.joyCenter.x, this.joyCenter.y);
+    if (this.joyStick) {
+      this.joyStick.x = this.joyCenter.x;
+      this.joyStick.y = this.joyCenter.y;
+      this.joyStick.radius = this.joyRadius;
+    }
+  }
+
+  private getJoystickAxes(): { x: number; y: number } {
+    if (!this.joyStick || !this.joyStick.force) return { x: 0, y: 0 };
+
+    const rawX = Phaser.Math.Clamp(this.joyStick.forceX ?? 0, -this.joyRadius, this.joyRadius);
+    const rawY = Phaser.Math.Clamp(this.joyStick.forceY ?? 0, -this.joyRadius, this.joyRadius);
+    const x = rawX / this.joyRadius;
+    const y = rawY / this.joyRadius;
+    return Math.sqrt(x * x + y * y) < 0.18 ? { x: 0, y: 0 } : { x, y };
+  }
+
+  private isInMobileControlZone(screenX: number, screenY: number): boolean {
+    const joystickPadding = 18;
+    const joyDistance = Phaser.Math.Distance.Between(screenX, screenY, this.joyCenter.x, this.joyCenter.y);
+    return joyDistance <= this.joyRadius + joystickPadding;
+  }
+
   private hasMovementInput(input: MovementInput): boolean {
-    return input.left || input.right || input.up || input.down;
+    return input.left || input.right || input.up || input.down || Math.abs(input.xAxis ?? 0) > 0 || Math.abs(input.yAxis ?? 0) > 0;
   }
 
   /**

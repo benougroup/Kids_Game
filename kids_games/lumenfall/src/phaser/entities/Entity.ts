@@ -33,8 +33,9 @@ export class Entity {
   private damageInterval: number = 1000; // ms between damage ticks
   
   // Collision callback
-  private isBlockedFn?: (x: number, y: number, flags: EntityMovementFlags) => boolean;
+  private isBlockedFn?: (x: number, y: number, flags: EntityMovementFlags, fromX?: number, fromY?: number) => boolean;
   private tileSize: number;
+  private readonly collisionHalfSize: number;
 
   // Speech bubble
   private bubble: NPCBubble | null = null;
@@ -70,6 +71,7 @@ export class Entity {
     this.sprite = scene.add.sprite(x, y, def.atlas, idleFrame);
     
     const displaySize = def.displaySize ?? 48;
+    this.collisionHalfSize = Math.max(10, Math.min(22, displaySize * 0.3));
     this.sprite.setDisplaySize(displaySize, displaySize);
     this.sprite.setOrigin(0.5, 0.5);
     this.sprite.setDepth(toRenderDepth(y / tileSize, 4));
@@ -165,7 +167,7 @@ export class Entity {
     return this.currentState;
   }
 
-  public setCollisionCallback(fn: (x: number, y: number, flags: EntityMovementFlags) => boolean): void {
+  public setCollisionCallback(fn: (x: number, y: number, flags: EntityMovementFlags, fromX?: number, fromY?: number) => boolean): void {
     this.isBlockedFn = fn;
   }
 
@@ -227,9 +229,8 @@ export class Entity {
       const newX = this.homeX + Math.cos(angle) * dist;
       const newY = this.homeY + Math.sin(angle) * dist;
       
-      // Check if walkable
       const flags = this.def.movementFlags ?? DEFAULT_FLAGS;
-      if (!this.isBlockedFn || !this.isBlockedFn(newX, newY, flags)) {
+      if (this.canOccupy(newX, newY, flags) && this.isPathClear(newX, newY, flags)) {
         this.moveTo(newX, newY, this.def.speed);
       }
     }
@@ -294,12 +295,63 @@ export class Entity {
     const fleeY = this.sprite.y + Math.sin(angle) * 128;
     
     const flags = this.def.movementFlags ?? DEFAULT_FLAGS;
-    if (!this.isBlockedFn || !this.isBlockedFn(fleeX, fleeY, flags)) {
+    if (this.canOccupy(fleeX, fleeY, flags)) {
       this.moveTo(fleeX, fleeY, this.def.speed * 1.5);
     }
   }
 
+  private canOccupy(x: number, y: number, flags: EntityMovementFlags): boolean {
+    if (!this.isBlockedFn) return true;
+    const h = this.collisionHalfSize;
+    const fromX = this.sprite.x;
+    const fromY = this.sprite.y;
+    return !(
+      this.isBlockedFn(x, y, flags, fromX, fromY) ||
+      this.isBlockedFn(x - h, y - h, flags, fromX, fromY) ||
+      this.isBlockedFn(x + h, y - h, flags, fromX, fromY) ||
+      this.isBlockedFn(x - h, y + h, flags, fromX, fromY) ||
+      this.isBlockedFn(x + h, y + h, flags, fromX, fromY)
+    );
+  }
+
+  private isPathClear(targetX: number, targetY: number, flags: EntityMovementFlags): boolean {
+    return this.getReachablePoint(targetX, targetY, flags).reached;
+  }
+
+  private getReachablePoint(targetX: number, targetY: number, flags: EntityMovementFlags): { x: number; y: number; reached: boolean } {
+    if (!this.isBlockedFn) return { x: targetX, y: targetY, reached: true };
+
+    const startX = this.sprite.x;
+    const startY = this.sprite.y;
+    const dist = Phaser.Math.Distance.Between(startX, startY, targetX, targetY);
+    const steps = Math.max(1, Math.ceil(dist / (this.tileSize / 4)));
+    let lastX = startX;
+    let lastY = startY;
+
+    for (let i = 1; i <= steps; i++) {
+      const t = i / steps;
+      const x = Phaser.Math.Linear(startX, targetX, t);
+      const y = Phaser.Math.Linear(startY, targetY, t);
+      if (!this.canOccupy(x, y, flags)) {
+        return { x: lastX, y: lastY, reached: false };
+      }
+      lastX = x;
+      lastY = y;
+    }
+
+    return { x: targetX, y: targetY, reached: true };
+  }
+
   private moveTo(targetX: number, targetY: number, speed: number): void {
+    const flags = this.def.movementFlags ?? DEFAULT_FLAGS;
+    const reachable = this.getReachablePoint(targetX, targetY, flags);
+    targetX = reachable.x;
+    targetY = reachable.y;
+
+    if (!reachable.reached && Phaser.Math.Distance.Between(this.sprite.x, this.sprite.y, targetX, targetY) < 4) {
+      return;
+    }
+
     if (this.isMoving) {
       this.moveTween?.stop();
     }
