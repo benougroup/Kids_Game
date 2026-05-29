@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import VirtualJoyStick from 'phaser3-rex-plugins/plugins/virtualjoystick.js';
-import { Player } from '../entities/Player';
+import { Player, type MovementInput } from '../entities/Player';
 import { DialogueBox } from '../ui/DialogueBox';
 import { DialogManager } from '../ui/DialogManager';
 import { StorySystem } from '../systems/StorySystem';
@@ -57,8 +57,8 @@ export class GameScene extends Phaser.Scene {
   private lastClickMovePos: { x: number; y: number } | null = null;
   private pickups: Array<{ id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number }> = [];
   
-  // Player collision half-size (must match Player.ts setSize)
-  private readonly PLAYER_HALF: number = 10; // 20px collision box / 2 (improves navigation through tight passages)
+  // Player collision half-size (must match Player.ts collisionHalfSize)
+  private readonly PLAYER_HALF: number = 14;
   
   // Transition cooldown
   private lastTransitionTime: number = 0;
@@ -301,37 +301,25 @@ export class GameScene extends Phaser.Scene {
     
     // Update math game timer
     this.mathGame.update(delta);
-    if (this.mathGame.isShowing()) return; // Pause game during math challenge
+    if (this.mathGame.isShowing()) {
+      this.player?.stop();
+      return; // Pause game during math challenge
+    }
     
-    // Handle movement — keyboard OR virtual joystick
-    const joy = this.joyStickCursors;
-    const hasKeyboardInput = this.cursors.left.isDown || this.cursors.right.isDown ||
-                             this.cursors.up.isDown || this.cursors.down.isDown ||
-                             this.wasd.W.isDown || this.wasd.A.isDown ||
-                             this.wasd.S.isDown || this.wasd.D.isDown ||
-                             (joy && (joy.left.isDown || joy.right.isDown ||
-                                      joy.up.isDown || joy.down.isDown));
+    const movementInput = this.getMovementInput();
 
-    if (hasKeyboardInput) {
+    if (this.hasMovementInput(movementInput)) {
       this.cancelClickMovement(false);
-      // Merge joystick cursors into keyboard cursors for player.update()
-      const mergedCursors = {
-        left:  { isDown: this.cursors.left.isDown  || (joy?.left?.isDown  ?? false) },
-        right: { isDown: this.cursors.right.isDown || (joy?.right?.isDown ?? false) },
-        up:    { isDown: this.cursors.up.isDown    || (joy?.up?.isDown    ?? false) },
-        down:  { isDown: this.cursors.down.isDown  || (joy?.down?.isDown  ?? false) },
-      } as Phaser.Types.Input.Keyboard.CursorKeys;
-      this.player.update(
-        mergedCursors,
-        this.wasd,
-        (x, y) => !this.isPositionWalkable(x, y),
-        delta / 1000
-      );
+      const effect = this.currentMapBuilder.getTileEffect(this.player.sprite.x, this.player.sprite.y);
+      this.player.move(movementInput, {
+        isBlocked: (x, y) => !this.isPositionWalkable(x, y),
+        deltaSeconds: delta / 1000,
+        speedFactor: effect.speedFactor,
+      });
     } else if (this.clickTarget) {
       this.moveTowardsClick(delta);
     } else {
-      this.player.sprite.setVelocity(0, 0);
-      this.player.playIdleAnimation();
+      this.player.stop();
     }
 
     // Check map exits
@@ -393,7 +381,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     // Update player depth
-    this.player.sprite.setDepth(toRenderDepth(playerPos.y, 4));
+    this.player.sprite.setDepth(toRenderDepth(playerPos.y / this.player.getTileSize(), 4));
 
     // Emit time to UI
     this.events.emit('timeUpdate', this.timeOfDay);
@@ -401,6 +389,20 @@ export class GameScene extends Phaser.Scene {
     // Animate portal visuals
     this.portalTick += delta;
     this.updatePortalVisuals();
+  }
+
+  private getMovementInput(): MovementInput {
+    const joy = this.joyStickCursors;
+    return {
+      left: this.cursors.left.isDown || this.wasd.A.isDown || (joy?.left?.isDown ?? false),
+      right: this.cursors.right.isDown || this.wasd.D.isDown || (joy?.right?.isDown ?? false),
+      up: this.cursors.up.isDown || this.wasd.W.isDown || (joy?.up?.isDown ?? false),
+      down: this.cursors.down.isDown || this.wasd.S.isDown || (joy?.down?.isDown ?? false),
+    };
+  }
+
+  private hasMovementInput(input: MovementInput): boolean {
+    return input.left || input.right || input.up || input.down;
   }
 
   /**
