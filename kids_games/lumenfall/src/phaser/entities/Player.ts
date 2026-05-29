@@ -6,6 +6,10 @@ export interface MovementInput {
   right: boolean;
   up: boolean;
   down: boolean;
+  /** Optional analog x-axis from touch controls, -1 (left) to 1 (right). */
+  xAxis?: number;
+  /** Optional analog y-axis from touch controls, -1 (up) to 1 (down). */
+  yAxis?: number;
 }
 
 export interface MovementOptions {
@@ -128,19 +132,24 @@ export class Player {
   }
 
   private getMovementVector(input: MovementInput): { x: number; y: number } {
-    let x = 0;
-    let y = 0;
+    const axisDeadZone = 0.18;
+    let x = Math.abs(input.xAxis ?? 0) >= axisDeadZone ? Phaser.Math.Clamp(input.xAxis ?? 0, -1, 1) : 0;
+    let y = Math.abs(input.yAxis ?? 0) >= axisDeadZone ? Phaser.Math.Clamp(input.yAxis ?? 0, -1, 1) : 0;
 
+    // Keyboard/digital controls remain authoritative when pressed so desktop
+    // movement and iPad hardware keyboards keep a crisp full-speed feel.
     if (input.left && !input.right) x = -1;
     else if (input.right && !input.left) x = 1;
+    else if (input.left && input.right) x = 0;
 
     if (input.up && !input.down) y = -1;
     else if (input.down && !input.up) y = 1;
+    else if (input.up && input.down) y = 0;
 
-    if (x !== 0 && y !== 0) {
-      const diagonal = Math.SQRT1_2;
-      x *= diagonal;
-      y *= diagonal;
+    const length = Math.sqrt(x * x + y * y);
+    if (length > 1) {
+      x /= length;
+      y /= length;
     }
 
     return { x, y };

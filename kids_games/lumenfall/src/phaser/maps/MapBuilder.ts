@@ -220,7 +220,7 @@ export class MapBuilder {
       if (entry.dialogueKey) entityDef.dialogueKey = entry.dialogueKey;
       
       const entity = new Entity(this.scene, entry.x, entry.y, entityDef, this.tileGrid.getTileSize());
-      entity.setCollisionCallback((x, y, flags) => !this.tileGrid.canEntityMoveTo(x, y, x, y, flags));
+      entity.setCollisionCallback((x, y, flags, fromX, fromY) => !this.tileGrid.canEntityMoveTo(x, y, fromX ?? x, fromY ?? y, flags));
       this.entities.push(entity);
     }
   }
@@ -237,7 +237,7 @@ export class MapBuilder {
       if (entry.name) entityDef.name = entry.name;
       
       const entity = new Entity(this.scene, entry.x, entry.y, entityDef, this.tileGrid.getTileSize());
-      entity.setCollisionCallback((x, y, flags) => !this.tileGrid.canEntityMoveTo(x, y, x, y, flags));
+      entity.setCollisionCallback((x, y, flags, fromX, fromY) => !this.tileGrid.canEntityMoveTo(x, y, fromX ?? x, fromY ?? y, flags));
       this.entities.push(entity);
     }
   }
