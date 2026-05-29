@@ -107,6 +107,50 @@ export class GameScene extends Phaser.Scene {
     // duplicate frame names (elder_idle, hero_idle, etc.) that would overwrite the
     // correct pixel-art frames from the 'characters' atlas.
     this.load.atlas('characters', 'assets/characters.png', 'assets/characters.json');
+
+    // Creature sprites are loose PNG frames (not Phaser atlas frames). They are
+    // spawned immediately after the graphics/map layers, so missing these textures
+    // can crash the scene during startup when the village entities are created.
+    this.loadLooseCreatureFrames();
+  }
+
+  private loadLooseCreatureFrames(): void {
+    const groups: Array<{ keyPrefix: string; basePath: string; frames: string[] }> = [
+      {
+        keyPrefix: 'rabbit',
+        basePath: 'assets/sprites/creatures/animals_peaceful/rabbit',
+        frames: [
+          'idle_f01', 'idle_f02',
+          'walk_down_f01', 'walk_down_f02',
+          'flee_f01', 'flee_f02',
+        ],
+      },
+      {
+        keyPrefix: 'bird',
+        basePath: 'assets/sprites/creatures/animals_peaceful/bird',
+        frames: [
+          'idle_f01', 'idle_f02',
+          'fly_f01', 'fly_f02',
+          'sing_f01', 'sing_f02',
+        ],
+      },
+      {
+        keyPrefix: 'slime',
+        basePath: 'assets/sprites/creatures/monsters/slime',
+        frames: [
+          'idle_f01', 'idle_f02',
+          'move_left_f01', 'move_right_f01',
+          'angry_f01', 'angry_f02',
+          'split_f01', 'split_f02',
+        ],
+      },
+    ];
+
+    for (const group of groups) {
+      for (const frame of group.frames) {
+        this.load.image(`${group.keyPrefix}_${frame}`, `${group.basePath}/${frame}.png`);
+      }
+    }
   }
 
   create(): void {
