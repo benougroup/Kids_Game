@@ -11,7 +11,7 @@ import { createLumenfallVillageData } from '../maps/LumenfallVillageMap';
 import { Entity } from '../entities/Entity';
 import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
-import { getLooseCreatureFrameLoads } from '../systems/CreatureAssets';
+import { getLooseCreatureFrameLoads, installProceduralCreatureTextures } from '../systems/CreatureAssets';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
 
 /**
@@ -122,6 +122,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    installProceduralCreatureTextures(this);
+
     // Load initial map — Lumenfall Village (new starting map)
     this.loadMap('lumenfall_village', 15, 17);
     
