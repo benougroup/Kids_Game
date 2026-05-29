@@ -52,6 +52,7 @@ export class GameScene extends Phaser.Scene {
   
   // Click-to-move
   private clickTarget: { x: number; y: number } | null = null;
+  private clickPath: Array<{ x: number; y: number }> = [];
   private clickMarker: Phaser.GameObjects.Graphics | null = null;
   private clickStallMs: number = 0;
   private lastClickMovePos: { x: number; y: number } | null = null;
@@ -526,7 +527,7 @@ export class GameScene extends Phaser.Scene {
     const dist = Math.sqrt(dx * dx + dy * dy);
     
     if (dist < 8) {
-      this.cancelClickMovement();
+      this.advanceClickPath();
       return;
     }
     
@@ -610,12 +611,26 @@ export class GameScene extends Phaser.Scene {
     const clampedY = Math.max(0, Math.min(mapH - 1, worldY));
 
     const target = this.findNearestWalkableClickTarget(clampedX, clampedY);
-    this.clickTarget = target;
+    const playerPos = this.player.getPosition();
+    this.clickPath = this.findClickPath(playerPos, target);
+    this.clickTarget = this.clickPath.shift() ?? target;
     this.clickStallMs = 0;
     this.lastClickMovePos = null;
     this.drawClickMarker(target.x, target.y);
   }
 
+
+  private advanceClickPath(): void {
+    const nextTarget = this.clickPath.shift();
+    if (nextTarget) {
+      this.clickTarget = nextTarget;
+      this.clickStallMs = 0;
+      this.lastClickMovePos = null;
+      return;
+    }
+
+    this.cancelClickMovement();
+  }
 
   private findNearestWalkableClickTarget(worldX: number, worldY: number): { x: number; y: number } {
     if (this.isPositionWalkable(worldX, worldY)) return { x: worldX, y: worldY };
@@ -652,6 +667,68 @@ export class GameScene extends Phaser.Scene {
     return { x: worldX, y: worldY };
   }
 
+  private findClickPath(start: { x: number; y: number }, goal: { x: number; y: number }): Array<{ x: number; y: number }> {
+    if (!this.currentMapBuilder) return [goal];
+
+    const tileSize = this.currentMapBuilder.getTileSize();
+    const cols = Math.ceil(this.currentMapBuilder.getWidth() / tileSize);
+    const rows = Math.ceil(this.currentMapBuilder.getHeight() / tileSize);
+    const startTile = { x: Math.floor(start.x / tileSize), y: Math.floor(start.y / tileSize) };
+    const goalTile = { x: Math.floor(goal.x / tileSize), y: Math.floor(goal.y / tileSize) };
+    const key = (x: number, y: number) => `${x},${y}`;
+    const heuristic = (x: number, y: number) => Math.abs(x - goalTile.x) + Math.abs(y - goalTile.y);
+    const centerOf = (x: number, y: number) => ({ x: x * tileSize + tileSize / 2, y: y * tileSize + tileSize / 2 });
+    const isTileWalkable = (x: number, y: number) => x >= 0 && y >= 0 && x < cols && y < rows && this.isPositionWalkable(centerOf(x, y).x, centerOf(x, y).y);
+
+    if (startTile.x === goalTile.x && startTile.y === goalTile.y) return [goal];
+    if (!isTileWalkable(goalTile.x, goalTile.y)) return [goal];
+
+    type Node = { x: number; y: number; g: number; f: number; parent: Node | null };
+    const open: Node[] = [{ x: startTile.x, y: startTile.y, g: 0, f: heuristic(startTile.x, startTile.y), parent: null }];
+    const bestG = new Map<string, number>([[key(startTile.x, startTile.y), 0]]);
+    const closed = new Set<string>();
+    const neighbors = [
+      { x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 },
+      { x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: 1 }, { x: -1, y: -1 },
+    ];
+
+    while (open.length > 0 && closed.size <= cols * rows) {
+      open.sort((a, b) => a.f - b.f);
+      const current = open.shift()!;
+      const currentKey = key(current.x, current.y);
+      if (closed.has(currentKey)) continue;
+      if (current.x === goalTile.x && current.y === goalTile.y) {
+        const path: Array<{ x: number; y: number }> = [];
+        let node: Node | null = current;
+        while (node) {
+          path.unshift(node.x === goalTile.x && node.y === goalTile.y ? goal : centerOf(node.x, node.y));
+          node = node.parent;
+        }
+        path.shift();
+        return path.length > 0 ? path : [goal];
+      }
+
+      closed.add(currentKey);
+      for (const n of neighbors) {
+        const nx = current.x + n.x;
+        const ny = current.y + n.y;
+        const diagonal = n.x !== 0 && n.y !== 0;
+        if (!isTileWalkable(nx, ny)) continue;
+        if (diagonal && (!isTileWalkable(current.x + n.x, current.y) || !isTileWalkable(current.x, current.y + n.y))) continue;
+
+        const nextG = current.g + (diagonal ? 1.4 : 1);
+        const nextKey = key(nx, ny);
+        if (nextG >= (bestG.get(nextKey) ?? Number.POSITIVE_INFINITY)) continue;
+
+        bestG.set(nextKey, nextG);
+        open.push({ x: nx, y: ny, g: nextG, f: nextG + heuristic(nx, ny), parent: current });
+      }
+    }
+
+    console.warn('No click path found; using nearest walkable click target directly.');
+    return [goal];
+  }
+
   private cancelIfClickMovementStalled(delta: number, playerPos: { x: number; y: number }): boolean {
     if (!this.clickTarget) return false;
 
@@ -677,6 +754,7 @@ export class GameScene extends Phaser.Scene {
 
   private cancelClickMovement(stopPlayer: boolean = true): void {
     this.clickTarget = null;
+    this.clickPath = [];
     this.clickStallMs = 0;
     this.lastClickMovePos = null;
     this.clearClickMarker();

@@ -182,9 +182,9 @@ export class UIScene extends Phaser.Scene {
     game.events.on('showDialogue',    (n: string)    => this.showDialogue(n));
     game.events.on('inventoryChanged',(items: string[]) => { this.inventoryItems = [...items]; this.refreshInventoryText(); });
     game.events.on('inventoryAddItem',(item: string) => { this.inventoryItems.push(item); this.refreshInventoryText(); });
-    game.events.on('playerAction',    ()             => this.handleAction());
 
     this.scale.on('resize', (sz: Phaser.Structs.Size) => this.handleResize(sz.width, sz.height));
+    this.scene.bringToTop();
   }
 
   // ── Draw HUD panel + bars ──────────────────────────────────────────────────
@@ -258,17 +258,26 @@ export class UIScene extends Phaser.Scene {
     // BAG
     this.bagButton = this.makeButton(W - BTN / 2 - 8, y, BTN, 'BAG', '🎒', C.BTN_BAG_BG, 0x4488cc);
     this.bagButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
-    this.bagButton.on('pointerdown', () => this.toggleInventory());
+    this.bagButton.on('pointerdown', (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.toggleInventory();
+    });
 
     // ACT
     this.actionButton = this.makeButton(W - BTN * 1.5 - 14, y, BTN, 'ACT', '⚔️', C.BTN_ACT_BG, 0xcc3333);
     this.actionButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
-    this.actionButton.on('pointerdown', () => this.handleAction());
+    this.actionButton.on('pointerdown', (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.handleAction();
+    });
 
     // MAP
     this.mapButton = this.makeButton(W - BTN * 2.5 - 20, y, BTN, 'MAP', '🗺️', C.BTN_MAP_BG, 0x336633);
     this.mapButton.setInteractive(new Phaser.Geom.Rectangle(-BTN/2, -BTN/2, BTN, BTN), Phaser.Geom.Rectangle.Contains);
-    this.mapButton.on('pointerdown', () => this.toggleMap());
+    this.mapButton.on('pointerdown', (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.toggleMap();
+    });
   }
 
   private makeButton(
@@ -339,7 +348,10 @@ export class UIScene extends Phaser.Scene {
 
     const overlay = this.add.rectangle(0, 0, W, H, 0x000000, 0.75);
     overlay.setOrigin(0, 0).setInteractive();
-    overlay.on('pointerdown', () => this.toggleInventory());
+    overlay.on('pointerdown', (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.toggleInventory();
+    });
 
     const bw = Math.min(480, W - 40), bh = Math.min(380, H - 100);
     const bx = W / 2, by = H / 2;
@@ -383,7 +395,10 @@ export class UIScene extends Phaser.Scene {
 
     const overlay = this.add.rectangle(0, 0, W, H, 0x000000, 0.8);
     overlay.setOrigin(0, 0).setInteractive();
-    overlay.on('pointerdown', () => this.toggleMap());
+    overlay.on('pointerdown', (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.toggleMap();
+    });
 
     const bw = Math.min(540, W - 40), bh = Math.min(440, H - 80);
     const bx = W / 2, by = H / 2;
@@ -452,7 +467,10 @@ export class UIScene extends Phaser.Scene {
       fontSize: '14px', color: '#fff0a0', fontFamily: 'monospace', fontStyle: 'bold',
     });
     closeText.setOrigin(0.5, 0.5).setInteractive();
-    closeText.on('pointerdown', () => this.toggleMap());
+    closeText.on('pointerdown', (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
+      this.toggleMap();
+    });
 
     this.mapPanel.add([overlay, panelG, title, mapG, townLbl, forestLbl, dungeonLbl, youLbl, closeBtnG, closeText]);
   }
