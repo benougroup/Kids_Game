@@ -1,16 +1,31 @@
 import Phaser from 'phaser';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
 
+export interface MovementInput {
+  left: boolean;
+  right: boolean;
+  up: boolean;
+  down: boolean;
+}
+
+export interface MovementOptions {
+  isBlocked?: (x: number, y: number) => boolean;
+  deltaSeconds?: number;
+  speedFactor?: number;
+}
+
 /**
- * Player character with animated sprite and smooth 8-direction movement
- * Properly sized for 64x64 tile grid
+ * Player character with animated sprite and smooth 8-direction movement.
+ * Movement owns all player-facing collision/animation rules so keyboard,
+ * joystick, and scripted movement behave consistently.
  */
 export class Player {
   public sprite: Phaser.Physics.Arcade.Sprite;
-  private speed: number = 200;
-  private scene: Phaser.Scene;
+  private readonly baseSpeed: number = 200;
+  private readonly scene: Phaser.Scene;
   private lanternActive: boolean = false;
-  private TILE_SIZE: number = 64;
+  private readonly TILE_SIZE: number = 64;
+  private readonly collisionHalfSize: number = 14;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
@@ -19,8 +34,9 @@ export class Player {
     this.sprite = scene.physics.add.sprite(x, y, 'characters', 'hero_idle');
     this.sprite.setDisplaySize(48, 48);
     this.sprite.setOrigin(0.5, 0.5);
-    this.sprite.setSize(28, 28); // Collision box (28px = PLAYER_HALF*2 = 14*2)
+    this.sprite.setSize(this.collisionHalfSize * 2, this.collisionHalfSize * 2);
     this.sprite.setOffset(10, 10);
+    this.sprite.setCollideWorldBounds(true);
     this.sprite.setDepth(toRenderDepth(y / this.TILE_SIZE, 4));
 
     this.createAnimations();
@@ -49,7 +65,7 @@ export class Player {
         repeat: -1,
       });
     }
-    
+
     if (!this.scene.anims.exists('player_walk_side')) {
       this.scene.anims.create({
         key: 'player_walk_side',
@@ -67,48 +83,78 @@ export class Player {
     cursors: Phaser.Types.Input.Keyboard.CursorKeys,
     wasd: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key },
     isBlocked?: (x: number, y: number) => boolean,
-    deltaSeconds: number = 1 / 60
+    deltaSeconds: number = 1 / 60,
+    speedFactor: number = 1
   ): void {
-    let vx = 0;
-    let vy = 0;
+    this.move(
+      {
+        left: cursors.left.isDown || wasd.A.isDown,
+        right: cursors.right.isDown || wasd.D.isDown,
+        up: cursors.up.isDown || wasd.W.isDown,
+        down: cursors.down.isDown || wasd.S.isDown,
+      },
+      { isBlocked, deltaSeconds, speedFactor }
+    );
+  }
 
-    if (cursors.left.isDown || wasd.A.isDown) vx = -1;
-    else if (cursors.right.isDown || wasd.D.isDown) vx = 1;
-    if (cursors.up.isDown || wasd.W.isDown) vy = -1;
-    else if (cursors.down.isDown || wasd.S.isDown) vy = 1;
+  public move(input: MovementInput, options: MovementOptions = {}): void {
+    const direction = this.getMovementVector(input);
+    const speedFactor = Phaser.Math.Clamp(options.speedFactor ?? 1, 0, 2);
+    const speed = this.baseSpeed * speedFactor;
+    const deltaSeconds = options.deltaSeconds ?? 1 / 60;
+    let vx = direction.x;
+    let vy = direction.y;
 
-    // Normalize diagonal
-    if (vx !== 0 && vy !== 0) {
-      vx *= 0.707;
-      vy *= 0.707;
-    }
-
-    // Collision check. Use the actual frame delta so a slow frame cannot
-    // tunnel into walls, and do not let collision checks freeze a player who
-    // somehow spawned inside a blocked tile; in that case the nearest-safe
-    // spawn recovery in GameScene gets first chance to free them.
-    if (isBlocked && (vx !== 0 || vy !== 0) && !isBlocked(this.sprite.x, this.sprite.y)) {
-      const body = this.sprite.body as Phaser.Physics.Arcade.Body | null;
-      const margin = Math.max(body?.halfWidth ?? 14, body?.halfHeight ?? 14);
+    if (options.isBlocked && (vx !== 0 || vy !== 0) && !options.isBlocked(this.sprite.x, this.sprite.y)) {
       const stepSeconds = Phaser.Math.Clamp(deltaSeconds, 1 / 120, 1 / 20);
-      const futureX = this.sprite.x + vx * this.speed * stepSeconds;
-      const futureY = this.sprite.y + vy * this.speed * stepSeconds;
+      const nextX = this.sprite.x + vx * speed * stepSeconds;
+      const nextY = this.sprite.y + vy * speed * stepSeconds;
 
-      const axisWouldBlock = (cx: number, cy: number): boolean => (
-        isBlocked(cx, cy) ||
-        isBlocked(cx - margin, cy - margin) ||
-        isBlocked(cx + margin, cy - margin) ||
-        isBlocked(cx - margin, cy + margin) ||
-        isBlocked(cx + margin, cy + margin)
-      );
+      // Axis-separated checks preserve smooth wall sliding while still blocking
+      // diagonal corner clipping through buildings, trees, cliffs, and water.
+      if (this.wouldOverlapBlockedTile(nextX, this.sprite.y, options.isBlocked)) vx = 0;
+      if (this.wouldOverlapBlockedTile(this.sprite.x, nextY, options.isBlocked)) vy = 0;
 
-      if (axisWouldBlock(futureX, this.sprite.y)) vx = 0;
-      if (axisWouldBlock(this.sprite.x, futureY)) vy = 0;
+      if (vx !== 0 && vy !== 0 && this.wouldOverlapBlockedTile(nextX, nextY, options.isBlocked)) {
+        const preferX = Math.abs(direction.x) >= Math.abs(direction.y);
+        if (preferX) vy = 0;
+        else vx = 0;
+      }
     }
 
-    this.sprite.setVelocity(vx * this.speed, vy * this.speed);
+    this.sprite.setVelocity(vx * speed, vy * speed);
     this.sprite.setDepth(toRenderDepth(this.sprite.y / this.TILE_SIZE, 4));
     this.updateAnimation(vx, vy);
+  }
+
+  private getMovementVector(input: MovementInput): { x: number; y: number } {
+    let x = 0;
+    let y = 0;
+
+    if (input.left && !input.right) x = -1;
+    else if (input.right && !input.left) x = 1;
+
+    if (input.up && !input.down) y = -1;
+    else if (input.down && !input.up) y = 1;
+
+    if (x !== 0 && y !== 0) {
+      const diagonal = Math.SQRT1_2;
+      x *= diagonal;
+      y *= diagonal;
+    }
+
+    return { x, y };
+  }
+
+  private wouldOverlapBlockedTile(cx: number, cy: number, isBlocked: (x: number, y: number) => boolean): boolean {
+    const h = this.collisionHalfSize;
+    return (
+      isBlocked(cx, cy) ||
+      isBlocked(cx - h, cy - h) ||
+      isBlocked(cx + h, cy - h) ||
+      isBlocked(cx - h, cy + h) ||
+      isBlocked(cx + h, cy + h)
+    );
   }
 
   public playWalkAnimation(vx: number, vy: number): void {
@@ -142,7 +188,13 @@ export class Player {
 
   setPosition(x: number, y: number): void {
     this.sprite.setPosition(x, y);
+    this.sprite.setVelocity(0, 0);
     this.sprite.setDepth(toRenderDepth(y / this.TILE_SIZE, 4));
+  }
+
+  stop(): void {
+    this.sprite.setVelocity(0, 0);
+    this.playIdleAnimation();
   }
 
   toggleLantern(): void {
@@ -155,5 +207,9 @@ export class Player {
 
   getTileSize(): number {
     return this.TILE_SIZE;
+  }
+
+  getCollisionHalfSize(): number {
+    return this.collisionHalfSize;
   }
 }
