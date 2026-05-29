@@ -66,9 +66,11 @@ export class Entity {
     this.homeX = x;
     this.homeY = y;
 
-    // Create sprite
+    // Create sprite. Most actors use atlas frames, but some creature assets are
+    // loaded as loose image textures keyed directly by frame name.
     const idleFrame = this.getFrame('idle');
-    this.sprite = scene.add.sprite(x, y, def.atlas, idleFrame);
+    const initialTexture = this.resolveTextureFrame(idleFrame);
+    this.sprite = scene.add.sprite(x, y, initialTexture.key, initialTexture.frame);
     
     const displaySize = def.displaySize ?? 48;
     this.collisionHalfSize = Math.max(10, Math.min(22, displaySize * 0.3));
@@ -108,6 +110,18 @@ export class Entity {
     return frames;
   }
 
+
+  private resolveTextureFrame(frame: string): { key: string; frame?: string } {
+    if (this.scene.textures.exists(this.def.atlas)) {
+      return { key: this.def.atlas, frame };
+    }
+
+    // Loose PNG frames are loaded with their frame name as the texture key.
+    // Returning the frame as a texture key prevents startup crashes when a
+    // creature definition does not come from a Phaser atlas.
+    return { key: frame };
+  }
+
   private createAnimations(): void {
     const id = this.def.id;
     
@@ -118,7 +132,7 @@ export class Entity {
       if (!this.scene.anims.exists(animKey)) {
         this.scene.anims.create({
           key: animKey,
-          frames: walkFrames.map(f => ({ key: this.def.atlas, frame: f })),
+          frames: walkFrames.map(f => this.resolveTextureFrame(f)),
           frameRate: 6,
           repeat: -1,
         });
@@ -132,7 +146,7 @@ export class Entity {
       if (!this.scene.anims.exists(animKey)) {
         this.scene.anims.create({
           key: animKey,
-          frames: runFrames.map(f => ({ key: this.def.atlas, frame: f })),
+          frames: runFrames.map(f => this.resolveTextureFrame(f)),
           frameRate: 10,
           repeat: -1,
         });
@@ -154,8 +168,13 @@ export class Entity {
     } else {
       // Static frame
       const frame = this.getFrame(state);
+      const textureFrame = this.resolveTextureFrame(frame);
       this.sprite.stop();
-      this.sprite.setFrame(frame);
+      if (textureFrame.frame === undefined) {
+        this.sprite.setTexture(textureFrame.key);
+      } else {
+        this.sprite.setTexture(textureFrame.key, textureFrame.frame);
+      }
     }
   }
 
