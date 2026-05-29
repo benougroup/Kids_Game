@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { MONSTER_DEFINITIONS, NPC_DEFINITIONS } from '../src/phaser/systems/EntityRegistry';
+import { getLooseCreatureFrameLoads } from '../src/phaser/systems/CreatureAssets';
 
 const atlasFrameSets = new Map<string, Set<string>>();
 for (const atlas of ['characters']) {
@@ -39,5 +40,21 @@ describe('Phaser entity assets', () => {
     }
 
     expect(missing).toEqual([]);
+  });
+
+  it('preloads every loose creature frame referenced by startup entities', () => {
+    const loadedKeys = new Set(getLooseCreatureFrameLoads().map((asset) => asset.key));
+    const missingPreloads: string[] = [];
+
+    for (const [id, def] of Object.entries(MONSTER_DEFINITIONS)) {
+      for (const frame of frameList(def.frames)) {
+        const [prefix] = frame.split('_');
+        if (looseTexturePaths[prefix] && !loadedKeys.has(frame)) {
+          missingPreloads.push(`${id}: ${frame}`);
+        }
+      }
+    }
+
+    expect(missingPreloads).toEqual([]);
   });
 });

@@ -110,16 +110,20 @@ export class Entity {
     return frames;
   }
 
-
   private resolveTextureFrame(frame: string): { key: string; frame?: string } {
-    if (this.scene.textures.exists(this.def.atlas)) {
+    if (this.scene.textures.exists(this.def.atlas) && this.scene.textures.getFrame(this.def.atlas, frame)) {
       return { key: this.def.atlas, frame };
     }
 
     // Loose PNG frames are loaded with their frame name as the texture key.
     // Returning the frame as a texture key prevents startup crashes when a
     // creature definition does not come from a Phaser atlas.
-    return { key: frame };
+    if (this.scene.textures.exists(frame)) {
+      return { key: frame };
+    }
+
+    console.warn(`Missing texture frame for ${this.def.id}: ${this.def.atlas}/${frame}; using Phaser's fallback texture.`);
+    return { key: '__MISSING' };
   }
 
   private createAnimations(): void {
