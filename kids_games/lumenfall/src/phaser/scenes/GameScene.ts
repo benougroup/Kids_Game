@@ -13,6 +13,7 @@ import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
 import { getLooseCreatureFrameLoads, installProceduralCreatureTextures } from '../systems/CreatureAssets';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
+import { getItemGraphic, getItemGraphicLoads } from '../systems/ItemGraphics';
 
 /**
  * Main Game Scene - Lumenfall RPG
@@ -113,6 +114,13 @@ export class GameScene extends Phaser.Scene {
     // spawned immediately after the graphics/map layers, so missing these textures
     // can crash the scene during startup when the village entities are created.
     this.loadLooseCreatureFrames();
+    this.loadItemGraphics();
+  }
+
+  private loadItemGraphics(): void {
+    for (const asset of getItemGraphicLoads()) {
+      this.load.image(asset.key, asset.path);
+    }
   }
 
   private loadLooseCreatureFrames(): void {
@@ -951,17 +959,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createPickupVisual(x: number, y: number, itemName: string, color: number, tileSize: number): Phaser.GameObjects.Container {
-    const glow = this.add.circle(0, 4, tileSize * 0.28, color, 0.24);
-    const ring = this.add.circle(0, 4, tileSize * 0.2, color, 0.42).setStrokeStyle(2, 0xffffff, 0.85);
-    const gem = this.add.polygon(0, -8, [
-      0, -16,
-      14, -4,
-      8, 12,
-      -8, 12,
-      -14, -4,
-    ], color, 1).setStrokeStyle(2, 0xffffff, 0.9);
+    const glow = this.add.circle(0, 4, tileSize * 0.3, color, 0.22);
+    const ring = this.add.circle(0, 4, tileSize * 0.22, color, 0.34).setStrokeStyle(2, 0xffffff, 0.8);
     const sparkleA = this.add.star(-18, -18, 4, 2, 6, 0xffffff, 0.9);
     const sparkleB = this.add.star(18, -14, 4, 2, 5, 0xfff2a8, 0.9);
+    const graphic = getItemGraphic(itemName);
+    const icon = graphic && this.textures.exists(graphic.key)
+      ? this.add.image(0, -4, graphic.key).setDisplaySize(tileSize * 0.48, tileSize * 0.48)
+      : this.add.polygon(0, -8, [0, -16, 14, -4, 8, 12, -8, 12, -14, -4], color, 1).setStrokeStyle(2, 0xffffff, 0.9);
     const label = this.add.text(0, 24, itemName, {
       fontSize: '10px',
       color: '#ffffff',
@@ -970,7 +975,7 @@ export class GameScene extends Phaser.Scene {
       padding: { left: 4, right: 4, top: 2, bottom: 2 },
     }).setOrigin(0.5, 0.5);
 
-    const container = this.add.container(x, y, [glow, ring, gem, sparkleA, sparkleB, label]);
+    const container = this.add.container(x, y, [glow, ring, icon, sparkleA, sparkleB, label]);
     container.setSize(tileSize, tileSize);
     return container;
   }

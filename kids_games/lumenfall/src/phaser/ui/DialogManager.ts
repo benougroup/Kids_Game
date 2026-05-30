@@ -221,10 +221,10 @@ export class DialogManager {
   private calcLayout(heightRatio = 0.52): void {
     this.W = this.scene.scale.width;
     this.H = this.scene.scale.height;
-    this.BW = Math.min(680, this.W - 32);
-    this.BH = Math.min(Math.round(this.H * heightRatio), 420);
-    this.BX = Math.round((this.W - this.BW) / 2);
-    this.BY = Math.round((this.H - this.BH) / 2);
+    this.BW = Math.max(280, Math.min(680, this.W - 32));
+    this.BH = Math.max(170, Math.min(Math.round(this.H * heightRatio), 420, this.H - 56));
+    this.BX = Math.max(16, Math.round((this.W - this.BW) / 2));
+    this.BY = Math.max(28, Math.round((this.H - this.BH) / 2));
   }
 
   /** Draw the base box (background + gold border + inner bevel) */
@@ -255,7 +255,7 @@ export class DialogManager {
     const bw = Math.min(200, name.length * 14 + 32);
     const bh = 30;
     const bx = BX + 20;
-    const by = BY - bh / 2 - 2;
+    const by = Math.max(2, BY - bh / 2 - 2);
 
     g.fillStyle(C.NAME_BG, 1);
     g.fillRoundedRect(bx, by, bw, bh, 8);
@@ -277,8 +277,8 @@ export class DialogManager {
   private drawPortrait(portrait: string, atlas: string): Phaser.GameObjects.Sprite | null {
     if (!portrait) return null;
     const { BX, BY, BH } = this;
-    const ps = Math.min(80, Math.round(BH * 0.45));
-    const px = BX + 20;
+    const ps = Math.min(72, Math.max(48, Math.round(BH * 0.38)));
+    const px = BX + 16;
     const py = BY + Math.round((BH - ps) / 2);
 
     const g = this.scene.add.graphics();
@@ -345,9 +345,10 @@ export class DialogManager {
       this.calcLayout(0.42);
 
       const { BX, BY, BW, BH } = this;
-      const hasPortrait = !!portrait;
-      const textLeft = hasPortrait ? BX + 110 : BX + 20;
-      const textWidth = hasPortrait ? BW - 130 : BW - 40;
+      const hasPortrait = !!portrait && BW >= 380;
+      const portraitSpace = hasPortrait ? Math.min(96, Math.round(BW * 0.24)) : 0;
+      const textLeft = hasPortrait ? BX + portraitSpace + 20 : BX + 20;
+      const textWidth = hasPortrait ? BW - portraitSpace - 40 : BW - 40;
 
       const g = this.scene.add.graphics();
       g.setScrollFactor(0);
@@ -368,11 +369,11 @@ export class DialogManager {
 
       // Typewriter text
       const textObj = this.scene.add.text(textLeft, BY + 32, '', {
-        fontSize: '14px',
+        fontSize: this.W < 420 ? '12px' : '14px',
         fontFamily: '"Press Start 2P", "Courier New", monospace',
         color: C.BODY_TEXT,
         wordWrap: { width: textWidth },
-        lineSpacing: 10,
+        lineSpacing: this.W < 420 ? 6 : 10,
       });
       textObj.setScrollFactor(0);
       this.root.add(textObj);
@@ -442,9 +443,10 @@ export class DialogManager {
     this.calcLayout(0.55);
 
     const { BX, BY, BW, BH } = this;
-    const hasPortrait = !!data.portrait;
-    const textLeft = hasPortrait ? BX + 110 : BX + 20;
-    const textWidth = hasPortrait ? BW - 130 : BW - 40;
+    const hasPortrait = !!data.portrait && BW >= 380;
+    const portraitSpace = hasPortrait ? Math.min(96, Math.round(BW * 0.24)) : 0;
+    const textLeft = hasPortrait ? BX + portraitSpace + 20 : BX + 20;
+    const textWidth = hasPortrait ? BW - portraitSpace - 40 : BW - 40;
 
     const g = this.scene.add.graphics();
     g.setScrollFactor(0);
@@ -507,9 +509,10 @@ export class DialogManager {
     this.calcLayout(0.60);
 
     const { BX, BY, BW, BH } = this;
-    const hasPortrait = !!data.portrait;
-    const textLeft = hasPortrait ? BX + 110 : BX + 20;
-    const textWidth = hasPortrait ? BW - 130 : BW - 40;
+    const hasPortrait = !!data.portrait && BW >= 380;
+    const portraitSpace = hasPortrait ? Math.min(96, Math.round(BW * 0.24)) : 0;
+    const textLeft = hasPortrait ? BX + portraitSpace + 20 : BX + 20;
+    const textWidth = hasPortrait ? BW - portraitSpace - 40 : BW - 40;
 
     const g = this.scene.add.graphics();
     g.setScrollFactor(0);
@@ -617,9 +620,10 @@ export class DialogManager {
     this.calcLayout(0.58);
 
     const { BX, BY, BW, BH } = this;
-    const hasPortrait = !!data.portrait;
-    const textLeft = hasPortrait ? BX + 110 : BX + 20;
-    const textWidth = hasPortrait ? BW - 130 : BW - 40;
+    const hasPortrait = !!data.portrait && BW >= 380;
+    const portraitSpace = hasPortrait ? Math.min(96, Math.round(BW * 0.24)) : 0;
+    const textLeft = hasPortrait ? BX + portraitSpace + 20 : BX + 20;
+    const textWidth = hasPortrait ? BW - portraitSpace - 40 : BW - 40;
 
     const g = this.scene.add.graphics();
     g.setScrollFactor(0);
@@ -767,9 +771,10 @@ export class DialogManager {
     this.calcLayout(0.55);
 
     const { BX, BY, BW, BH } = this;
-    const hasPortrait = !!data.portrait;
-    const textLeft = hasPortrait ? BX + 110 : BX + 20;
-    const textWidth = hasPortrait ? BW - 130 : BW - 40;
+    const hasPortrait = !!data.portrait && BW >= 380;
+    const portraitSpace = hasPortrait ? Math.min(96, Math.round(BW * 0.24)) : 0;
+    const textLeft = hasPortrait ? BX + portraitSpace + 20 : BX + 20;
+    const textWidth = hasPortrait ? BW - portraitSpace - 40 : BW - 40;
 
     const g = this.scene.add.graphics();
     g.setScrollFactor(0);
@@ -878,9 +883,10 @@ export class DialogManager {
     this.calcLayout(0.65);
 
     const { BX, BY, BW, BH } = this;
-    const hasPortrait = !!data.portrait;
-    const textLeft = hasPortrait ? BX + 110 : BX + 20;
-    const textWidth = hasPortrait ? BW - 130 : BW - 40;
+    const hasPortrait = !!data.portrait && BW >= 380;
+    const portraitSpace = hasPortrait ? Math.min(96, Math.round(BW * 0.24)) : 0;
+    const textLeft = hasPortrait ? BX + portraitSpace + 20 : BX + 20;
+    const textWidth = hasPortrait ? BW - portraitSpace - 40 : BW - 40;
 
     const g = this.scene.add.graphics();
     g.setScrollFactor(0);

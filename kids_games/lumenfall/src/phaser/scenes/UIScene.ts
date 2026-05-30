@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getItemGraphic } from '../systems/ItemGraphics';
 
 // ─── Colour palette ────────────────────────────────────────────────────────────
 const C = {
@@ -121,6 +122,7 @@ export class UIScene extends Phaser.Scene {
   private inventoryPanel!: Phaser.GameObjects.Container;
   private inventoryVisible = false;
   private inventoryItemsText!: Phaser.GameObjects.Text;
+  private inventoryRows: Phaser.GameObjects.GameObject[] = [];
   private inventoryItems: string[] = [];
 
   private mapPanel!: Phaser.GameObjects.Container;
@@ -375,6 +377,19 @@ export class UIScene extends Phaser.Scene {
     });
     this.inventoryItemsText.setOrigin(0.5, 0.5);
 
+    const headerY = by - bh / 2 + 66;
+    const headerG = this.add.graphics();
+    headerG.fillStyle(0x2b1a00, 0.92);
+    headerG.fillRect(bx - bw / 2 + 24, headerY - 16, bw - 48, 28);
+    headerG.lineStyle(1, C.GOLD_DARK, 0.8);
+    headerG.strokeRect(bx - bw / 2 + 24, headerY - 16, bw - 48, 28);
+    const iconHeader = this.add.text(bx - bw / 2 + 54, headerY - 2, 'Item', {
+      fontSize: '13px', color: '#ffd700', fontFamily: 'monospace', fontStyle: 'bold',
+    }).setOrigin(0.5, 0.5);
+    const nameHeader = this.add.text(bx - bw / 2 + 104, headerY - 2, 'Name', {
+      fontSize: '13px', color: '#ffd700', fontFamily: 'monospace', fontStyle: 'bold',
+    }).setOrigin(0, 0.5);
+
     // Close button
     const closeBtnG = this.add.graphics();
     const cbx = bx, cby = by + bh / 2 - 30;
@@ -385,7 +400,8 @@ export class UIScene extends Phaser.Scene {
     closeText.setOrigin(0.5, 0.5).setInteractive();
     closeText.on('pointerdown', () => this.toggleInventory());
 
-    this.inventoryPanel.add([overlay, panelG, title, divG, this.inventoryItemsText, closeBtnG, closeText]);
+    this.inventoryPanel.add([overlay, panelG, title, divG, headerG, iconHeader, nameHeader, this.inventoryItemsText, closeBtnG, closeText]);
+    this.refreshInventoryText();
   }
 
   // ── Map panel ──────────────────────────────────────────────────────────────
@@ -526,13 +542,62 @@ export class UIScene extends Phaser.Scene {
   }
 
   private refreshInventoryText(): void {
-    if (!this.inventoryItemsText) return;
-    this.inventoryItemsText.setText(
-      this.inventoryItems.length === 0
-        ? 'No items yet'
-        : this.inventoryItems.map((item, i) => `${i + 1}. ${item}`).join('\n')
-    );
+    if (!this.inventoryItemsText || !this.inventoryPanel) return;
+
+    for (const row of this.inventoryRows) row.destroy();
+    this.inventoryRows = [];
+
+    if (this.inventoryItems.length === 0) {
+      this.inventoryItemsText.setText('No items yet');
+      this.inventoryItemsText.setVisible(true);
+      return;
+    }
+
+    this.inventoryItemsText.setVisible(false);
+    const W = this.scale.width;
+    const H = this.scale.height;
+    const bw = Math.min(480, W - 40);
+    const bh = Math.min(380, H - 100);
+    const bx = W / 2;
+    const by = H / 2;
+    const left = bx - bw / 2 + 24;
+    const top = by - bh / 2 + 86;
+    const rowH = 38;
+    const maxRows = Math.max(1, Math.floor((bh - 142) / rowH));
+
+    this.inventoryItems.slice(0, maxRows).forEach((item, i) => {
+      const y = top + i * rowH;
+      const rowBg = this.add.graphics();
+      rowBg.fillStyle(i % 2 === 0 ? 0x1f1200 : 0x2a1800, 0.88);
+      rowBg.fillRect(left, y, bw - 48, rowH - 4);
+      rowBg.lineStyle(1, C.PANEL_EDGE, 0.8);
+      rowBg.strokeRect(left, y, bw - 48, rowH - 4);
+
+      const graphic = getItemGraphic(item);
+      let icon: Phaser.GameObjects.GameObject;
+      if (graphic && this.textures.exists(graphic.key)) {
+        icon = this.add.image(left + 30, y + rowH / 2 - 2, graphic.key).setDisplaySize(28, 28);
+      } else {
+        icon = this.add.star(left + 30, y + rowH / 2 - 2, 5, 7, 13, C.GOLD_LIGHT, 0.95);
+      }
+
+      const name = this.add.text(left + 64, y + rowH / 2 - 2, item, {
+        fontSize: '14px', color: '#fff0d0', fontFamily: 'monospace',
+      }).setOrigin(0, 0.5);
+
+      this.inventoryRows.push(rowBg, icon, name);
+      this.inventoryPanel.add([rowBg, icon, name]);
+    });
+
+    if (this.inventoryItems.length > maxRows) {
+      const more = this.add.text(bx, by + bh / 2 - 72, `+${this.inventoryItems.length - maxRows} more items`, {
+        fontSize: '12px', color: '#ffd700', fontFamily: 'monospace',
+      }).setOrigin(0.5, 0.5);
+      this.inventoryRows.push(more);
+      this.inventoryPanel.add(more);
+    }
   }
+
 
   // ── Resize ─────────────────────────────────────────────────────────────────
   private handleResize(W: number, H: number): void {
@@ -544,5 +609,15 @@ export class UIScene extends Phaser.Scene {
     this.timeText?.setPosition(W - 10, 14);
     this.drawHUD(W);
     this.drawTimeBadge(W, this.timeText?.text ?? 'DAY', 0xcc6600);
+    const wasInventoryVisible = this.inventoryVisible;
+    const wasMapVisible = this.mapVisible;
+    this.inventoryPanel?.destroy();
+    this.mapPanel?.destroy();
+    this.createInventoryPanel(W, H);
+    this.createMapPanel(W, H);
+    this.inventoryVisible = wasInventoryVisible;
+    this.mapVisible = wasMapVisible;
+    this.inventoryPanel.setVisible(wasInventoryVisible);
+    this.mapPanel.setVisible(wasMapVisible);
   }
 }
