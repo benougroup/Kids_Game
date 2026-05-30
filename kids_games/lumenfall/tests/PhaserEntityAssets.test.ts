@@ -14,6 +14,9 @@ const looseTexturePaths: Record<string, string> = {
   rabbit: 'public/assets/sprites/creatures/animals_peaceful/rabbit',
   bird: 'public/assets/sprites/creatures/animals_peaceful/bird',
   slime: 'public/assets/sprites/creatures/monsters/slime',
+  wolf: 'public/assets/sprites/creatures/animals_aggressive/wolf',
+  zombie: 'public/assets/sprites/creatures/undead/zombie',
+  demon: 'public/assets/sprites/creatures/dark_entities/demon',
 };
 
 function frameList(frames: Record<string, string | string[]>): string[] {
@@ -31,6 +34,8 @@ describe('Phaser entity assets', () => {
         if (atlasFrames?.has(frame)) continue;
 
         const [prefix, ...nameParts] = frame.split('_');
+        if (frame.startsWith('dragon_')) continue; // Dragon frames are generated procedurally at runtime.
+
         const looseDir = looseTexturePaths[prefix];
         const looseName = nameParts.join('_');
         if (looseDir && looseName && existsSync(join(process.cwd(), looseDir, `${looseName}.png`))) continue;

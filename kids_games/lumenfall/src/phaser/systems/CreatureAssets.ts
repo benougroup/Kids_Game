@@ -5,11 +5,14 @@ const LOOSE_CREATURE_PATHS: Record<string, string> = {
   rabbit: 'assets/sprites/creatures/animals_peaceful/rabbit',
   bird: 'assets/sprites/creatures/animals_peaceful/bird',
   slime: 'assets/sprites/creatures/monsters/slime',
+  wolf: 'assets/sprites/creatures/animals_aggressive/wolf',
+  zombie: 'assets/sprites/creatures/undead/zombie',
+  demon: 'assets/sprites/creatures/dark_entities/demon',
 };
 
 const CREATURE_TEXTURE_SIZE = 64;
 
-type CreatureKind = 'rabbit' | 'bird' | 'slime';
+type CreatureKind = 'rabbit' | 'bird' | 'slime' | 'wolf' | 'zombie' | 'demon' | 'dragon';
 
 interface CreatureDrawOptions {
   dx?: number;
@@ -24,6 +27,7 @@ interface CreatureDrawOptions {
   squash?: number;
   angry?: boolean;
   split?: boolean;
+  flame?: boolean;
 }
 
 export function getLooseCreatureFrameLoads(): Array<{ key: string; path: string }> {
@@ -49,7 +53,16 @@ export function getLooseCreatureFrameLoads(): Array<{ key: string; path: string 
  * centered canvas sprites after preload has completed and before entities spawn.
  */
 export function installProceduralCreatureTextures(scene: Phaser.Scene): void {
-  for (const { key } of getLooseCreatureFrameLoads()) {
+  const frameKeys = new Set(getLooseCreatureFrameLoads().map(({ key }) => key));
+
+  for (const def of Object.values(MONSTER_DEFINITIONS)) {
+    if (def.atlas !== 'creatures') continue;
+    for (const frame of Object.values(def.frames).flatMap((value) => Array.isArray(value) ? value : [value])) {
+      if (getCreatureKind(frame)) frameKeys.add(frame);
+    }
+  }
+
+  for (const key of frameKeys) {
     const kind = getCreatureKind(key);
     if (!kind) continue;
 
@@ -74,6 +87,10 @@ function getCreatureKind(frameKey: string): CreatureKind | null {
   if (frameKey.startsWith('rabbit_')) return 'rabbit';
   if (frameKey.startsWith('bird_')) return 'bird';
   if (frameKey.startsWith('slime_')) return 'slime';
+  if (frameKey.startsWith('wolf_')) return 'wolf';
+  if (frameKey.startsWith('zombie_')) return 'zombie';
+  if (frameKey.startsWith('demon_')) return 'demon';
+  if (frameKey.startsWith('dragon_')) return 'dragon';
   return null;
 }
 
@@ -87,6 +104,18 @@ function drawCreatureFrame(ctx: CanvasRenderingContext2D, kind: CreatureKind, fr
       break;
     case 'slime':
       drawSlime(ctx, getSlimeOptions(frameKey));
+      break;
+    case 'wolf':
+      drawWolf(ctx, frameKey);
+      break;
+    case 'zombie':
+      drawZombie(ctx, frameKey);
+      break;
+    case 'demon':
+      drawDemon(ctx, frameKey);
+      break;
+    case 'dragon':
+      drawDragon(ctx, frameKey);
       break;
   }
 }
@@ -262,5 +291,78 @@ function drawSlime(ctx: CanvasRenderingContext2D, options: CreatureDrawOptions):
   if (split) {
     fillEllipse(ctx, 16 + dx, 45 + dy, 6, 5, body);
     fillEllipse(ctx, 49 + dx, 45 + dy, 6, 5, body);
+  }
+}
+
+function drawWolf(ctx: CanvasRenderingContext2D, frameKey: string): void {
+  const n = getFrameNumber(frameKey);
+  const run = frameKey.includes('sprint') || frameKey.includes('walk');
+  const dx = run ? (n % 2 === 0 ? 2 : -2) : 0;
+  fillEllipse(ctx, 32 + dx, 53, 21, 4, 'rgba(0, 0, 0, 0.22)');
+  fillEllipse(ctx, 34 + dx, 36, 19, 10, '#6f6257');
+  fillPolygon(ctx, [[17 + dx, 34], [7 + dx, 29], [15 + dx, 42]], '#5a4d43');
+  fillPolygon(ctx, [[47 + dx, 27], [53 + dx, 13], [56 + dx, 31]], '#5a4d43');
+  fillEllipse(ctx, 48 + dx, 30, 11, 9, '#7c7065');
+  fillPolygon(ctx, [[40 + dx, 24], [42 + dx, 12], [47 + dx, 22]], '#4d4038');
+  fillPolygon(ctx, [[54 + dx, 23], [58 + dx, 12], [59 + dx, 26]], '#4d4038');
+  fillEllipse(ctx, 51 + dx, 31, 2, 2, '#101010');
+  fillEllipse(ctx, 58 + dx, 35, 3, 2, '#1b1b1b');
+  strokeLine(ctx, 24 + dx, 43, 20 + dx, 52, '#3f332b', 3);
+  strokeLine(ctx, 41 + dx, 43, 45 + dx, 52, '#3f332b', 3);
+  if (frameKey.includes('howl')) strokeLine(ctx, 56 + dx, 34, 60 + dx, 28, '#1b1b1b', 2);
+}
+
+function drawZombie(ctx: CanvasRenderingContext2D, frameKey: string): void {
+  const n = getFrameNumber(frameKey);
+  const stagger = frameKey.includes('walk') ? (n % 2 === 0 ? 2 : -2) : 0;
+  fillEllipse(ctx, 32, 54, 15, 4, 'rgba(0, 0, 0, 0.22)');
+  fillEllipse(ctx, 32 + stagger, 24, 10, 10, '#8db06f');
+  fillEllipse(ctx, 28 + stagger, 22, 2, 2, '#1b1b1b');
+  fillEllipse(ctx, 36 + stagger, 22, 2, 2, '#1b1b1b');
+  strokeLine(ctx, 28 + stagger, 29, 36 + stagger, 30, '#35582e', 2);
+  fillPolygon(ctx, [[23 + stagger, 34], [41 + stagger, 33], [45, 51], [20, 51]], '#5b4a8a');
+  fillPolygon(ctx, [[23 + stagger, 35], [10, 43], [13, 47], [26 + stagger, 41]], '#8db06f');
+  fillPolygon(ctx, [[40 + stagger, 35], [55, 42], [52, 47], [37 + stagger, 41]], '#8db06f');
+  strokeLine(ctx, 27, 51, 23 + stagger, 58, '#6e8f55', 4);
+  strokeLine(ctx, 38, 51, 43 - stagger, 58, '#6e8f55', 4);
+  if (frameKey.includes('bite') || frameKey.includes('grab')) fillEllipse(ctx, 32 + stagger, 31, 5, 2, '#331b1b');
+}
+
+function drawDemon(ctx: CanvasRenderingContext2D, frameKey: string): void {
+  const n = getFrameNumber(frameKey);
+  const flap = frameKey.includes('wing') || frameKey.includes('walk') ? (n % 2 === 0 ? 5 : -2) : 0;
+  fillEllipse(ctx, 33, 55, 18, 4, 'rgba(0, 0, 0, 0.25)');
+  fillPolygon(ctx, [[24, 34], [7, 22 - flap], [14, 47], [25, 45]], '#5b1b6b');
+  fillPolygon(ctx, [[40, 34], [57, 22 - flap], [50, 47], [39, 45]], '#5b1b6b');
+  fillEllipse(ctx, 32, 35, 14, 15, '#9b2424');
+  fillEllipse(ctx, 32, 22, 10, 9, '#b83232');
+  fillPolygon(ctx, [[24, 17], [17, 6], [28, 15]], '#f0d06a');
+  fillPolygon(ctx, [[40, 17], [47, 6], [36, 15]], '#f0d06a');
+  fillEllipse(ctx, 28, 21, 2, 2, '#ffd45a');
+  fillEllipse(ctx, 36, 21, 2, 2, '#ffd45a');
+  fillPolygon(ctx, [[28, 28], [36, 28], [32, 32]], '#241010');
+  if (frameKey.includes('hellfire') || frameKey.includes('fire')) {
+    fillPolygon(ctx, [[32, 49], [26, 58], [32, 55], [38, 58]], '#ff8c1a');
+    fillPolygon(ctx, [[32, 49], [29, 56], [32, 54], [35, 56]], '#ffe066');
+  }
+}
+
+function drawDragon(ctx: CanvasRenderingContext2D, frameKey: string): void {
+  const n = getFrameNumber(frameKey);
+  const flap = frameKey.includes('fly') || frameKey.includes('walk') ? (n % 2 === 0 ? 7 : -3) : 0;
+  fillEllipse(ctx, 32, 56, 23, 4, 'rgba(0, 0, 0, 0.24)');
+  fillPolygon(ctx, [[26, 34], [7, 18 - flap], [13, 45], [27, 43]], '#2b7a4b');
+  fillPolygon(ctx, [[39, 34], [59, 18 - flap], [52, 45], [38, 43]], '#2b7a4b');
+  fillEllipse(ctx, 33, 38, 18, 12, '#3fa15f');
+  fillPolygon(ctx, [[15, 39], [2, 34], [14, 48]], '#2e7748');
+  fillEllipse(ctx, 47, 29, 12, 10, '#4fbd72');
+  fillPolygon(ctx, [[42, 21], [42, 10], [48, 20]], '#f1da62');
+  fillPolygon(ctx, [[52, 21], [57, 10], [57, 24]], '#f1da62');
+  fillEllipse(ctx, 51, 27, 2, 2, '#101010');
+  fillPolygon(ctx, [[57, 32], [63, 29], [58, 36]], '#2e7748');
+  for (let x = 23; x <= 42; x += 6) fillPolygon(ctx, [[x, 25], [x + 3, 17], [x + 6, 25]], '#e8cf55');
+  if (frameKey.includes('fire')) {
+    fillPolygon(ctx, [[60, 33], [64, 25], [64, 40]], '#ff7a18');
+    fillPolygon(ctx, [[61, 33], [64, 29], [64, 37]], '#ffe066');
   }
 }
