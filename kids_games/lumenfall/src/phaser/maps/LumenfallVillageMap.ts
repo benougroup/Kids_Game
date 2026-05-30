@@ -95,6 +95,20 @@ export function createLumenfallVillageData(): MapData {
   // King Slime — lurking in the SE ruins corner (mini-boss encounter)
   monsters.push({ x: 27, y: 23, entityId: 'slime_king'  });
 
+  // ── Test encounter swarm: scary animals + monsters on the main map ───────
+  // Keep them away from the central spawn/plaza so testers can approach each
+  // behavior cluster deliberately instead of being surrounded on load.
+  monsters.push({ x: 10, y: 4,  entityId: 'wolf'          });  // fast chaser near north wall
+  monsters.push({ x: 21, y: 5,  entityId: 'wolf'          });
+  monsters.push({ x: 3,  y: 10, entityId: 'goblin'        });  // west-road ambush
+  monsters.push({ x: 28, y: 14, entityId: 'goblin'        });  // east-road ambush
+  monsters.push({ x: 10, y: 24, entityId: 'skeleton'      });  // graveyard patrol
+  monsters.push({ x: 4,  y: 23, entityId: 'ghost'         });  // non-hostile spooky ghost
+  monsters.push({ x: 29, y: 20, entityId: 'shadow_stalker' });  // hostile shadow by ruins
+  monsters.push({ x: 2,  y: 18, entityId: 'shadow_small'  });  // light-fleeing shadow test
+  monsters.push({ x: 29, y: 7,  entityId: 'slime_red'     });  // extra aggressive slime
+  monsters.push({ x: 12, y: 6,  entityId: 'slime_green'   });  // calm slime near path
+
   // ── 1. BASE GROUND: full grass ──────────────────────────────────────────
   fill(groundLayer, 0, 0, COLS, ROWS, 'grass_plain', 'terrain_grassland', 0);
 
