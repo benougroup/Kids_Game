@@ -57,7 +57,7 @@ export class GameScene extends Phaser.Scene {
   private clickMarker: Phaser.GameObjects.Graphics | null = null;
   private clickStallMs: number = 0;
   private lastClickMovePos: { x: number; y: number } | null = null;
-  private pickups: Array<{ id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number }> = [];
+  private pickups: Array<{ id: string; itemName: string; container: Phaser.GameObjects.Container; x: number; y: number }> = [];
   
   // Player collision half-size (must match Player.ts collisionHalfSize)
   private readonly PLAYER_HALF: number = 14;
@@ -210,7 +210,7 @@ export class GameScene extends Phaser.Scene {
     // Destroy night monsters
     for (const m of this.nightMonsters) m.destroy();
     this.nightMonsters = [];
-    for (const pickup of this.pickups) pickup.sprite.destroy();
+    for (const pickup of this.pickups) pickup.container.destroy();
     this.pickups = [];
     
     this.currentMapId = mapId;
@@ -823,7 +823,7 @@ export class GameScene extends Phaser.Scene {
     const nearbyEntity = this.currentMapBuilder.getNearbyEntity(playerPos.x, playerPos.y, 80);
     const nearbyPickup = this.getNearbyPickup(playerPos.x, playerPos.y, 64);
     if (nearbyPickup) {
-      nearbyPickup.sprite.destroy();
+      nearbyPickup.container.destroy();
       this.pickups = this.pickups.filter((p) => p.id !== nearbyPickup.id);
       this.events.emit('inventoryAddItem', nearbyPickup.itemName);
       this.events.emit('showMessage', `Picked up ${nearbyPickup.itemName}!`);
@@ -905,16 +905,16 @@ export class GameScene extends Phaser.Scene {
   }
 
   private spawnDemoPickups(tileSize: number): void {
-    const byMap: Record<string, Array<{ tx: number; ty: number; itemName: string }>> = {
+    const byMap: Record<string, Array<{ tx: number; ty: number; itemName: string; color?: number }>> = {
       lumenfall_village: [
-        { tx: 13, ty: 15, itemName: 'Practice Sword' },
-        { tx: 17, ty: 15, itemName: 'Lantern Oil' },
-        { tx: 12, ty: 18, itemName: 'Healing Apple' },
-        { tx: 20, ty: 18, itemName: 'Magic Stone' },
-        { tx: 8,  ty: 11, itemName: 'Coin Pouch' },
-        { tx: 24, ty: 10, itemName: 'Iron Key' },
-        { tx: 9,  ty: 22, itemName: 'Bone Charm' },
-        { tx: 26, ty: 22, itemName: 'Red Gem' },
+        { tx: 13, ty: 15, itemName: 'Practice Sword', color: 0xb9c7ff },
+        { tx: 17, ty: 15, itemName: 'Lantern Oil', color: 0xffd166 },
+        { tx: 12, ty: 18, itemName: 'Healing Apple', color: 0xff4d4d },
+        { tx: 20, ty: 18, itemName: 'Magic Stone', color: 0x9b7cff },
+        { tx: 8,  ty: 11, itemName: 'Coin Pouch', color: 0xffd700 },
+        { tx: 24, ty: 10, itemName: 'Iron Key', color: 0xd8d8d8 },
+        { tx: 9,  ty: 22, itemName: 'Bone Charm', color: 0xf5ead2 },
+        { tx: 26, ty: 22, itemName: 'Red Gem', color: 0xff3b6b },
       ],
       test_town: [
         { tx: 13, ty: 14, itemName: 'Sunleaf' },
@@ -930,11 +930,10 @@ export class GameScene extends Phaser.Scene {
     for (const entry of byMap[this.currentMapId] ?? []) {
       const x = entry.tx * tileSize + tileSize / 2;
       const y = entry.ty * tileSize + tileSize / 2;
-      const sprite = this.add.sprite(x, y, 'objects_props_v003', 'sparkle_pickup');
-      sprite.setDisplaySize(tileSize * 0.9, tileSize * 0.9);
-      sprite.setDepth(toRenderDepth(entry.ty, 2));
+      const container = this.createPickupVisual(x, y, entry.itemName, entry.color ?? 0x66e3ff, tileSize);
+      container.setDepth(toRenderDepth(entry.ty, 2));
       this.tweens.add({
-        targets: sprite,
+        targets: container,
         y: y - 8,
         duration: 900,
         yoyo: true,
@@ -944,14 +943,39 @@ export class GameScene extends Phaser.Scene {
       this.pickups.push({
         id: `${this.currentMapId}_${entry.tx}_${entry.ty}`,
         itemName: entry.itemName,
-        sprite,
+        container,
         x,
         y,
       });
     }
   }
 
-  private getNearbyPickup(worldX: number, worldY: number, radius: number): { id: string; itemName: string; sprite: Phaser.GameObjects.Sprite; x: number; y: number } | null {
+  private createPickupVisual(x: number, y: number, itemName: string, color: number, tileSize: number): Phaser.GameObjects.Container {
+    const glow = this.add.circle(0, 4, tileSize * 0.28, color, 0.24);
+    const ring = this.add.circle(0, 4, tileSize * 0.2, color, 0.42).setStrokeStyle(2, 0xffffff, 0.85);
+    const gem = this.add.polygon(0, -8, [
+      0, -16,
+      14, -4,
+      8, 12,
+      -8, 12,
+      -14, -4,
+    ], color, 1).setStrokeStyle(2, 0xffffff, 0.9);
+    const sparkleA = this.add.star(-18, -18, 4, 2, 6, 0xffffff, 0.9);
+    const sparkleB = this.add.star(18, -14, 4, 2, 5, 0xfff2a8, 0.9);
+    const label = this.add.text(0, 24, itemName, {
+      fontSize: '10px',
+      color: '#ffffff',
+      fontFamily: 'monospace',
+      backgroundColor: 'rgba(20, 12, 40, 0.72)',
+      padding: { left: 4, right: 4, top: 2, bottom: 2 },
+    }).setOrigin(0.5, 0.5);
+
+    const container = this.add.container(x, y, [glow, ring, gem, sparkleA, sparkleB, label]);
+    container.setSize(tileSize, tileSize);
+    return container;
+  }
+
+  private getNearbyPickup(worldX: number, worldY: number, radius: number): { id: string; itemName: string; container: Phaser.GameObjects.Container; x: number; y: number } | null {
     for (const pickup of this.pickups) {
       const dist = Phaser.Math.Distance.Between(worldX, worldY, pickup.x, pickup.y);
       if (dist <= radius) return pickup;
