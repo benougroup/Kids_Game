@@ -64,11 +64,15 @@ export function createLumenfallVillageData(): MapData {
   monsters.push({ x: 6,  y: 9,  entityId: 'rabbit' });
   monsters.push({ x: 26, y: 8,  entityId: 'rabbit' });
   monsters.push({ x: 28, y: 11, entityId: 'rabbit' });
+  monsters.push({ x: 13, y: 17, entityId: 'rabbit' });
+  monsters.push({ x: 18, y: 17, entityId: 'rabbit' });
 
   // Squirrels — near the trees
   monsters.push({ x: 4,  y: 5,  entityId: 'squirrel' });
   monsters.push({ x: 27, y: 5,  entityId: 'squirrel' });
   monsters.push({ x: 5,  y: 20, entityId: 'squirrel' });
+  monsters.push({ x: 23, y: 7,  entityId: 'squirrel' });
+  monsters.push({ x: 7,  y: 18, entityId: 'squirrel' });
 
   // Frogs — near the pond (NW quadrant)
   monsters.push({ x: 4,  y: 14, entityId: 'frog' });
@@ -92,6 +96,8 @@ export function createLumenfallVillageData(): MapData {
   monsters.push({ x: 8,  y: 23, entityId: 'slime_blue'  });  // sleepy blue near graveyard
   monsters.push({ x: 22, y: 20, entityId: 'slime_blue'  });  // sleepy blue near ruins
   monsters.push({ x: 25, y: 22, entityId: 'slime_red'   });  // aggressive red near ruins
+  monsters.push({ x: 14, y: 20, entityId: 'slime_green' });  // extra test slime near the plaza
+  monsters.push({ x: 18, y: 20, entityId: 'slime_red'   });  // torch-combat test slime near the plaza
   // King Slime — lurking in the SE ruins corner (mini-boss encounter)
   monsters.push({ x: 27, y: 23, entityId: 'slime_king'  });
 
@@ -101,11 +107,13 @@ export function createLumenfallVillageData(): MapData {
   monsters.push({ x: 10, y: 4,  entityId: 'wolf'          });  // fast chaser near north wall
   monsters.push({ x: 21, y: 5,  entityId: 'wolf'          });
   monsters.push({ x: 13, y: 6,  entityId: 'wolf'          });  // extra visible wolf pack member
+  monsters.push({ x: 18, y: 6,  entityId: 'wolf'          });  // extra test wolf pack member
   monsters.push({ x: 3,  y: 10, entityId: 'goblin'        });  // west-road ambush
   monsters.push({ x: 28, y: 14, entityId: 'goblin'        });  // east-road ambush
   monsters.push({ x: 10, y: 24, entityId: 'skeleton'      });  // graveyard patrol
   monsters.push({ x: 11, y: 23, entityId: 'zombie'        });  // graveyard shambler
   monsters.push({ x: 6,  y: 24, entityId: 'zombie'        });
+  monsters.push({ x: 14, y: 23, entityId: 'skeleton'      });
   monsters.push({ x: 4,  y: 23, entityId: 'ghost'         });  // non-hostile spooky ghost
   monsters.push({ x: 24, y: 23, entityId: 'demon'         });  // SE ruins guardian
   monsters.push({ x: 28, y: 22, entityId: 'dragon'        });  // young dragon boss by ruins

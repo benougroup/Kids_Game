@@ -4,6 +4,7 @@ export interface ItemGraphicDefinition {
 }
 
 const ITEM_GRAPHICS_BY_NAME: Record<string, ItemGraphicDefinition> = {
+  Torch: { key: 'item_torch', path: 'assets/sprites/props/street/wall_torch/wall_torch.png' },
   'Practice Sword': { key: 'item_sword_iron', path: 'assets/sprites/equipment/sword_iron/icon.png' },
   'Lantern Oil': { key: 'item_potion_mana', path: 'assets/sprites/items/potion_mana/icon.png' },
   'Healing Apple': { key: 'item_apple', path: 'assets/sprites/items/apple/icon.png' },

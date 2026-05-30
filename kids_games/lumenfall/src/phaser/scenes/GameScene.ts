@@ -59,6 +59,8 @@ export class GameScene extends Phaser.Scene {
   private clickStallMs: number = 0;
   private lastClickMovePos: { x: number; y: number } | null = null;
   private pickups: Array<{ id: string; itemName: string; container: Phaser.GameObjects.Container; x: number; y: number }> = [];
+  private inventoryItems: string[] = [];
+  private torchBurst: Phaser.GameObjects.Graphics | null = null;
   
   // Player collision half-size (must match Player.ts collisionHalfSize)
   private readonly PLAYER_HALF: number = 14;
@@ -205,7 +207,7 @@ export class GameScene extends Phaser.Scene {
     // Emit initial state
     this.events.emit('timeUpdate', this.timeOfDay);
     this.events.emit('hpUpdate', { hp: 10, maxHp: 10 });
-    this.events.emit('inventoryChanged', []);
+    this.events.emit('inventoryChanged', this.inventoryItems);
   }
 
   private loadMap(mapId: string, spawnTileX: number, spawnTileY: number): void {
@@ -833,6 +835,7 @@ export class GameScene extends Phaser.Scene {
     if (nearbyPickup) {
       nearbyPickup.container.destroy();
       this.pickups = this.pickups.filter((p) => p.id !== nearbyPickup.id);
+      this.inventoryItems.push(nearbyPickup.itemName);
       this.events.emit('inventoryAddItem', nearbyPickup.itemName);
       this.events.emit('showMessage', `Picked up ${nearbyPickup.itemName}!`);
       return;
@@ -840,11 +843,49 @@ export class GameScene extends Phaser.Scene {
     
     if (nearbyEntity) {
       const def = nearbyEntity.getDefinition();
+      if (def.type === 'monster' || def.type === 'boss') {
+        this.useTorchOnMonster(nearbyEntity);
+        return;
+      }
       this.triggerNPCDialog(def);
     } else {
-      // Toggle lantern
+      // Toggle lantern/torch light for exploration when not interacting.
       this.player.toggleLantern();
+      this.events.emit('showMessage', this.player.isLanternActive() ? 'Torch light on.' : 'Torch light off.');
     }
+  }
+
+  private useTorchOnMonster(monster: Entity): void {
+    const hasTorch = this.inventoryItems.includes('Torch') || this.inventoryItems.includes('Lantern Oil');
+    const def = monster.getDefinition();
+
+    if (!hasTorch) {
+      this.events.emit('showMessage', `${def.name}: Find a Torch or Lantern Oil, then press ACT nearby!`);
+      return;
+    }
+
+    const damage = def.fleeFromLight || def.id.includes('shadow') ? 30 : 12;
+    monster.takeDamage(damage);
+    if (!this.player.isLanternActive()) this.player.toggleLantern();
+    this.showTorchBurst(monster.getPosition().x, monster.getPosition().y);
+    this.events.emit('showMessage', `Torch flash! ${def.name} takes ${damage} damage.`);
+  }
+
+  private showTorchBurst(x: number, y: number): void {
+    this.torchBurst?.destroy();
+    const burst = this.add.graphics();
+    burst.setDepth(4998);
+    burst.lineStyle(4, 0xfff2a8, 0.95);
+    burst.strokeCircle(x, y, 42);
+    burst.lineStyle(2, 0xff7a18, 0.75);
+    burst.strokeCircle(x, y, 62);
+    burst.fillStyle(0xffd166, 0.2);
+    burst.fillCircle(x, y, 58);
+    this.torchBurst = burst;
+    this.time.delayedCall(220, () => {
+      burst.destroy();
+      if (this.torchBurst === burst) this.torchBurst = null;
+    });
   }
 
   /**
@@ -915,6 +956,7 @@ export class GameScene extends Phaser.Scene {
   private spawnDemoPickups(tileSize: number): void {
     const byMap: Record<string, Array<{ tx: number; ty: number; itemName: string; color?: number }>> = {
       lumenfall_village: [
+        { tx: 15, ty: 16, itemName: 'Torch', color: 0xff7a18 },
         { tx: 13, ty: 15, itemName: 'Practice Sword', color: 0xb9c7ff },
         { tx: 17, ty: 15, itemName: 'Lantern Oil', color: 0xffd166 },
         { tx: 12, ty: 18, itemName: 'Healing Apple', color: 0xff4d4d },
@@ -1141,16 +1183,21 @@ export class GameScene extends Phaser.Scene {
     const mapH = this.currentMapBuilder.getHeight();
     const tileSize = this.currentMapBuilder.getTileSize();
     
-    // Spawn shadow wisps in corners
+    // Spawn a larger night swarm in predictable test positions so torch and
+    // lantern interactions are easy to verify without waiting for random spawns.
     const spawnPoints = [
-      { tx: 3, ty: 3 },
-      { tx: Math.floor(mapW / tileSize) - 4, ty: 3 },
-      { tx: 3, ty: Math.floor(mapH / tileSize) - 4 },
-      { tx: Math.floor(mapW / tileSize) - 4, ty: Math.floor(mapH / tileSize) - 4 },
+      { tx: 3, ty: 3, id: 'shadow_small' },
+      { tx: Math.floor(mapW / tileSize) - 4, ty: 3, id: 'shadow_small' },
+      { tx: 3, ty: Math.floor(mapH / tileSize) - 4, id: 'shadow_small' },
+      { tx: Math.floor(mapW / tileSize) - 4, ty: Math.floor(mapH / tileSize) - 4, id: 'shadow_small' },
+      { tx: 7, ty: 6, id: 'shadow_stalker' },
+      { tx: Math.floor(mapW / tileSize) - 8, ty: 6, id: 'shadow_stalker' },
+      { tx: 7, ty: Math.floor(mapH / tileSize) - 7, id: 'shadow_small' },
+      { tx: Math.floor(mapW / tileSize) - 8, ty: Math.floor(mapH / tileSize) - 7, id: 'shadow_small' },
     ];
 
     for (const pt of spawnPoints) {
-      const def = MONSTER_DEFINITIONS['shadow_small'];
+      const def = MONSTER_DEFINITIONS[pt.id];
       if (def) {
         const entity = new Entity(this, pt.tx, pt.ty, def, tileSize);
         entity.setCollisionCallback((x, y, flags) => 
