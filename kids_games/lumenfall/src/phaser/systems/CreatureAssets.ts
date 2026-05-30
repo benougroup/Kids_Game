@@ -3,7 +3,12 @@ import { MONSTER_DEFINITIONS } from './EntityRegistry';
 export const LOOSE_CREATURE_PATHS: Record<string, string> = {
   rabbit: 'assets/sprites/creatures/animals_peaceful/rabbit',
   bird: 'assets/sprites/creatures/animals_peaceful/bird',
+  giant_snake: 'assets/sprites/creatures/monsters/giant_snake',
+  giant_bug: 'assets/sprites/creatures/monsters/giant_bug',
+  spider: 'assets/sprites/creatures/monsters/spider',
   slime: 'assets/sprites/creatures/monsters/slime',
+  troll: 'assets/sprites/creatures/monsters/troll',
+  golem: 'assets/sprites/creatures/monsters/golem',
   wolf: 'assets/sprites/creatures/animals_aggressive/wolf',
   zombie: 'assets/sprites/creatures/undead/zombie',
   demon: 'assets/sprites/creatures/dark_entities/demon',

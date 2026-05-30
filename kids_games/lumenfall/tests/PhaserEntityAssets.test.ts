@@ -25,8 +25,6 @@ describe('Phaser entity assets', () => {
       for (const frame of frameList(def.frames)) {
         if (atlasFrames?.has(frame)) continue;
 
-        if (frame.startsWith('dragon_')) continue; // Dragon frames are generated procedurally at runtime.
-
         const loose = resolveLooseCreatureFrame(frame);
         if (loose && existsSync(join(process.cwd(), 'public', loose.path))) continue;
 
