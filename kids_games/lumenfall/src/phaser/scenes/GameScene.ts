@@ -906,6 +906,16 @@ export class GameScene extends Phaser.Scene {
 
   private spawnDemoPickups(tileSize: number): void {
     const byMap: Record<string, Array<{ tx: number; ty: number; itemName: string }>> = {
+      lumenfall_village: [
+        { tx: 13, ty: 15, itemName: 'Practice Sword' },
+        { tx: 17, ty: 15, itemName: 'Lantern Oil' },
+        { tx: 12, ty: 18, itemName: 'Healing Apple' },
+        { tx: 20, ty: 18, itemName: 'Magic Stone' },
+        { tx: 8,  ty: 11, itemName: 'Coin Pouch' },
+        { tx: 24, ty: 10, itemName: 'Iron Key' },
+        { tx: 9,  ty: 22, itemName: 'Bone Charm' },
+        { tx: 26, ty: 22, itemName: 'Red Gem' },
+      ],
       test_town: [
         { tx: 13, ty: 14, itemName: 'Sunleaf' },
         { tx: 16, ty: 14, itemName: 'Glow Moth Dust' },
