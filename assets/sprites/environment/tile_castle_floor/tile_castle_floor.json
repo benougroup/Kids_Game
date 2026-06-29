@@ -1,0 +1,15 @@
+{
+  "id": "tile_castle_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Castle Floor",
+  "description": "Smooth stone castle flooring with subtle carved patterns. Found in castle interiors.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "castle"
+}

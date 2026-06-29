@@ -1,0 +1,44 @@
+{
+  "id": "town_hall",
+  "name": "Town Hall",
+  "description": "Lumenfall's seat of governance. Stone columns flank the entrance, a great clock face marks the hours, and royal banners hang from the roof. The town council meets here every full moon.",
+  "type": "building",
+  "subCategory": "civic",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 4,
+    "tileH": 3,
+    "pixelW": 256,
+    "pixelH": 192,
+    "anchorTile": [
+      0,
+      2
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_building",
+  "hasAnimation": false
+}

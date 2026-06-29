@@ -1,0 +1,44 @@
+{
+  "id": "manor",
+  "name": "Manor",
+  "description": "The grand stone manor of Lumenfall's most influential family. Ivy climbs the grey walls, tall gothic windows overlook the courtyard, and an iron fence guards the entrance. Secrets are said to be kept within.",
+  "type": "building",
+  "subCategory": "residential",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 4,
+    "tileH": 3,
+    "pixelW": 256,
+    "pixelH": 192,
+    "anchorTile": [
+      0,
+      2
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_building",
+  "hasAnimation": false
+}

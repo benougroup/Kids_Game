@@ -1,0 +1,123 @@
+{
+  "id": "skeleton",
+  "type": "creature",
+  "category": "undead",
+  "name": "Skeleton",
+  "description": "The animated skeleton of a long-dead warrior, still clutching a rusted sword. Rattles as it walks. Immune to poison and disease. Patrols ancient ruins and graveyards.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sword_attack": {
+      "files": [
+        "sword_attack_f01.png",
+        "sword_attack_f02.png",
+        "sword_attack_f03.png",
+        "sword_attack_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "arrow_shoot": {
+      "files": [
+        "arrow_shoot_f01.png",
+        "arrow_shoot_f02.png",
+        "arrow_shoot_f03.png",
+        "arrow_shoot_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "reassemble": {
+      "files": [
+        "reassemble_f01.png",
+        "reassemble_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "night_march": {
+      "files": [
+        "night_march_f01.png",
+        "night_march_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "patrol",
+    "speed": 50,
+    "health": 45,
+    "hostile": true,
+    "dayNight": {
+      "day": "active",
+      "night": "faster_movement"
+    },
+    "movement": "march",
+    "aggroRange": 200,
+    "attackDamage": 15,
+    "weakToBlunt": true
+  }
+}

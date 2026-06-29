@@ -1,0 +1,16 @@
+{
+  "id": "tile_graveyard",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Graveyard",
+  "description": "Dark, overgrown graveyard ground. The earth is soft and disturbed in places.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "graveyard",
+  "eerie": true
+}

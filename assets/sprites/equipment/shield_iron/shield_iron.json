@@ -1,0 +1,15 @@
+{
+  "id": "shield_iron",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Shield Iron",
+  "description": "A heavy iron shield with a domed boss and a painted crest. Provides strong protection against physical attacks. Heavier than wood but far more durable.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_left",
+  "stats": {
+    "defense": 12
+  }
+}

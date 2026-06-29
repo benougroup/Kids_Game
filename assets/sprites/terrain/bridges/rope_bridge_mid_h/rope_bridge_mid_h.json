@@ -1,0 +1,27 @@
+{
+  "id": "rope_bridge_mid_h",
+  "name": "Rope Bridge Mid H",
+  "description": "The swaying middle section of a horizontal rope bridge. Cross carefully.",
+  "type": "terrain_tile",
+  "subCategory": "rope_bridge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

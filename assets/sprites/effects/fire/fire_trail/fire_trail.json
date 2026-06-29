@@ -1,0 +1,32 @@
+{
+  "id": "fire_trail",
+  "type": "action_sprite",
+  "category": "fire",
+  "name": "Fire Trail",
+  "description": "A trail of fire left behind by a fast-moving fire projectile or a fire-breathing creature. Burns for a short time and damages anyone who walks through it.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "fire_trail_f01.png",
+      "fire_trail_f02.png",
+      "fire_trail_f03.png",
+      "fire_trail_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 6,
+    "loop": false
+  },
+  "tags": [
+    "trail",
+    "fire",
+    "ground"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

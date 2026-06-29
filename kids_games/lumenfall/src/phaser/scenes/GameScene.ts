@@ -14,6 +14,7 @@ import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
 import { getLooseCreatureFrameLoads } from '../systems/CreatureAssets';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
 import { getItemGraphic, getItemGraphicLoads } from '../systems/ItemGraphics';
+import { getAllSpriteEntries } from '../systems/SpriteLoader';
 
 /**
  * Main Game Scene - Lumenfall RPG
@@ -117,8 +118,15 @@ export class GameScene extends Phaser.Scene {
     // can crash the scene during startup when the village entities are created.
     this.loadLooseCreatureFrames();
     this.loadItemGraphics();
+    // Individual sprite files (correctly cropped, canonical canvas sizes)
+    this.loadIndividualSprites();
   }
 
+  private loadIndividualSprites(): void {
+    for (const entry of getAllSpriteEntries()) {
+      this.load.image(entry.key, entry.path);
+    }
+  }
   private loadItemGraphics(): void {
     for (const asset of getItemGraphicLoads()) {
       this.load.image(asset.key, asset.path);

@@ -1,0 +1,16 @@
+{
+  "id": "tile_dungeon_wet",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Dungeon Wet",
+  "description": "Waterlogged dungeon floor with puddles reflecting the torchlight above.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "dungeon",
+  "slowsMovement": true
+}

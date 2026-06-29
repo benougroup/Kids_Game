@@ -1,0 +1,14 @@
+{
+  "id": "bread",
+  "type": "item",
+  "subType": "food",
+  "name": "Bread",
+  "description": "A round loaf of freshly baked bread from the village bakery. Restores a small amount of health. Cheap and widely available.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 10
+  }
+}

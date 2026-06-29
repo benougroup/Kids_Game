@@ -1,0 +1,15 @@
+{
+  "id": "tile_dungeon_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Dungeon Floor",
+  "description": "Dark, damp stone flooring found deep in dungeons and underground ruins. Cracks run through the surface and moss grows in the gaps.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "dungeon"
+}

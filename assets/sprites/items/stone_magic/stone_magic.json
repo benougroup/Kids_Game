@@ -1,0 +1,12 @@
+{
+  "id": "stone_magic",
+  "type": "item",
+  "subType": "material",
+  "name": "Stone Magic",
+  "description": "A smooth stone that hums faintly with magical energy. Can be thrown to trigger switches, distract enemies, or used as a component in magical crafting.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 30
+}

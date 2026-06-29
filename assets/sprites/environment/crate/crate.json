@@ -1,0 +1,15 @@
+{
+  "id": "crate",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Crate",
+  "description": "A wooden shipping crate. May contain supplies or be empty. Interact to search.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": true,
+  "interactType": "container"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tile_forest_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Forest Floor",
+  "description": "Soft forest floor covered in fallen leaves, moss, and roots. Found in woodland areas.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

@@ -1,0 +1,124 @@
+{
+  "id": "lich",
+  "type": "creature",
+  "category": "undead",
+  "name": "Lich",
+  "description": "An ancient sorcerer who cheated death through dark magic. Wears tattered robes and floats above the ground. Commands armies of undead and casts powerful curses. At maximum power at midnight.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_down": {
+      "files": [
+        "float_down_f01.png",
+        "float_down_f02.png",
+        "float_down_f03.png",
+        "float_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_up": {
+      "files": [
+        "float_up_f01.png",
+        "float_up_f02.png",
+        "float_up_f03.png",
+        "float_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_left": {
+      "files": [
+        "float_left_f01.png",
+        "float_left_f02.png",
+        "float_left_f03.png",
+        "float_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_right": {
+      "files": [
+        "float_right_f01.png",
+        "float_right_f02.png",
+        "float_right_f03.png",
+        "float_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "death_bolt": {
+      "files": [
+        "death_bolt_f01.png",
+        "death_bolt_f02.png",
+        "death_bolt_f03.png",
+        "death_bolt_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "raise_dead": {
+      "files": [
+        "raise_dead_f01.png",
+        "raise_dead_f02.png",
+        "raise_dead_f03.png",
+        "raise_dead_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "night_ascend": {
+      "files": [
+        "night_ascend_f01.png",
+        "night_ascend_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "soul_drain": {
+      "files": [
+        "soul_drain_f01.png",
+        "soul_drain_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "boss",
+    "speed": 55,
+    "health": 600,
+    "hostile": true,
+    "isBoss": true,
+    "dayNight": {
+      "day": "active",
+      "night": "maximum_power"
+    },
+    "movement": "float_pursue",
+    "aggroRange": 500,
+    "attackDamage": 50,
+    "summonsMinions": true
+  }
+}

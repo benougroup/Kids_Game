@@ -20,6 +20,7 @@ import { TileGrid, TileData, EntityMovementFlags, DEFAULT_FLAGS } from '../syste
 import { Entity } from '../entities/Entity';
 import { NPC_DEFINITIONS, MONSTER_DEFINITIONS, EntityDefinition } from '../systems/EntityRegistry';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
+import { getSpriteKey, getSpriteCategorySize } from '../systems/SpriteLoader';
 
 export interface MapExit {
   direction: 'north' | 'south' | 'east' | 'west';
@@ -141,18 +142,24 @@ export class MapBuilder {
       const h = (entry.heightTiles ?? 1) * tileSize;
       
       const yOff = entry.yOffset ?? 0;
-      const sprite = this.scene.add.sprite(x, y, entry.atlas, entry.frame);
+            // Prefer individually-cut sprite files over legacy atlas frames.
+      // Individual sprites have clean crops and canonical canvas sizes.
+      const individualKey = getSpriteKey(entry.frame);
+      const sprite = individualKey && this.scene.textures.exists(individualKey)
+        ? this.scene.add.sprite(x, y, individualKey)
+        : this.scene.add.sprite(x, y, entry.atlas, entry.frame);
       sprite.setOrigin(0, 0);
-
       // Terrain defaults to grid-tile sizing.
       // Objects/structures default to native atlas frame sizing unless tile/pixel dimensions are explicitly provided.
       const nativeW = sprite.frame.realWidth;
       const nativeH = sprite.frame.realHeight;
       const hasExplicitTileSizing = entry.widthTiles !== undefined || entry.heightTiles !== undefined;
+      // For individual sprites, use the canonical category size as the default display size
+      const categorySize = individualKey ? getSpriteCategorySize(entry.frame) : null;
       const displayW = entry.pixelWidth
-        ?? (hasExplicitTileSizing ? w : (baseDepth === 0 ? w : nativeW));
+        ?? (hasExplicitTileSizing ? w : (baseDepth === 0 ? w : (categorySize?.w ?? nativeW)));
       const displayH = entry.pixelHeight
-        ?? (hasExplicitTileSizing ? h : (baseDepth === 0 ? h : nativeH));
+        ?? (hasExplicitTileSizing ? h : (baseDepth === 0 ? h : (categorySize?.h ?? nativeH)));
       // Ground tiles: add 1px overlap to prevent sub-pixel gap bleeding between tiles
       const overlapW = (baseDepth === 0 && !entry.pixelWidth && !hasExplicitTileSizing) ? displayW + 1 : displayW;
       const overlapH = (baseDepth === 0 && !entry.pixelHeight && !hasExplicitTileSizing) ? displayH + 1 : displayH;

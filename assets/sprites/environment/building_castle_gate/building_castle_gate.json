@@ -1,0 +1,19 @@
+{
+  "id": "building_castle_gate",
+  "type": "environment",
+  "subType": "building",
+  "name": "Castle Gate",
+  "description": "The grand iron-reinforced gate of a castle or fortress. Impassable when closed. Opens only when the hero has the right key or completes a quest.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "gate"
+}

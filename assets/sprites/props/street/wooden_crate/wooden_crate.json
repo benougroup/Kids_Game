@@ -1,0 +1,28 @@
+{
+  "id": "wooden_crate",
+  "name": "Wooden Crate",
+  "description": "A wooden shipping crate with rope handles. Could contain supplies, treasure, or nothing at all. Interact to open.",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "open_chest",
+  "hasAnimation": false
+}

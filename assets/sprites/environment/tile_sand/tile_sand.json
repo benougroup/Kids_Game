@@ -1,0 +1,14 @@
+{
+  "id": "tile_sand",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Sand",
+  "description": "Fine golden sand found on beaches and desert zones. Warm to the touch and shifts underfoot.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

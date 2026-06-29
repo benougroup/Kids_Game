@@ -1,0 +1,32 @@
+{
+  "id": "dust_cloud",
+  "type": "action_sprite",
+  "category": "environment",
+  "name": "Dust Cloud",
+  "description": "A swirling cloud of brown dust kicked up by fast movement, impacts, or dry wind.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "dust_cloud_f01.png",
+      "dust_cloud_f02.png",
+      "dust_cloud_f03.png",
+      "dust_cloud_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "dust",
+    "ambient",
+    "particle"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

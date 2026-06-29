@@ -1,0 +1,32 @@
+{
+  "id": "large_tombstone",
+  "name": "Large Tombstone",
+  "description": "A tall carved tombstone bearing a skull and cross motif. The inscription reads 'Here Lies One Who Sought the Light'. Cracks run through the stone and wildflowers grow at its base.",
+  "type": "building",
+  "subCategory": "graveyard",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 2,
+    "pixelW": 64,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false
+      ],
+      [
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "read_inscription",
+  "hasAnimation": false
+}

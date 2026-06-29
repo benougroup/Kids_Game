@@ -1,0 +1,15 @@
+{
+  "id": "prop_bridge_plank_v",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Bridge Plank V",
+  "description": "A vertical wooden plank bridge section. Passable.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isBridge": true,
+  "orientation": "vertical"
+}

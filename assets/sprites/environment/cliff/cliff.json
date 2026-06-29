@@ -1,0 +1,14 @@
+{
+  "id": "cliff",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Cliff",
+  "description": "A sheer rock cliff face. Impassable. Forms natural barriers at the edges of elevated terrain.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "cliff"
+}

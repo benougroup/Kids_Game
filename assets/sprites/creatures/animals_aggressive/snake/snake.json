@@ -1,0 +1,112 @@
+{
+  "id": "snake",
+  "type": "creature",
+  "category": "animals_aggressive",
+  "name": "Snake",
+  "description": "A large forest snake with patterned scales. Coils in the grass and strikes without warning. Its bite inflicts poison that drains health over time.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_down": {
+      "files": [
+        "slither_down_f01.png",
+        "slither_down_f02.png",
+        "slither_down_f03.png",
+        "slither_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_up": {
+      "files": [
+        "slither_up_f01.png",
+        "slither_up_f02.png",
+        "slither_up_f03.png",
+        "slither_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_left": {
+      "files": [
+        "slither_left_f01.png",
+        "slither_left_f02.png",
+        "slither_left_f03.png",
+        "slither_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "slither_right": {
+      "files": [
+        "slither_right_f01.png",
+        "slither_right_f02.png",
+        "slither_right_f03.png",
+        "slither_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "strike": {
+      "files": [
+        "strike_f01.png",
+        "strike_f02.png",
+        "strike_f03.png",
+        "strike_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "coil": {
+      "files": [
+        "coil_f01.png",
+        "coil_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "rattle": {
+      "files": [
+        "rattle_f01.png",
+        "rattle_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "ambush",
+    "speed": 40,
+    "health": 25,
+    "hostile": true,
+    "dayNight": {
+      "day": "active",
+      "night": "hidden"
+    },
+    "movement": "stationary_ambush",
+    "aggroRange": 100,
+    "attackDamage": 8,
+    "inflictsPoison": true
+  }
+}

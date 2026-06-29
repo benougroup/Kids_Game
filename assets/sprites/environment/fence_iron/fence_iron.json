@@ -1,0 +1,14 @@
+{
+  "id": "fence_iron",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Fence Iron",
+  "description": "An ornate iron fence with pointed spikes along the top. Impassable. Used around manors, graveyards, and important buildings.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "fence"
+}

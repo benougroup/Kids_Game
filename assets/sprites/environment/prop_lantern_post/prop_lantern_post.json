@@ -1,0 +1,14 @@
+{
+  "id": "prop_lantern_post",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Lantern Post",
+  "description": "A tall iron lantern post with a glowing lantern at the top. Lights up at dusk.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "emitsLight": true
+}

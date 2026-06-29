@@ -1,0 +1,15 @@
+{
+  "id": "potion_speed",
+  "type": "item",
+  "subType": "consumable",
+  "name": "Potion Speed",
+  "description": "A fizzing yellow potion that temporarily increases the hero's movement speed. Useful for escaping danger or crossing large areas quickly.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "speed": 30,
+    "duration": 10
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tile_stone_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Stone Floor",
+  "description": "Smooth stone flooring found inside buildings, dungeons, and castles. Cool and hard underfoot.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

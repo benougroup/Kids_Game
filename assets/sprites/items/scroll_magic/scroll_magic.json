@@ -1,0 +1,12 @@
+{
+  "id": "scroll_magic",
+  "type": "item",
+  "subType": "scroll",
+  "name": "Scroll Magic",
+  "description": "A rolled parchment scroll tied with a red ribbon, inscribed with magical runes. Contains a single-use spell that can be cast even by non-mages.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "spell": "fireball"
+}

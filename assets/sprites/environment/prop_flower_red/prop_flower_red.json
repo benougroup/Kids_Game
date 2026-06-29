@@ -1,0 +1,14 @@
+{
+  "id": "prop_flower_red",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Flower Red",
+  "description": "A cluster of bright red wildflowers. Purely decorative.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true
+}

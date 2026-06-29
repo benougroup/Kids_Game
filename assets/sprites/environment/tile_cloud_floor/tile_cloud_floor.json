@@ -1,0 +1,15 @@
+{
+  "id": "tile_cloud_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Cloud Floor",
+  "description": "A fluffy white cloud platform found in sky zones. Surprisingly solid underfoot.",
+  "passable": true,
+  "heightLevel": 3,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "sky"
+}

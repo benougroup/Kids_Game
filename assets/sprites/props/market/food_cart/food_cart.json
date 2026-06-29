@@ -1,0 +1,38 @@
+{
+  "id": "food_cart",
+  "name": "Food Cart",
+  "description": "A cheerful food cart with a striped awning, selling hot meals and snacks. A steaming pot sits on top and fresh bread and apples are displayed. Interact to buy food that restores health.",
+  "type": "prop",
+  "subCategory": "market",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 1,
+    "pixelW": 128,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false,
+        false
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "open_shop",
+  "hasAnimation": true,
+  "animation": {
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true,
+    "tags": [
+      "steam",
+      "ambient"
+    ]
+  }
+}

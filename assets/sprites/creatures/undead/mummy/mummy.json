@@ -1,0 +1,114 @@
+{
+  "id": "mummy",
+  "type": "creature",
+  "category": "undead",
+  "name": "Mummy",
+  "description": "A bandage-wrapped undead creature from a desert tomb, reanimated by a curse. Slow but tough, with a grip that inflicts a weakening curse. Immune to fire damage.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "wrap": {
+      "files": [
+        "wrap_f01.png",
+        "wrap_f02.png",
+        "wrap_f03.png",
+        "wrap_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "curse_slam": {
+      "files": [
+        "curse_slam_f01.png",
+        "curse_slam_f02.png",
+        "curse_slam_f03.png",
+        "curse_slam_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "unravel": {
+      "files": [
+        "unravel_f01.png",
+        "unravel_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": false
+    }
+  },
+  "stats": {
+    "behavior": "guardian",
+    "speed": 35,
+    "health": 150,
+    "hostile": true,
+    "dayNight": {
+      "day": "active",
+      "night": "active"
+    },
+    "movement": "shamble",
+    "aggroRange": 200,
+    "attackDamage": 20,
+    "inflictsCurse": true
+  }
+}

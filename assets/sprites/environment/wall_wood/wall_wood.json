@@ -1,0 +1,14 @@
+{
+  "id": "wall_wood",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Wall Wood",
+  "description": "A wooden plank wall. Impassable. Used in simpler buildings and fences.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "wall"
+}

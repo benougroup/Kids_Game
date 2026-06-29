@@ -1,0 +1,14 @@
+{
+  "id": "prop_path_dirt_ns",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Path Dirt Ns",
+  "description": "A north-south dirt path worn into the earth. Passable.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isPath": true
+}

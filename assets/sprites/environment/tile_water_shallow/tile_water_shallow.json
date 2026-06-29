@@ -1,0 +1,15 @@
+{
+  "id": "tile_water_shallow",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Water Shallow",
+  "description": "Shallow water at the edge of a river or lake. The player can wade through slowly.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "isWater": true
+}

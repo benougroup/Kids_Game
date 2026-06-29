@@ -1,0 +1,30 @@
+{
+  "id": "iron_gate_open",
+  "name": "Iron Gate Open",
+  "description": "A tall ornate iron cemetery gate with pointed spikes along the top. Currently open \u2014 the hinges groan as it swings. Skulls are worked into the decorative ironwork.",
+  "type": "building",
+  "subCategory": "graveyard",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 1,
+    "pixelW": 128,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        true,
+        true
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "toggle_gate",
+  "hasAnimation": false
+}

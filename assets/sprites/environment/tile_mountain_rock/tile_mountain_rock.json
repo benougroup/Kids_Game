@@ -1,0 +1,15 @@
+{
+  "id": "tile_mountain_rock",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Mountain Rock",
+  "description": "Bare grey rock on a mountain path. Rough and uneven, but passable.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "mountain"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "tent_shop",
+  "name": "Tent Shop",
+  "description": "A large colourful merchant's tent with bunting flags and an open front showing shelves of goods inside. A travelling shop that appears in different locations. Interact to enter and browse.",
+  "type": "prop",
+  "subCategory": "market",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 3,
+    "tileH": 2,
+    "pixelW": 192,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        true,
+        true,
+        true
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "enter_shop",
+  "hasAnimation": false
+}

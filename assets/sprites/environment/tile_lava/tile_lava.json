@@ -1,0 +1,15 @@
+{
+  "id": "tile_lava",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Lava",
+  "description": "Molten lava. Impassable and deals continuous fire damage if touched.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "isLava": true
+}

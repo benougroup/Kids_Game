@@ -1,0 +1,15 @@
+{
+  "id": "prop_bridge_plank_h",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Bridge Plank H",
+  "description": "A horizontal wooden plank bridge section spanning a gap or water. Passable.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isBridge": true,
+  "orientation": "horizontal"
+}

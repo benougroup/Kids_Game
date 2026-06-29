@@ -1,0 +1,28 @@
+{
+  "id": "notice_board",
+  "name": "Notice Board",
+  "description": "A wooden notice board covered in pinned papers \u2014 quest notices, wanted posters, lost pet announcements, and village news. Interact to read the latest postings.",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "read_board",
+  "hasAnimation": false
+}

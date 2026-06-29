@@ -1,0 +1,32 @@
+{
+  "id": "stagger",
+  "type": "action_sprite",
+  "category": "impact",
+  "name": "Stagger",
+  "description": "A brief flash of white light and impact lines when a character is staggered by a powerful blow.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "stagger_f01.png",
+      "stagger_f02.png",
+      "stagger_f03.png",
+      "stagger_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "stagger",
+    "impact",
+    "status"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

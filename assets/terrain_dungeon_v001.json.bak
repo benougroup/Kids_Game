@@ -1,0 +1,309 @@
+{
+  "frames": {
+    "cliff_dark_01": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_dark_02": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_moss": {
+      "frame": {
+        "x": 256,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_grass_top": {
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_wall": {
+      "frame": {
+        "x": 512,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_floor_rocky": {
+      "frame": {
+        "x": 0,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "cave_floor_dark": {
+      "frame": {
+        "x": 128,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "cave_floor_mixed": {
+      "frame": {
+        "x": 256,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "cliff_transition": {
+      "frame": {
+        "x": 384,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_edge_grass": {
+      "frame": {
+        "x": 512,
+        "y": 128,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_stone_clean": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_stone_moss": {
+      "frame": {
+        "x": 128,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_stone_dark": {
+      "frame": {
+        "x": 256,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_wall_block": {
+      "frame": {
+        "x": 384,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_wall_light": {
+      "frame": {
+        "x": 512,
+        "y": 256,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_rock_wall": {
+      "frame": {
+        "x": 0,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_floor_cracked": {
+      "frame": {
+        "x": 128,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_floor_large": {
+      "frame": {
+        "x": 256,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_grate": {
+      "frame": {
+        "x": 384,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_wall_cracked": {
+      "frame": {
+        "x": 512,
+        "y": 384,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lava_surface": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lava_rock": {
+      "frame": {
+        "x": 128,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_gold_tile": {
+      "frame": {
+        "x": 256,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_cracked": {
+      "frame": {
+        "x": 384,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "dungeon_old_stone": {
+      "frame": {
+        "x": 512,
+        "y": 512,
+        "w": 128,
+        "h": 128
+      }
+    },
+    "jungle_wall": {
+      "frame": {
+        "x": 0,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "brick_wall": {
+      "frame": {
+        "x": 128,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "broken_wall": {
+      "frame": {
+        "x": 256,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "moss_wall": {
+      "frame": {
+        "x": 384,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "dungeon_door": {
+      "frame": {
+        "x": 512,
+        "y": 640,
+        "w": 128,
+        "h": 128
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    }
+  },
+  "meta": {
+    "image": "terrain_dungeon_v001.PNG",
+    "size": {
+      "w": 640,
+      "h": 768
+    },
+    "scale": "1"
+  }
+}

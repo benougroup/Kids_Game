@@ -1,0 +1,28 @@
+{
+  "id": "flower_pot",
+  "name": "Flower Pot",
+  "description": "A terracotta pot overflowing with colourful wildflowers. Placed outside homes and shops to brighten the village streets.",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "interactType": null,
+  "hasAnimation": false
+}

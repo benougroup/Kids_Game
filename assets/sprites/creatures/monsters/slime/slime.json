@@ -1,0 +1,114 @@
+{
+  "id": "slime",
+  "type": "creature",
+  "category": "monsters",
+  "name": "Slime",
+  "description": "A gelatinous blob of green slime that oozes across dungeon floors. Splits into two smaller slimes when struck. Slow but relentless, and its acidic body damages anything it touches.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_down": {
+      "files": [
+        "move_down_f01.png",
+        "move_down_f02.png",
+        "move_down_f03.png",
+        "move_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_up": {
+      "files": [
+        "move_up_f01.png",
+        "move_up_f02.png",
+        "move_up_f03.png",
+        "move_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_left": {
+      "files": [
+        "move_left_f01.png",
+        "move_left_f02.png",
+        "move_left_f03.png",
+        "move_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "move_right": {
+      "files": [
+        "move_right_f01.png",
+        "move_right_f02.png",
+        "move_right_f03.png",
+        "move_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "split": {
+      "files": [
+        "split_f01.png",
+        "split_f02.png",
+        "split_f03.png",
+        "split_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "absorb": {
+      "files": [
+        "absorb_f01.png",
+        "absorb_f02.png",
+        "absorb_f03.png",
+        "absorb_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "angry": {
+      "files": [
+        "angry_f01.png",
+        "angry_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "wander_hostile",
+    "speed": 35,
+    "health": 50,
+    "hostile": true,
+    "dayNight": {
+      "day": "active",
+      "night": "active"
+    },
+    "movement": "bounce",
+    "aggroRange": 120,
+    "attackDamage": 5,
+    "splitsOnDeath": true
+  }
+}

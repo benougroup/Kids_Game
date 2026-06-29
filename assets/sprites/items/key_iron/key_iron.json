@@ -1,0 +1,12 @@
+{
+  "id": "key_iron",
+  "type": "item",
+  "subType": "key",
+  "name": "Key Iron",
+  "description": "A heavy iron key, old and slightly rusted. Opens iron-locked doors and chests found in dungeons and old buildings.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "opensLock": "iron"
+}

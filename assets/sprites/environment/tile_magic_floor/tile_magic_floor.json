@@ -1,0 +1,15 @@
+{
+  "id": "tile_magic_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Magic Floor",
+  "description": "A floor tile pulsing with magical energy \u2014 glowing runes are etched into the stone.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "magical": true
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tile_cave_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Cave Floor",
+  "description": "Rough, uneven cave floor. Damp and dark. Found in underground caves and mines.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

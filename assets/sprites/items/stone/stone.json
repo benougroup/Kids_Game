@@ -1,0 +1,12 @@
+{
+  "id": "stone",
+  "type": "item",
+  "subType": "material",
+  "name": "Stone",
+  "description": "A smooth river stone, small enough to fit in a pocket. Can be thrown to distract enemies or trigger switches. Common and plentiful.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 2
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tile_grass",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Grass",
+  "description": "Lush green grass covering the rolling fields around Lumenfall. The most common ground tile in the overworld. Soft underfoot and easy to traverse.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

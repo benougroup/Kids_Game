@@ -1,0 +1,19 @@
+{
+  "id": "building_house_large",
+  "type": "environment",
+  "subType": "building",
+  "name": "House Large",
+  "description": "A two-storey family home. One of Lumenfall's larger residences.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "enter"
+}

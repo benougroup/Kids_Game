@@ -1,0 +1,125 @@
+{
+  "id": "shadow_wraith",
+  "type": "creature",
+  "category": "dark_entities",
+  "name": "Shadow Wraith",
+  "description": "A creature of pure shadow with no solid form, drifting through the air like smoke. Nearly invisible in darkness. Weak and passive in daylight, but at night it becomes a terrifying predator that can pass through walls.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle_day": {
+      "files": [
+        "idle_day_f01.png",
+        "idle_day_f02.png",
+        "idle_day_f03.png",
+        "idle_day_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "idle_night": {
+      "files": [
+        "idle_night_f01.png",
+        "idle_night_f02.png",
+        "idle_night_f03.png",
+        "idle_night_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_down": {
+      "files": [
+        "float_down_f01.png",
+        "float_down_f02.png",
+        "float_down_f03.png",
+        "float_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_up": {
+      "files": [
+        "float_up_f01.png",
+        "float_up_f02.png",
+        "float_up_f03.png",
+        "float_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_left": {
+      "files": [
+        "float_left_f01.png",
+        "float_left_f02.png",
+        "float_left_f03.png",
+        "float_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_right": {
+      "files": [
+        "float_right_f01.png",
+        "float_right_f02.png",
+        "float_right_f03.png",
+        "float_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "shadow_strike": {
+      "files": [
+        "shadow_strike_f01.png",
+        "shadow_strike_f02.png",
+        "shadow_strike_f03.png",
+        "shadow_strike_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "phase": {
+      "files": [
+        "phase_f01.png",
+        "phase_f02.png",
+        "phase_f03.png",
+        "phase_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "scream": {
+      "files": [
+        "scream_f01.png",
+        "scream_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "hunter",
+    "speed": 85,
+    "health": 120,
+    "hostile": true,
+    "dayNight": {
+      "day": "weak_passive",
+      "night": "powerful_aggressive"
+    },
+    "movement": "float_through_walls",
+    "aggroRange": 300,
+    "attackDamage": 20,
+    "causesFear": true
+  }
+}
