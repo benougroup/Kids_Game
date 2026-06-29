@@ -1,0 +1,48 @@
+{
+  "nodes": [
+    {
+      "id": "enc_env_dim",
+      "type": "scene",
+      "text": ["A shadow stirs at the edge of the light.", "It watches, waiting."],
+      "choices": [
+        {"label": "Shine light (-1 SP)", "next": "returnToMap", "conditions": {"minSP": 1}, "effects": [{"op": "sp.delta", "value": -1}, {"op": "flag.set", "key": "runtime.shadowAction", "value": {"action": "dissolve"}}]},
+        {"label": "Calm / Speak", "next": "returnToMap"},
+        {"label": "Back away", "next": "returnToMap"},
+        {"label": "Hold your ground", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -1}]}
+      ]
+    },
+    {
+      "id": "enc_env_dark",
+      "type": "scene",
+      "text": ["The dark shape closes in.", "Your lantern trembles."],
+      "choices": [
+        {"label": "Shine light (-1 SP)", "next": "returnToMap", "conditions": {"minSP": 1}, "effects": [{"op": "sp.delta", "value": -1}, {"op": "flag.set", "key": "runtime.shadowAction", "value": {"action": "dissolve"}}]},
+        {"label": "Calm / Speak", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -1}]},
+        {"label": "Back away", "next": "returnToMap"},
+        {"label": "Panic", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -1}]}
+      ]
+    },
+    {
+      "id": "enc_story_dim",
+      "type": "scene",
+      "text": ["A familiar shadow lingers nearby.", "Its shape bends with your memory."],
+      "choices": [
+        {"label": "Shine light (-1 SP)", "next": "returnToMap", "conditions": {"minSP": 1}, "effects": [{"op": "sp.delta", "value": -1}, {"op": "flag.set", "key": "runtime.shadowAction", "value": {"action": "dissolve"}}]},
+        {"label": "Calm / Speak", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -2}]},
+        {"label": "Back away", "next": "returnToMap"},
+        {"label": "Resist", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -2}]}
+      ]
+    },
+    {
+      "id": "enc_story_dark",
+      "type": "scene",
+      "text": ["The story-shadow rises from the dark.", "A chill runs through your chest."],
+      "choices": [
+        {"label": "Shine light (-1 SP)", "next": "returnToMap", "conditions": {"minSP": 1}, "effects": [{"op": "sp.delta", "value": -1}, {"op": "flag.set", "key": "runtime.shadowAction", "value": {"action": "dissolve"}}]},
+        {"label": "Calm / Speak", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -2}]},
+        {"label": "Back away", "next": "returnToMap"},
+        {"label": "Stand still", "next": "returnToMap", "effects": [{"op": "hp.delta", "value": -2}]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "border_ocean_sw",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Ocean Sw",
+  "description": "The south-west ocean corner.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "water",
+  "direction": "SW",
+  "isCorner": true,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

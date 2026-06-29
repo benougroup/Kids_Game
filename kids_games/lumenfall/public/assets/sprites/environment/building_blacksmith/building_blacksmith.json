@@ -1,0 +1,19 @@
+{
+  "id": "building_blacksmith",
+  "type": "environment",
+  "subType": "building",
+  "name": "Blacksmith",
+  "description": "The Forge of Ironhold \u2014 a rustic workshop where the ring of hammer on anvil never stops. The blacksmith crafts weapons, armour, and tools.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "craft"
+}

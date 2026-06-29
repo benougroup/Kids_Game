@@ -1,0 +1,14 @@
+{
+  "id": "tile_stone_road",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Stone Road",
+  "description": "A section of well-laid stone road, part of the main thoroughfare through Lumenfall.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

@@ -1,0 +1,18 @@
+{
+  "id": "border_cliff_n",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Cliff N",
+  "description": "A sheer cliff face forming the northern boundary of the map. The rock is too smooth to climb. Use a portal to proceed.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "stone",
+  "direction": "N",
+  "isCorner": false,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

@@ -1,0 +1,19 @@
+{
+  "id": "building_market_stall",
+  "type": "environment",
+  "subType": "building",
+  "name": "Market Stall",
+  "description": "An open-air market stall with goods displayed on the counter. Interact to shop.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "shop"
+}

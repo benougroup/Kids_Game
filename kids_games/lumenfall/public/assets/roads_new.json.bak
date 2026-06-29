@@ -1,0 +1,47 @@
+{
+  "frames": {
+    "dirt_road_vertical": {"frame": {"x": 0, "y": 0, "w": 172, "h": 172}},
+    "dirt_road_horizontal": {"frame": {"x": 172, "y": 0, "w": 344, "h": 172}},
+    "dirt_road_corner_ne": {"frame": {"x": 516, "y": 0, "w": 258, "h": 258}},
+    "dirt_road_corner_nw": {"frame": {"x": 774, "y": 0, "w": 258, "h": 258}},
+    "dirt_road_t_north": {"frame": {"x": 1032, "y": 0, "w": 258, "h": 258}},
+    "dirt_road_t_south": {"frame": {"x": 1290, "y": 0, "w": 258, "h": 258}},
+    "dirt_road_cross": {"frame": {"x": 1548, "y": 0, "w": 430, "h": 258}},
+    "dirt_road_end_n": {"frame": {"x": 1978, "y": 0, "w": 172, "h": 172}},
+    "dirt_road_end_s": {"frame": {"x": 2150, "y": 0, "w": 172, "h": 172}},
+    "dirt_road_corner_se": {"frame": {"x": 516, "y": 258, "w": 258, "h": 258}},
+    "dirt_road_corner_sw": {"frame": {"x": 774, "y": 258, "w": 258, "h": 258}},
+    "dirt_road_t_east": {"frame": {"x": 1032, "y": 258, "w": 258, "h": 258}},
+    "dirt_road_t_west": {"frame": {"x": 1290, "y": 258, "w": 258, "h": 258}},
+    
+    "stone_road_vertical": {"frame": {"x": 0, "y": 516, "w": 172, "h": 172}},
+    "stone_road_horizontal": {"frame": {"x": 172, "y": 516, "w": 344, "h": 172}},
+    "stone_road_corner_ne": {"frame": {"x": 516, "y": 516, "w": 258, "h": 258}},
+    "stone_road_corner_nw": {"frame": {"x": 774, "y": 516, "w": 258, "h": 258}},
+    "stone_road_t_north": {"frame": {"x": 1032, "y": 516, "w": 258, "h": 258}},
+    "stone_road_t_south": {"frame": {"x": 1290, "y": 516, "w": 258, "h": 258}},
+    "stone_road_cross": {"frame": {"x": 1548, "y": 516, "w": 430, "h": 258}},
+    "stone_road_end_n": {"frame": {"x": 1978, "y": 516, "w": 172, "h": 172}},
+    "stone_road_end_s": {"frame": {"x": 2150, "y": 516, "w": 172, "h": 172}},
+    "stone_road_corner_se": {"frame": {"x": 516, "y": 774, "w": 258, "h": 258}},
+    "stone_road_corner_sw": {"frame": {"x": 774, "y": 774, "w": 258, "h": 258}},
+    "stone_road_t_east": {"frame": {"x": 1032, "y": 774, "w": 258, "h": 258}},
+    "stone_road_t_west": {"frame": {"x": 1290, "y": 774, "w": 258, "h": 258}},
+    
+    "bridge_horizontal": {"frame": {"x": 172, "y": 1032, "w": 602, "h": 172}},
+    "bridge_vertical": {"frame": {"x": 0, "y": 1032, "w": 172, "h": 602}},
+    "bridge_corner_ne": {"frame": {"x": 774, "y": 1032, "w": 258, "h": 258}},
+    "bridge_corner_nw": {"frame": {"x": 1032, "y": 1032, "w": 258, "h": 258}},
+    "bridge_end_n": {"frame": {"x": 1290, "y": 1032, "w": 172, "h": 172}},
+    "bridge_end_s": {"frame": {"x": 1462, "y": 1032, "w": 172, "h": 172}},
+    "bridge_end_e": {"frame": {"x": 1634, "y": 1032, "w": 172, "h": 172}},
+    "bridge_end_w": {"frame": {"x": 1806, "y": 1032, "w": 172, "h": 172}},
+    "bridge_corner_se": {"frame": {"x": 774, "y": 1290, "w": 258, "h": 258}},
+    "bridge_corner_sw": {"frame": {"x": 1032, "y": 1290, "w": 258, "h": 258}}
+  },
+  "meta": {
+    "image": "roads_new.png",
+    "size": {"w": 2752, "h": 1536},
+    "scale": "1"
+  }
+}

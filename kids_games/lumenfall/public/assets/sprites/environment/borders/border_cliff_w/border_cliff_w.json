@@ -1,0 +1,18 @@
+{
+  "id": "border_cliff_w",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Cliff W",
+  "description": "The western cliff boundary. Impassable.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "stone",
+  "direction": "W",
+  "isCorner": false,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

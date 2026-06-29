@@ -1,0 +1,42 @@
+{
+  "id": "fountain",
+  "name": "Fountain",
+  "description": "A grand stone fountain in the village square, with water jets arcing from a central basin. Coins glint at the bottom \u2014 tossed in by villagers making wishes. Interact to drink and restore health.",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 2,
+    "pixelW": 128,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "use_fountain",
+  "hasAnimation": true,
+  "animation": {
+    "frames": 6,
+    "frameRate": 6,
+    "loop": true,
+    "tags": [
+      "water",
+      "ambient"
+    ]
+  }
+}

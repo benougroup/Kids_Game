@@ -1,0 +1,12 @@
+{
+  "id": "gem_blue",
+  "type": "item",
+  "subType": "gem",
+  "name": "Gem Blue",
+  "description": "A brilliant sapphire that pulses with cool blue light. Used in crafting ice and water magic items. Rare and valuable.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 120
+}

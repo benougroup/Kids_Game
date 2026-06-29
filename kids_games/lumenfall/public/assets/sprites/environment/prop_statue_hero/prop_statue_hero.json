@@ -1,0 +1,15 @@
+{
+  "id": "prop_statue_hero",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Statue Hero",
+  "description": "A stone statue of a legendary hero with sword raised. The plaque reads: 'In honour of those who kept the Flame alive.'",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": true,
+  "interactType": "examine"
+}

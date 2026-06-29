@@ -1,0 +1,16 @@
+{
+  "id": "tile_crystal_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Crystal Floor",
+  "description": "A glittering crystal floor found in magical caverns. Refracts light in rainbow patterns.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "crystal",
+  "magical": true
+}

@@ -1,0 +1,32 @@
+{
+  "id": "leaf_burst",
+  "type": "action_sprite",
+  "category": "environment",
+  "name": "Leaf Burst",
+  "description": "A burst of green and yellow leaves scattered by wind or impact. An ambient nature effect.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "leaf_burst_f01.png",
+      "leaf_burst_f02.png",
+      "leaf_burst_f03.png",
+      "leaf_burst_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 8,
+    "loop": false
+  },
+  "tags": [
+    "nature",
+    "leaf",
+    "particle"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

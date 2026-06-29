@@ -1,0 +1,114 @@
+{
+  "id": "boar",
+  "type": "creature",
+  "category": "animals_aggressive",
+  "name": "Boar",
+  "description": "A wild boar with curved tusks and a bad temper. Charges at anything that disturbs it in the undergrowth. Fast and aggressive \u2014 best avoided unless the hero is well-armed.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "charge": {
+      "files": [
+        "charge_f01.png",
+        "charge_f02.png",
+        "charge_f03.png",
+        "charge_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "gore": {
+      "files": [
+        "gore_f01.png",
+        "gore_f02.png",
+        "gore_f03.png",
+        "gore_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sniff": {
+      "files": [
+        "sniff_f01.png",
+        "sniff_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "aggressive",
+    "speed": 60,
+    "chargeSpeed": 150,
+    "health": 60,
+    "hostile": true,
+    "dayNight": {
+      "day": "active",
+      "night": "active"
+    },
+    "movement": "erratic_patrol",
+    "aggroRange": 200,
+    "attackDamage": 12
+  }
+}

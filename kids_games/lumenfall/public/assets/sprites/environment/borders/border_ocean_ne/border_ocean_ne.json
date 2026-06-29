@@ -1,0 +1,18 @@
+{
+  "id": "border_ocean_ne",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Ocean Ne",
+  "description": "The north-east ocean corner.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "water",
+  "direction": "NE",
+  "isCorner": true,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

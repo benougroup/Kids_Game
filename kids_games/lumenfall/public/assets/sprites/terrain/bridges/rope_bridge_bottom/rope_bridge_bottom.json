@@ -1,0 +1,27 @@
+{
+  "id": "rope_bridge_bottom",
+  "name": "Rope Bridge Bottom",
+  "description": "The bottom end of a rope bridge, anchored to the southern bank.",
+  "type": "terrain_tile",
+  "subCategory": "rope_bridge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

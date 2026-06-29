@@ -1,0 +1,14 @@
+{
+  "id": "prop_mushroom_cluster",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Mushroom Cluster",
+  "description": "A cluster of spotted mushrooms growing in the shade. Some are edible, some are not.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true
+}

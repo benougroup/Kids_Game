@@ -1,0 +1,1292 @@
+{
+  "frames": {
+    "shadow_small_idle": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_special": {
+      "frame": {
+        "x": 2064,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_small_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_idle": {
+      "frame": {
+        "x": 0,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_special": {
+      "frame": {
+        "x": 2064,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "shadow_large_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 192,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_idle": {
+      "frame": {
+        "x": 0,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_special": {
+      "frame": {
+        "x": 2064,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "goblin_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 384,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_idle": {
+      "frame": {
+        "x": 0,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_special": {
+      "frame": {
+        "x": 2064,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "orc_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 576,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_idle": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_special": {
+      "frame": {
+        "x": 2064,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "skeleton_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 768,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_idle": {
+      "frame": {
+        "x": 0,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_special": {
+      "frame": {
+        "x": 2064,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "ghost_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 960,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_idle": {
+      "frame": {
+        "x": 0,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_special": {
+      "frame": {
+        "x": 2064,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "wolf_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 1152,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_idle": {
+      "frame": {
+        "x": 0,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_walk_1": {
+      "frame": {
+        "x": 344,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_walk_2": {
+      "frame": {
+        "x": 688,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_attack": {
+      "frame": {
+        "x": 1032,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_hurt": {
+      "frame": {
+        "x": 1376,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_dead": {
+      "frame": {
+        "x": 1720,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_special": {
+      "frame": {
+        "x": 2064,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    },
+    "slime_idle_back": {
+      "frame": {
+        "x": 2408,
+        "y": 1344,
+        "w": 344,
+        "h": 192
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 344,
+        "h": 192
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 192
+      }
+    }
+  },
+  "meta": {
+    "image": "monsters_states.png",
+    "size": {
+      "w": 2752,
+      "h": 1536
+    },
+    "scale": "1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "robe_magic",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Robe Magic",
+  "description": "A flowing magical robe woven with enchanted thread that shimmers with protective energy. Provides strong resistance to magical attacks. Worn by mages and wizards.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "body",
+  "stats": {
+    "defense": 6,
+    "magic": 18
+  }
+}

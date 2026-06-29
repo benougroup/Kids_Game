@@ -1,0 +1,19 @@
+{
+  "id": "building_fountain",
+  "type": "environment",
+  "subType": "building",
+  "name": "Fountain",
+  "description": "A stone fountain in the village square. Interact to drink and restore health.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "fountain"
+}

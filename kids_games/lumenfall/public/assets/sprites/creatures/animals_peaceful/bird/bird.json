@@ -1,0 +1,111 @@
+{
+  "id": "bird",
+  "type": "creature",
+  "category": "animals_peaceful",
+  "name": "Bird",
+  "description": "A small colourful songbird that flutters between tree branches and fence posts. Sings cheerfully in the morning. Completely harmless and adds life to the world of Lumenfall.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "fly": {
+      "files": [
+        "fly_f01.png",
+        "fly_f02.png",
+        "fly_f03.png",
+        "fly_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sleep": {
+      "files": [
+        "sleep_f01.png",
+        "sleep_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "sing": {
+      "files": [
+        "sing_f01.png",
+        "sing_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "fly_wander",
+    "speed": 120,
+    "health": 1,
+    "hostile": false,
+    "dayNight": {
+      "day": "active",
+      "night": "sleep"
+    },
+    "movement": "flying_erratic",
+    "fleeRange": 150,
+    "heightLevel": 2
+  }
+}

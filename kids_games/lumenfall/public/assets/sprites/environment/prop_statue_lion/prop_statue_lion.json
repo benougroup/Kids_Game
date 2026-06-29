@@ -1,0 +1,15 @@
+{
+  "id": "prop_statue_lion",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Statue Lion",
+  "description": "A stone lion statue on a pedestal, placed at the entrance to important buildings.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": true,
+  "interactType": "examine"
+}

@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "guard_day",
+      "type": "scene",
+      "speaker": "Guard Rowan",
+      "text": [
+        "Welcome to Bright Hollow.",
+        "Stay in the light at night.",
+        "The dark feels bigger lately."
+      ],
+      "choices": [
+        { "label": "A) Thanks for the warning", "next": "returnToMap" },
+        { "label": "B) Any updates?", "next": "guard_day_followup" },
+        { "label": "C) Goodbye", "next": "returnToMap" }
+      ]
+    },
+    {
+      "id": "guard_day_followup",
+      "type": "scene",
+      "speaker": "Guard Rowan",
+      "text": ["Keep near the post after sunset."],
+      "choices": [{ "label": "A) Return", "next": "returnToMap" }]
+    },
+    {
+      "id": "guard_night",
+      "type": "scene",
+      "speaker": "Guard Rowan",
+      "text": [
+        "Welcome to Bright Hollow.",
+        "Stay in the light at night.",
+        "The dark feels bigger lately."
+      ],
+      "choices": [
+        { "label": "A) I will", "next": "returnToMap" },
+        { "label": "B) I'll gather supplies", "next": "returnToMap" },
+        { "label": "C) Goodbye", "next": "returnToMap" }
+      ]
+    },
+    {
+      "id": "apprentice_day",
+      "type": "scene",
+      "speaker": "Apprentice Lyra",
+      "text": [
+        "I study the light.",
+        "The Light Post flickered last night.",
+        "Bring me glowing ingredients later."
+      ],
+      "choices": [
+        { "label": "A) I'll collect them", "next": "returnToMap" },
+        { "label": "B) Where should I look?", "next": "apprentice_tip" },
+        { "label": "C) Goodbye", "next": "returnToMap" }
+      ]
+    },
+    {
+      "id": "apprentice_night",
+      "type": "scene",
+      "speaker": "Apprentice Lyra",
+      "text": [
+        "I study the light.",
+        "The Light Post flickered last night.",
+        "Bring me glowing ingredients later."
+      ],
+      "choices": [
+        { "label": "A) I found some", "next": "apprentice_tip" },
+        { "label": "B) Still searching", "next": "returnToMap" },
+        { "label": "C) Goodbye", "next": "returnToMap" }
+      ]
+    },
+    {
+      "id": "apprentice_tip",
+      "type": "scene",
+      "speaker": "Apprentice Lyra",
+      "text": ["Try the forest edge and hall interior."],
+      "choices": [{ "label": "A) Return", "next": "returnToMap" }]
+    },
+    {
+      "id": "apprentice_crafting_ready",
+      "type": "scene",
+      "speaker": "Apprentice Lyra",
+      "text": ["Perfect! Those ingredients will do."],
+      "choices": [
+        {
+          "label": "A) Open crafting",
+          "next": "returnToMap",
+          "effects": [{ "op": "crafting.open" }]
+        },
+        { "label": "B) Not yet", "next": "returnToMap" },
+        { "label": "C) Goodbye", "next": "returnToMap" }
+      ]
+    }
+  ]
+}

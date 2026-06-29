@@ -1,0 +1,15 @@
+{
+  "id": "armor_leather",
+  "type": "equipment",
+  "subType": "armor",
+  "name": "Armor Leather",
+  "description": "A suit of hardened leather armour, light and flexible. Offers basic protection without restricting movement. Ideal for scouts and thieves.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "body",
+  "stats": {
+    "defense": 8
+  }
+}

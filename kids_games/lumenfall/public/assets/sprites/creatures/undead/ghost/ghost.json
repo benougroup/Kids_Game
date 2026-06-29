@@ -1,0 +1,114 @@
+{
+  "id": "ghost",
+  "type": "creature",
+  "category": "undead",
+  "name": "Ghost",
+  "description": "The translucent spirit of a person who died with unfinished business. Faint and barely visible during the day. At night it becomes fully visible and aggressive, passing through walls and ignoring physical attacks.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle_day": {
+      "files": [
+        "idle_day_f01.png",
+        "idle_day_f02.png",
+        "idle_day_f03.png",
+        "idle_day_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "idle_night": {
+      "files": [
+        "idle_night_f01.png",
+        "idle_night_f02.png",
+        "idle_night_f03.png",
+        "idle_night_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_down": {
+      "files": [
+        "float_down_f01.png",
+        "float_down_f02.png",
+        "float_down_f03.png",
+        "float_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_up": {
+      "files": [
+        "float_up_f01.png",
+        "float_up_f02.png",
+        "float_up_f03.png",
+        "float_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_left": {
+      "files": [
+        "float_left_f01.png",
+        "float_left_f02.png",
+        "float_left_f03.png",
+        "float_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "float_right": {
+      "files": [
+        "float_right_f01.png",
+        "float_right_f02.png",
+        "float_right_f03.png",
+        "float_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "possess": {
+      "files": [
+        "possess_f01.png",
+        "possess_f02.png",
+        "possess_f03.png",
+        "possess_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "phase_wall": {
+      "files": [
+        "phase_wall_f01.png",
+        "phase_wall_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "wander_hostile",
+    "speed": 60,
+    "health": 40,
+    "hostile": true,
+    "dayNight": {
+      "day": "faint_passive",
+      "night": "visible_aggressive"
+    },
+    "movement": "float_through_walls",
+    "aggroRange": 180,
+    "attackDamage": 10,
+    "immuneToPhysical": true
+  }
+}

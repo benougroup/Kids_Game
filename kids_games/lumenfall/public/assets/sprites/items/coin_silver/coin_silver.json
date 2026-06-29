@@ -1,0 +1,12 @@
+{
+  "id": "coin_silver",
+  "type": "item",
+  "subType": "currency",
+  "name": "Coin Silver",
+  "description": "A silver coin used for everyday transactions in Lumenfall's markets. Worth 5 copper coins. Common currency for buying food and basic supplies.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 1
+}

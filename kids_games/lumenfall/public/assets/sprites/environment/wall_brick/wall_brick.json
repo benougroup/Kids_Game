@@ -1,0 +1,14 @@
+{
+  "id": "wall_brick",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Wall Brick",
+  "description": "A solid brick wall. Impassable. Forms the exterior walls of buildings and fortifications.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "borderType": "wall"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "tile_mountain_snow",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Mountain Snow",
+  "description": "Snow-covered mountain rock at high altitude. Cold and treacherous.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "mountain",
+  "slowsMovement": true
+}

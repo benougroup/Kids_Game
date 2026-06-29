@@ -1,0 +1,14 @@
+{
+  "id": "tile_wood_floor",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Wood Floor",
+  "description": "Polished wooden floorboards found inside homes, inns, and shops. Creaks slightly with each step.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true
+}

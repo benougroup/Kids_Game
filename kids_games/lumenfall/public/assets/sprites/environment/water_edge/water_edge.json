@@ -1,0 +1,14 @@
+{
+  "id": "water_edge",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Water Edge",
+  "description": "The edge of a body of water where land meets water. Passable on the land side, impassable on the water side.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isTransition": true
+}

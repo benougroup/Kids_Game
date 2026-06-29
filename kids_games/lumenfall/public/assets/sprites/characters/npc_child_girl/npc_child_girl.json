@@ -1,0 +1,116 @@
+{
+  "id": "npc_child_girl",
+  "type": "character",
+  "subType": "npc",
+  "passable": false,
+  "heightLevel": 1,
+  "collisionBox": {
+    "w": 28,
+    "h": 28
+  },
+  "animations": {
+    "stand": {
+      "files": [
+        "stand_f00.png",
+        "stand_f01.png",
+        "stand_f02.png",
+        "stand_f03.png"
+      ],
+      "frames": 4,
+      "frameRate": 1,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f00.png",
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f00.png",
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f00.png",
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f00.png",
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "sit": {
+      "files": [
+        "sit_f00.png"
+      ],
+      "frames": 1,
+      "frameRate": 1,
+      "loop": true
+    },
+    "dizzy": {
+      "files": [
+        "dizzy_f00.png",
+        "dizzy_f01.png",
+        "dizzy_f02.png",
+        "dizzy_f03.png"
+      ],
+      "frames": 4,
+      "frameRate": 6,
+      "loop": true
+    },
+    "sleep": {
+      "files": [
+        "sleep_f00.png",
+        "sleep_f01.png"
+      ],
+      "frames": 2,
+      "frameRate": 2,
+      "loop": true
+    },
+    "dead": {
+      "files": [
+        "dead_f00.png"
+      ],
+      "frames": 1,
+      "frameRate": 1,
+      "loop": false
+    },
+    "confused": {
+      "files": [
+        "confused_f00.png",
+        "confused_f01.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "name": "Child Girl",
+  "description": "A cheerful girl in a pink dress with twin pigtails, clutching a handmade cloth doll. She wanders near the village square and the fountain. Shy at first, but warms up quickly to a kind hero.",
+  "dialogue": true
+}

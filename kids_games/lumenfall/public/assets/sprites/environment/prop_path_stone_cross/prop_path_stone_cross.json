@@ -1,0 +1,14 @@
+{
+  "id": "prop_path_stone_cross",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Path Stone Cross",
+  "description": "A stone path crossroads tile. Passable.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isPath": true
+}

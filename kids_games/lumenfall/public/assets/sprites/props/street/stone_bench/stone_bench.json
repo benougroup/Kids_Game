@@ -1,0 +1,28 @@
+{
+  "id": "stone_bench",
+  "name": "Stone Bench",
+  "description": "A simple stone bench with carved legs, placed along the village path for weary travellers to rest. Interact to sit and restore a small amount of stamina.",
+  "type": "prop",
+  "subCategory": "street",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": true,
+  "interactType": "sit",
+  "hasAnimation": false
+}

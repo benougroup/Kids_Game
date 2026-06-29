@@ -1,0 +1,32 @@
+{
+  "id": "monster_death_burst",
+  "type": "action_sprite",
+  "category": "blood",
+  "name": "Monster Death Burst",
+  "description": "A dramatic explosion of particles and light when a monster is defeated. The size and colour vary by creature type.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "monster_death_burst_f01.png",
+      "monster_death_burst_f02.png",
+      "monster_death_burst_f03.png",
+      "monster_death_burst_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 10,
+    "loop": false
+  },
+  "tags": [
+    "death",
+    "explosion",
+    "monster"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "prop_bush_green",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Bush Green",
+  "description": "A round green bush. Decorative. Impassable.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true
+}

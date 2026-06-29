@@ -1,0 +1,14 @@
+{
+  "id": "fish",
+  "type": "item",
+  "subType": "food",
+  "name": "Fish",
+  "description": "A fresh-caught fish, still glistening. Restores a moderate amount of health. Can be eaten raw or cooked for a better effect.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "heal": 15
+  }
+}

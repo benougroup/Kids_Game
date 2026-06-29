@@ -1,0 +1,12 @@
+{
+  "id": "arrow",
+  "type": "item",
+  "subType": "ammo",
+  "name": "Arrow",
+  "description": "A straight wooden arrow with iron tip and feather fletching. Ammunition for a bow. Stackable \u2014 carry as many as you can find.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "damage": 8
+}

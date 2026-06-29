@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "recipes": [
+    {"id": "recipe_lantern_oil", "outputItemId": "potion_lantern_oil", "inputs": ["ingredient_sunleaf", "ingredient_crystal_water"]},
+    {"id": "recipe_glow_sip", "outputItemId": "potion_glow_sip", "inputs": ["ingredient_glow_moth_dust", "ingredient_crystal_water"]},
+    {"id": "recipe_small_cocoa", "outputItemId": "potion_small_cocoa", "inputs": ["ingredient_sunleaf", "ingredient_glow_moth_dust"]}
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "nodes": [
+    {
+      "id": "demo_start",
+      "type": "scene",
+      "text": [
+        "Demo scene loaded.",
+        "Choose an option to test effects."
+      ],
+      "onEnterEffects": [
+        { "op": "ui.message", "text": "Entered demo_start." }
+      ],
+      "choices": [
+        {
+          "label": "A) Gain an herb and continue",
+          "next": "demo_spend",
+          "effects": [
+            { "op": "inventory.add", "scope": "global", "itemId": "ingredient_sunleaf", "qty": 1 },
+            { "op": "sp.delta", "value": 1 }
+          ]
+        },
+        {
+          "label": "B) Spend 2 SP and teleport",
+          "next": "demo_done",
+          "conditions": { "minSP": 2 },
+          "failNext": "demo_fail",
+          "effects": [
+            { "op": "sp.delta", "value": -2 },
+            { "op": "map.teleport", "x": 14, "y": 10 },
+            { "op": "flag.set", "key": "demo_used_sp", "value": true }
+          ]
+        },
+        {
+          "label": "C) Open crafting",
+          "next": "returnToMap",
+          "effects": [
+            { "op": "crafting.open" },
+            { "op": "ui.message", "text": "Opening crafting from dialogue." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "demo_spend",
+      "type": "scene",
+      "text": "Second node reached.",
+      "choices": [
+        {
+          "label": "A) Return to map",
+          "next": "returnToMap",
+          "effects": [
+            { "op": "ui.message", "text": "Leaving dialogue." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "demo_fail",
+      "type": "scene",
+      "text": "Not enough SP.",
+      "choices": [
+        {
+          "label": "A) Back",
+          "next": "demo_start"
+        }
+      ]
+    },
+    {
+      "id": "demo_done",
+      "type": "scene",
+      "text": "Teleport + flag set completed.",
+      "choices": [
+        {
+          "label": "A) Return",
+          "next": "returnToMap"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "wood_bridge_right",
+  "name": "Wood Bridge Right",
+  "description": "The right end of a wooden bridge, connecting back to solid ground.",
+  "type": "terrain_tile",
+  "subCategory": "wooden_bridge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

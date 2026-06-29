@@ -1,0 +1,32 @@
+{
+  "id": "status_curse",
+  "type": "action_sprite",
+  "category": "status",
+  "name": "Status Curse",
+  "description": "Dark purple runes and shadow wisps swirling above a cursed character. Reduces stats and may cause other negative effects.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "status_curse_f01.png",
+      "status_curse_f02.png",
+      "status_curse_f03.png",
+      "status_curse_f04.png"
+    ],
+    "frames": 4,
+    "frameRate": 6,
+    "loop": true
+  },
+  "tags": [
+    "status",
+    "curse",
+    "overhead"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "character",
+    "zIndex": 10,
+    "blendMode": "normal"
+  }
+}

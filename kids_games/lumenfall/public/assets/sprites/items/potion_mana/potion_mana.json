@@ -1,0 +1,14 @@
+{
+  "id": "potion_mana",
+  "type": "item",
+  "subType": "consumable",
+  "name": "Potion Mana",
+  "description": "A glowing blue potion that restores magical energy. Required for casting spells. Essential for magic-using characters.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "effects": {
+    "mana": 50
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "building_watchtower",
+  "type": "environment",
+  "subType": "building",
+  "name": "Watchtower",
+  "description": "A tall stone watchtower at the edge of the village. Guards keep watch from the top for approaching threats. Impassable.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": false
+}

@@ -1,0 +1,19 @@
+{
+  "id": "building_shop",
+  "type": "environment",
+  "subType": "building",
+  "name": "Shop",
+  "description": "A general merchant's shop. Sells everyday supplies, tools, and basic potions.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 128,
+  "height": 128,
+  "tileSpan": {
+    "w": 2,
+    "h": 2
+  },
+  "interactive": true,
+  "interactType": "shop"
+}

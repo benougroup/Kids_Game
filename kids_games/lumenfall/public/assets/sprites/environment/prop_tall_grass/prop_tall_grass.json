@@ -1,0 +1,15 @@
+{
+  "id": "prop_tall_grass",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Tall Grass",
+  "description": "Tall grass swaying in the breeze. Passable but may hide small creatures or items.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true,
+  "conceals": true
+}

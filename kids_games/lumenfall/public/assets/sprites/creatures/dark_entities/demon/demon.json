@@ -1,0 +1,124 @@
+{
+  "id": "demon",
+  "type": "creature",
+  "category": "dark_entities",
+  "name": "Demon",
+  "description": "A powerful demon from the dark realm, with red skin, black wings, and eyes like burning coals. Surrounded by fire at all times. Enrages at night, summoning smaller demons and hurling fireballs.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "fire_claw": {
+      "files": [
+        "fire_claw_f01.png",
+        "fire_claw_f02.png",
+        "fire_claw_f03.png",
+        "fire_claw_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "hellfire": {
+      "files": [
+        "hellfire_f01.png",
+        "hellfire_f02.png",
+        "hellfire_f03.png",
+        "hellfire_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "night_rage": {
+      "files": [
+        "night_rage_f01.png",
+        "night_rage_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    },
+    "wing_dash": {
+      "files": [
+        "wing_dash_f01.png",
+        "wing_dash_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "boss",
+    "speed": 80,
+    "health": 500,
+    "hostile": true,
+    "isBoss": true,
+    "dayNight": {
+      "day": "active",
+      "night": "enraged"
+    },
+    "movement": "pursue",
+    "aggroRange": 400,
+    "attackDamage": 45,
+    "fireDamage": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "shop",
+  "name": "Shop",
+  "description": "A general merchant's shop with a green striped awning and a display window full of goods. The shopkeeper sells everything from rope and torches to maps and basic potions.",
+  "type": "building",
+  "subCategory": "residential",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 2,
+    "tileH": 2,
+    "pixelW": 128,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_shop",
+  "hasAnimation": false
+}

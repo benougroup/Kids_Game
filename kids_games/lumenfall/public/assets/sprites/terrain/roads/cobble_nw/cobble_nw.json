@@ -1,0 +1,27 @@
+{
+  "id": "cobble_nw",
+  "name": "Cobble Nw",
+  "description": "A cobblestone road corner turning from north to west. The stones are neatly fitted at the curve.",
+  "type": "terrain_tile",
+  "subCategory": "cobblestone",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

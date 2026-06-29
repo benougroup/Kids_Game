@@ -1,0 +1,13 @@
+{
+  "id": "rock_small",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Rock Small",
+  "description": "A small rock. Impassable. Can be picked up and thrown as a weapon or to trigger switches.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64
+}

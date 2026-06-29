@@ -1,0 +1,15 @@
+{
+  "id": "tile_ancient_ruins",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Ancient Ruins",
+  "description": "Cracked stone tiles from an ancient civilisation, partially reclaimed by nature.",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "biome": "ruins"
+}

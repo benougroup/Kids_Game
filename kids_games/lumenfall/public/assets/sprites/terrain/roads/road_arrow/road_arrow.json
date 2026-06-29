@@ -1,0 +1,27 @@
+{
+  "id": "road_arrow",
+  "name": "Road Arrow",
+  "description": "A painted directional arrow on the cobblestone road, pointing the way to a landmark.",
+  "type": "terrain_tile",
+  "subCategory": "road_edge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

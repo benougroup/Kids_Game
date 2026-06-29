@@ -1,0 +1,12 @@
+{
+  "id": "coin_pouch",
+  "type": "item",
+  "subType": "currency",
+  "name": "Coin Pouch",
+  "description": "A small leather pouch clinking with mixed coins. Contains a random amount of gold and silver. Dropped by merchants and defeated enemies.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "value": 50
+}

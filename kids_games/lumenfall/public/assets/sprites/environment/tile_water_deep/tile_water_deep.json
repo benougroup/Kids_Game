@@ -1,0 +1,15 @@
+{
+  "id": "tile_water_deep",
+  "type": "environment",
+  "subType": "ground",
+  "name": "Water Deep",
+  "description": "Deep open water. Impassable without a boat or water-walking ability.",
+  "passable": false,
+  "heightLevel": 2,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "tileable": true,
+  "isWater": true
+}

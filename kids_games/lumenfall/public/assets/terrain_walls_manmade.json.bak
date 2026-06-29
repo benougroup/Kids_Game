@@ -1,0 +1,612 @@
+{
+  "frames": {
+    "wall_stone": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_brick_red": {
+      "frame": {
+        "x": 204,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_wood_fence": {
+      "frame": {
+        "x": 408,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_iron_spikes": {
+      "frame": {
+        "x": 612,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_castle_stone": {
+      "frame": {
+        "x": 816,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_wood_pointed": {
+      "frame": {
+        "x": 0,
+        "y": 256,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "gate_wood_stone": {
+      "frame": {
+        "x": 204,
+        "y": 256,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "gate_iron_ornate": {
+      "frame": {
+        "x": 408,
+        "y": 256,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "gate_stone_arch": {
+      "frame": {
+        "x": 612,
+        "y": 256,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_chain": {
+      "frame": {
+        "x": 816,
+        "y": 256,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_ruin_stone": {
+      "frame": {
+        "x": 0,
+        "y": 512,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_stone_window": {
+      "frame": {
+        "x": 204,
+        "y": 512,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_broken_log": {
+      "frame": {
+        "x": 408,
+        "y": 512,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_wood_sharp": {
+      "frame": {
+        "x": 612,
+        "y": 512,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "hedge_trimmed": {
+      "frame": {
+        "x": 816,
+        "y": 512,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_brick_ruin": {
+      "frame": {
+        "x": 0,
+        "y": 768,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_rail_wood": {
+      "frame": {
+        "x": 204,
+        "y": 768,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_stone_moss": {
+      "frame": {
+        "x": 408,
+        "y": 768,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_wood_old": {
+      "frame": {
+        "x": 612,
+        "y": 768,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "gate_stone_torch": {
+      "frame": {
+        "x": 816,
+        "y": 768,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_barbed": {
+      "frame": {
+        "x": 0,
+        "y": 1024,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "gate_wood_arch": {
+      "frame": {
+        "x": 204,
+        "y": 1024,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_castle_battlement": {
+      "frame": {
+        "x": 408,
+        "y": 1024,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "wall_banner_red": {
+      "frame": {
+        "x": 612,
+        "y": 1024,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_lattice": {
+      "frame": {
+        "x": 816,
+        "y": 1024,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "watchtower_wood": {
+      "frame": {
+        "x": 0,
+        "y": 1280,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "pillar_stone": {
+      "frame": {
+        "x": 204,
+        "y": 1280,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_iron_spikes": {
+      "frame": {
+        "x": 408,
+        "y": 1280,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "fence_rail_hay": {
+      "frame": {
+        "x": 612,
+        "y": 1280,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    },
+    "doghouse_brick": {
+      "frame": {
+        "x": 816,
+        "y": 1280,
+        "w": 204,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 204,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 204,
+        "h": 256
+      }
+    }
+  },
+  "meta": {
+    "image": "terrain_walls_manmade.png",
+    "size": {
+      "w": 1024,
+      "h": 1536
+    },
+    "scale": "1"
+  }
+}

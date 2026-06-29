@@ -1,0 +1,14 @@
+{
+  "id": "prop_pond_small",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Pond Small",
+  "description": "A small decorative pond with lily pads and a frog. Impassable.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "isWater": true
+}

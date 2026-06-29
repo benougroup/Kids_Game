@@ -1,0 +1,27 @@
+{
+  "id": "edge_w",
+  "name": "Edge W",
+  "description": "The western edge of a cobblestone road.",
+  "type": "terrain_tile",
+  "subCategory": "road_edge",
+  "passable": true,
+  "heightLevel": 0,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 1,
+    "tileH": 1,
+    "pixelW": 64,
+    "pixelH": 64,
+    "anchorTile": [
+      0,
+      0
+    ],
+    "footprint": [
+      [
+        false
+      ]
+    ]
+  },
+  "interactive": false,
+  "hasAnimation": false
+}

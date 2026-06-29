@@ -1,0 +1,15 @@
+{
+  "id": "chest_closed",
+  "type": "environment",
+  "subType": "obstacle",
+  "name": "Chest Closed",
+  "description": "A wooden treasure chest with iron fittings, firmly locked. May contain gold, items, or equipment. Requires a key or enough strength to force it open.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "interactive": true,
+  "interactType": "chest"
+}

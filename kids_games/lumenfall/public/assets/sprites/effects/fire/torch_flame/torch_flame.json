@@ -1,0 +1,34 @@
+{
+  "id": "torch_flame",
+  "type": "action_sprite",
+  "category": "fire",
+  "name": "Torch Flame",
+  "description": "The flickering orange flame of a wall torch or handheld torch. Casts warm light in a small radius. Loops continuously as an ambient light source.",
+  "passable": true,
+  "heightLevel": 2,
+  "isBorder": false,
+  "animation": {
+    "files": [
+      "torch_flame_f01.png",
+      "torch_flame_f02.png",
+      "torch_flame_f03.png",
+      "torch_flame_f04.png",
+      "torch_flame_f05.png",
+      "torch_flame_f06.png"
+    ],
+    "frames": 6,
+    "frameRate": 8,
+    "loop": true
+  },
+  "tags": [
+    "ambient",
+    "light_source",
+    "fire"
+  ],
+  "usage": {
+    "overlay": true,
+    "attachTo": "world",
+    "zIndex": 5,
+    "blendMode": "normal"
+  }
+}

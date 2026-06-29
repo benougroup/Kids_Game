@@ -1,0 +1,287 @@
+{
+  "frames": {
+    "plateau_grass_heavy": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 300,
+        "h": 220
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "plateau_rock": {
+      "frame": {
+        "x": 320,
+        "y": 0,
+        "w": 290,
+        "h": 220
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "plateau_moss": {
+      "frame": {
+        "x": 630,
+        "y": 0,
+        "w": 300,
+        "h": 230
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "plateau_sand": {
+      "frame": {
+        "x": 950,
+        "y": 0,
+        "w": 300,
+        "h": 230
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "plateau_granite": {
+      "frame": {
+        "x": 1270,
+        "y": 0,
+        "w": 300,
+        "h": 230
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_corner_inner_left": {
+      "frame": {
+        "x": 0,
+        "y": 240,
+        "w": 280,
+        "h": 210
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_corner_inner_right": {
+      "frame": {
+        "x": 300,
+        "y": 240,
+        "w": 280,
+        "h": 210
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stacked_stone_wall": {
+      "frame": {
+        "x": 600,
+        "y": 240,
+        "w": 320,
+        "h": 210
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_dark_wall_large": {
+      "frame": {
+        "x": 950,
+        "y": 240,
+        "w": 320,
+        "h": 210
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cliff_moss_vines": {
+      "frame": {
+        "x": 1300,
+        "y": 240,
+        "w": 280,
+        "h": 210
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "canyon_tiered": {
+      "frame": {
+        "x": 0,
+        "y": 470,
+        "w": 320,
+        "h": 230
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "mossy_stone_wall": {
+      "frame": {
+        "x": 340,
+        "y": 470,
+        "w": 320,
+        "h": 230
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "snow_plateau": {
+      "frame": {
+        "x": 680,
+        "y": 470,
+        "w": 320,
+        "h": 240
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "jungle_cliff": {
+      "frame": {
+        "x": 1020,
+        "y": 470,
+        "w": 320,
+        "h": 240
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "stepped_cliff_sand": {
+      "frame": {
+        "x": 1360,
+        "y": 470,
+        "w": 280,
+        "h": 240
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_mouth_large": {
+      "frame": {
+        "x": 0,
+        "y": 720,
+        "w": 330,
+        "h": 250
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lava_cliff_large": {
+      "frame": {
+        "x": 360,
+        "y": 720,
+        "w": 320,
+        "h": 250
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "snow_cliff_large": {
+      "frame": {
+        "x": 700,
+        "y": 720,
+        "w": 320,
+        "h": 250
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "desert_outcrop": {
+      "frame": {
+        "x": 1040,
+        "y": 720,
+        "w": 320,
+        "h": 250
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "volcanic_black_wall": {
+      "frame": {
+        "x": 1380,
+        "y": 720,
+        "w": 300,
+        "h": 250
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "waterfall_large": {
+      "frame": {
+        "x": 0,
+        "y": 1000,
+        "w": 330,
+        "h": 260
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "cave_arch": {
+      "frame": {
+        "x": 360,
+        "y": 1000,
+        "w": 300,
+        "h": 260
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "sandstone_heavy": {
+      "frame": {
+        "x": 680,
+        "y": 1000,
+        "w": 320,
+        "h": 260
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "lava_wall_glow": {
+      "frame": {
+        "x": 1040,
+        "y": 1000,
+        "w": 320,
+        "h": 260
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    },
+    "granite_wall_massive": {
+      "frame": {
+        "x": 1380,
+        "y": 1000,
+        "w": 300,
+        "h": 260
+      },
+      "movement": {
+        "minWalkableElevation": 0
+      }
+    }
+  },
+  "meta": {
+    "image": "terrain_walls_natural_v002_irregular.PNG",
+    "size": {
+      "w": 1680,
+      "h": 1260
+    },
+    "scale": "1"
+  }
+}

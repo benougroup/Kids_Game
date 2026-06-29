@@ -1,0 +1,344 @@
+{
+  "version": "4.0.0",
+  "game": "Lumenfall",
+  "description": "Complete sprite system \u2014 separate PNG files with JSON metadata",
+  "categories": {
+    "characters": {
+      "path": "sprites/characters/",
+      "entries": [
+        "hero",
+        "npc_villager_child",
+        "npc_villager_adult",
+        "npc_villager_elder",
+        "npc_villager_sick",
+        "npc_guard",
+        "npc_merchant",
+        "npc_seller",
+        "npc_magician",
+        "npc_female_guard",
+        "npc_knight",
+        "npc_thief",
+        "npc_healer",
+        "npc_farmer",
+        "npc_blacksmith",
+        "npc_wizard_elder",
+        "npc_child_girl"
+      ]
+    },
+    "equipment": {
+      "path": "sprites/equipment/",
+      "entries": [
+        "sword_iron",
+        "sword_steel",
+        "sword_magic",
+        "shield_wood",
+        "shield_iron",
+        "wand_magic",
+        "staff_wizard",
+        "bow_wood",
+        "helmet_iron",
+        "helmet_knight",
+        "armor_leather",
+        "armor_chain",
+        "armor_plate",
+        "robe_magic",
+        "boots_iron",
+        "ring_magic"
+      ]
+    },
+    "items": {
+      "path": "sprites/items/",
+      "entries": [
+        "coin_gold",
+        "coin_silver",
+        "coin_pouch",
+        "gem_red",
+        "gem_blue",
+        "gem_green",
+        "potion_health",
+        "potion_mana",
+        "potion_speed",
+        "potion_antidote",
+        "key_iron",
+        "key_golden",
+        "scroll_magic",
+        "stone",
+        "stone_magic",
+        "arrow",
+        "bread",
+        "apple",
+        "fish",
+        "mushroom"
+      ]
+    },
+    "environment": {
+      "path": "sprites/environment/",
+      "subCategories": {
+        "ground": [
+          "tile_grass",
+          "tile_grass_dark",
+          "tile_dirt",
+          "tile_sand",
+          "tile_stone_floor",
+          "tile_stone_road",
+          "tile_wood_floor",
+          "tile_water_shallow",
+          "tile_water_deep",
+          "tile_ice",
+          "tile_lava",
+          "tile_snow",
+          "tile_cave_floor",
+          "tile_forest_floor",
+          "tile_swamp",
+          "tile_magic_floor",
+          "tile_dungeon_floor",
+          "tile_dungeon_wet",
+          "tile_castle_floor",
+          "tile_castle_royal",
+          "tile_beach_sand",
+          "tile_beach_wet",
+          "tile_mountain_rock",
+          "tile_mountain_snow",
+          "tile_jungle_floor",
+          "tile_desert_floor",
+          "tile_graveyard",
+          "tile_volcanic_ash",
+          "tile_cloud_floor",
+          "tile_crystal_floor",
+          "tile_ancient_ruins",
+          "tile_rainbow_floor"
+        ],
+        "obstacles": [
+          "wall_stone",
+          "wall_brick",
+          "wall_wood",
+          "cliff",
+          "fence_wood",
+          "fence_iron",
+          "hedge",
+          "water_edge",
+          "tree_oak",
+          "tree_pine",
+          "rock_small",
+          "rock_large",
+          "chest_closed",
+          "chest_open",
+          "barrel",
+          "crate",
+          "door_wood",
+          "door_open",
+          "gate_iron",
+          "sign_post"
+        ],
+        "buildings": [
+          "building_house_small",
+          "building_house_large",
+          "building_inn",
+          "building_shop",
+          "building_blacksmith",
+          "building_church",
+          "building_watchtower",
+          "building_castle_gate",
+          "building_fountain",
+          "building_well",
+          "building_market_stall",
+          "building_campfire"
+        ],
+        "borders": [
+          "border_grass_n",
+          "border_grass_s",
+          "border_grass_e",
+          "border_grass_w",
+          "border_grass_ne",
+          "border_grass_nw",
+          "border_grass_se",
+          "border_grass_sw",
+          "border_grass_inner_n",
+          "border_grass_inner_s",
+          "border_grass_inner_e",
+          "border_grass_inner_w",
+          "border_stone_n",
+          "border_stone_s",
+          "border_stone_e",
+          "border_stone_w",
+          "border_stone_ne",
+          "border_stone_nw",
+          "border_stone_se",
+          "border_stone_sw",
+          "border_cliff_n",
+          "border_cliff_s",
+          "border_cliff_e",
+          "border_cliff_w",
+          "border_ocean_n",
+          "border_ocean_s",
+          "border_ocean_e",
+          "border_ocean_w",
+          "border_ocean_ne",
+          "border_ocean_nw",
+          "border_ocean_se",
+          "border_ocean_sw",
+          "border_lava_n",
+          "border_lava_s",
+          "border_lava_e",
+          "border_lava_w"
+        ],
+        "props": [
+          "prop_flower_red",
+          "prop_flower_yellow",
+          "prop_flower_blue",
+          "prop_mushroom_cluster",
+          "prop_lantern_post",
+          "prop_torch_wall",
+          "prop_campfire_small",
+          "prop_brazier",
+          "prop_statue_hero",
+          "prop_statue_lion",
+          "prop_gravestone",
+          "prop_gravestone_fancy",
+          "prop_bridge_plank_h",
+          "prop_bridge_plank_v",
+          "prop_bridge_stone_h",
+          "prop_bridge_stone_v",
+          "prop_path_stone_ns",
+          "prop_path_stone_ew",
+          "prop_path_stone_cross",
+          "prop_path_dirt_ns",
+          "prop_pond_small",
+          "prop_bush_green",
+          "prop_bush_flower",
+          "prop_tall_grass"
+        ]
+      }
+    },
+    "portals": {
+      "path": "sprites/portals/",
+      "description": "Portal sprites \u2014 the ONLY way to travel between maps",
+      "rule": "All map edges must use impassable border tiles. Portals are the sole crossing points.",
+      "entries": [
+        "portal_magic_idle",
+        "portal_magic_active",
+        "portal_enter",
+        "portal_fire",
+        "portal_ice",
+        "portal_marker"
+      ]
+    },
+    "creatures": {
+      "path": "sprites/creatures/",
+      "description": "Animals, monsters, and dark entities with behavioral metadata",
+      "subCategories": {
+        "animals_peaceful": [
+          "chicken",
+          "sheep",
+          "cow",
+          "rabbit",
+          "deer",
+          "bird"
+        ],
+        "animals_aggressive": [
+          "bear",
+          "wolf",
+          "boar",
+          "snake"
+        ],
+        "monsters": [
+          "giant_snake",
+          "giant_bug",
+          "spider",
+          "slime",
+          "troll",
+          "golem"
+        ],
+        "dark_entities": [
+          "shadow_wraith",
+          "dark_knight",
+          "void_creature",
+          "banshee",
+          "demon"
+        ],
+        "undead": [
+          "zombie",
+          "skeleton",
+          "ghost",
+          "lich",
+          "mummy"
+        ]
+      }
+    },
+    "effects": {
+      "path": "sprites/effects/",
+      "description": "Action sprites \u2014 fire, magic, impact, damage, environment, status effects. All tagged type: action_sprite.",
+      "subCategories": {
+        "fire": [
+          "torch_flame",
+          "campfire",
+          "fireball",
+          "fire_explosion",
+          "fire_trail",
+          "ember_sparks"
+        ],
+        "magic": [
+          "light_staff_glow",
+          "heal_beam",
+          "magic_bolt",
+          "arcane_burst",
+          "shield_shimmer",
+          "portal_swirl",
+          "dark_magic_bolt",
+          "ice_shard",
+          "lightning_bolt",
+          "earth_spike",
+          "wind_slash",
+          "holy_light_burst"
+        ],
+        "impact": [
+          "sword_slash",
+          "blunt_hit",
+          "arrow_pierce",
+          "critical_hit",
+          "block_parry",
+          "stagger"
+        ],
+        "blood": [
+          "hit_splat",
+          "blood_drip",
+          "poison_cloud",
+          "dark_energy_hit",
+          "soul_drain",
+          "monster_death_burst"
+        ],
+        "environment": [
+          "rain_drops",
+          "snowfall",
+          "lightning_strike",
+          "smoke_puff",
+          "dust_cloud",
+          "water_splash",
+          "leaf_burst"
+        ],
+        "status": [
+          "status_poison",
+          "status_freeze",
+          "status_burn",
+          "status_curse",
+          "status_stun",
+          "status_sleep",
+          "status_confused"
+        ]
+      }
+    }
+  },
+  "borderSystem": {
+    "description": "Map borders are ALWAYS impassable. Players must use portals to travel between maps.",
+    "borderTiles": "All border_* tiles have passable=false and isBorder=true",
+    "portalTiles": "Portal tiles have passable=true, isPortal=true, portalAllowed=true",
+    "placement": "Place border tiles around all map edges. Place portal tiles at designated crossing points ON TOP of border tiles.",
+    "biomes": [
+      "grass",
+      "stone",
+      "cliff",
+      "ocean",
+      "lava"
+    ]
+  }
+}

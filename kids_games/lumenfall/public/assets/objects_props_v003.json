@@ -1,0 +1,532 @@
+{
+  "frames": {
+    "ruin_arch_stone": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "statue_knight": {
+      "frame": {
+        "x": 307,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "fountain_round": {
+      "frame": {
+        "x": 614,
+        "y": 0,
+        "w": 307,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "statue_robed": {
+      "frame": {
+        "x": 921,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tent_plain_01": {
+      "frame": {
+        "x": 1228,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "house_snow": {
+      "frame": {
+        "x": 0,
+        "y": 204,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "bridge_stone_arch": {
+      "frame": {
+        "x": 307,
+        "y": 204,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "statue_angel_01": {
+      "frame": {
+        "x": 614,
+        "y": 204,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "statue_angel_02": {
+      "frame": {
+        "x": 921,
+        "y": 204,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tent_plain_02": {
+      "frame": {
+        "x": 1228,
+        "y": 204,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "bridge_stone_railing": {
+      "frame": {
+        "x": 0,
+        "y": 408,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tent_circus": {
+      "frame": {
+        "x": 307,
+        "y": 408,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tent_plain_03": {
+      "frame": {
+        "x": 614,
+        "y": 408,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tent_plain_04": {
+      "frame": {
+        "x": 921,
+        "y": 408,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tree_ruins_combo": {
+      "frame": {
+        "x": 1228,
+        "y": 408,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "sarcophagus": {
+      "frame": {
+        "x": 0,
+        "y": 612,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "crate_pile": {
+      "frame": {
+        "x": 307,
+        "y": 612,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "chest_treasure": {
+      "frame": {
+        "x": 614,
+        "y": 612,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "campfire_large": {
+      "frame": {
+        "x": 921,
+        "y": 612,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "cauldron_magic": {
+      "frame": {
+        "x": 1228,
+        "y": 612,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "bucket_magic": {
+      "frame": {
+        "x": 0,
+        "y": 816,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "sack_pile": {
+      "frame": {
+        "x": 307,
+        "y": 816,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "table_market": {
+      "frame": {
+        "x": 614,
+        "y": 816,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "chest_medium": {
+      "frame": {
+        "x": 921,
+        "y": 816,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "column_ruins": {
+      "frame": {
+        "x": 1228,
+        "y": 816,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    },
+    "tower_ruins": {
+      "frame": {
+        "x": 1228,
+        "y": 408,
+        "w": 307,
+        "h": 204
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 307,
+        "h": 204
+      },
+      "sourceSize": {
+        "w": 307,
+        "h": 204
+      }
+    }
+  },
+  "meta": {
+    "image": "objects_props_v003.png",
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "scale": "1"
+  }
+}

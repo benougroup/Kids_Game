@@ -1,0 +1,114 @@
+{
+  "id": "golem",
+  "type": "creature",
+  "category": "monsters",
+  "name": "Golem",
+  "description": "A towering stone golem animated by ancient magic. Immune to most physical attacks \u2014 only magic can damage it effectively. Patrols ancient ruins and temples, guarding whatever lies within.",
+  "passable": false,
+  "collisionBox": {
+    "w": 40,
+    "h": 40
+  },
+  "animations": {
+    "idle": {
+      "files": [
+        "idle_f01.png",
+        "idle_f02.png",
+        "idle_f03.png",
+        "idle_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_down": {
+      "files": [
+        "walk_down_f01.png",
+        "walk_down_f02.png",
+        "walk_down_f03.png",
+        "walk_down_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_up": {
+      "files": [
+        "walk_up_f01.png",
+        "walk_up_f02.png",
+        "walk_up_f03.png",
+        "walk_up_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_left": {
+      "files": [
+        "walk_left_f01.png",
+        "walk_left_f02.png",
+        "walk_left_f03.png",
+        "walk_left_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "walk_right": {
+      "files": [
+        "walk_right_f01.png",
+        "walk_right_f02.png",
+        "walk_right_f03.png",
+        "walk_right_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "punch": {
+      "files": [
+        "punch_f01.png",
+        "punch_f02.png",
+        "punch_f03.png",
+        "punch_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "stomp": {
+      "files": [
+        "stomp_f01.png",
+        "stomp_f02.png",
+        "stomp_f03.png",
+        "stomp_f04.png"
+      ],
+      "frames": 4,
+      "frameRate": 8,
+      "loop": true
+    },
+    "dormant": {
+      "files": [
+        "dormant_f01.png",
+        "dormant_f02.png"
+      ],
+      "frames": 2,
+      "frameRate": 4,
+      "loop": true
+    }
+  },
+  "stats": {
+    "behavior": "guardian",
+    "speed": 30,
+    "health": 400,
+    "hostile": true,
+    "dayNight": {
+      "day": "dormant",
+      "night": "active"
+    },
+    "movement": "guard_point",
+    "aggroRange": 150,
+    "attackDamage": 40,
+    "armor": 25
+  }
+}

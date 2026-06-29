@@ -1,0 +1,15 @@
+{
+  "id": "sword_iron",
+  "type": "equipment",
+  "subType": "weapon",
+  "name": "Sword Iron",
+  "description": "A sturdy iron sword with a leather-wrapped hilt. The standard weapon of Lumenfall's guards and beginning adventurers. Reliable and well-balanced, if not particularly powerful.",
+  "passable": true,
+  "heightLevel": 0,
+  "file": "icon.png",
+  "pickupable": true,
+  "equipSlot": "hand_right",
+  "stats": {
+    "attack": 10
+  }
+}

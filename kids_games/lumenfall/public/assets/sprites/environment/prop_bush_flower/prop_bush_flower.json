@@ -1,0 +1,14 @@
+{
+  "id": "prop_bush_flower",
+  "type": "environment",
+  "subType": "prop",
+  "name": "Bush Flower",
+  "description": "A flowering bush with colourful blooms. Decorative. Impassable.",
+  "passable": false,
+  "heightLevel": 1,
+  "isBorder": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "decorative": true
+}

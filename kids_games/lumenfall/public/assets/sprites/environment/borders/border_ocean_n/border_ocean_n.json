@@ -1,0 +1,18 @@
+{
+  "id": "border_ocean_n",
+  "type": "environment",
+  "subType": "border",
+  "name": "Border Ocean N",
+  "description": "Deep ocean water forming the northern boundary. Impassable \u2014 the current is too strong.",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": true,
+  "borderType": "water",
+  "direction": "N",
+  "isCorner": false,
+  "isInnerEdge": false,
+  "file": "image.png",
+  "width": 64,
+  "height": 64,
+  "portalAllowed": false
+}

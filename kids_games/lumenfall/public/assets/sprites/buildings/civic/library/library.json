@@ -1,0 +1,36 @@
+{
+  "id": "library",
+  "name": "Library",
+  "description": "The Archive of Echoes \u2014 an ivy-covered stone library filled with ancient scrolls and leather-bound tomes. Scholars and adventurers alike come here seeking knowledge of the world's forgotten history.",
+  "type": "building",
+  "subCategory": "civic",
+  "passable": false,
+  "heightLevel": 3,
+  "isBorder": false,
+  "multiTile": {
+    "tileW": 3,
+    "tileH": 2,
+    "pixelW": 192,
+    "pixelH": 128,
+    "anchorTile": [
+      0,
+      1
+    ],
+    "footprint": [
+      [
+        false,
+        false,
+        false
+      ],
+      [
+        false,
+        false,
+        false
+      ]
+    ],
+    "footprintNote": "true=blocked, false=passable. [row][col], row 0=top"
+  },
+  "interactive": true,
+  "interactType": "enter_building",
+  "hasAnimation": false
+}
