@@ -264,6 +264,9 @@ export class GameScene extends Phaser.Scene {
     
     // Camera setup
     this.cameras.main.startFollow(this.player.sprite, true, 0.08, 0.08);
+    // Snap camera immediately to player position — without this the camera
+    // starts at (0,0) and lerps slowly, showing the wrong area on load.
+    this.cameras.main.centerOn(spawn.x, spawn.y);
     // Round camera scroll to whole pixels — prevents sub-pixel tile bleeding
     this.cameras.main.setRoundPixels(true);
 
