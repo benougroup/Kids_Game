@@ -316,9 +316,11 @@ export function createLumenfallVillageData(): MapData {
 
   // ── 8. BUILDINGS ─────────────────────────────────────────────────────────
   // All buildings are 384x256px in the atlas.
-  // Display at pixelWidth:192, pixelHeight:128 (3:2 ratio preserved, 3x2 tiles).
+  // Individual building sprites are 256x256 (square). Display at 192x192 to preserve
+  // the 1:1 aspect ratio while fitting a 3-tile footprint. The extra height (192 vs 128)
+  // makes buildings rise above their tile base, which is correct for isometric-style depth.
   // collisionW:3, collisionH:2 blocks the full footprint.
-  const BLDG = { widthTiles: 3, heightTiles: 2, pixelWidth: 192, pixelHeight: 128, collisionW: 3, collisionH: 2 };
+  const BLDG = { widthTiles: 3, heightTiles: 3, pixelWidth: 192, pixelHeight: 192, collisionW: 3, collisionH: 2 };
 
   // NW quadrant: Inn (top-left)
   structureLayer.push({ x: 4, y: 3, frame: 'tavern_blue_roof', atlas: 'buildings_v003', height: 3, ...BLDG });
