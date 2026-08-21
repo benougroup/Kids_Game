@@ -36,6 +36,8 @@ export function createTutorialVillageData(): MapData {
         height: 0,
         widthTiles: 20,
         heightTiles: 15,
+        pixelWidth: 1280,
+        pixelHeight: 960,
       },
       // Dirt path leading to buildings (North-South)
       {
@@ -45,6 +47,8 @@ export function createTutorialVillageData(): MapData {
         height: 0,
         widthTiles: 2,
         heightTiles: 15,
+        pixelWidth: 128,
+        pixelHeight: 960,
       },
       // Dirt path leading to buildings (East-West)
       {
@@ -54,6 +58,8 @@ export function createTutorialVillageData(): MapData {
         height: 0,
         widthTiles: 20,
         heightTiles: 2,
+        pixelWidth: 1280,
+        pixelHeight: 128,
       },
     ],
 
@@ -63,7 +69,7 @@ export function createTutorialVillageData(): MapData {
       {
         x: 1, y: 2,
         frame: 'tree_oak_large',
-        atlas: 'N/A',
+        atlas: 'N/A',  // Will use individual sprite
         height: 0,
         widthTiles: 2,
         heightTiles: 2,
@@ -74,7 +80,7 @@ export function createTutorialVillageData(): MapData {
       {
         x: 17, y: 3,
         frame: 'tree_pine_tall',
-        atlas: 'N/A',
+        atlas: 'N/A',  // Will use individual sprite
         height: 0,
         widthTiles: 2,
         heightTiles: 2,
@@ -85,7 +91,7 @@ export function createTutorialVillageData(): MapData {
       {
         x: 3, y: 11,
         frame: 'bush_small',
-        atlas: 'N/A',
+        atlas: 'N/A',  // Will use individual sprite
         height: 0,
         widthTiles: 1,
         heightTiles: 1,
@@ -95,7 +101,7 @@ export function createTutorialVillageData(): MapData {
       {
         x: 16, y: 12,
         frame: 'bush_small',
-        atlas: 'N/A',
+        atlas: 'N/A',  // Will use individual sprite
         height: 0,
         widthTiles: 1,
         heightTiles: 1,
@@ -106,7 +112,7 @@ export function createTutorialVillageData(): MapData {
       {
         x: 5, y: 8,
         frame: 'barrel_pair',
-        atlas: 'N/A',
+        atlas: 'N/A',  // Will use individual sprite
         height: 0,
         widthTiles: 1,
         heightTiles: 1,

@@ -142,13 +142,22 @@ export class MapBuilder {
       const h = (entry.heightTiles ?? 1) * tileSize;
       
       const yOff = entry.yOffset ?? 0;
-            // Prefer individually-cut sprite files over legacy atlas frames.
+      // Prefer individually-cut sprite files over legacy atlas frames.
       // Individual sprites have clean crops and canonical canvas sizes.
       const individualKey = getSpriteKey(entry.frame);
-      const sprite = individualKey && this.scene.textures.exists(individualKey)
-        ? this.scene.add.sprite(x, y, individualKey)
-        : this.scene.add.sprite(x, y, entry.atlas, entry.frame);
-      sprite.setOrigin(0, 0);
+      const useAtlas = entry.atlas && entry.atlas !== 'N/A';  // Skip 'N/A' atlas
+
+      let sprite: Phaser.GameObjects.Sprite;
+      if (individualKey && this.scene.textures.exists(individualKey)) {
+        sprite = this.scene.add.sprite(x + 32, y + 32, individualKey);  // Center of tile
+      } else if (useAtlas && this.scene.textures.exists(entry.atlas)) {
+        sprite = this.scene.add.sprite(x + 32, y + 32, entry.atlas, entry.frame);
+      } else {
+        // Fallback - texture not found
+        console.warn(`Missing texture: ${entry.frame} (atlas: ${entry.atlas})`);
+        sprite = this.scene.add.sprite(x + 32, y + 32, '__MISSING');
+      }
+      sprite.setOrigin(0.5, 0.5);  // Center origin
       // Terrain defaults to grid-tile sizing.
       // Objects/structures default to native atlas frame sizing unless tile/pixel dimensions are explicitly provided.
       const nativeW = sprite.frame.realWidth;
@@ -167,9 +176,9 @@ export class MapBuilder {
 
       // For non-ground layers, anchor the object/structure to the tile base so tall sprites rise upward.
       if (baseDepth > 0) {
-        sprite.y = y + yOff + tileSize - displayH;
+        sprite.y = y + 32 + yOff + tileSize - displayH;
       } else {
-        sprite.y = y + yOff;
+        sprite.y = y + 32 + yOff;
       }
       sprite.setDepth(toRenderDepth(entry.y, baseDepth / 100, entry.height));
       this.allSprites.push(sprite);
