@@ -1,0 +1,354 @@
+{
+  "nodes": [
+    {
+      "id": "tutorial_guard_aldric_start",
+      "type": "scene",
+      "speaker": "Guard Aldric",
+      "text": [
+        "Greetings, traveler! Welcome to Lumenfall Village.",
+        "I am Guard Aldric, protector of this peaceful place.",
+        "What brings you here?"
+      ],
+      "choices": [
+        {
+          "label": "I want to help the village!",
+          "next": "tutorial_guard_aldric_interested"
+        },
+        {
+          "label": "I am just exploring.",
+          "next": "tutorial_guard_aldric_casual"
+        },
+        {
+          "label": "Who are you?",
+          "next": "tutorial_guard_aldric_who"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_guard_aldric_interested",
+      "type": "scene",
+      "speaker": "Guard Aldric",
+      "text": [
+        "Excellent! We have been troubled by shadows that grow stronger at night.",
+        "These dark creatures fear light and fire.",
+        "If you can master the light, you may help us defeat the shadows!"
+      ],
+      "choices": [
+        {
+          "label": "How do I use light magic?",
+          "next": "tutorial_guard_aldric_light"
+        },
+        {
+          "label": "I will help! Tell me more.",
+          "next": "tutorial_guard_aldric_mission"
+        },
+        {
+          "label": "Return to exploring",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_guard_aldric_casual",
+      "type": "scene",
+      "speaker": "Guard Aldric",
+      "text": [
+        "That is fine! Feel free to explore our beautiful village.",
+        "When you are ready to learn more, find me here.",
+        "Or talk to our wise Apprentice Mira - she knows much about magic!"
+      ],
+      "choices": [
+        {
+          "label": "Thank you!",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_guard_aldric_who",
+      "type": "scene",
+      "speaker": "Guard Aldric",
+      "text": [
+        "I am the Guard of this village - I keep the people safe.",
+        "My duty is to watch for danger and help travelers like you.",
+        "Do you need any assistance?"
+      ],
+      "choices": [
+        {
+          "label": "Tell me about the shadows.",
+          "next": "tutorial_guard_aldric_interested"
+        },
+        {
+          "label": "No, thank you.",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_guard_aldric_light",
+      "type": "scene",
+      "speaker": "Guard Aldric",
+      "text": [
+        "Visit our Apprentice Mira - she is learning light magic from the village scholar.",
+        "She can teach you the basics of channeling light energy.",
+        "Return to me when you are ready!"
+      ],
+      "choices": [
+        {
+          "label": "I will find Mira!",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_guard_aldric_mission",
+      "type": "scene",
+      "speaker": "Guard Aldric",
+      "text": [
+        "The shadows have been growing bolder. We need help!",
+        "First, learn about light magic from Mira.",
+        "Then, travel to the forest to the north and investigate.",
+        "Be brave, traveler. The village is counting on you!"
+      ],
+      "choices": [
+        {
+          "label": "I accept this quest!",
+          "next": "returnToMap",
+          "effects": [
+            {
+              "op": "flag.set",
+              "key": "tutorial_quest_started",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tutorial_apprentice_mira_start",
+      "type": "scene",
+      "speaker": "Mira the Apprentice",
+      "text": [
+        "Hello! I am Mira, an apprentice learning magic.",
+        "I study light magic with Scholar Vera.",
+        "Are you interested in learning about magic too?"
+      ],
+      "choices": [
+        {
+          "label": "Yes! Teach me about light magic!",
+          "next": "tutorial_apprentice_mira_lesson"
+        },
+        {
+          "label": "What is light magic?",
+          "next": "tutorial_apprentice_mira_explain"
+        },
+        {
+          "label": "Not right now.",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_apprentice_mira_lesson",
+      "type": "scene",
+      "speaker": "Mira the Apprentice",
+      "text": [
+        "Light magic is channeling the power of the sun and stars!",
+        "When you focus on light, it pushes away the darkness.",
+        "The shadows cannot survive in places filled with bright, warm light."
+      ],
+      "choices": [
+        {
+          "label": "How do I use this power?",
+          "next": "tutorial_apprentice_mira_howto"
+        },
+        {
+          "label": "Are the shadows dangerous?",
+          "next": "tutorial_apprentice_mira_shadows"
+        },
+        {
+          "label": "Thank you for teaching me!",
+          "next": "returnToMap",
+          "effects": [
+            {
+              "op": "flag.set",
+              "key": "learned_light_magic",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tutorial_apprentice_mira_explain",
+      "type": "scene",
+      "speaker": "Mira the Apprentice",
+      "text": [
+        "Light magic is very ancient and powerful!",
+        "It comes from the sun, moon, and stars.",
+        "We use it to protect our village from the shadows that come at night."
+      ],
+      "choices": [
+        {
+          "label": "Teach me!",
+          "next": "tutorial_apprentice_mira_lesson"
+        },
+        {
+          "label": "Where is the scholar?",
+          "next": "tutorial_apprentice_mira_scholar"
+        },
+        {
+          "label": "Goodbye",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_apprentice_mira_howto",
+      "type": "scene",
+      "speaker": "Mira the Apprentice",
+      "text": [
+        "It is simple - you must believe in the light!",
+        "When you carry a torch or lantern, you create a safe space.",
+        "The light keeps the shadows away. Try it when you see darkness!"
+      ],
+      "choices": [
+        {
+          "label": "I will use light wisely!",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_apprentice_mira_shadows",
+      "type": "scene",
+      "speaker": "Mira the Apprentice",
+      "text": [
+        "Yes, very dangerous! They come at night when it is darkest.",
+        "They are cold and hungry, always seeking light to consume.",
+        "But do not be afraid - with light magic, you can defeat them!"
+      ],
+      "choices": [
+        {
+          "label": "I am ready for adventure!",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_apprentice_mira_scholar",
+      "type": "scene",
+      "speaker": "Mira the Apprentice",
+      "text": [
+        "Scholar Vera lives in the house to the east!",
+        "She knows much more than me about magic.",
+        "But she is quiet - you must listen carefully to her words."
+      ],
+      "choices": [
+        {
+          "label": "I will visit the scholar!",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_scholar_vera_start",
+      "type": "scene",
+      "speaker": "Scholar Vera",
+      "text": [
+        "Welcome. I am Vera, keeper of ancient knowledge.",
+        "I study the nature of light and shadows.",
+        "What do you wish to know?"
+      ],
+      "choices": [
+        {
+          "label": "Tell me about the shadows.",
+          "next": "tutorial_scholar_vera_shadows"
+        },
+        {
+          "label": "How can I help the village?",
+          "next": "tutorial_scholar_vera_help"
+        },
+        {
+          "label": "What is your role here?",
+          "next": "tutorial_scholar_vera_role"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_scholar_vera_shadows",
+      "type": "scene",
+      "speaker": "Scholar Vera",
+      "text": [
+        "The shadows are ancient beings from the void.",
+        "They grow stronger each night, feeding on fear and darkness.",
+        "Light is their only weakness. A single torch can drive them back."
+      ],
+      "choices": [
+        {
+          "label": "How do I get a torch?",
+          "next": "tutorial_scholar_vera_torch"
+        },
+        {
+          "label": "I will defeat them!",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_scholar_vera_help",
+      "type": "scene",
+      "speaker": "Scholar Vera",
+      "text": [
+        "The village needs someone brave enough to explore the northern forest.",
+        "There, you may find the source of the shadow influence.",
+        "Bring back knowledge, and you will have helped us all."
+      ],
+      "choices": [
+        {
+          "label": "I will go to the forest!",
+          "next": "returnToMap",
+          "effects": [
+            {
+              "op": "flag.set",
+              "key": "vera_quest_accepted",
+              "value": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tutorial_scholar_vera_role",
+      "type": "scene",
+      "speaker": "Scholar Vera",
+      "text": [
+        "I am a scholar and teacher. My role is to preserve knowledge.",
+        "I study magic to help protect those I care about.",
+        "I also mentor young Mira in the ways of light magic."
+      ],
+      "choices": [
+        {
+          "label": "You seem wise.",
+          "next": "returnToMap"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_scholar_vera_torch",
+      "type": "scene",
+      "speaker": "Scholar Vera",
+      "text": [
+        "The blacksmith in our village can craft torches.",
+        "Or you may find one already placed in safe locations.",
+        "When you hold a torch, the shadows cannot approach you."
+      ],
+      "choices": [
+        {
+          "label": "I will find a torch!",
+          "next": "returnToMap"
+        }
+      ]
+    }
+  ]
+}

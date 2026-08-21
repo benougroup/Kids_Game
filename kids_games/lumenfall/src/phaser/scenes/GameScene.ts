@@ -8,6 +8,7 @@ import { MathGameSystem } from '../systems/MathGameSystem';
 import { MapBuilder } from '../maps/MapBuilder';
 import { createTestTownData, createTestForestData, createTestDungeonData, createTestObjectAuditData } from '../maps/TestMaps';
 import { createLumenfallVillageData } from '../maps/LumenfallVillageMap';
+import { createTutorialVillageData } from '../maps/TutorialVillageMap';
 import { Entity } from '../entities/Entity';
 import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
@@ -140,8 +141,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
-    // Load initial map — Lumenfall Village (new starting map)
-    this.loadMap('lumenfall_village', 15, 17);
+    // Load initial map - Tutorial Village (teaching the basics)
+    this.loadMap('tutorial_village', 10, 8);
     
     // Expose debug API globally
     (window as any).lumenfall = {
@@ -235,12 +236,13 @@ export class GameScene extends Phaser.Scene {
     // Get map data
     let mapData;
     switch (mapId) {
+      case 'tutorial_village': mapData = createTutorialVillageData(); break;
       case 'lumenfall_village': mapData = createLumenfallVillageData(); break;
       case 'test_town': mapData = createTestTownData(); break;
       case 'test_forest': mapData = createTestForestData(); break;
       case 'test_dungeon': mapData = createTestDungeonData(); break;
       case 'test_objects': mapData = createTestObjectAuditData(); break;
-      default: mapData = createLumenfallVillageData(); break;
+      default: mapData = createTutorialVillageData(); break;
     }
     
     // Build map

@@ -1,6 +1,11 @@
 {
   "stories": [
     {
+      "id": "tutorial",
+      "startSceneId": "tutorial_guard_aldric_start",
+      "scenesFile": "scenes/tutorial.scenes.json"
+    },
+    {
       "id": "flickering_light",
       "startSceneId": "guard_day_first",
       "scenesFile": "scenes/flickering_light.scenes.json"
