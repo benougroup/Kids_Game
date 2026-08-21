@@ -9,6 +9,7 @@ import { MapBuilder } from '../maps/MapBuilder';
 import { createTestTownData, createTestForestData, createTestDungeonData, createTestObjectAuditData } from '../maps/TestMaps';
 import { createLumenfallVillageData } from '../maps/LumenfallVillageMap';
 import { createTutorialVillageData } from '../maps/TutorialVillageMap';
+import { createMinimalTestMapData } from '../maps/MinimalTestMap';
 import { Entity } from '../entities/Entity';
 import { DEFAULT_FLAGS } from '../systems/TileSystem';
 import { MONSTER_DEFINITIONS } from '../systems/EntityRegistry';
@@ -141,8 +142,8 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
-    // Load initial map - Tutorial Village (teaching the basics)
-    this.loadMap('tutorial_village', 10, 8);
+    // Load minimal test map to verify sprite system works
+    this.loadMap('minimal_test', 5, 5);
     
     // Expose debug API globally
     (window as any).lumenfall = {
@@ -236,13 +237,14 @@ export class GameScene extends Phaser.Scene {
     // Get map data
     let mapData;
     switch (mapId) {
+      case 'minimal_test': mapData = createMinimalTestMapData(); break;
       case 'tutorial_village': mapData = createTutorialVillageData(); break;
       case 'lumenfall_village': mapData = createLumenfallVillageData(); break;
       case 'test_town': mapData = createTestTownData(); break;
       case 'test_forest': mapData = createTestForestData(); break;
       case 'test_dungeon': mapData = createTestDungeonData(); break;
       case 'test_objects': mapData = createTestObjectAuditData(); break;
-      default: mapData = createTutorialVillageData(); break;
+      default: mapData = createMinimalTestMapData(); break;
     }
     
     // Build map
