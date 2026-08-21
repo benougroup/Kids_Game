@@ -59,7 +59,7 @@ export function createTutorialVillageData(): MapData {
 
     // Object layer - trees, rocks, decorative props
     objectLayer: [
-      // Left side trees (provide framing)
+      // Left side trees (provide framing) - 128x192 large props
       {
         x: 1, y: 2,
         frame: 'tree_oak_large',
@@ -70,7 +70,7 @@ export function createTutorialVillageData(): MapData {
         pixelWidth: 128,
         pixelHeight: 192,
       },
-      // Right side trees
+      // Right side trees - 128x192 large props
       {
         x: 17, y: 3,
         frame: 'tree_pine_tall',
@@ -81,7 +81,7 @@ export function createTutorialVillageData(): MapData {
         pixelWidth: 128,
         pixelHeight: 192,
       },
-      // Small decorative bushes
+      // Small decorative bushes - 64x64 medium props
       {
         x: 3, y: 11,
         frame: 'bush_small',
@@ -102,7 +102,7 @@ export function createTutorialVillageData(): MapData {
         pixelWidth: 64,
         pixelHeight: 64,
       },
-      // Barrels near buildings (storage theme)
+      // Barrels near buildings (storage theme) - 64x64 medium props
       {
         x: 5, y: 8,
         frame: 'barrel_pair',
@@ -117,7 +117,7 @@ export function createTutorialVillageData(): MapData {
 
     // Structure layer - buildings where NPCs are located
     structureLayer: [
-      // Central Tavern (main gathering place)
+      // Central Tavern (main gathering place) - 256x256 building
       {
         x: 8, y: 5,
         frame: 'tavern_blue_roof',
@@ -127,8 +127,9 @@ export function createTutorialVillageData(): MapData {
         heightTiles: 3,
         pixelWidth: 256,
         pixelHeight: 256,
+        yOffset: 0,
       },
-      // Left house (Guard's post)
+      // Left house (Guard's post) - 256x256 building
       {
         x: 2, y: 9,
         frame: 'house_thatch_small',
@@ -138,8 +139,9 @@ export function createTutorialVillageData(): MapData {
         heightTiles: 2,
         pixelWidth: 256,
         pixelHeight: 256,
+        yOffset: 0,
       },
-      // Right house (Apprentice's home)
+      // Right house (Apprentice's home) - 256x256 building
       {
         x: 15, y: 10,
         frame: 'house_large',
@@ -149,6 +151,7 @@ export function createTutorialVillageData(): MapData {
         heightTiles: 2,
         pixelWidth: 256,
         pixelHeight: 256,
+        yOffset: 0,
       },
     ],
 
@@ -178,16 +181,16 @@ export function createTutorialVillageData(): MapData {
     ],
 
     // Peaceful animals - wander around, flee when approached
+    // NOTE: Using only rabbits which have stable sprite files
+    // Other creatures have rendering issues that will be fixed separately
     monsters: [
-      // Rabbits scattered around
+      // Rabbits scattered around - these work reliably
       { x: 2, y: 2, entityId: 'rabbit' },
       { x: 17, y: 1, entityId: 'rabbit' },
       { x: 5, y: 12, entityId: 'rabbit' },
-      // Butterflies in the sky area
-      { x: 10, y: 2, entityId: 'butterfly' },
-      { x: 14, y: 3, entityId: 'butterfly' },
-      // A friendly squirrel
-      { x: 18, y: 9, entityId: 'squirrel' },
+      { x: 14, y: 10, entityId: 'rabbit' },
+      { x: 8, y: 2, entityId: 'rabbit' },
+      { x: 11, y: 13, entityId: 'rabbit' },
     ],
 
     // Exits - Path to next scenario
