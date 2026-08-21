@@ -1,0 +1,174 @@
+# INDIVIDUAL SPRITE SPECIFICATION FILES FOR MANUS AI
+
+Create these files separately for Manus to generate each sprite:
+
+## BUILDINGS (9 total)
+
+1. BUILDING_TAVERN_BLUE_ROOF.md
+   - 256x256 pixels
+   - Blue roof, stone walls, welcoming tavern
+   
+2. BUILDING_HOUSE_THATCH_SMALL.md
+   - 256x256 pixels
+   - Golden thatch roof, tan walls, cottage
+   
+3. BUILDING_HOUSE_LARGE.md
+   - 256x256 pixels
+   - Two-story, tiled roof, multiple windows
+   
+4. BUILDING_ALCHEMY_SHOP.md
+   - 256x256 pixels
+   - Dark mystical shop, purple lights, potion bottles
+   
+5. BUILDING_BLACKSMITH_FORGE.md
+   - 256x256 pixels
+   - Large forge, smoking chimney, orange glow
+   
+6. BUILDING_CASTLE_ENTRANCE.md
+   - 256x256 pixels
+   - Grand gate, stone towers, imposing
+   
+7. BUILDING_CHAPEL_LARGE.md
+   - 256x256 pixels
+   - Cross roof, stained glass, peaceful
+   
+8. BUILDING_MARKET_FOOD.md
+   - 256x256 pixels
+   - Food stall, colorful produce, vibrant
+   
+9. BUILDING_INN_LARGE.md
+   - 256x256 pixels
+   - Multi-story inn, welcoming, cozy
+
+## CREATURES (11 total)
+
+10. CREATURE_RABBIT_IDLE.md
+    - 32x32 pixels
+    - Rabbit sitting upright, cute
+    
+11. CREATURE_RABBIT_WALK.md
+    - 32x32 pixels
+    - Rabbit hopping, legs extended
+    
+12. CREATURE_SQUIRREL_IDLE.md
+    - 28x28 pixels
+    - Squirrel sitting with fluffy tail
+    
+13. CREATURE_BIRD_IDLE.md
+    - 24x24 pixels
+    - Bird perched, round body
+    
+14. CREATURE_BIRD_FLY.md
+    - 24x28 pixels
+    - Bird flying, wings extended
+    
+15. CREATURE_FROG_IDLE.md
+    - 20x20 pixels
+    - Frog sitting, green color
+    
+16. CREATURE_WOLF_IDLE.md
+    - 42x42 pixels
+    - Wolf standing alert
+    
+17. CREATURE_SLIME_IDLE.md
+    - 32x32 pixels
+    - Gelatinous slime, goofy
+    
+18. CREATURE_SPIDER_IDLE.md
+    - 36x36 pixels
+    - Spider on 8 legs, cute not scary
+    
+19. CREATURE_SKELETON_IDLE.md
+    - 44x44 pixels
+    - Skeleton warrior, silly not scary
+    
+20. CREATURE_GHOST_IDLE.md
+    - 40x40 pixels
+    - Friendly ghost, Casper-like
+
+## PROPS (6 total)
+
+21. PROP_TREE_OAK_LARGE.md
+    - 128x192 pixels
+    - Large oak tree, full crown
+    
+22. PROP_TREE_PINE_TALL.md
+    - 128x192 pixels
+    - Tall pine tree, conical shape
+    
+23. PROP_BARREL_PAIR.md
+    - 64x64 pixels
+    - Two wooden barrels together
+    
+24. PROP_BUSH_SMALL.md
+    - 64x64 pixels
+    - Small decorative bush
+    
+25. PROP_WELL_LARGE.md
+    - 64x64 pixels
+    - Stone well with rope
+    
+26. PROP_CAMPFIRE.md
+    - 64x64 pixels
+    - Fire with logs and flames
+
+## NPCS (3 total)
+
+27. NPC_GUARD_ALDRIC.md
+    - 48x48 pixels
+    - Guard in armor, friendly
+    
+28. NPC_MIRA_APPRENTICE.md
+    - 48x48 pixels
+    - Young apprentice, magical feel
+    
+29. NPC_SCHOLAR_VERA.md
+    - 48x48 pixels
+    - Elderly scholar, wise
+
+---
+
+## HOW TO ORGANIZE FOR MANUS
+
+Option 1: Create one master file (SPRITE_GENERATION_SPECS_FOR_MANUS.md) with all specs
+Option 2: Create 29 individual .md files, one per sprite
+Option 3: Create category folders with specs inside
+
+Recommended: Use master file format (already created as SPRITE_GENERATION_SPECS_FOR_MANUS.md)
+
+---
+
+## DELIVERY CHECKLIST
+
+When Manus generates sprites:
+1. All 29 PNGs created
+2. Canvas sizes exact (no variations)
+3. Transparent backgrounds (no white/black edges)
+4. Filenames match specification
+5. Organized in folder structure
+6. Zipped and ready for integration
+
+---
+
+## QUICK REFERENCE - CANVAS SIZES
+
+Buildings: 256×256 px (9 sprites)
+NPCs: 48×48 px (3 sprites)
+Creatures:
+  - Small: 20×20 px (frog)
+  - Small-med: 24×24 px (bird idle)
+  - Small-med: 24×28 px (bird fly)
+  - Medium: 28×28 px (squirrel)
+  - Medium: 32×32 px (rabbit, slime)
+  - Medium-large: 36×36 px (spider)
+  - Large: 40×40 px (ghost)
+  - Large: 42×42 px (wolf)
+  - Large: 44×44 px (skeleton)
+
+Props:
+  - Medium: 64×64 px (barrels, bush, well, campfire)
+  - Large: 128×192 px (trees)
+
+---
+
+END OF SPECIFICATION
