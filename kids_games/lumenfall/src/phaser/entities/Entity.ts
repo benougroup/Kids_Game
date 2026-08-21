@@ -3,6 +3,7 @@ import { EntityDefinition, EntityState, MONSTER_TINTS, MONSTER_ALPHA } from '../
 import { EntityMovementFlags, DEFAULT_FLAGS } from '../systems/TileSystem';
 import { toRenderDepth } from '../systems/LayeredTileSystem';
 import { NPCBubble, BubbleType } from '../ui/NPCBubble';
+import { getDisplaySize } from '../systems/SpriteSizingSpec';
 
 /**
  * Unified Entity class for NPCs and Monsters
@@ -71,8 +72,9 @@ export class Entity {
     const idleFrame = this.getFrame('idle');
     const initialTexture = this.resolveTextureFrame(idleFrame);
     this.sprite = scene.add.sprite(x, y, initialTexture.key, initialTexture.frame);
-    
-    const displaySize = def.displaySize ?? 48;
+
+    // Use SpriteSizingSpec for consistent sizing across all entities
+    const displaySize = def.displaySize ?? getDisplaySize(def.id);
     this.collisionHalfSize = Math.max(10, Math.min(22, displaySize * 0.3));
     this.sprite.setDisplaySize(displaySize, displaySize);
     this.sprite.setOrigin(0.5, 0.5);
