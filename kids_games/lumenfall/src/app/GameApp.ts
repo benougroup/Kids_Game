@@ -26,6 +26,9 @@ import { SaveSystem } from '../systems/SaveSystem';
 import { IngredientSystem } from '../systems/IngredientSystem';
 import { AssetManager } from '../engine/AssetManager';
 import { encounterDatabase } from '../systems/EncounterDatabase';
+import { LandingPage } from './LandingPage';
+import { getScenarioById } from './Scenarios';
+import './landing.css';
 
 const WORLD_TILE_WIDTH = 100;
 const WORLD_TILE_HEIGHT = 100;
@@ -59,6 +62,7 @@ export class GameApp {
   private readonly assetManager = new AssetManager();
   private readonly input: Input;
   private readonly loop: GameLoop;
+  private landingPage: LandingPage;
   private showLightOverlay = false;
   private showTerrainDebug = false;
   private showPerfHud = true;
@@ -68,6 +72,7 @@ export class GameApp {
     this.renderer = new Renderer(canvas, this.camera, this.mapSystem, this.lightSystem);
     this.input = new Input(canvas, this.camera);
     this.loop = new GameLoop(this.update, this.render);
+    this.landingPage = new LandingPage();
 
     const tx = this.store.beginTx('light_init');
     this.lightSystem.initialize(this.store.get(), tx);
@@ -77,7 +82,12 @@ export class GameApp {
     inventorySystem.addItem(tx, 'ingredient_crystal_water', 3, 'global');
     this.store.commitTx(tx);
     this.saveSystem.loadNow();
-    
+
+    // Setup landing page scenario selection
+    this.landingPage.setOnScenarioSelected((scenario) => {
+      this.startScenario(scenario.id);
+    });
+
     // Listen for dawn to restore SP and clear ingredients
     this.bus.on('TIME_PHASE_START', (event) => {
       if (event.phase === 'DAWN') {
@@ -93,7 +103,7 @@ export class GameApp {
         this.bus.emit({ type: 'UI_MESSAGE', text: 'Dawn breaks. You feel refreshed. (+2 SP)' });
       }
     });
-    
+
     // Listen for ingredient collection
     this.bus.on('INGREDIENT_COLLECTED', (event) => {
       const itemName = itemDatabase.getItem(event.itemId)?.name || event.itemId;
@@ -105,8 +115,27 @@ export class GameApp {
   }
 
   start(): void {
+    // Show landing page, then load assets
+    document.body.appendChild(this.landingPage.getElement());
+    this.landingPage.show();
     this.beginLoadingAssets();
     this.loop.start();
+  }
+
+  private startScenario(scenarioId: string): void {
+    const scenario = getScenarioById(scenarioId);
+    if (!scenario) return;
+
+    // Hide landing page
+    this.landingPage.hide();
+
+    // Reset game state for new scenario
+    const tx = this.store.beginTx('scenario_start');
+    tx.touchRuntimePlayer();
+    tx.draftState.runtime.player.x = scenario.startX;
+    tx.draftState.runtime.player.y = scenario.startY;
+    tx.draftState.runtime.map.currentMapId = scenario.startMapId;
+    this.store.commitTx(tx);
   }
 
   private readonly update = (dtMs: number): void => {
