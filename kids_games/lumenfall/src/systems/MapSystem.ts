@@ -2,6 +2,17 @@ import brightHollowMap from '../data/maps/bright_hollow.json';
 import lightHallMap from '../data/maps/light_hall.json';
 import forestEdgeDemoMap from '../data/maps/forest_edge_demo.json';
 import shrineDemoMap from '../data/maps/shrine_demo.json';
+import { createManusSpriteTestMap } from '../data/maps/manus_sprite_test';
+import { createTownMap } from '../data/maps/town';
+import { createVillageMap } from '../data/maps/village';
+import { createGraveyardMap } from '../data/maps/graveyard';
+import { createShadowBaseMap } from '../data/maps/shadow_base';
+import { createForestNorthMap } from '../data/maps/forest_north';
+import { createForestSouthMap } from '../data/maps/forest_south';
+import { createRiverMap } from '../data/maps/river';
+import { createShrineMap } from '../data/maps/shrine';
+import { createLakeMap } from '../data/maps/lake';
+import { createMonstersMap } from '../data/maps/monsters_roam';
 import { TILE_SIZE } from '../app/Config';
 import type { GameState, LightSourceRuntime } from '../state/StateTypes';
 import { worldProfileSystem, type WeatherType } from './WorldProfileSystem';
@@ -142,11 +153,24 @@ export interface TransitionState {
   t: number;
 }
 
+const manusSpriteTestMap = createManusSpriteTestMap();
+
 const maps: Record<string, TileMap> = {
   [brightHollowMap.id]: brightHollowMap as TileMap,
   [lightHallMap.id]: lightHallMap as TileMap,
   [forestEdgeDemoMap.id]: forestEdgeDemoMap as TileMap,
   [shrineDemoMap.id]: shrineDemoMap as TileMap,
+  [manusSpriteTestMap.id]: manusSpriteTestMap,
+  town: createTownMap(),
+  village: createVillageMap(),
+  graveyard: createGraveyardMap(),
+  shadow_base: createShadowBaseMap(),
+  forest_north: createForestNorthMap(),
+  forest_south: createForestSouthMap(),
+  river: createRiverMap(),
+  shrine: createShrineMap(),
+  lake: createLakeMap(),
+  monsters_roam: createMonstersMap(),
 };
 
 export const MAP_TRANSITION_MS = 200;
