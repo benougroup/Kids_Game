@@ -63,6 +63,7 @@ export class GameApp {
   private readonly input: Input;
   private readonly loop: GameLoop;
   private landingPage: LandingPage;
+  private scenarioSelected = false;
   private showLightOverlay = false;
   private showTerrainDebug = false;
   private showPerfHud = true;
@@ -129,6 +130,9 @@ export class GameApp {
     // Hide landing page
     this.landingPage.hide();
 
+    // Mark scenario as selected - this enables update/render
+    this.scenarioSelected = true;
+
     // Reset game state for new scenario
     const tx = this.store.beginTx('scenario_start');
     tx.touchRuntimePlayer();
@@ -139,6 +143,9 @@ export class GameApp {
   }
 
   private readonly update = (dtMs: number): void => {
+    // Skip all updates until scenario is selected
+    if (!this.scenarioSelected) return;
+
     const state = this.store.get();
     if (state.runtime.mode === 'LOADING') return;
     const intent = this.input.poll(state.runtime.mode, state.runtime.player.x, state.runtime.player.y, state);
@@ -242,6 +249,9 @@ export class GameApp {
   };
 
   private readonly render = (): void => {
+    // Only render game if scenario selected; otherwise landing page handles rendering
+    if (!this.scenarioSelected) return;
+
     this.renderer.setLightOverlayVisible(this.showLightOverlay);
     this.renderer.setTerrainDebugVisible(this.showTerrainDebug);
     this.renderer.setPerfHudVisible(this.showPerfHud);

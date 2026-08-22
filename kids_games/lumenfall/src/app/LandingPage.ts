@@ -76,11 +76,11 @@ export class LandingPage {
   }
 
   show() {
-    this.container.style.display = 'flex';
+    this.container.classList.remove('hidden');
   }
 
   hide() {
-    this.container.style.display = 'none';
+    this.container.classList.add('hidden');
   }
 
   getElement(): HTMLElement {
